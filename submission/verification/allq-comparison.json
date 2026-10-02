@@ -1,0 +1,18 @@
+{
+  "2": {
+    "records": 220,
+    "certified_blocks": 171,
+    "threshold": 59,
+    "complete_to_infinity": true,
+    "equal_to_released_ignoring_elapsed_t": true,
+    "excluded_lower_blocks": 49
+  },
+  "3": {
+    "records": 389,
+    "certified_blocks": 387,
+    "threshold": 12,
+    "complete_to_infinity": true,
+    "equal_to_released_ignoring_elapsed_t": true,
+    "excluded_lower_blocks": 2
+  }
+}

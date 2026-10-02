@@ -1,0 +1,20 @@
+[
+  {
+    "file": "msc_rigorous_unimodality/cert_family_F1.jsonl",
+    "regenerated": 20,
+    "released": 20,
+    "equal_excluding_runtime": true
+  },
+  {
+    "file": "msc_rigorous_unimodality/cert_family_F2.jsonl",
+    "regenerated": 6,
+    "released": 6,
+    "equal_excluding_runtime": true
+  },
+  {
+    "file": "msc_rigorous_certified/packed_d3_q4-5.jsonl",
+    "regenerated": 19,
+    "released": 59,
+    "equal_excluding_runtime": true
+  }
+]

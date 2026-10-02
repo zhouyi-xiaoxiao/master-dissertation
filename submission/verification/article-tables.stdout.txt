@@ -1,0 +1,3 @@
+fragments: T1, T1big, T2, T3, activity, deterministic, fit2d, fit2d_discrete, fit3d, fit3d_discrete, sweep_factors, sweep_thinned, sweep_uniform, unimodal
+checks   -> data/article/appC_tables_checks.json
+all 11 printed fragments occur verbatim in sections/appC_tables.tex (3 further fragments are kept for the repository only)

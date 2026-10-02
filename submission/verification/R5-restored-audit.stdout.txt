@@ -1,0 +1,129 @@
+PASS  [d1_q4-5] a certificate exists for every N of the stated set (601 values, 2..600 + extras)   [file has 601 lines]
+PASS  [d1_q4-5] t0 = d(N-1) for every N
+PASS  [d1_q4-5] verify_packed.py: no disagreement with the generator   [verified N = 2--600, 800, 1000]
+PASS  [d1_q4-5] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--160]
+PASS  [d1_q4-5] fpcore.py: output identical to the generator's wherever run   [N = 2--200, 250, 300, 350, 400, 450, 500, 550, 600]
+PASS  [d1_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d1_q4-5] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d1_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 1.41e-12]
+PASS  [d1_q4-5] exceptional N=4: the rounded programs do not certify strict unimodality
+PASS  [d2_q4-5] a certificate exists for every N of the stated set (161 values, 2..160 + extras)   [file has 161 lines]
+PASS  [d2_q4-5] t0 = d(N-1) for every N
+PASS  [d2_q4-5] verify_packed.py: no disagreement with the generator   [verified N = 2--160, 180, 200]
+PASS  [d2_q4-5] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--50]
+PASS  [d2_q4-5] fpcore.py: output identical to the generator's wherever run   [N = 2--60, 70, 80, 90, 100]
+PASS  [d2_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d2_q4-5] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d2_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 2.22e-14]
+PASS  [d3_q4-5] a certificate exists for every N of the stated set (59 values, 2..60 + extras)   [file has 59 lines]
+PASS  [d3_q4-5] t0 = d(N-1) for every N
+PASS  [d3_q4-5] verify_packed.py: no disagreement with the generator   [verified N = 2--60]
+PASS  [d3_q4-5] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--20]
+PASS  [d3_q4-5] fpcore.py: output identical to the generator's wherever run   [N = 2--24, 28, 32, 36]
+PASS  [d3_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d3_q4-5] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d3_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 1.76e-12]
+PASS  [d1_q1-2] a certificate exists for every N of the stated set (299 values, 2..300 + extras)   [file has 299 lines]
+PASS  [d1_q1-2] t0 = d(N-1) for every N
+PASS  [d1_q1-2] verify_packed.py: no disagreement with the generator   [verified N = 2--300]
+PASS  [d1_q1-2] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--120]
+PASS  [d1_q1-2] fpcore.py: output identical to the generator's wherever run   [N = 2--120]
+PASS  [d1_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d1_q1-2] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d1_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 1.25e-11]
+PASS  [d1_q1-2] exceptional N=3: the rounded programs do not certify strict unimodality
+PASS  [d1_q1-2] exceptional N=4: the rounded programs do not certify strict unimodality
+PASS  [d2_q1-2] a certificate exists for every N of the stated set (79 values, 2..80 + extras)   [file has 79 lines]
+PASS  [d2_q1-2] t0 = d(N-1) for every N
+PASS  [d2_q1-2] verify_packed.py: no disagreement with the generator   [verified N = 2--80]
+PASS  [d2_q1-2] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--40]
+PASS  [d2_q1-2] fpcore.py: output identical to the generator's wherever run   [N = 2--40]
+PASS  [d2_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d2_q1-2] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d2_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 5.91e-11]
+PASS  [d3_q1-2] a certificate exists for every N of the stated set (31 values, 2..32 + extras)   [file has 31 lines]
+PASS  [d3_q1-2] t0 = d(N-1) for every N
+PASS  [d3_q1-2] verify_packed.py: no disagreement with the generator   [verified N = 2--32]
+PASS  [d3_q1-2] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--16]
+PASS  [d3_q1-2] fpcore.py: output identical to the generator's wherever run   [N = 2--16]
+PASS  [d3_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N
+PASS  [d3_q1-2] (c) tail time T equals the mode, for every non-exceptional N
+PASS  [d3_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N   [min(1-gamma) >= 1.09e-10]
+PASS  [d1_q1-1] a certificate exists for every N of the stated set (199 values, 2..200 + extras)   [file has 199 lines]
+PASS  [d1_q1-1] t0 = d(N-1) for every N
+PASS  [d1_q1-1] verify_packed.py: no disagreement with the generator   [verified N = 2--200]
+PASS  [d1_q1-1] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--100]
+PASS  [d1_q1-1] fpcore.py: output identical to the generator's wherever run   [N = 2--100]
+PASS  [d2_q1-1] a certificate exists for every N of the stated set (79 values, 2..80 + extras)   [file has 79 lines]
+PASS  [d2_q1-1] t0 = d(N-1) for every N
+PASS  [d2_q1-1] verify_packed.py: no disagreement with the generator   [verified N = 2--80]
+PASS  [d2_q1-1] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--40]
+PASS  [d2_q1-1] fpcore.py: output identical to the generator's wherever run   [N = 2--40]
+PASS  [d3_q1-1] a certificate exists for every N of the stated set (31 values, 2..32 + extras)   [file has 31 lines]
+PASS  [d3_q1-1] t0 = d(N-1) for every N
+PASS  [d3_q1-1] verify_packed.py: no disagreement with the generator   [verified N = 2--32]
+PASS  [d3_q1-1] exact programs: no disagreement with the generator, nor with each other   [exact N = 2--16]
+PASS  [d3_q1-1] fpcore.py: output identical to the generator's wherever run   [N = 2--16]
+PASS  Corollary q-scaling, d = 1: -7/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 1/2 for all 2 <= N <= 300, both bounds attained
+PASS  Corollary q-scaling, d = 2: -4/5 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 3/10 for all 2 <= N <= 80, both bounds attained
+PASS  Corollary q-scaling, d = 3: -11/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 2/5 for all 2 <= N <= 32, both bounds attained
+PASS  (d) (1,4/5,4): 0 = f(2) < f(3) = f(4) < f(5) > f(6) > ... (checked to t = 40)   [f(3)=f(4)=8/125, f(5)=208/3125]
+PASS  (d) (1,1/2,3): 0 = f(1) < f(2) < f(3) = f(4) > f(5) > ... (checked to t = 40)   [f(3)=f(4)=5/64]
+PASS  (d) (1,1/2,4): strictly increasing on 2 <= t <= 7, f(7) = f(8), strictly decreasing afterwards (to t = 40)   [f(7)=f(8)=637/16384]
+PASS  (d) (1,4/5,4): both exact programs give maximisers [5], tail time 5; the generator's T is 5
+PASS  (d) (1,1/2,3): both exact programs give maximisers [3, 4], tail time 4; the generator's T is 4
+PASS  (d) (1,1/2,4): both exact programs give maximisers [7, 8], tail time 8; the generator's T is 8
+PASS  [d1_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time   [N = [5, 6, 8, 9]: {5: [4, 6], 6: [7, 9], 8: [15, 17], 9: [20, 22]}]
+PASS  [d1_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie   [unimodal: 2; multimodal: 4--200; tie only: 3]
+PASS  [d1_q1-1] the generated text of the theorem lists these sets
+PASS  [d1_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise   [equalities: {3: [3], 4: [8]}]
+PASS  [d2_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time   [N = [2]: {2: [2, 3]}]
+PASS  [d2_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie   [unimodal: 3--8, 10, 12, 14, 16, 19--20, 22--23, 25, 27--37, 39--50, 52--60, 62--80; multimodal: 9, 11, 13, 15, 17--18, 21, 24, 26, 38, 51, 61; tie only: 2]
+PASS  [d2_q1-1] the generated text of the theorem lists these sets
+PASS  [d2_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise   [equalities: {2: [2]}]
+PASS  [d3_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time   [N = []: {}]
+PASS  [d3_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie   [unimodal: 2--32; multimodal: none; tie only: none]
+PASS  [d3_q1-1] the generated text of the theorem lists these sets
+PASS  [d3_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise   [equalities: {}]
+PASS  MFPT enclosures: 0 < lower <= upper, relative width < 1e-28, and for d = 1 they contain N(N-1)
+PASS  [d1_q4-5] all N in 10..600 have a certified unique mode and an MFPT enclosure
+PASS  [d1_q4-5] (c) 791/5000 t* <= t_cf - t* <= 2251/10000 t* for all 10 <= N <= 600  (mpmath.iv)   [range [0.158244, 0.225044]]
+PASS  [d1_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  [d1_q4-5] isolated N = 800: relative error of the closed form in [0.158048, 0.158048]
+PASS  [d1_q4-5] isolated N = 1000: relative error of the closed form in [0.157935, 0.157935]
+PASS  [d2_q4-5] all N in 10..160 have a certified unique mode and an MFPT enclosure
+PASS  [d2_q4-5] |t* - t_cf| <= 97/10000 t* for all 10 <= N <= 160  (mpmath.iv)   [worst N = 137: 0.009698]
+PASS  [d2_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  [d2_q4-5] isolated N = 180: relative error of the closed form in [-0.009660, -0.009660]
+PASS  [d2_q4-5] isolated N = 200: relative error of the closed form in [-0.009638, -0.009638]
+PASS  [d3_q4-5] all N in 10..60 have a certified unique mode and an MFPT enclosure
+PASS  [d3_q4-5] |t* - t_cf| <= 11/4000 t* for all 10 <= N <= 60  (mpmath.iv)   [worst N = 10: 0.002749]
+PASS  [d3_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  [d1_q1-2] all N in 10..300 have a certified unique mode and an MFPT enclosure
+PASS  [d1_q1-2] (c) 159/1000 t* <= t_cf - t* <= 1141/5000 t* for all 10 <= N <= 300  (mpmath.iv)   [range [0.159008, 0.228186]]
+PASS  [d1_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  [d2_q1-2] all N in 10..80 have a certified unique mode and an MFPT enclosure
+PASS  [d2_q1-2] |t* - t_cf| <= 477/50000 t* for all 10 <= N <= 80  (mpmath.iv)   [worst N = 80: 0.009540]
+PASS  [d2_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  [d3_q1-2] all N in 10..32 have a certified unique mode and an MFPT enclosure
+PASS  [d3_q1-2] |t* - t_cf| <= 157/100000 t* for all 10 <= N <= 32  (mpmath.iv)   [worst N = 10: 0.001562]
+PASS  [d3_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N
+PASS  Theorem tau: B(tau_-) > 0 and B(tau_+) < 0 at the stored rationals (mpmath.iv, 200 bits)
+PASS  Theorem tau: the decimal bounds printed for tau* and kappa_1 contain [tau_-, tau_+] and [2 tau_-, 2 tau_+]   [width of the kappa_1 enclosure 6.15e-28]
+PASS  [d1_q4-5] -1097/1000 < t* - kappa_1 (N-1/2)^2/q < -99/1000 for all 10 <= N <= 600, and the interval is shorter than 1   [length 0.998]
+PASS  [d1_q4-5] t* = floor(kappa_1 (N-1/2)^2/q + (-99/1000)) for all 10 <= N <= 600 (both endpoints of the kappa_1 enclosure)
+PASS  [d1_q4-5] |t*/E T - kappa_1| <= 4/5/(N(N-1)) for all 10 <= N <= 600
+PASS  [d1_q4-5] the isolated N = [800, 1000] satisfy the same two-sided bound
+PASS  [d1_q1-2] -29/25 < t* - kappa_1 (N-1/2)^2/q < -41/250 for all 10 <= N <= 300, and the interval is shorter than 1   [length 0.996]
+PASS  [d1_q1-2] t* = floor(kappa_1 (N-1/2)^2/q + (-41/250)) for all 10 <= N <= 300 (both endpoints of the kappa_1 enclosure)
+PASS  [d1_q1-2] |t*/E T - kappa_1| <= 1/2/(N(N-1)) for all 10 <= N <= 300
+PASS  Theorem C2: |C_2 - printed decimal| < 1e-50, and the two closed forms agree  (mpmath.iv)   [C_2 in [[0.1546377878189172624907338308002830491917266198327]
+PASS  Theorem rem: 0.3211 < r_N < 0.53213 for all 2 <= N <= 301  (mpmath.iv)   [r_2 = 0.32110964, r_301 = 0.53212908]
+PASS  Theorem rem: r_N strictly increasing on 2 <= N <= 301  (mpmath.iv)
+PASS  Proposition rem (conditional on the single-sum formula): stored bound for 302 <= N <= 1500 is below 0.5321405, which is below C_0 = varpi^4/(9 pi^2); monotone; single sum agrees with the linear system on the overlap   [C_0 >= 0.5321408833]
+PASS  Proposition rem: junction r_301 < r_302 (r_301: mpmath.iv from the linear-system enclosure; r_302: stored lower bound from the single sum, the minimum of the conditional range)   [sup r_301 <= 0.532129078392 < 0.532129156439]
+PASS  Remark: q = 4/5 is not log-concave: f(3)^2 < f(2) f(4) for N = 3 and f(4)^2 < f(3) f(5) for N = 4 (exact)
+PASS  Remark lc, N = 3: f(t)^2 - f(t-1) f(t+1) = (q^4/16) det(Q)^(t-2) for 2 <= t <= 40, failures exactly at odd t >= 3 iff q > 3 - sqrt 5 (exact, five values of q)
+PASS  Remark lc, N = 4, q = 4/5: f(t)^2 < f(t-1) f(t+1) for t = 4 and for no other 2 <= t <= 400 (exact)
+
+127 assertions, 0 failures

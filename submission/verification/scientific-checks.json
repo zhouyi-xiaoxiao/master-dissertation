@@ -1,0 +1,170 @@
+[
+  {
+    "name": "R0-1d-exact-counts",
+    "command": [
+      "python",
+      "code/article/checks_1d_exact_formula.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.158
+  },
+  {
+    "name": "R1-constant",
+    "command": [
+      "python",
+      "code/msc_rigorous_1d/03_constant_enclosure.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.24
+  },
+  {
+    "name": "R1-hand",
+    "command": [
+      "python",
+      "code/msc_rigorous_1d/39_hand_constants.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.474
+  },
+  {
+    "name": "R2-spectral-all",
+    "command": [
+      "python",
+      "code/msc_rigorous_spectral/run_all.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 64.801
+  },
+  {
+    "name": "R3-allq-d2",
+    "command": [
+      "python",
+      "code/msc_rigorous_asymptotics/78_cert_allq.py",
+      "2"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 1.794
+  },
+  {
+    "name": "R3-allq-d3",
+    "command": [
+      "python",
+      "code/msc_rigorous_asymptotics/78_cert_allq.py",
+      "3"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 21.296
+  },
+  {
+    "name": "R3-tables",
+    "command": [
+      "python",
+      "code/msc_rigorous_asymptotics/80_tables.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 3.932
+  },
+  {
+    "name": "R4-F1",
+    "command": [
+      "python",
+      "code/msc_rigorous_unimodality/cert_family.py",
+      "F1"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 10.474
+  },
+  {
+    "name": "R4-F2",
+    "command": [
+      "python",
+      "code/msc_rigorous_unimodality/cert_family.py",
+      "F2"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 3.749
+  },
+  {
+    "name": "R5-audit",
+    "command": [
+      "python",
+      "code/msc_rigorous_certified/audit.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.823
+  },
+  {
+    "name": "R5-extended-audit",
+    "command": [
+      "python",
+      "code/msc_rigorous_certified_c128/audit_ext.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 2.524
+  },
+  {
+    "name": "R5-packed-d3",
+    "command": [
+      "python",
+      "code/msc_rigorous_certified/verify_packed.py",
+      "data/msc_rigorous_certified/modes_d3_q4-5.jsonl",
+      "2",
+      "20"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 9.96
+  },
+  {
+    "name": "article-formulasA",
+    "command": [
+      "python",
+      "code/article/appA_proofs_check.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 6.961
+  },
+  {
+    "name": "article-formulasB",
+    "command": [
+      "python",
+      "code/article/appB_expansion_check.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 2.546
+  },
+  {
+    "name": "article-tables",
+    "command": [
+      "python",
+      "code/article/appC_tables_build.py",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.209
+  },
+  {
+    "name": "MODIFIED",
+    "command": [
+      "python",
+      "code/article/s6b_rigorous_checks.py"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.288
+  }
+]

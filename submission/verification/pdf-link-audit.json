@@ -1,0 +1,27 @@
+{
+  "pdf": {
+    "paper.pdf": {
+      "pages": 40,
+      "remote_links": {
+        "supplement.pdf": 44
+      },
+      "missing_file_targets": 0,
+      "missing_named_destinations": 0,
+      "unresolved_text_pages": [],
+      "a4_all_pages": true
+    },
+    "supplement.pdf": {
+      "pages": 56,
+      "remote_links": {
+        "paper.pdf": 292
+      },
+      "missing_file_targets": 0,
+      "missing_named_destinations": 0,
+      "unresolved_text_pages": [],
+      "a4_all_pages": true
+    }
+  },
+  "unique_cited_keys": 67,
+  "missing_bibliography_keys": [],
+  "failures": 0
+}

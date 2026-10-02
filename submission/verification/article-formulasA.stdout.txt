@@ -1,0 +1,53 @@
+PASS appA_proofs:lem-spectrum           cases=   131 max dev=4.63e-15  T psi_k = cos(pi k/N) psi_k (float64, absolute)
+PASS appA_proofs:lem-spectrum           cases=    11 max dev=5.28e-15  psi_k orthonormal
+PASS appA_proofs:lem-spectrum           cases=   131 max dev=2.32e-14  u_k(-1)=u_k(0), u_k(N)=u_k(N-1)
+PASS appA_proofs:eq-corner-cos          cases=   131 max dev=1.58e-14  cos theta_k(0)=c_k, cos theta_k(N-1)=(-1)^k c_k
+PASS appA_proofs:lem-spectrum           cases=    33 max dev=0.00e+00  P = (1-q) I + (q/d) sum_i T^(i), P built from the rules, d = 1,2,3
+PASS appA_proofs:lem-spectrum           cases=    33 max dev=1.67e-15  (I-P) Psi_k = (2q/d) sum_i s_{k_i}^2 Psi_k, d = 1,2,3
+PASS appA_proofs:eq-Lplus               cases=    33 max dev=5.08e-15  spectral form of L^+ against numpy pinv (relative)
+PASS s4_mfpt:eq-cosine / eq-1d          cases=   224 max dev=1.95e-40  d=1: cosine sum = h_1(m,m') = q T (exact), all ordered pairs, N=2..7, q=1 and 4/5
+PASS s4_mfpt:eq-cosine                  cases=   720 max dev=9.00e-41  d=2: cosine double sum = q T (exact): all pairs N=2..4 (q=1, 3/7), random pairs N=5..8
+PASS s4_mfpt:eq-cosine                  cases=   160 max dev=5.25e-41  d=3: cosine triple sum = q T (exact), N=2 all pairs, N=3 four targets, q=4/5
+PASS s4_mfpt:eq-cosine-cc               cases=    22 max dev=5.45e-41  corner-to-corner odd-sector sum = q T_N^(d) (exact): d=1 N=2..12, d=2 N=2..9, d=3 N=2..4
+PASS appA_proofs:eq-ring                cases=   628 max dev=4.11e-76  ring Green's function, M=1..12,25,40, 0<=m<=M, sigma=1.001,1.5,3,10 (relative, 100 digits)
+PASS appA_proofs:eq-ring-half           cases=   800 max dev=6.00e-39  half-range form, N=2..9,16,35, 0<=m<=2N, four values of sigma
+PASS appA_proofs:eq-E1                  cases=   800 max dev=1.10e-38  form with j>=1 only (Eq. (E1) of Giuggioli 2020), same cases
+PASS appA_proofs:eq-ring-half (range)   cases=    20 max dev=0.00e+00  identity is VIOLATED at m=2N+1 and m=-1 (sigma=3): smallest violation must exceed 1e-3
+PASS appA_proofs:lem-1d                 cases=   649 max dev=0.00e+00  h_1(m,m') = exact hitting time of the chain T, all pairs, N=2..12 (absolute)
+PASS appA_proofs:eq-1d-sum              cases=   649 max dev=1.03e-38  spectral sum = h_1(m,m'), all pairs, N=2..12 (absolute)
+PASS appA_proofs:eq-cot                 cases=    59 max dev=2.35e-38  sum over odd j of cot^2(pi j/2N) = N(N-1)/2, N=2..60 (absolute)
+PASS appA_proofs:eq-split               cases=    15 max dev=2.87e-40  q T_N/2 = N(N-1) + sum_k 2 c_k^2 G_k (G_k summed directly), N=2..12,35,36,59,60
+PASS appA_proofs:eq-alpha-sums          cases=    15 max dev=0.00e+00  sum alpha_j = 2N-1, sum alpha_j (-1)^j = -(-1)^N (exact integers)
+PASS appA_proofs:eq-Gk                  cases=   252 max dev=1.50e-39  closed form of G_k against the direct sum over j, all k
+PASS appA_proofs:eq-Bk                  cases=   252 max dev=2.91e-40  B_k = (1+sigma_k)[cosh N phi_k - (-1)^k] - sinh phi_k sinh N phi_k and G_k = N B_k/(sinh sinh)
+PASS appA_proofs:eq-Gk-coth             cases=   252 max dev=1.84e-40  G_k = N[coth(phi_k/2) g_k - 1]; sinh(phi_k/2)=s_k; coth(phi_k/2)=sqrt(1+s_k^2)/s_k; cosh phi_k = sigma_k
+PASS appA_proofs:eq-csum                cases=    59 max dev=2.30e-41  sum_{k=1}^{N-1} c_k^2 = (N-1)/2, N=2..60 (absolute)
+PASS appA_proofs:eq-csum-odd            cases=    59 max dev=9.18e-41  sum over odd k of c_k^2 = N/4, N=2..60, both parities (absolute)
+PASS appA_proofs:eq-csum-odd            cases=    59 max dev=8.04e-41  sum over odd k of cos(pi k/N) = 0 (N even), 1/2 (N odd), N=2..60
+PASS s4_mfpt:eq-single-a                cases=     8 max dev=1.38e-41  form (a) = exact rational q T_N, N=2..9
+PASS s4_mfpt:eq-single-S                cases=     8 max dev=1.73e-41  form (b) = exact rational q T_N, N=2..9
+PASS s4_mfpt:eq-half                    cases=     8 max dev=4.13e-41  8N S_odd - 2N^2 = exact rational q T_N, N=2..9
+PASS s4_mfpt:eq-half                    cases=     8 max dev=1.38e-41  2N^2 + 8N S_even = exact rational q T_N, N=2..9
+PASS s4_mfpt:eq-single-a/S/half         cases=    15 max dev=1.98e-40  forms (a), (b), (c) = cosine double sum (40 digits), N=2..12,35,36,59,60
+PASS s4_mfpt:eq-half                    cases=    15 max dev=1.10e-39  S_odd - S_even = N/2 (absolute), same N
+PASS appA_proofs:eq-Hk                  cases=   130 max dev=1.54e-39  H_k: sum over even j = sum over Z_N = (N/2)[coth(phi_k/2) coth(N phi_k/2) - 1], odd k
+PASS appA_proofs:eq-odd-even            cases=    15 max dev=9.85e-40  q T_N = 16 sum over odd k of c_k^2 H_k, same N
+PASS s4_mfpt:thm-single                 cases=     5 max dev=1.37e-12  forms (a), (b), (c) against float64 sparse solves, N=16,35,36,100,101, q=0.8
+PASS appA_proofs:eq-prod                cases=  1266 max dev=4.08e-40  cos theta_j(m) cos theta_j(m') = [cos(|m-m'| vartheta_j) + cos((m+m'+1) vartheta_j)]/2
+PASS appA_proofs:eq-inner-pair          cases=  1266 max dev=8.45e-36  sum_j alpha_j cos cos/(sigma_k - cos vartheta_j) = N Psi_k(m,m'), all m,m',k, N=2..5,8,9
+PASS s4_mfpt:eq-pair                    cases=  2526 max dev=7.16e-41  pair formula = exact rational q T: all 1848 ordered pairs N=2..5 (q=1, 3/7); every start for 12 random targets N=6..9
+PASS s4_mfpt:eq-pair                    cases=    72 max dev=7.79e-14  pair formula against float64 sparse solves, N=35,36, three targets, random starts, q=0.8
+PASS appA_proofs:eq-pair-corner         cases=    15 max dev=5.00e-41  pair formula at opposite corners reduces to form (a)
+PASS appA_proofs:eq-stable              cases=  2552 max dev=7.59e-40  cosh((N-m) phi)/sinh(N phi) = (e^{-m phi} + e^{-(2N-m) phi})/(1 - e^{-2N phi}), 0<=m<=2N
+PASS appA_proofs:eq-laplacian           cases=    22 max dev=5.55e-17  I - P = (q/4)(D - A), P built from the rules, N=2..12, q=0.8, 0.37
+PASS s4_mfpt:eq-resistance              cases=    39 max dev=5.77e-15  q (T_{o->a}+T_{a->o}) = 4 N^2 R(o,a), R from the Laplacian pseudo-inverse, random pairs
+PASS s4_mfpt:eq-resistance              cases=    11 max dev=5.77e-15  q T_N = 2 N^2 R_N; R_N = 1 + (4/N) S_even = (4/N) S_odd - 1, N=2..12
+PASS s4_mfpt:eq-resistance              cases=     1 max dev=0.00e+00  exact: q T_4/(2*16) = 13/7 (Wu 2004, Example 4: corner-to-corner resistance of the 4x4 grid)
+PASS appA_proofs:eq-Gkj                 cases=   196 max dev=2.66e-40  d=3 inner sum G_kj: direct sum = closed form = N[coth(phi_kj/2) g_kj - 1]; G_00 = N(N-1); N=2..8
+PASS appA_proofs:eq-alpha-c             cases=     7 max dev=0.00e+00  sum_{k=0}^{N-1} alpha_k c_k^2 = N, N=2..8 (absolute)
+PASS s4_mfpt:eq-3d                      cases=     3 max dev=5.45e-41  double sum = triple sum = exact rational q T_N^(3), N=2,3,4
+PASS s4_mfpt:eq-3d                      cases=     8 max dev=5.42e-13  double sum against float64 sparse solves, N=5..12 (both parities), q=0.8
+PASS appA_proofs:lem-1d                 cases=    67 max dev=5.51e-39  finite sum F_m = Eq. (E2) of Giuggioli 2020, for 0<=m<=2N, N=2,3,5,8,13 (absolute)
+PASS s4_mfpt:eq-single-a (float64)      cases=     3 max dev=0.00e+00  form (a) is finite and equal to form (b) for N=2..402; it is not finite for N=403..450, 500, 1000, 5000; form (b) stays finite
+
+51 checks, 0 failed, 6.1 s -> data/article/appA_proofs_check.json
