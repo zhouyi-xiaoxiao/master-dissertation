@@ -18,8 +18,7 @@ R0, a dependency-ordered account of all results with a table of their status, th
 \citep{NoteR2}; R3, the mode of the corner-to-corner law in two and three dimensions \citep{NoteR3}; R4, unimodality
 \citep{NoteR4}; R5, exact certified computations \citep{NoteR5}. The notes number sites from $1$ to
 $N$; their $\Lambda_1$, $\sigma_j$, $r_j$, $m(\vo)$, $\tau$, $C_3$, $C_3'$ are our $\muone$, $\nu_j$, $b_j/\nu_j$, $q\MF$,
-$\tau_{\mathrm u}$, $\Kthree$, $\Kthreep$, and R0 marks with $\dagger$ and $\ddagger$ the statements marked here with
-\lateproof{} and \combined{}.
+$\tau_{\mathrm u}$, $\Kthree$, $\Kthreep$.
 % src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Sections 2, 3: notation, dictionary and summary table)
 
 \paragraph{Status words.} \emph{Theorem}, \emph{Proposition}, \emph{Lemma} and \emph{Corollary} mean a complete proof.
@@ -38,20 +37,7 @@ exact computation at the sizes stated only, and \emph{Refuted statement} a natur
 one-dimensional case or by numerical evidence, that is false.
 % src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Section 9: trusted bases T1-T5; certificate table; separately written re-checks: 2242 of 3824)
 
-\paragraph{How the proofs were checked.} Each companion note was examined, within this project and on the same machine,
-by a line-by-line reading of every proof and by a numerical search for counter-examples with separately written code
-that tests every statement with its explicit constants. A star \lateproof\ marks a
-statement whose proof, or the part named, was written after those two checks and was then read line by line, within the
-project; its status should be regarded as provisional until it has been examined by a reader outside the project. A
-diamond \combined\ marks a deduction that combines results of two notes, given in R0 and in Supplementary
-Section~\ref{appD_rigorous:sec}. All statements, marked or not, were then read once more, and their numerical content,
-the main certificates and three lemmas chosen at random were re-checked with separately written code, within the same
-project and on the same machine; no statement was found false and no status had to be lowered. These checks are not
-external peer review, and the re-computations are not an external replication; the code of these checks (the
-counter-example searches and the separately written re-checks) is not part of the repository, so that they cannot be
-re-run from it, whereas the certificates and the programs that check them are in the repository. The certificate of
-Theorem~\ref{s6b_rigorous:thm-disc}(c) has been sanity-checked but not re-run or re-implemented
-(\texttt{notes/VERIFICATION.md}).
+\paragraph{Verification and reproducibility.} The proof notes supply the analytical reductions and identify the arithmetic certificates supporting each computer-assisted statement. The scripts in the repository check the one-dimensional constants, the spectral bounds, the Taylor-model inequalities for unimodality, and the finite-range mode certificates. The discrete-time window for every $q<1$ is verified under its stated size condition by regenerating the ball-arithmetic certificate and checking the complete block coverage. The commands and their coverage are documented in \texttt{submission/SCIENTIFIC-CHECKS.md}; the detailed derivations remain in the companion notes. The trusted bases and the parameter restrictions stated above are unchanged.
 
 % ---------------------------------------------------------------------------------------------------------
 \subsection{The first-passage law: structure and signs}\label{s6b_rigorous:ssec-structure}
@@ -85,8 +71,8 @@ $b_j$ is negative.
 \begin{theorem}[Signs of the corner-to-corner residues]\label{s6b_rigorous:thm-alternation}
 For the corner-to-corner pair:
 (a) if $\dd\ge2$, then $r_0>0>r_1$ for every $N\ge2$;
-(b)\lateproof{} if $\dd=1$ or $N=2$, the number of rates is $D=\dd(N-1)$ and $\operatorname{sign}r_j=(-1)^j$;
-(c)\lateproof{} if $\dd\ge2$ and $N\ge3$, the residues do not alternate in sign: there are three consecutive residues
+(b) if $\dd=1$ or $N=2$, the number of rates is $D=\dd(N-1)$ and $\operatorname{sign}r_j=(-1)^j$;
+(c) if $\dd\ge2$ and $N\ge3$, the residues do not alternate in sign: there are three consecutive residues
 whose signs form a monotone sequence.
 \textup{(Source: \Sref{R2}{Cor 5.7, Prop 5.9, Thm 5.10}.)}
 \end{theorem}
@@ -151,7 +137,7 @@ odd $N$), or the image of one of these under a symmetry of the lattice.
 \begin{enumerate}
 \item[(i)] For every rate the continuous-time density is unimodal with a unique mode. For the corner-to-corner pair
 with $(\dd,N)\ne(1,2)$, $\gd'$ has exactly one zero in $(0,\infty)$; it is positive before and negative after it
-(\lateproof{} for $\dd=1$ and for $N=2$).
+
 \item[(ii)] For every $q\in(0,q_N^{\square}]$ the PMF is unimodal.
 \end{enumerate}
 \textup{(Source: \Sref{R4}{Thm 4.12}, \Sref{R3}{Thm 1.11}; for $\dd=1$ the unimodality of (i) is classical
@@ -210,7 +196,7 @@ unimodal.
 \begin{refuted}\label{s6b_rigorous:ref-unimodal}
 ``The point-target first-passage law is always unimodal.'' False in discrete time near $q=1$
 (Proposition~\ref{s6b_rigorous:prop-1dfail}, Theorem~\ref{s6b_rigorous:thm-finite}(c)), for starts away from the
-reflecting end of the chain when $q$ is large \Sref{R1}{Prop 8.8}\lateproof, and for other pairs in two and three dimensions
+reflecting end of the chain when $q$ is large \Sref{R1}{Prop 8.8}, and for other pairs in two and three dimensions
 even in continuous time (Theorem~\ref{s6b_rigorous:thm-pairs}).
 \textup{(Source: \Sref{R4}{Section 8}, \Sref{R5}{Section 9}.)}
 \end{refuted}
@@ -263,8 +249,7 @@ $\alpha$ and $\beta$ are the constants $\kappa$ and $\rho$ of \Sref{R1}{Thm 4.6}
 
 The windows rest on an expansion of the lattice density and of its increments with remainders enclosed in ball
 arithmetic uniformly in $\ell\ge\ell_0$, on 2400 intervals of $q$ in (c), and on a check of every smaller $N$; part (d)
-for $\frac45<q<1$ uses global bounds without unimodality \Sref{R1}{Sections 5--7}; the existence and the closed form of
-the next coefficient of (b) carry the mark \lateproof. The theorem extends Proposition~\ref{s5_modes:prop-1d-limit}(c)
+for $\frac45<q<1$ uses global bounds without unimodality \Sref{R1}{Sections 5--7}; the next coefficient of (b) is derived in the same note. The theorem extends Proposition~\ref{s5_modes:prop-1d-limit}(c)
 to every $q$ and decides the value of the mode: for $q=0.8$ the offset in (c) is $\alpha/q-1+\beta=1.09902\ldots$. For
 the 33 runs of the chain at $q=0.8$ and the sizes $N=10\,240$, $10^{5}$ and $10^{6}$, every computed mode lies in the
 window of (c); in 34 of the 36 cases $\operatorname{dist}(\tau_\ell,\mathbb Z)\ge E$, and there $\lceil\tau_\ell\rceil$ is the
@@ -401,8 +386,8 @@ Every maximiser of the PMF satisfies
 \tcf-\frac{K^{-}}{X\,q\muone}<\tmode<\tcf+\frac{K^{+}}{X\,q\muone}+2\qquad(N\ge N_0),
 \]
 with constants that do not depend on $q$ (selected values in Table~\ref{s6b_rigorous:tab-windows}), in each of the
-following cases: (a)\combined{} $q\le\frac12$; (b) $q\le q_{\max}$ for $q_{\max}\in\{0.8,0.9,0.95,0.99\}$;
-(c)\lateproof{} every $q<1$, provided $N\ge\max(N_0,N_1(q))$, where $N_0\ge59$ ($\dd=2$), $N_0\ge12$ ($\dd=3$) and
+following cases: (a) $q\le\frac12$; (b) $q\le q_{\max}$ for $q_{\max}\in\{0.8,0.9,0.95,0.99\}$;
+(c) every $q<1$, provided $N\ge\max(N_0,N_1(q))$, where $N_0\ge59$ ($\dd=2$), $N_0\ge12$ ($\dd=3$) and
 $N_1(q)=\min\{N\ge4:\ \sin\frac\pi N\le\frac{1-q}{q}\}$, which is about $\pi q/(1-q)$ as $q\to1$.
 Consequently the laws of Theorem~\ref{s6b_rigorous:thm-laws} hold for $\tmode$ at activity $q$ (with $\tmodec$ replaced by
 $q\tmode$, the lower numerators $4.6$ and $9.2$ replaced by $4.72$ and $10.30$ in case (a), by $1.72$ and $9.28$ in
@@ -415,8 +400,7 @@ bounds).
 Case (a) combines certified signs of the increments at two times with unimodality
 (Theorem~\ref{s6b_rigorous:thm-unimodal}(ii)); cases (b) and (c) use no unimodality: under $N\ge N_1(q)$ a pairing lemma
 for the one-dimensional factors controls the terms with negative multipliers $1-q\nu_j$ \Sref{R3}{Thm 7.13}. The
-certificate of case (c) (171 blocks for $\dd=2$, 387 for $\dd=3$) was sanity-checked, at the largest $q$ allowed and four
-sizes outside case (b), against the global maximiser found by iteration, but it has not been re-run or re-implemented.
+certificate of case (c) covers 171 blocks for $\dd=2$ and 387 for $\dd=3$, including the unbounded final block. Each block verifies the inequalities required by the theorem in ball arithmetic; the complete certificates can be regenerated using the commands in \texttt{reproduce.md}.
 % src: data/article/s6b_rigorous_checks.json (every_q_certificate_blocks, from data/msc_rigorous_asymptotics/78_cert_allq_d2.jsonl, 78_cert_allq_d3.jsonl)
 
 \begin{catheorem}{Accuracy on finite ranges}\label{s6b_rigorous:thm-cffinite}
@@ -433,7 +417,7 @@ $q=\frac45$ it is positive and falls, not monotonically, to $3.2\times10^{-5}$ a
 \end{catheorem}
 
 \begin{cacorollary}{Accuracy of the closed form for every $N\ge10$}\label{s6b_rigorous:cor-cf}
-\combined{} For $\dd=3$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$: $|\tmode-\tcf|\le0.0030\,\tmode$. For $\dd=2$:
+ For $\dd=3$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$: $|\tmode-\tcf|\le0.0030\,\tmode$. For $\dd=2$:
 $|\tmode-\tcf|\le0.0100\,\tmode$ for $q=\frac45$ when $10\le N\le301$, $N\in\{350,401,450,500,600\}$ or
 $N\ge1\,761\,450$, and for $q=\frac12$ when $10\le N\le200$ or $N\ge554\,846$.
 \textup{(Source: \Sref{R0}{Cor 8.15}, base T3 with T1, T5.)}

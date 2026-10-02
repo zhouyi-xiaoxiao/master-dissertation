@@ -17,3 +17,12 @@ for f in main supplement; do
   grep -E 'Output written' "$f.log" | sed 's/.*(\([0-9]*\) pages.*/\1 pages/' | tr -d '\n'
   printf ', undefined references or citations: %s\n' "$(grep -cE "(Reference|Citation) \`[^']*' on page [0-9]* undefined" "$f.log" || true)"
 done
+
+# The distributed manuscript name must contain this build, not the previous release.
+cp main.pdf paper.pdf
+for f in main supplement; do
+  if grep -Eq "There were undefined references|LaTeX Warning: (Reference|Citation).*undefined" "$f.log"; then
+    printf '%s\n' "Unresolved references in $f.log" >&2
+    exit 1
+  fi
+done

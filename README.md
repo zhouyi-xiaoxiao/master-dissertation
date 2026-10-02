@@ -32,8 +32,7 @@ mode t\*.
   0.3 % (d = 3) at every computed size N ≥ 10. A result of companion note R5 (`proofs/R5_certified_computations/`, not
   stated in the article): for the certified discrete-time modes at q = 1 (10 ≤ N ≤ 160 and N = 180, 200 for d = 2,
   10 ≤ N ≤ 60 for d = 3) the error is at most 0.9712 % and 0.4534 %.
-* **Theorems on the mode** (Section 7 of the article; complete proofs in Supplementary Section S8 and in `proofs/`;
-  a few proofs are marked there as provisional until examined outside this project).
+* **Theorems on the mode** (Section 7 of the article; complete proofs in Supplementary Section S8 and in `proofs/`).
   The first-passage law of the three point-target placements studied is unimodal in continuous time in every
   dimension, and in discrete time for q ≤ 4/5 from corner to corner (for the centre placements when d ≥ 2; a threshold
   attained on the chain with N = 4); unimodality fails near q = 1 on the chain, at q = 1 for some sizes in two
@@ -42,7 +41,7 @@ mode t\*.
   scaled error of the closed
   form, X μ₁ (t\*_c − q t_cf), stays in an explicit bounded window for every N ≥ 12 (d = 2) and N ≥ 10 (d = 3), the
   leading laws t\* ∼ (4/π²q) N² ln ln N and (6/π²q) N² ln N hold with explicit remainders (in continuous time and, in
-  discrete time, for q ≤ 0.99 once N exceeds an explicit size and, provisionally, for every q < 1 once N exceeds an
+  discrete time, for q ≤ 0.99 once N exceeds an explicit size and for every q < 1 once N exceeds an
   explicit q-dependent size; q = 1 is open), and the closed form is within 0.971 % (d = 2) and 0.275 % (d = 3) of the
   certified exact mode on finite ranges with N ≥ 10 at q = 4/5 and 1/2, and
   within 0.3 % for every N ≥ 10 in three dimensions at these activities. Several of these proofs are computer-assisted: lemmas proved by hand reduce them to

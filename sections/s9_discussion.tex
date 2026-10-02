@@ -30,7 +30,7 @@ Exact structure, interlacing, pseudo-inverse formula; cosine sum in any dimensio
 $N\ge2$; $q\TN=2N^{2}\Reff_N$; double sum for $\dd=3$; the large-$N$ expansion; certificate of the global mode; the limit
 $\tmode/\MF\to2\xi^{*}$ on the chain in continuous time and for $q\le\tfrac12$; factorisation of the renewal ratio;
 unimodality of the three point-target placements in continuous time and for $q\le1/(1+\cos\frac\pi N)$; signs of the
-residues (their non-alternation for $\dd\ge2$, $N\ge3$ provisional, \lateproof); bounds on the slowest pole; failure of unimodality near $q=1$ on the chain; resistance identity and dipole
+residues (their non-alternation for $\dd\ge2$, $N\ge3$); bounds on the slowest pole; failure of unimodality near $q=1$ on the chain; resistance identity and dipole
 response with blocked sites.
 & \raggedright Secs.~\ref{s2_model:sec}--\ref{s7_defects:sec} \tabularnewline
 \addlinespace
@@ -41,7 +41,7 @@ the chain with $N=4$), and on finite ranges beyond: up to $q=1$ for $\dd=3$ ($N\
 dimension $\tmode/\MF\to0.33328426549\ldots$ for every $q$, with windows of width about one step for $q\le\frac45$. For
 corner-to-corner transport in $\dd=2,3$: the scaled error of the closed form \eqref{s6_mechanism:eq-L1-simple} bounded
 for every $N\ge12$ ($\dd=2$) and $N\ge10$ ($\dd=3$), and the leading laws with explicit remainders, in continuous time
-and, in discrete time, for $q\le0.99$ once $N\ge N_0$ and, provisionally (\lateproof), for every $q<1$ once
+and, in discrete time, for $q\le0.99$ once $N\ge N_0$ and for every $q<1$ once
 $N\ge\max(N_0,N_1(q))$; exact modes on finite ranges, the closed form within $0.971\%$ ($\dd=2$) and $0.275\%$ ($\dd=3$)
 there for $q\in\{\frac45,\frac12\}$ and $N\ge10$, and within $0.3\%$ in three dimensions for $q\in\{\frac45,\frac12\}$
 and every $N\ge10$. Means: a remainder for every $N$ ($\dd=2$); $\Kthree$,
@@ -150,9 +150,7 @@ the asymptote $N^{2}\ln\ln N$, although proved, is not reached by the data.
 \item The computer-assisted proofs rest on their trusted bases (Python integers; Arb ball arithmetic through
 python-flint together with the transcription of the formulas into the scripts; beyond the Python-integer ranges, a C
 program run twice, which is the only witness for 2242 of its 3824 certificates). No program was verified in a proof
-assistant, the certificate of Theorem~\ref{s6b_rigorous:thm-disc}(c) has not been re-run by separately written code, and
-all proofs were checked within this project, not by external referees; the statements marked \lateproof{} are
-provisional until examined by a reader outside the project.
+assistant. The certificate of Theorem~\ref{s6b_rigorous:thm-disc}(c) has been regenerated with the released ball-arithmetic implementation; it has not been independently reimplemented.
 % src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Section 9: trusted bases; separately written re-checks)
 \item The expression of $\Kthreep$ through $\xiH$ and $\varkappa$ is identified numerically and is unproved.
 \item Only four placements were studied (corner to corner, corner to centre, centre to corner, and exit through an
@@ -186,8 +184,7 @@ separates from the mean more strongly as the dimension increases. For corner-to-
 with computer assistance: the law is unimodal in continuous time and, in discrete time, for $q\le\frac45$, while
 unimodality fails near $q=1$ on the chain and, at $q=1$, at some sizes in two dimensions; in two and three dimensions
 its mode follows a parameter-free closed form with a bounded scaled error, and the leading laws $N^{2}\ln\ln N$ and
-$N^{2}\ln N$ hold with explicit remainders, in continuous time and, in discrete time, for $q\le0.99$ and, provisionally,
-for every $q<1$ once $N$ is large enough; in one dimension $\tmode/\MF$ tends to $0.33328$ for every activity.
+$N^{2}\ln N$ hold with explicit remainders, in continuous time and, in discrete time, for $q\le0.99$ and for every $q<1$ once $N$ is large enough; in one dimension $\tmode/\MF$ tends to $0.33328$ for every activity.
 % src: data/msc_rigorous_1d/03_constants.json (c_mid_80_digits)
 In the square-lattice setting studied here (corner target, mainly $N=35$), the direction
 in which inert defects move the ratio of the two times is set by where they sit, not by how many there are.

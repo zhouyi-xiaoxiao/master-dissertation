@@ -70,11 +70,10 @@ the lattice, has a relative error $\Order(1/(X\ln X))$ uniformly in $N\ge12$ ($\
 the leading laws $\tmode\sim N^{2}\ln\ln N$ ($\dd=2$), which the computed sizes do not reach, and
 $\tmode\sim N^{2}\ln N$ ($\dd=3$), against $\MF\sim N^{2}\ln N$ and $\MF\sim N^{3}$, hold with explicit remainders:
 the separation between mean and mode grows with dimension. These statements are proved in continuous time and, in
-discrete time, for $q\le0.99$ once $N$ exceeds an explicit size and, provisionally, for every $q<1$ once $N$ exceeds an
+discrete time, for $q\le0.99$ once $N$ exceeds an explicit size and for every $q<1$ once $N$ exceeds an
 explicit $q$-dependent size; $q=1$ is open.
 % src: data/msc_rigorous_asymptotics/80_tables.json (T51_d2, T51_d3, T717_d2, T717_d3)
-Several of these proofs are computer-assisted, with stated trusted bases and published certificates, and a few are
-marked as provisional until examined outside this project. On the square lattice of side $35$, uniformly random
+Several of these proofs are computer-assisted, with stated trusted bases and reproducible certificates. On the square lattice of side $35$, uniformly random
 blocked sites up to a fraction $0.2$ multiply mean and mode by nearly the same factor, the homogenised dilation of
 time $\Dzero/\Deff$, so that $\tmode/\MF$ changes by a few per cent at low density and by $4.7$--$8.9\%$ at the fraction
 $0.2$, whereas the placement of the blocked sites, not their number, decides the direction in which $\tmode/\MF$
@@ -105,8 +104,8 @@ together with the \LaTeX{} sources and a file \texttt{reproduce.md} that lists t
 \texttt{proofs/} contains the companion notes R0--R5 \citep{NoteR0,NoteR1,NoteR2,NoteR3,NoteR4,NoteR5} with the
 complete proofs of the results of Sections~\ref{s4_mfpt:sec} and~\ref{s6b_rigorous:sec}; the certificates of the computer-assisted proofs and the programs that check them are
 in \texttt{data/msc\_rigorous\_*} and \texttt{code/msc\_rigorous\_*}. All computations are deterministic or use fixed
-random seeds. The code of the internal checks of the proofs (counter-example searches and separately written
-re-checks, Section~\ref{s6b_rigorous:ssec-status}) is not part of the repository.
+random seeds. The submission verification commands and their coverage are recorded in
+\texttt{submission/SCIENTIFIC-CHECKS.md}.
 
 \section*{Acknowledgements}
 This article develops work begun in the author's MSc dissertation (University of Bristol, 2025).

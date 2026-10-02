@@ -5,6 +5,10 @@ checked. All checks were made within this project and on the same machine: they 
 code and by line-by-line reading, not peer review and not a replication by a third party. The article states every
 result with the status that survived these checks, never a stronger one.
 
+## Current submission verification
+
+The reproducible checks performed on 2 October 2026 are recorded in `submission/SCIENTIFIC-CHECKS.md`. In particular, the all-q certificate was regenerated rather than resumed: its 171 certified d = 2 blocks and 387 certified d = 3 blocks agree with the released data, excluding execution times. The earlier checks described below remain provenance records, not additional computations claimed for this submission run.
+
 ## 1. Every displayed formula is evaluated
 
 The scripts of `code/article/` evaluate every displayed formula of the article and of the Supplementary Material in
@@ -76,7 +80,7 @@ used only to find candidates, never to decide.
   after; six differ in the last digits of floating-point eigen-decompositions (four), in timing fields (one), or by
   added rows with the same verdicts (one).
 * **Final reading.** R0 was read once more in full. The proofs written after the two checks and the deductions that
-  combine two notes (marked ⋆ and ⋄ in Section 7 of the article) were read line by line and their numerical content
+  combine two notes (identified by provenance markers in companion note R0) were read line by line and their numerical content
   was re-checked with separately written code; so were the main certificates (exact modes and unimodality for small
   N, the closed-form windows against the certified modes, the constant c and the spectral constants) and three
   lemmas chosen at random (this code is not part of the repository either). No statement was found false and no
@@ -89,9 +93,7 @@ used only to find candidates, never to decide.
   to the stored ones), the tables of R3, the Python-integer checker of the exact modes for d = 2, N ≤ 60, d = 3,
   N ≤ 20 and d = 1, N ≤ 300 (59 of 59, 19 of 19 and 299 of 299 certificates), the constants of R1 and R2, and the
   audits of R5.
-* **What has not been checked.** The certificate of the discrete-time window for every q < 1 (Theorem 7.20(c) of
-  the article) was sanity-checked at four sizes against the global maximiser found by iteration, but not re-run or
-  re-implemented. For 2242 of the 3824 certificates of the C program, that program, run twice with identical
+* **What has not been checked.** The certificate of the discrete-time window for every q < 1 was regenerated in the current submission verification. Its implementation has not been independently re-implemented. For 2242 of the 3824 certificates of the C program, that program, run twice with identical
   checksums, is the only witness. No program has been verified in a proof assistant.
 
 ## 4. The published tree
