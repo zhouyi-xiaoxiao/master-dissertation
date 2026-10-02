@@ -1,0 +1,70 @@
+{
+ "a10": 1.0000000000000002,
+ "a20": 1.4535209105296745,
+ "a10_exact": 1.0,
+ "a20_exact": 1.4535209105296745,
+ "green_diff_2": 0.3633802276324186,
+ "one_minus_two_over_pi": 0.3633802276324186,
+ "finite": [
+  {
+   "R": 10,
+   "sites": 441,
+   "max_dev_phi0_from_linear": 8.881784197001252e-15,
+   "u": -1.5645499464410053,
+   "u_over_minus_half_pi": 0.9960234307609844,
+   "phi_at_e2": -2.0523292784165113e-15,
+   "power_reduction": 3.1290998928820386,
+   "power_reduction_over_pi": 0.9960234307609933,
+   "sum_removed_V0V": 3.1290998928820013,
+   "identity_abs_err": 3.730349362740526e-14
+  },
+  {
+   "R": 20,
+   "sites": 1681,
+   "max_dev_phi0_from_linear": 4.263256414560601e-14,
+   "u": -1.5692436377164984,
+   "u_over_minus_half_pi": 0.9990115274323526,
+   "phi_at_e2": -1.73088174870675e-15,
+   "power_reduction": 3.138487275432908,
+   "power_reduction_over_pi": 0.9990115274323242,
+   "sum_removed_V0V": 3.1384872754329796,
+   "identity_abs_err": 7.149836278586008e-14
+  },
+  {
+   "R": 40,
+   "sites": 6561,
+   "max_dev_phi0_from_linear": 1.9895196601282805e-13,
+   "u": -1.5704094180289048,
+   "u_over_minus_half_pi": 0.9997536862294673,
+   "phi_at_e2": 2.9852532573407807e-14,
+   "power_reduction": 3.140818836057406,
+   "power_reduction_over_pi": 0.9997536862293388,
+   "sum_removed_V0V": 3.1408188360578353,
+   "identity_abs_err": 4.2943426592501055e-13
+  },
+  {
+   "R": 80,
+   "sites": 25921,
+   "max_dev_phi0_from_linear": 1.0516032489249483e-12,
+   "u": -1.5706997680764139,
+   "u_over_minus_half_pi": 0.9999385288106194,
+   "phi_at_e2": -7.518050314295022e-14,
+   "power_reduction": 3.141399536150857,
+   "power_reduction_over_pi": 0.9999385288099921,
+   "sum_removed_V0V": 3.14139953615264,
+   "identity_abs_err": 1.7830181775480014e-12
+  },
+  {
+   "R": 160,
+   "sites": 103041,
+   "max_dev_phi0_from_linear": 1.0203393685515039e-11,
+   "u": -1.5707722088680485,
+   "u_over_minus_half_pi": 0.9999846460509,
+   "phi_at_e2": -4.671545835062884e-12,
+   "power_reduction": 3.1415444177400786,
+   "power_reduction_over_pi": 0.9999846460521674,
+   "sum_removed_V0V": 3.141544417726796,
+   "identity_abs_err": 1.3282708266615373e-11
+  }
+ ]
+}

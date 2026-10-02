@@ -1,0 +1,5 @@
+{
+ "spectral_vs_exact_max_abs_err": 3.478269416983917e-41,
+ "product_formula_max_abs_err": 1.4501757547604667e-40,
+ "mfpt_formula_ok": true
+}

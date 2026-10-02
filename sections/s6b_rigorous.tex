@@ -1,0 +1,474 @@
+% s6b_rigorous.tex -- Section 7: what is proved about the first-passage law and its mode (main text).
+% Sources: the companion notes R0-R5 (folder proofs/ of the repository).  Every number carries a comment
+%   % src: <path relative to the root of the repository>.  Consistency checks against the computations of Sections 3-6:
+%   code/article/s6b_rigorous_checks.py -> data/article/s6b_rigorous_checks.json.
+% Proofs: Supplementary Section S8 (appD_rigorous.tex) and the companion notes.
+\section{What is proved about the first-passage law and its mode}\label{s6b_rigorous:sec}
+
+Sections~\ref{s5_modes:sec} and~\ref{s6_mechanism:sec} rest on exact computation at the sizes run and on the formal
+argument of Section~\ref{s6_mechanism:ssec-two-pole}. This section states what is proved. Short proofs are in
+Supplementary Section~\ref{appD_rigorous:sec}; long proofs and the computer-assisted ones are in the companion notes.
+
+\subsection{Status of the statements, sources and checks}\label{s6b_rigorous:ssec-status}
+
+\paragraph{Companion notes.} The complete proofs are contained in six notes (R0--R5, 32 to 51 pages each) in the
+folder \texttt{proofs/} of the repository \citep{ZhouyiRepo}, cited as \Sref{R0}{\dots}, \dots, \Sref{R5}{\dots} with their own statement numbers:
+R0, a dependency-ordered account of all results with a table of their status, the certificates and their trusted bases
+\citep{NoteR0}; R1, the walk on the segment \citep{NoteR1}; R2, the spectral structure of the first-passage law
+\citep{NoteR2}; R3, the mode of the corner-to-corner law in two and three dimensions \citep{NoteR3}; R4, unimodality
+\citep{NoteR4}; R5, exact certified computations \citep{NoteR5}. The notes number sites from $1$ to
+$N$; their $\Lambda_1$, $\sigma_j$, $r_j$, $m(\vo)$, $\tau$, $C_3$, $C_3'$ are our $\muone$, $\nu_j$, $b_j/\nu_j$, $q\MF$,
+$\tau_{\mathrm u}$, $\Kthree$, $\Kthreep$, and R0 marks with $\dagger$ and $\ddagger$ the statements marked here with
+\lateproof{} and \combined{}.
+% src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Sections 2, 3: notation, dictionary and summary table)
+
+\paragraph{Status words.} \emph{Theorem}, \emph{Proposition}, \emph{Lemma} and \emph{Corollary} mean a complete proof.
+\emph{Theorem (computer-assisted)} means that the proof reduces the statement, by lemmas proved by hand, to finitely many
+inequalities that a program verifies in exact integer or rational arithmetic or in rigorous ball arithmetic. Three
+trusted bases occur (labelled as in \Sref{R0}{Section 9}; the bases T2 and T4 defined there do not enter the statements
+of this article): (T1) Python integers and fractions; (T3) ball arithmetic of the Arb library, through
+python-flint~0.9.0, together with the transcription of the formulas into the certification scripts; (T5) a C program of
+366 lines with unsigned 64- and 128-bit integer arithmetic whose output is turned into verdicts with Python integers.
+For 2242 of the 3824 certificates of the C program, all beyond the ranges covered with Python integers, that program,
+run twice with identical checksums, is the only witness.
+Every statement names its base; the certificates and the programs that check them are in the repository. No program
+has been verified in a proof assistant, and floating-point arithmetic is used only to find candidates, never to decide.
+\emph{Formal result} means a derivation by formal asymptotics, \emph{Numerical observation} a statement established by
+exact computation at the sizes stated only, and \emph{Refuted statement} a natural conjecture, suggested by the
+one-dimensional case or by numerical evidence, that is false.
+% src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Section 9: trusted bases T1-T5; certificate table; separately written re-checks: 2242 of 3824)
+
+\paragraph{How the proofs were checked.} Each companion note was examined, within this project and on the same machine,
+by a line-by-line reading of every proof and by a numerical search for counter-examples with separately written code
+that tests every statement with its explicit constants. A star \lateproof\ marks a
+statement whose proof, or the part named, was written after those two checks and was then read line by line, within the
+project; its status should be regarded as provisional until it has been examined by a reader outside the project. A
+diamond \combined\ marks a deduction that combines results of two notes, given in R0 and in Supplementary
+Section~\ref{appD_rigorous:sec}. All statements, marked or not, were then read once more, and their numerical content,
+the main certificates and three lemmas chosen at random were re-checked with separately written code, within the same
+project and on the same machine; no statement was found false and no status had to be lowered. These checks are not
+external peer review, and the re-computations are not an external replication; the code of these checks (the
+counter-example searches and the separately written re-checks) is not part of the repository, so that they cannot be
+re-run from it, whereas the certificates and the programs that check them are in the repository. The certificate of
+Theorem~\ref{s6b_rigorous:thm-disc}(c) has been sanity-checked but not re-run or re-implemented
+(\texttt{notes/VERIFICATION.md}).
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{The first-passage law: structure and signs}\label{s6b_rigorous:ssec-structure}
+
+Here the rates are indexed by all zeros of Proposition~\ref{s2_model:prop-interlacing}(i), $\nu_j:=\nu_{(j)}$, with
+$b_j=0$ when the pole is absent from the law started at $\vo$. We write $r_j:=b_j/\nu_j$ for the weights of the survival
+function, $\Sv(t)=\sum_jr_j(1-q\nu_j)^{t}$, so that $\sum_jr_j=1$, and $D=|\vo-\va|_1$ for the graph distance.
+
+\begin{theorem}[Signs of the residues]\label{s6b_rigorous:thm-signs}
+For every symmetric chain of Section~\ref{s2_model:sec} (any $N$, $\dd$, start and target):
+\begin{enumerate}
+\item[(a)] $\sum_jr_j\nu_j^{\,i}=0$ for $1\le i\le D-1$ and $(-1)^{D-1}\sum_jr_j\nu_j^{\,D}>0$; hence the sequence
+$(r_j)$ has at least $D-1$ changes of sign. For the chain started at its reflecting end, the number of rates is
+$D=N-1$ and the signs alternate, $\operatorname{sign}r_j=(-1)^j$.
+\item[(b)] From the uniform start the law is, apart from the atom $1/\nn$ at $t=0$, a mixture of exponential laws
+with positive weights (of geometric laws in discrete time, for $q\le\frac12$).
+\item[(c)] From the quasi-stationary distribution the first-passage time is exactly exponential with rate $\nu_0$
+(geometric in discrete time).
+\end{enumerate}
+\textup{(Source: \Sref{R2}{Thm 5.1, Props 5.4, 5.5}, \Sref{R4}{Thm 3.2}; (b) and (c) are classical for reversible
+chains \citep{AldousFill}.)}
+\end{theorem}
+
+\begin{theorem}[A single distant start is never a mixture]\label{s6b_rigorous:thm-notmixture}
+If $D\ge2$, there is no positive measure $m$ on $[0,\infty)$ with $\gd(t)=\int\eu^{-\sigma t}m(\dif\sigma)$ for all
+$t>0$, and none on $[0,1)$ with $\pmf(t)=\int\lambda^{t-1}m(\dif\lambda)$ for all $t\ge1$; in particular some residue
+$b_j$ is negative.
+\textup{(Source: \Sref{R4}{Thm 4.1(d)}.)}
+\end{theorem}
+
+\begin{theorem}[Signs of the corner-to-corner residues]\label{s6b_rigorous:thm-alternation}
+For the corner-to-corner pair:
+(a) if $\dd\ge2$, then $r_0>0>r_1$ for every $N\ge2$;
+(b)\lateproof{} if $\dd=1$ or $N=2$, the number of rates is $D=\dd(N-1)$ and $\operatorname{sign}r_j=(-1)^j$;
+(c)\lateproof{} if $\dd\ge2$ and $N\ge3$, the residues do not alternate in sign: there are three consecutive residues
+whose signs form a monotone sequence.
+\textup{(Source: \Sref{R2}{Cor 5.7, Prop 5.9, Thm 5.10}.)}
+\end{theorem}
+
+\begin{refuted}\label{s6b_rigorous:ref-alternation}
+``The residues of the corner-to-corner law alternate in sign in every dimension, as they do in one dimension.''
+False for every $\dd\ge2$ and $N\ge3$ by Theorem~\ref{s6b_rigorous:thm-alternation}(c). The smallest example is
+$\dd=2$, $N=3$, where the five residues have the signs $+,-,-,+,-$ (certified in ball arithmetic).
+\textup{(Source: \Sref{R2}{Section 5.2, Prop 14.1}.)}
+% src: data/msc_rigorous_spectral/13_certified_residue_signs.json
+\end{refuted}
+
+Descartes' rule bounds the number of zeros of $\gd'$ by the number of sign changes of the residues, which is at least
+$D-1$; for $\dd\ge2$ and $N\ge3$ it cannot prove unimodality, and the proofs below use log-concavity instead. Let
+$\tau_{\mathrm u}=q\,\E\FPT_{\mathrm u}$ be the unit-rate mean first-passage time from the uniform start
+(Proposition~\ref{s6_mechanism:prop-factorisation}) and $\bar X=\muone\tau_{\mathrm u}$.
+
+\begin{theorem}[The two slowest poles]\label{s6b_rigorous:thm-poles}
+\begin{enumerate}
+\item[(a)] For every target, $\tau_{\mathrm u}\le1/\nu_0\le\tau_{\mathrm u}+1/\mu_{(1)}$.
+\item[(b)] For the corner-to-corner pair, every $\dd\ge1$ and $N\ge2$ with $(\dd,N)\ne(1,2)$: $r_0>1$ and
+$\nu_0\,q\MF>1$.
+\item[(c)] For the corner-to-corner pair in $\dd=2,3$, as $N\to\infty$,
+\begin{gather*}
+\nu_0\,q\MF=1+\frac{\mu_\infty}{\bar X}+o(\bar X^{-1}),\qquad
+r_0=1+\frac{\mu_\infty}{\bar X}+o(\bar X^{-1}),\\
+\frac{\nu_1-\nu_0}{\muone}=1+\frac{2\dd-1}{\bar X}+\Order(\bar X^{-2}),\qquad \frac{b_1}{b_0}\to-2\dd ,
+\end{gather*}
+where $\mu_\infty:=\lim_{N\to\infty}(X-\bar X)$, a limit that exists, with $\mu_\infty=\pi\ln2$ for $\dd=2$ and
+$\mu_\infty=\frac{\pi^{2}}{6}c_{m\tau3}=2.51935\ldots$ for $\dd=3$ ($c_{m\tau3}$ of Theorem~\ref{s4_mfpt:thm-3d}; this
+value agrees numerically with $\varkappa$ of Observation~\ref{s4_mfpt:obs-3d}); moreover $\nu_1/\muone=1+\delta$ with
+$W/\delta=\bar X-(2\dd+1-Z_\dd')+o(1)$, where $Z_\dd'=\sum_{\vk\in\mathbb Z^{\dd},\,|\vk|^{2}\ge2}\bigl(|\vk|^{2}(|\vk|^{2}-1)\bigr)^{-1}$
+(Euclidean norm), $Z_2'=3.2259\ldots$ and $Z_3'=14.7022\ldots$.
+\end{enumerate}
+\textup{(Source: \Sref{R2}{Thms 6.2, 7.9, 11.3, Lemma 7.6}.)}
+\end{theorem}
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/msc_rigorous_spectral/14_certified_epstein.json; data/msc_rigorous_spectral/16_certified_d3_remainder.json (pi^2 c_mtau3/6)
+
+Part (c) contains the relations \eqref{s6_mechanism:eq-poles} of the formal argument; they do not by themselves locate
+the mode \Sref{R2}{Section 14, item (G1)}, and Section~\ref{s6b_rigorous:ssec-cf} proves the mode laws by a different
+route. All poles beyond the second are controlled as well: for $\dd\ge2$, $\bar X>1$ and $t\ge1/\muone$, the unit-rate
+density differs from its two slowest exponential terms by at most an explicit constant times $\bar X^{-1}\muone\eu^{-2\muone t}$
+\Sref{R2}{Thm 12.1, Cor 12.2} (Supplementary Section~\ref{appD_rigorous:ssec-remarks}). Near the mode, where
+$\eu^{-\muone t}$ is of order $1/\bar X$, this is a relative error $\Order(\bar X^{-2})$; at $t=1/\muone$ it is of the
+same order as the two slowest terms themselves, so that the bound is not a small relative error on the whole range
+$t\ge1/\muone$.
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{Unimodality}\label{s6b_rigorous:ssec-unimodal}
+
+A PMF $\pmf$ is \emph{unimodal} if for some $t_0$ it is non-decreasing for $t\le t_0$ and non-increasing for $t\ge t_0$
+(ties are allowed), and \emph{strictly unimodal} if, after its initial zeros, it is strictly increasing up to $t_0$ and
+strictly decreasing after $t_0$, so that its maximiser is unique \Sref{R5}{Def 3}; a continuous-time density is
+unimodal with a unique mode if $\gd'$ changes sign exactly once, from positive to negative. For example, at $\dd=1$,
+$N=4$, $q=\frac45$ the PMF satisfies $0=\pmf(2)<\pmf(3)=\pmf(4)<\pmf(5)$: it is unimodal but not strictly unimodal.
+Let $q_N^{\square}:=1/(1+\cos\frac\pi N)$; it exceeds $\frac12$, equals $1$ for $N=2$ and decreases to $\frac12$.
+For $q\le q_N^{\square}$ all eigenvalues of $\Pm$ are non-negative.
+
+\begin{theorem}[The three point-target placements]\label{s6b_rigorous:thm-unimodal}
+Let $\dd\ge1$, $N\ge2$, and let the pair be corner to corner, corner to centre or centre to corner (the last two for
+odd $N$), or the image of one of these under a symmetry of the lattice.
+\begin{enumerate}
+\item[(i)] For every rate the continuous-time density is unimodal with a unique mode. For the corner-to-corner pair
+with $(\dd,N)\ne(1,2)$, $\gd'$ has exactly one zero in $(0,\infty)$; it is positive before and negative after it
+(\lateproof{} for $\dd=1$ and for $N=2$).
+\item[(ii)] For every $q\in(0,q_N^{\square}]$ the PMF is unimodal.
+\end{enumerate}
+\textup{(Source: \Sref{R4}{Thm 4.12}, \Sref{R3}{Thm 1.11}; for $\dd=1$ the unimodality of (i) is classical
+\citep{Keilson1971}.)}
+\end{theorem}
+
+The proof (Supplementary Section~\ref{appD_rigorous:sec}) is by hand. It writes the law as the arrival time of
+Proposition~\ref{s6_mechanism:prop-factorisation} smoothed by the escape kernel, uses that the one-dimensional factors
+of the arrival time are birth-and-death passage times with log-concave laws, and that log-concavity survives the
+(binomial) convolutions that build the lattice from its coordinates.
+
+\begin{catheorem}{The value $q=\frac45$}\label{s6b_rigorous:thm-45}
+Let $q\in(0,\frac45]$. The corner-to-corner PMF is unimodal for every $N\ge2$ and $\dd\ge1$, and the corner-to-centre
+and centre-to-corner PMFs are unimodal for every odd $N\ge3$ and $\dd\ge2$. The value $\frac45$ is sharp
+(Proposition~\ref{s6b_rigorous:prop-1dfail}), and $\dd\ge2$ cannot be dropped for the centre geometries: in
+$\dd=1$ the centre-to-corner PMF at $q=\frac45$ is unimodal if and only if $N\notin\{5,7,9,11\}$.
+\textup{(Source: \Sref{R4}{Props 9.1, 9.12, Thm 9.13}, base T3 with T1 cross-checks.)}
+% src: data/msc_rigorous_unimodality/summary_lc1d.json; data/msc_rigorous_unimodality/cert_family_F1.jsonl; data/msc_rigorous_unimodality/cert_family_F2.jsonl; data/msc_rigorous_unimodality/cert_blocks.jsonl; data/msc_rigorous_unimodality/cert_thr1d_m2c.json
+\end{catheorem}
+
+The proof shows that the increments of the one-dimensional free propagator are log-concave for every $q\le\frac45$ and
+every $N\ge9$ (centre geometries: every odd $N\ge25$): beyond an explicit time by hand, below it in ball arithmetic for
+$N\le1001$ and, for $N\ge992$, through Taylor models with Cauchy remainder bounds on 26 parameter boxes; a
+binomial-convolution identity carries this to every dimension, and exact cone certificates cover the finitely many
+smaller lattices \Sref{R4}{Section 9}.
+
+\begin{proposition}[Failure near $q=1$ on the chain]\label{s6b_rigorous:prop-1dfail}
+Let $\dd=1$, start $0$, target $N-1$, $N\ge4$. Then $\pmf(N+1)>\pmf(N)$ for every $q\in(0,1]$, and $\pmf(N)<\pmf(N-1)$
+if and only if $q>\frac{2N-4}{2N-3}$; for such $q$ the PMF is not unimodal, in particular at $q=1$. For $N\in\{2,3\}$
+it is unimodal for every $q$, and for $N=4$ if and only if $q\le\frac45$.
+\textup{(Source: \Sref{R1}{Prop 3.9}, \Sref{R4}{Prop 4.4}, \Sref{R5}{Prop 32}.)}
+\end{proposition}
+
+\begin{catheorem}{Finite ranges and $q=1$}\label{s6b_rigorous:thm-finite}
+For the corner-to-corner pair:
+(a) for $\dd=2$, $2\le N\le64$ and every $q\le\frac{499}{500}$ the PMF is unimodal;
+(b) for $\dd=3$, $2\le N\le30$, $\dd=4$, $N\le8$, and $\dd=5$, $N\le5$, it is unimodal for every $q\in(0,1]$, and for
+$\dd=3$, $q=1$, $2\le N\le60$ it is strictly unimodal;
+(c) for $\dd=2$, $q=1$, $2\le N\le160$ and $N\in\{180,200\}$, it has two strict local maxima exactly for
+$N\in\{9,11,13,15,17,18,21,24,26,38,51,61,86,92,136,149\}$ (for $N\le64$: one dip of one step next to the
+maximum) and is strictly unimodal otherwise, except $\pmf(2)=\pmf(3)$ at $N=2$.
+\textup{(Source: \Sref{R4}{Thm 7.1}, \Sref{R5}{Thms 13, 40}, bases T1 and T5.)}
+\end{catheorem}
+% src: data/msc_rigorous_unimodality/summary_certificates.json; data/msc_rigorous_certified/c128_d2_q1-1.jsonl; data/msc_rigorous_certified/SUMMARY_EXT.json
+
+\begin{catheorem}{Bimodal pairs}\label{s6b_rigorous:thm-pairs}
+(a) $\dd=3$, $N=3$, start $(2,1,1)$, target $(0,1,1)$ (centres of opposite faces): the unit-rate density satisfies
+$\gd(\tfrac{21}{10})>\gd(3)<\gd(13)$, and at $q=\frac12$, $\pmf(2)=\frac1{144}>\pmf(6)=\frac{6577}{995328}<\pmf(25)$.
+(b) $\dd=2$, $N=8$, start $(5,5)$, target $(2,3)$: $\gd(\tfrac{21}2)>\gd(\tfrac{49}2)<\gd(\tfrac{59}2)$, and at
+$q=\frac12$, $\pmf(19)>\pmf(46)<\pmf(63)$. In both cases neither the density at any rate nor the PMF at any $q$ is
+unimodal.
+\textup{(Source: \Sref{R4}{Thm 8.1}, base T1.)}
+% src: data/msc_rigorous_unimodality/continuous_counterexamples.json; data/msc_rigorous_unimodality/exact_examples.json
+\end{catheorem}
+
+\begin{refuted}\label{s6b_rigorous:ref-unimodal}
+``The point-target first-passage law is always unimodal.'' False in discrete time near $q=1$
+(Proposition~\ref{s6b_rigorous:prop-1dfail}, Theorem~\ref{s6b_rigorous:thm-finite}(c)), for starts away from the
+reflecting end of the chain when $q$ is large \Sref{R1}{Prop 8.8}\lateproof, and for other pairs in two and three dimensions
+even in continuous time (Theorem~\ref{s6b_rigorous:thm-pairs}).
+\textup{(Source: \Sref{R4}{Section 8}, \Sref{R5}{Section 9}.)}
+\end{refuted}
+
+\begin{conjecture}\label{s6b_rigorous:conj-unimodal}
+(a) For the corner-to-corner pair with $\dd\ge2$, the law is log-concave in continuous time and, for $q\le\frac12$, in
+discrete time. (b) For $\dd\ge3$ the corner-to-corner PMF is unimodal for every $q\le1$ and every $N$. (c) For
+$\dd=2$ the largest $q$ up to which the corner-to-corner PMF is unimodal for every $N$ is the threshold of $N=9$,
+which lies in $[0.9986,0.9987)$ (certified).
+\textup{(Source: \Sref{R4}{Conjs 10.1, 10.2}.)}
+% src: data/msc_rigorous_unimodality/summary_certificates.json
+\end{conjecture}
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{One dimension}\label{s6b_rigorous:ssec-1d}
+
+On the chain, start $0$, target $N-1$, $\ell=N-\frac12$ and $\MF=N(N-1)/q$. The constant $2\xi^{*}=0.3332842655$ of
+\eqref{s5_modes:eq-1d-ratio} is written $c$ here: it is the maximiser of the limit density $\Phi(u/2)/2$ in the time unit
+$\ell^{2}$.
+
+\begin{catheorem}{The mode on the chain}\label{s6b_rigorous:thm-1d}
+\begin{enumerate}
+\item[(a)] the constant is
+\[
+c=0.33328\,42654\,94947\,89874\,85269\,16543\,44242\,10970\,36559\,07113\ldots ,
+\]
+with every digit shown certified (the enclosure has radius $10^{-70}$); with $G(u)=\frac12\Phi(\frac u2)$ the limit
+density in the time unit $\ell^{2}$, two further constants are
+\begin{gather*}
+\alpha:=\frac34+\frac c6\,\frac{G'''(c)}{G''(c)}=0.08627\,37793\,78239\,01718\,17\ldots,\\
+\beta:=-\frac c2\,\frac{G'''(c)}{G''(c)}=1.99117\,86618\,65282\,94845\,46\ldots;
+\end{gather*}
+\item[(b)] in continuous time, for every $N\ge3$, the unit-rate mode satisfies
+$\bigl|\tmodec/\ell^{2}-c+\alpha\,\ell^{-2}\bigr|<1.78\,\ell^{-4}$;
+\item[(c)] in discrete time with $q\le\frac45$ and $N\ge3$ (also $q\le\frac{17}{20}$ with $N\ge7$, and $q\le\frac9{10}$
+with $N\ge10$) the PMF is unimodal and every mode satisfies
+\[
+\tau_\ell-E<\tmode<\tau_\ell+1+E,\qquad \tau_\ell=\frac{c\,\ell^{2}-\alpha}{q}+1-\beta,\qquad E=\frac{1.78}{q\,\ell^{2}}
+\]
+($E=1.68/(q\ell^{2})$ for $N\ge41$ and $q\le\frac45$); if $\operatorname{dist}(\tau_\ell,\mathbb Z)\ge E$ the mode is
+unique and equals $\lceil\tau_\ell\rceil$;
+\item[(d)] for every fixed $q\in(0,1]$, $\tmode/\MF\to c$ as $N\to\infty$; the error is $\Order(N^{-2})$ for $q<1$,
+whereas for $q=1$ the mode has the parity of $N-1$ and $\ell\,(c-\tmode/\ell^{2})\to b=0.33250858299642786\ldots$,
+so that the convergence is only of order $N^{-1}$.
+\end{enumerate}
+\textup{(Source: \Sref{R1}{Thms 4.6, 5.7, 6.1, 6.3, 7.4, 7.7, Cors 5.8, 6.4, 7.8}, \Sref{R5}{Thm 23}, base T3 (with T1 for $q=1$);
+$\alpha$ and $\beta$ are the constants $\kappa$ and $\rho$ of \Sref{R1}{Thm 4.6}.)}
+% src: data/msc_rigorous_1d/03_constants.json; data/msc_rigorous_1d/12_cont_theorem.json; data/msc_rigorous_1d/13_cont_small_N.json; data/msc_rigorous_1d/35_disc_uniformK.json; data/msc_rigorous_1d/15_disc_small_N.jsonl; data/msc_rigorous_1d/16_q1_theorem.json; data/msc_rigorous_1d/18_global_N0_601_q999_1000.json
+\end{catheorem}
+
+The windows rest on an expansion of the lattice density and of its increments with remainders enclosed in ball
+arithmetic uniformly in $\ell\ge\ell_0$, on 2400 intervals of $q$ in (c), and on a check of every smaller $N$; part (d)
+for $\frac45<q<1$ uses global bounds without unimodality \Sref{R1}{Sections 5--7}; the existence and the closed form of
+the next coefficient of (b) carry the mark \lateproof. The theorem extends Proposition~\ref{s5_modes:prop-1d-limit}(c)
+to every $q$ and decides the value of the mode: for $q=0.8$ the offset in (c) is $\alpha/q-1+\beta=1.09902\ldots$. For
+the 33 runs of the chain at $q=0.8$ and the sizes $N=10\,240$, $10^{5}$ and $10^{6}$, every computed mode lies in the
+window of (c); in 34 of the 36 cases $\operatorname{dist}(\tau_\ell,\mathbb Z)\ge E$, and there $\lceil\tau_\ell\rceil$ is the
+computed mode.
+% src: data/article/s6b_rigorous_checks.json (one_dimension_q4-5_window: offset_kappa_over_q_minus_1_plus_rho, n_cases, n_in_window, n_window_determines_mode, n_agree_where_determined)
+
+\begin{refuted}[The closed form in one dimension]\label{s6b_rigorous:ref-cf1d}
+``$\tmode\approx\MF\ln(2\dd X)/(X+2\dd-1)$ in every dimension.'' False for $\dd=1$: there $X\to\pi^{2}/2$, so the
+closed form gives $\tmode/\MF\to\ln(\pi^{2})/(1+\pi^{2}/2)=0.385768\ldots$ instead of $c$, an overestimate by a
+factor tending to $1.15747\ldots$. On finite ranges (computer-assisted, base T1 with T3):
+$0.1577\,\tmode\le\MF\ln(2X)/(X+1)-\tmode\le0.2251\,\tmode$ for $q=\frac45$, $10\le N\le1500$ and $N=2000$, and the
+same with $0.1579$ and $0.2282$ for $q=\frac12$, $10\le N\le1000$.
+\textup{(Source: \Sref{R1}{Rem 7.9}, \Sref{R5}{Thms 21, 43}.)}
+% src: data/msc_rigorous_1d/39_hand_constants.json; data/msc_rigorous_certified/closedform_summary_c128.json (d1_q4-5, d1_q1-2: eps[10,...])
+\end{refuted}
+
+\begin{catheorem}{Certified modes}\label{s6b_rigorous:thm-certified}
+For the corner-to-corner pair the PMF is strictly unimodal with a certified integer mode in each of the following
+cases, apart from three exact ties in one dimension: $\dd=1$: $q=\frac45$, $2\le N\le1500$ and $N=2000$; $q=\frac12$,
+$2\le N\le1000$; $\dd=2$: $q=\frac45$, $2\le N\le301$ and $N\in\{350,401,450,500,600\}$; $q=\frac12$, $2\le N\le200$;
+$\dd=3$: $q=\frac45$, $2\le N\le120$ and $N\in\{130,140,150,160\}$; $q=\frac12$, $2\le N\le80$.
+The ties are $(q,N)=(\frac45,4)$, where $\pmf(3)=\pmf(4)<\pmf(5)$ and the mode is $5$, $(\frac12,3)$, with maxima at
+$t=3,4$, and $(\frac12,4)$, with maxima at $t=7,8$. For example $\tmode=872\,259$ for $\dd=2$, $N=600$ and
+$\tmode=170\,871$ for $\dd=3$, $N=160$, both at $q=\frac45$.
+\textup{(Source: \Sref{R5}{Thms 12, 13, 30, 39, 40, 45, Cors 18, 42}, bases T1 and T5.)}
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_certified/c128_d2_q4-5.jsonl; data/msc_rigorous_certified/c128_d3_q4-5.jsonl
+\end{catheorem}
+
+Each certificate steps the walk exactly up to a time beyond which every occupation probability decreases, which forces
+the PMF to decrease (Lemma~\ref{appD_rigorous:lem-tail}). Every corner-to-corner discrete-time mode of
+Sections~\ref{s3_methods:sec}--\ref{s6_mechanism:sec} at $q\in\{0.5,0.8,1\}$ lies in a certified range: the 81 modes at
+$q=0.8$ and the eight at $q=0.5$ (this theorem), and the eight at $q=1$ (Theorem~\ref{s6b_rigorous:thm-finite} for
+$\dd=2,3$; for the chain, where the PMF at $q=1$ is not unimodal, \Sref{R5}{Thms 13, 40} certify the global maximiser
+for $N\le400$); all 97 agree with the certified modes. The 16 corner-to-corner runs at $q=0.3$ and $0.9$ (two of which
+are quoted in Section~\ref{s6_mechanism:ssec-geometries}) lie in no certified range; they rest on the a-priori
+round-off bound of Section~\ref{s3_methods:sec}.
+% src: data/article/s6b_rigorous_checks.json (certified_modes: n_compared, n_agree, by_case)
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{Two and three dimensions: the closed form}\label{s6b_rigorous:ssec-cf}
+
+Throughout this subsection the pair is corner to corner and $\dd\in\{2,3\}$. Let
+\[
+\tcf:=\MF\,\frac{\ln(2\dd X)}{X+2\dd-1},\qquad X=\muone\,q\MF ,
+\]
+which is the closed form \eqref{s6_mechanism:eq-L1-simple}. At activity $q$ the natural time variable is $q\muone t$.
+
+\begin{proposition}[Arrival and capture]\label{s6b_rigorous:prop-decomposition}
+The function $u$ of \eqref{s6_mechanism:eq-u} is the distribution function of a random time $U$: the largest of $\dd$
+independent sums of $N-1$ independent exponential variables with rates $\varepsilon_1,\dots,\varepsilon_{N-1}$. Hence, at
+unit rate, $\FPT\overset{d}{=}U+\FPT_{\mathrm u}$ with $U$ and $\FPT_{\mathrm u}$ independent, and $X=\bar X+\muone\E U$. The
+densities of $U$ and of its one-dimensional factors are log-concave.
+\textup{(Source: \Sref{R3}{Lemmas 1.2--1.4, 1.7, Prop 1.5}.)}
+\end{proposition}
+
+\begin{theorem}[An exact identity and the window principle]\label{s6b_rigorous:thm-window}
+For $N\ge3$ ($N\ge4$ if $\dd=3$), $\gd'$ is the sum of a two-exponential term built from the two slowest poles and of
+three correction terms, each with a definite sign and explicit two-sided exponential bounds in terms of the pole data.
+Hence there are explicit functions $\Upsilon_-\le\gd'\le\Upsilon_+$, and by Theorem~\ref{s6b_rigorous:thm-unimodal}(i)
+$\Upsilon_-(t)>0$ implies $t<\tmodec$ and $\Upsilon_+(t)<0$ implies $t>\tmodec$.
+\textup{(Source: \Sref{R3}{Prop 2.1, Lemma 2.2, Thm 2.3}.)}
+\end{theorem}
+
+This is the rigorous form of the two-pole argument of Section~\ref{s6_mechanism:ssec-two-pole}. The pole data are
+bounded by explicit functions of $1/\bar X$ and of one lattice sum, and the lattice sums, $X$ and $\E U$ by explicit
+functions of $N$ for $N\ge10$ (for example $2\pi\ln N-0.24\le X\le2\pi\ln N+0.60$ for $\dd=2$; base T3)
+\Sref{R3}{Lemmas 3.1--3.5, Props 4.5, 4.6, Cor 4.7}. Inserting these bounds at $\muone\tmodec=q\muone\tcf\pm c_\pm/X$ turns
+the sign conditions into finitely many inequalities on parameter blocks: 220 blocks for $\dd=2$ and 389 for $\dd=3$,
+single sizes for small $N$, geometric blocks up to $N=10^{60}$ and $10^{9}$, and one unbounded block each.
+% src: data/msc_rigorous_asymptotics/50_cert_constants.json; data/msc_rigorous_asymptotics/80_tables.json (T51_d2, T51_d3: blocks)
+
+\begin{catheorem}{The closed form in continuous time}\label{s6b_rigorous:thm-cfcont}
+For every $N\ge N_0$,
+\[
+-K^{-}_{\dd}(N_0)\;<\;X\muone\bigl(\tmodec-q\tcf\bigr)\;<\;K^{+}_{\dd}(N_0),
+\]
+with the constants of Table~\ref{s6b_rigorous:tab-windows}. Consequently
+$|\tmodec-q\tcf|/(q\tcf)\le K_{\dd}\,(1+\frac{2\dd-1}{X})/(X\ln(2\dd X))$ with $K_{\dd}=\max(K^{-}_{\dd},K^{+}_{\dd})$: the
+relative error of the closed form is $\Order\bigl(1/(\ln N\ln\ln N)\bigr)$ for $\dd=2$ and $\Order\bigl(1/(N\ln N)\bigr)$
+for $\dd=3$.
+\textup{(Source: \Sref{R3}{Thm 5.1}, base T3.)}
+\end{catheorem}
+
+\begin{table}[tbp]
+\centering
+\caption{Constants of the windows of Theorems~\ref{s6b_rigorous:thm-cfcont} and~\ref{s6b_rigorous:thm-disc}: for
+every $N\ge N_0$, $-K^{-}<X\cdot q\muone(\tmode-\tcf)$ and $X\cdot q\muone(\tmode-\tcf-2)<K^{+}$ in discrete time
+(without the $-2$ in continuous time, with $\tmode$ replaced by $\tmodec/q$). A negative $K^{-}$ means that the mode
+lies above the closed form. Selected rows; the full tables are in \Sref{R3}{Thms 5.1, 7.8, 7.14, 7.17}.}
+\label{s6b_rigorous:tab-windows}
+% src: data/msc_rigorous_asymptotics/80_tables.json (T51_d2, T51_d3, T78_d2, T78_d3, T714_q0p8_d2, T714_q0p8_d3, T717_d2, T717_d3)
+\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+case & $\dd$ & \multicolumn{4}{c}{$(N_0;\ K^{-},\ K^{+})$}\\
+\midrule
+continuous time & 2 & $(12;\ 7.653,\ 10.280)$ & $(50;\ 2.058,\ 5.449)$ & $(1000;\ -0.116,\ 4.641)$ & $(10^{6};\ -1.382,\ 4.641)$\\
+ & 3 & $(10;\ 3.120,\ 7.120)$ & $(50;\ 1.160,\ 2.149)$ & $(1000;\ 0.862,\ 1.465)$ & $(10^{6};\ 0.828,\ 1.427)$\\
+$q\le\frac12$ & 2 & $(12;\ 8.546,\ 10.392)$ & $(50;\ 2.099,\ 5.462)$ & $(1000;\ -0.116,\ 4.641)$ & \\
+ & 3 & $(10;\ 5.293,\ 7.513)$ & $(30;\ 1.962,\ 2.829)$ & $(1000;\ 0.898,\ 1.465)$ & \\
+$q\le0.8$ & 2 & $(37;\ 2.850,\ 6.613)$ & $(100;\ 1.448,\ 5.560)$ & $(1000;\ -0.016,\ 5.135)$ & \\
+ & 3 & $(13;\ 5.189,\ 6.634)$ & $(50;\ 1.851,\ 2.973)$ & $(1000;\ 1.021,\ 2.141)$ & \\
+every $q<1$ & 2 & $(59;\ 2.082,\ 6.061)$ & $(100;\ 1.508,\ 5.594)$ & $(1000;\ -0.009,\ 5.135)$ & \\
+ & 3 & $(12;\ 6.379,\ 7.183)$ & $(100;\ 1.675,\ 2.495)$ & $(1000;\ 1.036,\ 2.142)$ & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{catheorem}{The leading laws}\label{s6b_rigorous:thm-laws}
+For every $N\ge20$ the unit-rate mode satisfies
+\[
+\dd=2:\quad \tmodec=\frac{4N^{2}}{\pi^{2}}\bigl[\ln\ln N+\ln(8\pi)+\Delta_N\bigr](1+\epsilon_N),\qquad
+-\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\le \Delta_N<0,
+\]
+\[
+\dd=3:\quad \tmodec=\frac{6N^{2}}{\pi^{2}}\bigl[\ln N+\ln(\pi^{2}\Kthree)+\Delta_N\bigr](1+\epsilon_N),\qquad
+-\frac{9.2+5\ln(\pi^{2}\Kthree N)}{\frac{\pi^{2}}{6}\Kthree N-7.63}\le \Delta_N<0,
+\]
+with $0\le\epsilon_N\le0.83/N^{2}$ and $\ln(\pi^{2}\Kthree)\in[3.752820,3.752823]$. In particular
+$\frac{4}{\pi^{2}}N^{2}(\ln\ln N+2.27)\le\tmodec\le\frac{4}{\pi^{2}}N^{2}(\ln\ln N+3.2242)(1+\frac{0.83}{N^{2}})$ for
+$\dd=2$ and $\frac{6}{\pi^{2}}N^{2}(\ln N+3.43)\le\tmodec\le\frac{6}{\pi^{2}}N^{2}(\ln N+3.7529)(1+\frac{0.83}{N^{2}})$
+for $\dd=3$, and $\tmodec/q\MF\to0$ like $\ln\ln N/(2\pi\ln N)$ and $6\ln N/(\pi^{2}\Kthree N)$.
+\textup{(Source: \Sref{R3}{Thms 6.1--6.3, Cor 6.4}, base T3.)}
+\end{catheorem}
+% src: data/msc_rigorous_asymptotics/50_cert_constants.json (ln(6 c_3)); data/msc_rigorous_asymptotics/80_tables.json; data/article/s6b_rigorous_checks.json (two_sided_law_constants: 2.27, 3.2242, 3.43, 3.7529 re-derived)
+
+These are the laws \eqref{s6_mechanism:eq-asym-2d} and \eqref{s6_mechanism:eq-asym-3d} with proved remainders. In two
+dimensions the remainder $\Delta_N$ decays like $\ln\ln N/\ln N$, which is why the computed sizes do not display the leading
+law.
+
+\begin{catheorem}{Discrete time}\label{s6b_rigorous:thm-disc}
+Every maximiser of the PMF satisfies
+\[
+\tcf-\frac{K^{-}}{X\,q\muone}<\tmode<\tcf+\frac{K^{+}}{X\,q\muone}+2\qquad(N\ge N_0),
+\]
+with constants that do not depend on $q$ (selected values in Table~\ref{s6b_rigorous:tab-windows}), in each of the
+following cases: (a)\combined{} $q\le\frac12$; (b) $q\le q_{\max}$ for $q_{\max}\in\{0.8,0.9,0.95,0.99\}$;
+(c)\lateproof{} every $q<1$, provided $N\ge\max(N_0,N_1(q))$, where $N_0\ge59$ ($\dd=2$), $N_0\ge12$ ($\dd=3$) and
+$N_1(q)=\min\{N\ge4:\ \sin\frac\pi N\le\frac{1-q}{q}\}$, which is about $\pi q/(1-q)$ as $q\to1$.
+Consequently the laws of Theorem~\ref{s6b_rigorous:thm-laws} hold for $\tmode$ at activity $q$ (with $\tmodec$ replaced by
+$q\tmode$, the lower numerators $4.6$ and $9.2$ replaced by $4.72$ and $10.30$ in case (a), by $1.72$ and $9.28$ in
+case (b) for $N\ge100$ ($N\ge312$ if $q>0.95$), and by $2.33$ and $14.01$ in case (c), and with $2$ added to the upper
+bounds).
+\textup{(Source: \Sref{R3}{Thms 7.7--7.9, 7.14, 7.15, 7.17, Cor 7.18}, base T3.)}
+% src: data/msc_rigorous_asymptotics/80_tables.json (T78_*, T714_*, T717_*); data/msc_rigorous_asymptotics/72_cert_discrete_d2.jsonl; proofs/R3_mode_two_three_dimensions/R3_mode_two_three_dimensions.tex (Thms 7.9, 7.15, 7.17, Cor 7.18: lower numerators 4.72, 10.30; 1.72, 9.28 for N >= 100, N >= 312 if q > 0.95; 2.33, 14.01); data/msc_rigorous_asymptotics/76_cert_q0p8_d2.jsonl; data/msc_rigorous_asymptotics/78_cert_allq_d2.jsonl
+\end{catheorem}
+
+Case (a) combines certified signs of the increments at two times with unimodality
+(Theorem~\ref{s6b_rigorous:thm-unimodal}(ii)); cases (b) and (c) use no unimodality: under $N\ge N_1(q)$ a pairing lemma
+for the one-dimensional factors controls the terms with negative multipliers $1-q\nu_j$ \Sref{R3}{Thm 7.13}. The
+certificate of case (c) (171 blocks for $\dd=2$, 387 for $\dd=3$) was sanity-checked, at the largest $q$ allowed and four
+sizes outside case (b), against the global maximiser found by iteration, but it has not been re-run or re-implemented.
+% src: data/article/s6b_rigorous_checks.json (every_q_certificate_blocks, from data/msc_rigorous_asymptotics/78_cert_allq_d2.jsonl, 78_cert_allq_d3.jsonl)
+
+\begin{catheorem}{Accuracy on finite ranges}\label{s6b_rigorous:thm-cffinite}
+With the certified modes of Theorem~\ref{s6b_rigorous:thm-certified} and rational enclosures of $\MF$
+(Lemma~\ref{appD_rigorous:lem-encl}):
+(a) $\dd=2$: $|\tmode-\tcf|\le0.00970\,\tmode$ for $q=\frac45$, $10\le N\le301$ and $N\in\{350,401,450,500,600\}$
+(largest at $N=137$); $|\tmode-\tcf|\le0.00971\,\tmode$ for $q=\frac12$, $10\le N\le200$ (largest at $N=133$);
+(b) $\dd=3$: $|\tmode-\tcf|\le0.00275\,\tmode$ for $q=\frac45$, $10\le N\le120$ and $N\in\{130,140,150,160\}$;
+$|\tmode-\tcf|\le0.00157\,\tmode$ for $q=\frac12$, $10\le N\le80$.
+For $\dd=2$, $(\tcf-\tmode)/\tmode$ is positive for $N\le13$ and negative for $N\ge14$ on these ranges; for $\dd=3$ and
+$q=\frac45$ it is positive and falls, not monotonically, to $3.2\times10^{-5}$ at $N=160$.
+\textup{(Source: \Sref{R5}{Thms 21, 43, Rems 22, 44}, bases T1, T3 and T5.)}
+% src: data/msc_rigorous_certified/closedform_summary.json; data/msc_rigorous_certified/closedform_summary_c128.json (d2_q4-5, d2_q1-2, d3_q4-5, d3_q1-2: eps[10,...]); data/msc_rigorous_certified/closedform_c128_d3_q4-5.jsonl (N = 160)
+\end{catheorem}
+
+\begin{cacorollary}{Accuracy of the closed form for every $N\ge10$}\label{s6b_rigorous:cor-cf}
+\combined{} For $\dd=3$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$: $|\tmode-\tcf|\le0.0030\,\tmode$. For $\dd=2$:
+$|\tmode-\tcf|\le0.0100\,\tmode$ for $q=\frac45$ when $10\le N\le301$, $N\in\{350,401,450,500,600\}$ or
+$N\ge1\,761\,450$, and for $q=\frac12$ when $10\le N\le200$ or $N\ge554\,846$.
+\textup{(Source: \Sref{R0}{Cor 8.15}, base T3 with T1, T5.)}
+% src: data/article/s6b_rigorous_checks.json (corollary_closed_form_all_N)
+\end{cacorollary}
+
+\begin{conjecture}\label{s6b_rigorous:conj-cf}
+(a) For $\dd=2$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$, $|\tmode-\tcf|\le0.0100\,\tmode$. (b) At $q=1$,
+where the PMF is not unimodal in general, every global maximiser satisfies the laws of
+Theorem~\ref{s6b_rigorous:thm-disc}.
+\textup{(Source: \Sref{R5}{Conj 48}, \Sref{R3}{Rem 7.19(ii)}.)}
+\end{conjecture}
+
+\begin{observation}[The limit of the scaled error]\label{s6b_rigorous:obs-Kinf}
+$X\muone(\tmodec-q\tcf)$ appears to converge, to $3.74$ for $\dd=2$ and to $-0.22$ for $\dd=3$ (exact continuous-time
+modes up to $N=1.7\times10^{7}$ and $N=4096$, and the formal limit expression, which gives $3.7396$ and $-0.2217$). The
+certified windows for $N\ge10^{40}$ ($\dd=2$), $(2.52,4.65)$, and for $N\ge10^{6}$ ($\dd=3$), $(-0.83,1.43)$, contain these
+values; at the largest computed sizes the quantity is $2.81$ ($\dd=2$) and $-0.214$ ($\dd=3$).
+\textup{(Source: \Sref{R3}{Rem 5.3(iii)}.)}
+% src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Numerical observation 8.17, from data/msc_rigorous_asymptotics/80_tables.json); data/article/s6b_rigorous_checks.json (continuous_time_against_windows, rows N = 16777216 and N = 4096)
+\end{observation}
+
+All continuous-time modes of Section~\ref{s5_modes:sec} with $N\ge12$ for $\dd=2$ (40 sizes) and $N\ge10$ for $\dd=3$ (25
+sizes) lie inside the windows of Theorem~\ref{s6b_rigorous:thm-cfcont}, and the 61 sizes with $N\ge20$ inside the
+two-sided bounds of Theorem~\ref{s6b_rigorous:thm-laws} (a check in double precision). The largest continuous-time error
+of the closed form in Table~\ref{s6_mechanism:tab-accuracy}, $0.970\%$ at $N=113$ for $\dd=2$, lies on the same plateau as
+the certified discrete-time maxima $0.970\%$ ($N=137$) and $0.971\%$ ($N=133$).
+% src: data/article/s6b_rigorous_checks.json (continuous_time_against_windows: n_sizes_in_window_range, n_inside_window, n_sizes_N_ge_20, n_inside_two_sided_law); data/article/s6_mechanism_tables.json (accuracy/2d_CC); data/msc_rigorous_certified/closedform_summary_c128.json
+
+\paragraph{What remains open.} In two dimensions the window of Theorem~\ref{s6b_rigorous:thm-cfcont} is a few units
+wide, whereas the scaled error appears to converge; proving the limit needs $o(1)$-accurate bounds on the pole data,
+and the $1\%$ accuracy for $302\le N<1\,761\,450$ at $q=\frac45$ (apart from five certified sizes) and $201\le N<554\,846$
+at $q=\frac12$ is Conjecture~\ref{s6b_rigorous:conj-cf}(a). In discrete time close to $q=1$ nothing is proved in
+$\dd=2,3$ for $N<N_1(q)$, and $q=1$ is Conjecture~\ref{s6b_rigorous:conj-cf}(b); in one dimension the crossover between
+the laws for $q<1$ and $q=1$ is open \Sref{R0}{Section 12}. Unimodality for $\frac45<q<1$ and every $N$ and log-concavity
+for $\dd\ge2$ are Conjecture~\ref{s6b_rigorous:conj-unimodal}. For the centre placements only unimodality and bounds on
+the location of the continuous-time mode \Sref{R4}{Cor 4.13} are proved, and nothing of this section is proved for
+lattices with blocked sites, apart from the certificate of Proposition~\ref{s3_methods:prop-certificate}.

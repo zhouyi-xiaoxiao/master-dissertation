@@ -1,0 +1,164 @@
+{
+ "E2E y=1/2 (q=4/5), N=10..1001": {
+  "range_m": [
+   9,
+   1000
+  ],
+  "complete": true,
+  "all_certified": true,
+  "missing": [],
+  "not_certified": [],
+  "n_records": 992,
+  "max_n0_over_N2": 0.15696629530656028,
+  "min_n0_over_N2": 0.14049586776859505,
+  "total_window_checks": 51905251,
+  "min_rel_margin": 2.2306568620092394e-10,
+  "all_exact_crosschecks_ok": true,
+  "exact_equalities": [
+   0
+  ],
+  "cpu_seconds": 1579.6
+ },
+ "E2E threshold q=q_1(N), N=4..501": {
+  "range_m": [
+   3,
+   500
+  ],
+  "complete": true,
+  "all_certified": true,
+  "missing": [],
+  "not_certified": [],
+  "n_records": 498,
+  "max_n0_over_N2": 0.3125,
+  "min_n0_over_N2": 0.1289835498663352,
+  "total_window_checks": 5338337,
+  "min_rel_margin": 5.265608444877853e-09,
+  "all_exact_crosschecks_ok": true,
+  "exact_equalities": [
+   1
+  ],
+  "cpu_seconds": 328.1
+ },
+ "FOLD y=1/2 (q=4/5), odd N=27..2001": {
+  "range_m": [
+   13,
+   1000
+  ],
+  "complete": true,
+  "all_certified": true,
+  "missing": [],
+  "not_certified": [],
+  "n_records": 988,
+  "max_n0_over_N2": 0.03924193714126334,
+  "min_n0_over_N2": 0.036860879904875146,
+  "total_window_checks": 51826759,
+  "min_rel_margin": 2.2520500649443167e-10,
+  "all_exact_crosschecks_ok": true,
+  "exact_equalities": [
+   0
+  ],
+  "cpu_seconds": 1575.1
+ },
+ "FOLD threshold, odd N=7..1001": {
+  "range_m": [
+   3,
+   500
+  ],
+  "complete": true,
+  "all_certified": true,
+  "missing": [],
+  "not_certified": [],
+  "n_records": 498,
+  "max_n0_over_N2": 0.10204081632653061,
+  "min_n0_over_N2": 0.03228704000241544,
+  "total_window_checks": 5330346,
+  "min_rel_margin": 5.258070346655245e-09,
+  "all_exact_crosschecks_ok": true,
+  "exact_equalities": [
+   1
+  ],
+  "cpu_seconds": 605.8
+ },
+ "samples beyond the direct range": [
+  {
+   "geom": "E2E",
+   "N": 1024,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 164191
+  },
+  {
+   "geom": "E2E",
+   "N": 1500,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 352265
+  },
+  {
+   "geom": "E2E",
+   "N": 2000,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 625687
+  },
+  {
+   "geom": "E2E",
+   "N": 4001,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 2504000
+  },
+  {
+   "geom": "FOLD",
+   "N": 2049,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 164352
+  },
+  {
+   "geom": "FOLD",
+   "N": 3001,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 352500
+  },
+  {
+   "geom": "FOLD",
+   "N": 4001,
+   "status": "LOGCONCAVE (certified)",
+   "n0": 626000
+  }
+ ],
+ "family": {
+  "F1": {
+   "boxes": 20,
+   "all_certified": true,
+   "j0": [
+    30,
+    40,
+    50,
+    60
+   ],
+   "min_lowerbound_C_over_H2": 0.00014440674964650424,
+   "min_lowerbound_H_rel": 0.6929493665704414,
+   "max_kappa": 9562.919862910856,
+   "max_tail_ratio": 0.9758140929388097,
+   "cpu_seconds": 13.4
+  },
+  "F2": {
+   "boxes": 6,
+   "all_certified": true,
+   "j0": [
+    50,
+    60
+   ],
+   "min_lowerbound_C_over_H2": 0.00012033994601706888,
+   "min_lowerbound_H_rel": 0.6919470117546761,
+   "max_kappa": 24681.2273417711,
+   "max_tail_ratio": 0.895746302612038,
+   "cpu_seconds": 5.3
+  }
+ },
+ "blocks": {
+  "cases": 38,
+  "all_certified": true,
+  "max_t0": 231,
+  "min_rel_margin": 6.516603649306755e-05,
+  "all_exact_crosschecks": true
+ },
+ "ALL_OK": true
+}

@@ -1,0 +1,49 @@
+{
+ "V1_uniform_N35": {
+  "mfpt_solve": 14100.808049937992,
+  "mfpt_spectral": 14100.808049937226,
+  "mfpt_cosine_double_sum": 14100.808049917796,
+  "mfpt_tetali": 14100.808049921307,
+  "mode_certified": 2493,
+  "mode_timestep": 2493,
+  "ratio": 0.17679837858731529,
+  "median": 10145,
+  "sd": 12948.447496058212,
+  "S_mode": 0.9019427531414846,
+  "S_mfpt": 0.36825268019363955,
+  "t_cert": 4097,
+  "seconds_dense": 0.1618812084197998,
+  "sum_f_timestep_to_60000": 0.9894055921776291,
+  "mean_from_timestep_series": 13963.764417881466
+ },
+ "V2_random_N35_p015": {
+  "n_cluster": 1041,
+  "mfpt_solve": 16499.486778829567,
+  "mfpt_spectral": 16499.48677882504,
+  "mfpt_tetali": 16499.486778789786,
+  "mode_dense": 3590,
+  "mode_timestep": 3590,
+  "f_mode_dense": 5.6896033263185845e-05,
+  "f_mode_timestep": 5.6896033263188846e-05,
+  "t_cert_dense": 8193,
+  "t_cert_timestep": 10000,
+  "lam1_dense": 0.9999320835981625,
+  "lam1_lanczos": 0.999932083598163
+ },
+ "V3_montecarlo_N15_p015": {
+  "walkers": 200000,
+  "exact_mfpt": 2402.035636996933,
+  "exact_sd": 2132.288909693953,
+  "mc_mean": 2405.556795,
+  "mc_se": 4.754287342984471,
+  "z": 0.7406279320207112,
+  "mc_sd": 2126.1819366960267,
+  "chi2": 42.209204333945976,
+  "dof": 39,
+  "p_value": 0.33398687642307734,
+  "exact_mode": 555,
+  "seconds": 12.35522174835205,
+  "n_blocked": 34,
+  "tail_mass_beyond_series": 9.414566524734713e-05
+ }
+}

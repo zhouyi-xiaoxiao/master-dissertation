@@ -1,0 +1,49 @@
+{
+ "q45": {
+  "compared_with_script08": 598,
+  "agree": 598,
+  "window_checked": 600,
+  "failures": [],
+  "t5_all_mode_certified": true,
+  "t5_not_strictly_unimodal": [
+   4
+  ],
+  "extra_N": [
+   [
+    800,
+    266294
+   ],
+   [
+    1000,
+    416188
+   ]
+  ]
+ },
+ "q12": {
+  "window_checked": 298,
+  "failures": [],
+  "min_offset": -0.0023270980650877517,
+  "max_offset": 0.999571040450868,
+  "t5_ties": [
+   3,
+   4
+  ]
+ },
+ "q1": {
+  "compared_with_script17": 198,
+  "failures": []
+ },
+ "exact_formula": {
+  "q45": {
+   "formula_applies": 596,
+   "near_integer_tau": 4,
+   "failures": []
+  },
+  "q12": {
+   "formula_applies": 289,
+   "near_integer_tau": 9,
+   "failures": []
+  }
+ },
+ "ALL_OK": true
+}

@@ -1,0 +1,18 @@
+{
+ "source": "scripts/c128/fp128.c",
+ "source_sha256": "e52bf3d65bd56e2cda3ca71b08b2b593c9f0b5c95a7212759127275ff82723c1",
+ "binary_sha256": "d24b4da912784c46ff69f3226135c55824efa3e8c790bf726d3312fd8e0dd0f5",
+ "check_binary_sha256": "2954f34096311b1eaadb1648624499d6141ada257d29e766f351765982c2ffdb",
+ "compiler": [
+  "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "Target: arm64-apple-darwin25.6.0"
+ ],
+ "flags": "-O2",
+ "check_flags": "-O1 -g -DCHECK -fsanitize=undefined,address -fno-sanitize-recover=all",
+ "machine": "arm64",
+ "system": "macOS-26.7-arm64-arm-64bit-Mach-O",
+ "rebuild_identical": "whole file: no (Mach-O link UUID differs); __TEXT,__text section: identical",
+ "source_lines": 366,
+ "text_section_sha256": "8c54b798fc5dc3a6907cf8523b0fbafa33e079663e227fa061bab1ba2c7d9e41",
+ "source_unchanged_since_build": true
+}

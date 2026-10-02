@@ -1,0 +1,573 @@
+{
+ "script": "code/article/appB_expansion_check.py",
+ "dps": 60,
+ "n_checks": 38,
+ "n_failed": 0,
+ "taylor": {
+  "r(y)": [
+   "-1/3",
+   "-47/90",
+   "941/1890"
+  ],
+  "Acal(Y)": [
+   "1",
+   "-1/3",
+   "-47/90"
+  ],
+  "Ecal(Y)": [
+   "-1/3",
+   "1/6"
+  ],
+  "e_nm": {
+   "e_0,0": "1",
+   "e_0,1": "-1/3",
+   "e_1,1": "1/3",
+   "e_0,2": "-47/90",
+   "e_1,2": "-5/18",
+   "e_2,2": "1/18"
+  }
+ },
+ "constants": {
+  "kappa0": "1.7627471740390860505",
+  "arsinh1": "0.88137358701954302523",
+  "varpi": "2.622057554292119810464839589891119413683",
+  "Xi": "4.789267949492609121656161381696503158264",
+  "E4(i)": "1.455762892268709322462422003598869287432",
+  "I_r": "-0.605009115009482210017579169165793859534",
+  "J": "0.08851956738036031040133960441571917475965",
+  "exp(-pi/2)": "0.2078795764"
+ },
+ "a_m": {
+  "1": {
+   "exact": "pi/18",
+   "value": "0.174532925199432957692369076849"
+  },
+  "2": {
+   "exact": "-47*pi**3/21600",
+   "value": "-0.067467361295096830937379018896"
+  },
+  "3": {
+   "exact": "-941*pi**5/3810240",
+   "value": "-0.0755764790099704605274837209076"
+  },
+  "4": {
+   "exact": "-12293*pi**7/290304000",
+   "value": "-0.127895119078828072937169795867"
+  },
+  "5": {
+   "exact": "-189569*pi**9/12645642240",
+   "value": "-0.446863911242681565804642034836"
+  }
+ },
+ "b_m": {
+  "0": "0.225413227343047038206752849744",
+  "1": "0.35760795807752361138053774334",
+  "2": "-1.00209158639103550996627359821",
+  "3": "2.30309279018670293898863590357",
+  "4": "-13.9272740726835359225073007625",
+  "5": "125.152951307256946723891829763"
+ },
+ "coefficients": {
+  "C_2": {
+   "closed_form_value": "0.1546377878189172624907338308002830491917",
+   "general_formula_numeric": "0.1546377878189172624907338308002830491917"
+  },
+  "C_0": {
+   "closed_form_value": "0.5321408832769565690729068201885003509182",
+   "general_formula_numeric": "0.5321408832769565690729068201885003509182"
+  },
+  "C_-2": {
+   "closed_form_value": "-1.069558947686132340903652617107770074042",
+   "general_formula_numeric": "-1.069558947686132340903652617107770074042"
+  },
+  "C_-4": {
+   "closed_form_value": "2.227516311176732478461152182661689619967",
+   "general_formula_numeric": "2.227516311176732478461152182661689619967"
+  },
+  "C_-6": {
+   "closed_form_value": "-14.055169191762363995444470558326346639",
+   "general_formula_numeric": "-14.055169191762363995444470558326346639"
+  },
+  "C_-8": {
+   "closed_form_value": "124.7060873960142651580871877283504553114",
+   "general_formula_numeric": "124.7060873960142651580871877283504553114"
+  }
+ },
+ "scaled_remainders_total": {
+  "1": {
+   "16": "1.06107",
+   "32": "1.0674",
+   "64": "1.06902",
+   "128": "1.06942",
+   "256": "1.06952",
+   "512": "1.06955",
+   "1024": "1.06956",
+   "2048": "1.06956",
+   "4096": "1.06956"
+  },
+  "2": {
+   "16": "2.17442",
+   "32": "2.21391",
+   "64": "2.22409",
+   "128": "2.22666",
+   "256": "2.2273",
+   "512": "2.22746",
+   "1024": "2.2275",
+   "2048": "2.22751",
+   "4096": "2.22752"
+  },
+  "3": {
+   "16": "13.5921",
+   "32": "13.935",
+   "64": "14.0248",
+   "128": "14.0476",
+   "256": "14.0533",
+   "512": "14.0547",
+   "1024": "14.0551",
+   "2048": "14.0551",
+   "4096": "14.0552"
+  },
+  "4": {
+   "16": "118.554",
+   "32": "123.089",
+   "64": "124.296",
+   "128": "124.603",
+   "256": "124.68",
+   "512": "124.7",
+   "1024": "124.704",
+   "2048": "124.706",
+   "4096": "124.706"
+  },
+  "5": {
+   "16": "1574.98",
+   "32": "1656.0",
+   "64": "1678.01",
+   "128": "1683.63",
+   "256": "1685.04",
+   "512": "1685.4",
+   "1024": "1685.48",
+   "2048": "1685.51",
+   "4096": "1685.51"
+  }
+ },
+ "scaled_remainders_algebraic_part": {
+  "1": {
+   "16": "0.0677646",
+   "32": "0.0675413",
+   "64": "0.0674858",
+   "128": "0.067472",
+   "256": "0.0674685",
+   "512": "0.0674676",
+   "1024": "0.0674674",
+   "2048": "0.0674674",
+   "4096": "0.0674674"
+  },
+  "2": {
+   "16": "0.0760831",
+   "32": "0.0757018",
+   "64": "0.0756077",
+   "128": "0.0755843",
+   "256": "0.0755784",
+   "512": "0.075577",
+   "1024": "0.0755766",
+   "2048": "0.0755765",
+   "4096": "0.0755765"
+  },
+  "3": {
+   "16": "0.129684",
+   "32": "0.128334",
+   "64": "0.128004",
+   "128": "0.127922",
+   "256": "0.127902",
+   "512": "0.127897",
+   "1024": "0.127896",
+   "2048": "0.127895",
+   "4096": "0.127895"
+  },
+  "4": {
+   "16": "0.45805",
+   "32": "0.449581",
+   "64": "0.447538",
+   "128": "0.447032",
+   "256": "0.446906",
+   "512": "0.446874",
+   "1024": "0.446867",
+   "2048": "0.446865",
+   "4096": "0.446864"
+  },
+  "5": {
+   "16": "2.86363",
+   "32": "2.7819",
+   "64": "2.76249",
+   "128": "2.7577",
+   "256": "2.75651",
+   "512": "2.75621",
+   "1024": "2.75613",
+   "2048": "2.75611",
+   "4096": "2.75613"
+  }
+ },
+ "scaled_remainders_exponential_part": {
+  "1": {
+   "16": "0.993301",
+   "32": "0.999856",
+   "64": "1.00153",
+   "128": "1.00195",
+   "256": "1.00206",
+   "512": "1.00208",
+   "1024": "1.00209",
+   "2048": "1.00209",
+   "4096": "1.00209"
+  },
+  "2": {
+   "16": "2.25051",
+   "32": "2.28961",
+   "64": "2.2997",
+   "128": "2.30224",
+   "256": "2.30288",
+   "512": "2.30304",
+   "1024": "2.30308",
+   "2048": "2.30309",
+   "4096": "2.30309"
+  },
+  "3": {
+   "16": "13.4624",
+   "32": "13.8066",
+   "64": "13.8968",
+   "128": "13.9196",
+   "256": "13.9254",
+   "512": "13.9268",
+   "1024": "13.9272",
+   "2048": "13.9272",
+   "4096": "13.9273"
+  },
+  "4": {
+   "16": "119.012",
+   "32": "123.538",
+   "64": "124.744",
+   "128": "125.05",
+   "256": "125.127",
+   "512": "125.147",
+   "1024": "125.151",
+   "2048": "125.153",
+   "4096": "125.153"
+  },
+  "5": {
+   "16": "1572.11",
+   "32": "1653.22",
+   "64": "1675.24",
+   "128": "1680.87",
+   "256": "1682.29",
+   "512": "1682.64",
+   "1024": "1682.73",
+   "2048": "1682.75",
+   "4096": "1682.76"
+  }
+ },
+ "checks": [
+  {
+   "label": "A1 Taylor data",
+   "statement": "r = -y/3 - 47y^3/90 + 941y^5/1890; e_{0,1}=-1/3, e_{1,1}=1/3, e_{0,2}=-47/90, e_{1,2}=-5/18, e_{2,2}=1/18",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "A2 a_1, a_2",
+   "statement": "a_1 = pi/18, a_2 = -47 pi^3/21600",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "B1 I_r",
+   "statement": "int_0^{pi/2} (w(y) - 1/y) dy = (3/2) ln 2 - ln pi - 1/2",
+   "max_deviation": 7.778769097326427e-62,
+   "tolerance": 1e-45,
+   "passed": true
+  },
+  {
+   "label": "B2 piece 1",
+   "statement": "int_0^{pi/2} (1/sin y - 1/y) dy = ln(4/pi)",
+   "max_deviation": 7.778769097326427e-62,
+   "tolerance": 1e-45,
+   "passed": true
+  },
+  {
+   "label": "B3 piece 2",
+   "statement": "int_0^{pi/2} (cos^2 y sqrt(1+sin^2 y) - 1)/sin y dy = -1/2 - (1/2) ln 2",
+   "max_deviation": 7.778769097326427e-62,
+   "tolerance": 1e-45,
+   "passed": true
+  },
+  {
+   "label": "B4 digamma values",
+   "statement": "psi(3/2)+gamma = 2 - 2 ln 2, psi(1/2)+gamma = -2 ln 2",
+   "max_deviation": 7.778769097326427e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "C1 |v_k| bound",
+   "statement": "max |v_k| exp(kappa0 k) <= 1, kappa0 = 2 arsinh 1 (N = 2..1001)",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_ratio": 0.4184622401313784
+  },
+  {
+   "label": "C2 w bound",
+   "statement": "max w(y_k) k/(sqrt2 N) <= 1 (N = 2..1001)",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_ratio": 0.45015778857625394
+  },
+  {
+   "label": "C3 |Ecal| on |Y| = 1/4",
+   "statement": "max |arsinh(sin y)/y - 1| on |y| = 1/2 is below 1/2 (and below (arcsin(sinh(1/2)) - 1/2)/(1/2))",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_abs_Ecal": 0.09626752286910677,
+   "analytic_bound": 0.09626752286910677,
+   "max_abs_Acal": 1.0680110911504224,
+   "delta": 0.5,
+   "radius_of_analyticity_in_y": 0.881373587019543
+  },
+  {
+   "label": "C4 g_{k,m} formula",
+   "statement": "sum_n e_{n,m} (pi k)^n (D^n U)(p^k) equals the Cauchy integral of G_k (k = 1,2,3,5,8; m <= 5), relative",
+   "max_deviation": 1.798426745932674e-28,
+   "tolerance": 1e-20,
+   "passed": true
+  },
+  {
+   "label": "C5 Cauchy bound",
+   "statement": "|g_{k,m}| <= (4/3) A_delta exp(-pi k/2) delta^{-2m}",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_ratio": 0.15257468240333122
+  },
+  {
+   "label": "C6 Taylor remainder bound",
+   "statement": "|G_k(Y) - sum_{m<=M} g_{k,m} Y^m| <= (8/3) A_delta exp(-pi k/2) (Y/delta^2)^{M+1} for 0 <= Y <= delta^2/2",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_ratio": 0.0038829468929729915
+  },
+  {
+   "label": "D1 E2(i)",
+   "statement": "E_2(i) = 3/pi",
+   "max_deviation": 0.0,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D2 E4(i)",
+   "statement": "E_4(i) = 3 Gamma(1/4)^8/(2 pi)^6 = 3 Xi/pi^2",
+   "max_deviation": 6.223015277861142e-61,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D3 E6(i)",
+   "statement": "E_6(i) = 0",
+   "max_deviation": 3.111507638930571e-61,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D4 E2(tau0)",
+   "statement": "E_2((1+i)/2) = 6/pi",
+   "max_deviation": 1.5557538194652854e-61,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D5 E4(tau0)",
+   "statement": "E_4((1+i)/2) = -4 E_4(i)",
+   "max_deviation": 2.4892061111444567e-60,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D6 E6(tau0)",
+   "statement": "E_6((1+i)/2) = 0",
+   "max_deviation": 4.2005353125562707e-60,
+   "tolerance": 1e-48,
+   "passed": true
+  },
+  {
+   "label": "D7 eta(i)^24",
+   "statement": "eta(i)^24 = E_4(i)^3/1728 = Xi^3/(64 pi^6)",
+   "max_deviation": 1.2154326714572542e-63,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D8 product at tau0",
+   "statement": "prod_j (1 - p^j)^24 = 64 e^pi eta(i)^24,  p = -e^{-pi}",
+   "max_deviation": 2.255843038224664e-60,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D9 J",
+   "statement": "J = -2 sum_k U(p^k)/k = ln(2 pi/varpi) - pi/4",
+   "max_deviation": 1.2640499783155444e-61,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D10 J as products",
+   "statement": "J = 2 ln prod(1-p^j) - 4 ln prod(1-p^{2j})",
+   "max_deviation": 4.861730685829017e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "D11 J via theta_3",
+   "statement": "J = ln theta_3(e^{-pi}) - 3 ln prod(1 - e^{-2 pi n}),  theta_3(e^{-pi}) = pi^{1/4}/Gamma(3/4)",
+   "max_deviation": 8.75111523449223e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "E Lambda1",
+   "statement": "Lambda1(p) equals its closed form",
+   "max_deviation": 9.723461371658034e-63,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "E DLambda1",
+   "statement": "DLambda1(p) equals its closed form",
+   "max_deviation": 1.458519205748705e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "E Lambda3",
+   "statement": "Lambda3(p) equals its closed form",
+   "max_deviation": 1.458519205748705e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "E DLambda3",
+   "statement": "DLambda3(p) equals its closed form",
+   "max_deviation": 1.458519205748705e-62,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "E D2Lambda3",
+   "statement": "D2Lambda3(p) equals its closed form",
+   "max_deviation": 3.6462980143717627e-63,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "F1 closed forms (exact)",
+   "statement": "general formula + quasi-modular rules reproduce the printed closed forms of C_0 ... C_{-8}",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "closed_forms": {
+    "C_0": "Xi/9",
+    "C_-2": "-Xi*pi*(25*Xi + 648)/10800",
+    "C_-4": "Xi**2*pi**2*(1225*Xi + 12879)/1905120",
+    "C_-6": "-Xi**2*pi**3*(79625*Xi**2 + 1215000*Xi + 960498)/435456000",
+    "C_-8": "Xi**3*pi**4*(7703465*Xi**2 + 92129400*Xi + 118943883)/63228211200"
+   }
+  },
+  {
+   "label": "F1b b_1",
+   "statement": "b_1 = -pi/18 + pi^2 E_4(i)/27",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "F1c C_{-2}",
+   "statement": "C_{-2} = -pi^3 E_4(i)/50 - pi^5 E_4(i)^2/3888",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "F2 general formula (numeric)",
+   "statement": "C_{2-2m} = a_m + b_m with numerically summed Lambert series equals the closed forms, m = 0..5",
+   "max_deviation": 6.462352445447681e-55,
+   "tolerance": 1e-45,
+   "passed": true,
+   "abs_dev": {
+    "C_2": "2.72e-61",
+    "C_0": "3.68e-56",
+    "C_-2": "4.77e-55",
+    "C_-4": "1.92e-55",
+    "C_-6": "6.46e-55",
+    "C_-8": "8.47e-56"
+   }
+  },
+  {
+   "label": "F2b b_0",
+   "statement": "b_0 = (8/pi) J",
+   "max_deviation": 3.111507638930571e-61,
+   "tolerance": 1e-50,
+   "passed": true
+  },
+  {
+   "label": "F3 stored values",
+   "statement": "closed-form values agree with data/msc_proof/asymptotic_series.json (30 digits stored)",
+   "max_deviation": 3.5045531140763255e-28,
+   "tolerance": 1e-27,
+   "passed": true
+  },
+  {
+   "label": "G0 split",
+   "statement": "4N A_N - 8N E_N equals form (b) of the single sum (N = 16)",
+   "max_deviation": 1.4813634972841947e-51,
+   "tolerance": 1e-45,
+   "passed": true
+  },
+  {
+   "label": "G1 next coefficient",
+   "statement": "N^{2M} |R_M| at N = 4096 equals |a_{M+1}|, |b_{M+1}|, |C_{-2M}| for the algebraic part, the exponentially small part and the total (M = 1..4), relative",
+   "max_deviation": 2.1919506777663726e-06,
+   "tolerance": 0.0001,
+   "passed": true,
+   "N": [
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096
+   ]
+  },
+  {
+   "label": "G2 order M = 5 bounded",
+   "statement": "N^{10} |R_5| changes by less than the reported relative amount between N = 2048 and N = 4096 (all three)",
+   "max_deviation": 7.256604417095109e-06,
+   "tolerance": 0.0001,
+   "passed": true,
+   "N^10 |R_5| total at 4096": "1685.51"
+  },
+  {
+   "label": "G3 uniform bound",
+   "statement": "sup over N = 16..4096 of N^{2M} |R_M| divided by its value at N = 4096 stays below 1.05 (M = 1..5, all three)",
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "max_ratio": 1.0390039657055363
+  }
+ ],
+ "seconds": 2.4
+}

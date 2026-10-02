@@ -1,0 +1,367 @@
+[
+ {
+  "key": "2|4001|14.0|400.0farcheck",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|40960|14.0|400.0farcheck",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|160|11.0|400.0farcheck",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|320|11.0|400.0farcheck",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|5|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|7|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|10|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|14|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|20|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|28|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|35|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|40|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|50|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|57|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|80|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|100|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|113|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|160|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|200|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|226|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|320|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|400|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|401|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|453|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|640|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|905|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|1280|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|1810|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|2560|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|3620|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|4001|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|5120|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|7241|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|10240|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|20480|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|40960|14.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|81920|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|163840|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|327680|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|655360|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|1048576|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|2097152|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|4194304|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|8388608|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|16777216|14.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|5|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|7|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|10|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|14|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|20|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|28|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|35|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|40|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|50|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|57|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|80|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|100|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|113|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|160|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|200|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|226|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|320|11.0|None",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|453|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|640|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|905|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|1280|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|1810|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|2560|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|4096|11.0|400.0",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|35|40.0|Noneconv",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "2|640|40.0|Noneconv",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|40|30.0|Noneconv",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ },
+ {
+  "key": "3|640|30.0|400.0conv",
+  "decreasing_after_mode": true,
+  "increasing_before_mode": true
+ }
+]

@@ -1,0 +1,102 @@
+[
+ {
+  "check": "V1 thinning identity f_q'(t+1)=p*sum Bin(t,n;p) f_q(n+1) and difference form (exact, 12 cases x 40 t)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V2a variation diminishing: binomial matrix and nonnegative bidiagonal matrices (4000 random exact trials)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V2b Descartes-Laguerre: #positive zeros of sum c_n mu^n/n! <= S^-(c) (300 random polynomials, float roots)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V3 uniformisation g_1(t) = sum Pois(t;n) f_{q=1}(n+1) vs spectral formula (float)",
+  "ok": true,
+  "detail": "max rel diff 7.50e-12"
+ },
+ {
+  "check": "V4 residues: c_1>0, moments sum c_k alpha_k^j = 0 (j<=D-2), S^-(c)>=D-1, 1D end-to-end full alternation (mpmath 60 digits)",
+  "ok": true,
+  "detail": "d1 N6 (0,)->(5,): D=5, #nonzero residue groups=5, S^-=4; d1 N9 (0,)->(8,): D=8, #nonzero residue groups=8, S^-=7; d1 N8 (2,)->(6,): D=4, #nonzero residue groups=6, S^-=3; d2 N3 (0, 0)->(2, 2): D=4, #nonzero residue groups=5, S^-=3; d2 N4 (0, 0)->(3, 3): D=6, #nonzero residue groups=8, S^-=5; d2 N5 (0, 0)->(4, 4): D=8, #nonzero residue groups=13, S^-=7; d2 N5 (0, 0)->(2, 2): D=4, #nonzero residue groups=5, S^-=3; d2 N4 (0, 1)->(3, 2): D=4, #nonzero residue groups=8, S^-=5; d3 N3 (0, 0, 0)->(2, 2, 2): D=6, #nonzero residue groups=8, S^-=5"
+ },
+ {
+  "check": "V5 Lemma 5.1: survival S_t(x) nonincreasing in each coordinate toward the corner target (exact, q in {1,4/5,1/2,1/5}, t<40)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V6 Lemmas 5.2-5.5: phi_1 max at far corner, c_1>=alpha_1, 1/M<=alpha_1<=1/(2(n-1)), alpha_2^sym>=beta_1, spectrum<=2-d*beta_1 (float)",
+  "ok": true,
+  "detail": "d2 N3: alpha1=0.0441212 beta1=0.25 alpha2sym=0.384579 c1/alpha1=1.2213 M=27 ok | d2 N4: alpha1=0.0198103 beta1=0.146447 alpha2sym=0.2135 c1/alpha1=1.2008 M=59.4286 ok | d2 N6: alpha1=0.00677503 beta1=0.0669873 alpha2sym=0.0921198 c1/alpha1=1.1707 M=170.327 ok | d2 N9: alpha1=0.00243151 beta1=0.0301537 alpha2sym=0.0396495 c1/alpha1=1.1459 M=466.255 ok | d2 N14: alpha1=0.00082788 beta1=0.012536 alpha2sym=0.015868 c1/alpha1=1.1250 M=1348.02 ok | d3 N3: alpha1=0.0136296 beta1=0.166667 alpha2sym=0.217437 c1/alpha1=1.1423 M=82.9286 ok | d3 N4: alpha1=0.00508398 beta1=0.0976311 alpha2sym=0.11926 c1/alpha1=1.1026 M=215.664 ok | d3 N6: alpha1=0.00133719 beta1=0.0446582 alpha2sym=0.0511161 c1/alpha1=1.0652 M=794.689 ok"
+ },
+ {
+  "check": "V7 Theorem 5.6 (tail): f strictly decreasing beyond T_N; T_N <= explicit bound (float)",
+  "ok": true,
+  "detail": "d2 N3 q1.0: last t with f(t+1)>=f(t): 7 ; T_N=35.7 ; explicit bound=66.0 | d2 N3 q0.8: last t with f(t+1)>=f(t): 9 ; T_N=46.3 ; explicit bound=82.4 | d2 N3 q0.5: last t with f(t+1)>=f(t): 16 ; T_N=77.9 ; explicit bound=131.9 | d2 N5 q1.0: last t with f(t+1)>=f(t): 27 ; T_N=134.4 ; explicit bound=218.9 | d2 N5 q0.8: last t with f(t+1)>=f(t): 35 ; T_N=169.9 ; explicit bound=273.7 | d2 N5 q0.5: last t with f(t+1)>=f(t): 57 ; T_N=276.4 ; explicit bound=437.9 | d2 N8 q1.0: last t with f(t+1)>=f(t): 83 ; T_N=419.5 ; explicit bound=658.2 | d2 N8 q0.8: last t with f(t+1)>=f(t): 104 ; T_N=526.7 ; explicit bound=822.7 | d2 N8 q0.5: last t with f(t+1)>=f(t): 167 ; T_N=848.0 ; explicit bound=1316.3 | d2 N12 q1.0: last t with f(t+1)>=f(t): 203 ; T_N=1083.5 ; explicit bound=1681.0 | d2 N12 q0.8: last t with f(t+1)>=f(t): 255 ; T_N=1356.9 ; explicit bound=2101.3 | d2 N12 q0.5: last t with f(t+1)>=f(t): 409 ; T_N=2177.0 ; explicit bound=3362.0 | d3 N3 q1.0: last t with f(t+1)>=f(t): 18 ; T_N=68.8 ; explicit bound=113.8 | d3 N3 q0.8: last t with f(t+1)>=f(t): 23 ; T_N=87.8 ; explicit bound=142.2 | d3 N3 q0.5: last t with f(t+1)>=f(t): 38 ; T_N=144.8 ; explicit bound=227.5 | d3 N5 q1.0: last t with f(t+1)>=f(t): 67 ; T_N=250.1 ; explicit bound=369.1 | d3 N5 q0.8: last t with f(t+1)>=f(t): 84 ; T_N=314.8 ; explicit bound=461.3 | d3 N5 q0.5: last t with f(t+1)>=f(t): 136 ; T_N=508.8 ; explicit bound=738.1"
+ },
+ {
+  "check": "V8 Theorem 5.10 (rise): h=G/N (hypoexponential CDF), u''>=0 and g'>=u'' on [0,m_N] (float)",
+  "ok": true,
+  "detail": "d2 N4: |N h - G|max=5.6e-17, m_N=4.987 (=0.1558 d N^2), mode of g=17.329, min(g'-u'')/scale=9.7e-08 | d2 N7: |N h - G|max=1.1e-15, m_N=17.396 (=0.1775 d N^2), mode of g=62.824, min(g'-u'')/scale=2.0e-12 | d2 N12: |N h - G|max=6.3e-16, m_N=52.388 (=0.1819 d N^2), mode of g=205.186, min(g'-u'')/scale=-1.8e-11 | d3 N4: |N h - G|max=4.7e-16, m_N=7.479 (=0.1558 d N^2), mode of g=40.297, min(g'-u'')/scale=2.3e-12 | d3 N6: |N h - G|max=8.5e-16, m_N=18.847 (=0.1745 d N^2), mode of g=105.500, min(g'-u'')/scale=2.4e-11"
+ },
+ {
+  "check": "V8b renewal identity u(t) = int_0^t g(s) v(t-s) ds (float quadrature, d=2 N=5, t=30)",
+  "ok": true,
+  "detail": "u=0.03217944682 conv=0.03217944683"
+ },
+ {
+  "check": "V9 Theorem 4.1: CM cases (stationary start; start adjacent to a corner/centre target)",
+  "ok": true,
+  "detail": "d2 N5 target (4, 4): neighbours equivalent (max diff 2.8e-17), PMF from neighbour nonincreasing (exact, t<80) | d2 N5 target (2, 2): neighbours equivalent (max diff 2.2e-16), PMF from neighbour nonincreasing (exact, t<80) | d3 N3 target (1, 1, 1): neighbours equivalent (max diff 8.3e-17), PMF from neighbour nonincreasing (exact, t<80) | d3 N3 target (2, 2, 2): neighbours equivalent (max diff 6.9e-18), PMF from neighbour nonincreasing (exact, t<80) | d2 N6 target (0, 0): neighbours equivalent (max diff 1.4e-16), PMF from neighbour nonincreasing (exact, t<80)"
+ },
+ {
+  "check": "V10 Theorem 4.3 (1D): LU pivots >= q/2 for q<=1/2; S^-(D_t) nonincreasing; PMF unimodal for every start (exact, N in {4,6,9})",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V10b 1D counterexample q=1, N=4: f(3)=1/8 > f(4)=1/16 < f(5)=3/32 (exact)",
+  "ok": true,
+  "detail": "['0', '0', '1/8', '1/16', '3/32', '1/16']"
+ },
+ {
+  "check": "V10c 1D N=4: f(3)=(q/2)^3, f(4)=(q/2)^3(3-5q/2), f(5)-f(4)=(q/2)^3(19q^2/4-15q/2+3)>0; f(4)<f(3) iff q>4/5 (exact, q=k/100)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V10d Proposition 4.4: closed forms of f(N-1), f(N), f(N+1); f(N-1)>f(N)<f(N+1) iff q>(2N-4)/(2N-3) (exact, N=4..14)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V13 Proposition 4.6 (N=2 hypercube): lumped level chain == full chain (d<=5), pivots >= q/2 for q<=2/3, unimodal on window (exact, d<=12)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V11 Lemma 6.1 (cone): after the first T with rho_{T+1}<=rho_T all later differences are <=0; T_cone = mode-1 (exact)",
+  "ok": true,
+  "detail": "d2 N3 q=1/2: T_cone=16, mode=17, window T=504 | d2 N4 q=1/2: T_cone=33, mode=34, window T=896 | d2 N5 q=1/2: T_cone=57, mode=58, window T=1400 | d2 N6 q=1/2: T_cone=87, mode=88, window T=2016 | d2 N7 q=1/2: T_cone=124, mode=125, window T=2744 | d3 N3 q=1/2: T_cone=38, mode=39, window T=756 | d3 N4 q=1/2: T_cone=79, mode=80, window T=1344 | d2 N5 q=1/5: T_cone=145, mode=146, window T=3500 | d2 N6 q=1/10: T_cone=443, mode=444, window T=10080"
+ },
+ {
+  "check": "V12a Conjecture 9.1 (P1'): rho_{t+1}(x)/rho_t(x) coordinatewise nondecreasing toward the target, corner-to-corner (exact on window)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V12b Conjecture 9.1 (log-concavity of the PMF, q<=1/2, corner-to-corner; exact on window)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "V12c Conjecture 9.1 (increasing hazard rate, exact on window)",
+  "ok": true,
+  "detail": ""
+ }
+]

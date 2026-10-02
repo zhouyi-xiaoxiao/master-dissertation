@@ -1,0 +1,9 @@
+{'N0': 41, 'k0': 11, 'qmax': '4/5', 'n_qballs': 2400, 'K': '1.68', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 1.7}
+{'N0': 51, 'k0': 11, 'qmax': '4/5', 'n_qballs': 2400, 'K': '1.63', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 1.7}
+{'N0': 101, 'k0': 13, 'qmax': '4/5', 'n_qballs': 2400, 'K': '1.58', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 1.9}
+{'N0': 601, 'k0': 15, 'qmax': '4/5', 'n_qballs': 2400, 'K': '1.56', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 2.0}
+{'N0': 61, 'k0': 15, 'qmax': '9/10', 'n_qballs': 2700, 'K': '1.61', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 2.4}
+{'N0': 101, 'k0': 13, 'qmax': '9/10', 'n_qballs': 2700, 'K': '1.58', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 2.1}
+{'N0': 601, 'k0': 15, 'qmax': '9/10', 'n_qballs': 2700, 'K': '1.56', 'high_tolerance': None, 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 2.2}
+{'N0': 601, 'k0': 15, 'qmax': '1/1', 'n_qballs': 3000, 'K': '1.56', 'high_tolerance': '1e-12', 'failing_balls': 0, 'first_failures': [], 'certified': True, 'seconds': 2.4}
+ALL UNIFORM-K CERTIFICATES: True

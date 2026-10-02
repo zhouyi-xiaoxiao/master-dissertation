@@ -1,0 +1,58 @@
+{
+ "clean_N35": {
+  "n": 1225,
+  "mfpt": 14100.808049917203,
+  "sd": 12948.447496039435,
+  "cv": 0.9182769845672402,
+  "mode": 2493,
+  "fmode": 6.701765395220815e-05,
+  "t_cert": 3201,
+  "peak_sub": 2492.9153431764894,
+  "ratio": 0.17679837858757594,
+  "n_open": 1225,
+  "G_aa": 2.081608920467689,
+  "G_sa": -0.2205638223760005,
+  "mfpt_res": 14100.808049917598,
+  "mfpt_cosine_double_sum": 14100.80804991796,
+  "mfpt_spectral": 14100.808049918029,
+  "mode_spectral": 2493,
+  "max_abs_diff_pmf_two_routes": 3.9898639947466563e-16,
+  "S_mode": 0.90194275314131,
+  "S_mfpt": 0.3682526801930939,
+  "median": 10145,
+  "tau_rel_reflecting": 620.5089500817162,
+  "lam1_Q": 0.999922693176884,
+  "lam2_Q": 0.9983897175980955,
+  "lam_min_Q": -0.5967794206847774,
+  "S_at_60000": 0.010594407823722316
+ },
+ "eq41": {
+  "diag_interior": 0.19999999999999996,
+  "diag_after_Delta1": -0.8,
+  "colsum_after_Delta": 0.9,
+  "note": "column sum 1-Delta: killing; Delta=1 -> diagonal -q",
+  "blocked_site_changed_entries": 13,
+  "rank_of_update": 5,
+  "changed_diag_of_neighbours": [
+   7,
+   8,
+   16,
+   17
+  ]
+ },
+ "mc": {
+  "N": 15,
+  "blocked": 34,
+  "walkers": 200000,
+  "exact_mfpt": 3315.4795150238215,
+  "mc_mean": 3323.55395,
+  "mc_se": 6.763443959106036,
+  "z": 1.193834831041574,
+  "exact_mode": 650,
+  "chi2": 34.89822454810674,
+  "dof": 39,
+  "mc_var": 9148834.837593585,
+  "exact_sd": 3021.7091726458216,
+  "mc_sd": 3024.7040909142806
+ }
+}

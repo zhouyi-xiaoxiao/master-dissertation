@@ -1,0 +1,22 @@
+[
+ {
+  "check": "A ExactStepper == definition (Fractions), 6 geometries x 5 activities x 30 steps",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "B separately written pure-Python cone certificate reproduces sign runs, cone time and verdict (13 cases)",
+  "ok": true,
+  "detail": "CC d2 N9 q=1/1: T_cone=109 unimodal=False ok | CC d2 N9 q=499/500: T_cone=109 unimodal=True ok | CC d2 N12 q=499/500: T_cone=204 unimodal=True ok | CC d2 N11 q=1/1: T_cone=169 unimodal=False ok | CC d3 N6 q=1/1: T_cone=103 unimodal=True ok | CC d1 N4 q=1/1: T_cone=6 unimodal=False ok | CC d1 N4 q=4/5: T_cone=4 unimodal=True ok | C2M d2 N7 q=4/5: T_cone=78 unimodal=True ok | M2C d2 N7 q=4/5: T_cone=39 unimodal=True ok | M2C d3 N5 q=4/5: T_cone=38 unimodal=True ok | PAIR:2,1,1:0,1,1 d3 N3 q=1/2: T_cone=29 unimodal=False ok | PAIR:5,5:2,3 d2 N8 q=1/2: T_cone=133 unimodal=False ok | CC d4 N3 q=1/1: T_cone=33 unimodal=True ok"
+ },
+ {
+  "check": "C modes agree with the separately written float code of msc_modes/data/full_tail.json (29 cases)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "D PMF nonincreasing after the cone time on a further 3*T steps (exact, 6 cases)",
+  "ok": true,
+  "detail": ""
+ }
+]

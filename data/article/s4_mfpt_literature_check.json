@@ -1,0 +1,200 @@
+{
+ "generated_by": "code/article/s4_mfpt_literature_check.py",
+ "source": "Tan and Tan, Commun. Theor. Phys. 72, 055001 (2020), Eqs. (19)-(22), (57), (64); r = r_0 = 1, m = n = N - 1",
+ "digits": 40,
+ "eq57_vs_laplacian_pinv": [
+  {
+   "N": 2,
+   "ordered_pairs": 12,
+   "max_rel_dev_vs_pinv_float64": 5.921189464667505e-16
+  },
+  {
+   "N": 3,
+   "ordered_pairs": 72,
+   "max_rel_dev_vs_pinv_float64": 9.188052617587495e-16
+  },
+  {
+   "N": 4,
+   "ordered_pairs": 240,
+   "max_rel_dev_vs_pinv_float64": 4.325042739409324e-15
+  },
+  {
+   "N": 5,
+   "ordered_pairs": 600,
+   "max_rel_dev_vs_pinv_float64": 2.607641267802852e-15
+  },
+  {
+   "N": 6,
+   "ordered_pairs": 1260,
+   "max_rel_dev_vs_pinv_float64": 3.5281061102451227e-15
+  },
+  {
+   "N": 7,
+   "ordered_pairs": 2352,
+   "max_rel_dev_vs_pinv_float64": 4.30692003642144e-15
+  }
+ ],
+ "eq57_vs_thm_pair_commute_time": [
+  {
+   "N": 3,
+   "pairs": 72,
+   "max_rel_dev": 4.591774807899561e-41
+  },
+  {
+   "N": 4,
+   "pairs": 240,
+   "max_rel_dev": 6.887662211849341e-41
+  },
+  {
+   "N": 5,
+   "pairs": 600,
+   "max_rel_dev": 6.887662211849341e-41
+  },
+  {
+   "N": 8,
+   "pairs": 13,
+   "max_rel_dev": 6.887662211849341e-41
+  },
+  {
+   "N": 9,
+   "pairs": 13,
+   "max_rel_dev": 6.887662211849341e-41
+  },
+  {
+   "N": 20,
+   "pairs": 13,
+   "max_rel_dev": 3.2142423655296924e-40
+  },
+  {
+   "N": 35,
+   "pairs": 13,
+   "max_rel_dev": 9.183549615799121e-41
+  }
+ ],
+ "eq64_vs_form_a": [
+  {
+   "N": 2,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 0.0,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "1.0",
+   "rel_dev_2N2R_vs_form_a": 0.0,
+   "rel_dev_2N2R_vs_exact_rational": 0.0
+  },
+  {
+   "N": 3,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 4.591774807899561e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "1.5",
+   "rel_dev_2N2R_vs_form_a": 1.1479437019748901e-41,
+   "rel_dev_2N2R_vs_exact_rational": 1.1479437019748901e-41
+  },
+  {
+   "N": 4,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 6.887662211849341e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "1.8571428571428571429",
+   "rel_dev_2N2R_vs_form_a": 4.591774807899561e-41,
+   "rel_dev_2N2R_vs_exact_rational": 2.2958874039497803e-41
+  },
+  {
+   "N": 5,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 2.2958874039497803e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "2.1363636363636363636",
+   "rel_dev_2N2R_vs_form_a": 1.1479437019748901e-41,
+   "rel_dev_2N2R_vs_exact_rational": 2.2958874039497803e-41
+  },
+  {
+   "N": 6,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 9.183549615799121e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "2.3656565656565656566",
+   "rel_dev_2N2R_vs_form_a": 3.4438311059246704e-41,
+   "rel_dev_2N2R_vs_exact_rational": 0.0
+  },
+  {
+   "N": 7,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 1.4923268125673572e-40,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "2.5601443464314354451",
+   "rel_dev_2N2R_vs_form_a": 5.739718509874451e-41,
+   "rel_dev_2N2R_vs_exact_rational": 0.0
+  },
+  {
+   "N": 10,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 9.183549615799121e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "3.0116695648965349077",
+   "rel_dev_2N2R_vs_form_a": 2.2958874039497803e-41
+  },
+  {
+   "N": 11,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 5.739718509874451e-41,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "3.132576980554791042",
+   "rel_dev_2N2R_vs_form_a": 1.1479437019748901e-41
+  },
+  {
+   "N": 35,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 3.4438311059246704e-40,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "4.6043454856874188864",
+   "rel_dev_2N2R_vs_form_a": 2.2958874039497803e-41
+  },
+  {
+   "N": 36,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 1.997422041436309e-39,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "4.640201899041134071",
+   "rel_dev_2N2R_vs_form_a": 5.969307250269429e-40
+  },
+  {
+   "N": 100,
+   "parity": "even",
+   "max_rel_dev_term_by_term": 2.6494540641580465e-38,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "5.9408302866423627236",
+   "rel_dev_2N2R_vs_form_a": 6.221854864703905e-39
+  },
+  {
+   "N": 101,
+   "parity": "odd",
+   "max_rel_dev_term_by_term": 1.169754632312413e-38,
+   "rel_dev_leading_term": 0.0,
+   "R_N_eq64": "5.9534989173125356786",
+   "rel_dev_2N2R_vs_form_a": 2.4795583962657627e-39
+  }
+ ],
+ "summary": {
+  "eq57_max_rel_dev_vs_pinv": 4.325042739409324e-15,
+  "eq57_n_ordered_pairs_vs_pinv": 4536,
+  "eq57_max_rel_dev_vs_thm_pair": 3.2142423655296924e-40,
+  "eq57_n_pairs_vs_thm_pair": 964,
+  "eq64_max_rel_dev_term_by_term_vs_form_a": 2.6494540641580465e-38,
+  "eq64_sizes": [
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   10,
+   11,
+   35,
+   36,
+   100,
+   101
+  ],
+  "conclusion": "Eq. (57) of Tan and Tan (2020) coincides with Theorem thm-pair (through the commute-time identity) and their Eq. (64) coincides term by term with form (a) of Theorem thm-single, for odd and even N."
+ }
+}

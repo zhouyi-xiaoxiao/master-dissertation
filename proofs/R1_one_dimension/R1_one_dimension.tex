@@ -1,0 +1,2277 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\fD}{\mathfrak{D}}
+\newcommand{\CA}{\textsc{ca}}
+\emergencystretch=3em
+
+\title{The most probable first-passage time of the lazy walk on a segment:\\ a rigorous one-dimensional theory\\[4pt]\large Companion note R1}
+\author{Xiaoxiao Zhouyi}
+\date{2026-10-01}
+% Convention for the "% src:" comments: paths are relative to the root of the repository (code/msc_rigorous_1d/, data/msc_rigorous_1d/, data/msc_rigorous_1d/logs/);
+% every quantitative statement carries such a comment naming the certificate or check that produces its numbers.
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+\medskip\noindent{\small\textit{Note.} This document is the companion note R1 of the article ``Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices'' (\texttt{paper.pdf}, Section~7; Supplementary Material, Section~S8), in the repository \texttt{https://\allowbreak github.com/\allowbreak zhouyi-xiaoxiao/\allowbreak master-dissertation}. In the repository, its scripts are in \texttt{code/msc\_rigorous\_1d/} and its data in \texttt{data/msc\_rigorous\_1d/}; paths written \texttt{scripts/\dots} and \texttt{data/\dots} below refer to these folders; the paths in the \texttt{\%~src} comments of the \LaTeX{} source are relative to the root of the repository, and the run logs they cite are in \texttt{data/msc\_rigorous\_*/logs/}. Other run logs, the code of the internal checks and working notes mentioned below are not part of the repository; \texttt{notes/VERIFICATION.md} summarises how this note was checked.}\par\medskip
+
+
+\begin{abstract}
+% src: data/msc_rigorous_1d/03_constants.json (c, kappa, rho); data/msc_rigorous_1d/35_disc_uniformK.json, data/msc_rigorous_1d/15_disc_small_N.jsonl,
+% src: data/msc_rigorous_1d/32_disc_small_N_ext.jsonl (discrete window); data/msc_rigorous_1d/12_cont_theorem.json, data/msc_rigorous_1d/13_cont_small_N.json
+% src: (continuous time); data/msc_rigorous_1d/16_q1_theorem.json, data/msc_rigorous_1d/17_q1_small_N.json (q = 1); data/msc_rigorous_1d/31_tp2_powers_q4_5.json,
+% src: data/msc_rigorous_1d/31_tp2_powers_q9_10.json (unimodality); data/msc_rigorous_1d/25_start_N0_101_K3p5.jsonl, data/msc_rigorous_1d/26_start_small_N_K3p5.jsonl
+% src: (general start); data/msc_rigorous_1d/36_start_failure.json (failure for starts away from the wall)
+For the lazy nearest-neighbour walk on $\{1,\dots,N\}$ with move probability $q\in(0,1]$, a reflecting
+wall behind site $1$ and an absorbing target at site $N$, we replace the formal asymptotics of the
+first-passage mode by theorems. With $L=N-\frac12$ and $T$ the first-passage time from the reflecting end we prove:
+the exact spectral law for every start; unimodality (continuous time: every start, every $q$; discrete time:
+every start when the spectrum is nonnegative, i.e.\ $q\le q_N$; from the reflecting end, log-concavity for $q\le\frac23$ and unimodality
+for \emph{all} $N$ whenever $q\le\frac45$, which is sharp, by an ``eventual total positivity'' argument: $Q^k$ is
+$TP_2$ for all $k\ge10$ when $q=\frac45$; also $q\le\frac9{10}$ for $N\ge9$), and exactly how it fails for
+$q$ near $1$ (from the reflecting end) and for $q$ above an explicit threshold depending only on $N-x_0$ (from any
+other start); that the limiting density $G(u)=\frac\pi2\sum_{k\,\rm odd}(-1)^{(k-1)/2}k\,\ee^{-k^2\pi^2u/8}$ is
+log-concave with a unique maximiser
+\[
+   c=0.33328426549494789874852691654344242109703655907113188526100593708624\ldots
+\]
+(enclosed to $70$ digits); and explicit finite-$N$ laws for the mode $t^*$:
+\begin{itemize}
+\item continuous time, all $N\ge3$: $\ \bigl|q\,t^*_{\rm c}/L^{2}-c+\kappa/L^{2}\bigr|<1.78/L^{4}$,
+ $\kappa=0.0862737793\ldots$, and $L^4(q\,t^*_{\rm c}/L^2-c+\kappa/L^2)\to\kappa_2=-1.5308900198\ldots$, given in closed
+ form by derivatives of $G$ at $c$;
+\item discrete time, $q\le\frac45$, all $N\ge3$ (and $q\le\frac9{10}$, all $N\ge10$): $\ \tau-E<t^{*}<\tau+1+E$ with
+ $\tau=(cL^2-\kappa)/q+1-\rho$, $\rho=1.9911786618\ldots$, $E=1.78/(qL^2)$; hence
+ $|q\,t^*/L^2-c|<(0.0863+0.9912q)/L^2+1.78/L^4$, and $t^*=\lceil\tau\rceil$ exactly unless $\tau$ is within $E$ of an integer;
+\item discrete time, $\frac9{10}<q<1$: the same (with $1.56$) for $N\ge601$ and $(1-q)L^2\gtrsim27\ln L+100$
+ (precisely: condition \eqref{eq:hcond}; e.g.\ all $N\ge601$ if $q\le0.999$);
+\item $q=1$ (simple random walk), all $N\ge3$: $t^*\equiv N-1\pmod 2$ and
+ $\tau_1-10.3/L<t^*<\tau_1+2+10.3/L$ with $\tau_1=cL^2-bL-1.2503\ldots$, $b=0.3325085829\ldots$; so here the error
+ of $t^*/L^2\to c$ is of exact order $N^{-1}$;
+\item general start $x_0$, $\xi_N=(x_0-\frac12)/L$: the limit density $G_\xi$ has exactly one critical point
+ $c(\xi)$, which is non-degenerate, and mode$\cdot q/L^2\to c(\xi)$ (continuous time, and discrete time for
+ $q\le\frac12$); for starts in the half next to the wall ($\xi_N\le\frac12$) and all $N\ge3$:
+ $|q\,t^*_{\rm c}/L^2-c(\xi_N)+\kappa(\xi_N)/L^2|<3.5/L^4$ in continuous time and
+ $\tau-E<t^*<\tau+1+E$, $\tau=(c(\xi_N)L^2-\kappa(\xi_N))/q+1-\rho(\xi_N)$, $E=3.5/(qL^2)$, in discrete time with
+ $q\le\frac12$; on the other hand, for every start $x_0\ge2$ the discrete-time PMF is \emph{not} unimodal as soon as
+ $q>\frac45$, $q>\frac{4+\sqrt2}7$ or $q>1-\frac1d$, according as $d=N-x_0$ is $1$, $2$ or $\ge3$.
+\end{itemize}
+In particular mode$/\E T\to c$ for every fixed $q\in(0,1]$. Statements are labelled \emph{Theorem} only when a
+complete proof is given; computer-assisted steps (\CA) use ball arithmetic (Arb, via \texttt{python-flint}) or
+exact integer/rational arithmetic and are listed with their scripts in Section~\ref{sec:gaps}, together with
+what remains open.
+\end{abstract}
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Setting and notation}\label{sec:setting}
+
+Fix an integer $N\ge 2$ and $q\in(0,1]$. The walk lives on $\{1,\dots,N\}$. At each step it attempts a move
+with probability $q$, to the left or to the right with probability $q/2$ each, and rests with probability
+$1-q$; an attempted move from site $1$ to the left is cancelled (the walker stays). Site $N$ is absorbing.
+Write $n=N-1$ for the number of transient sites and
+\[
+  L:=N-\tfrac12 .
+\]
+The transition matrix restricted to the transient sites $\{1,\dots,n\}$ is the symmetric tridiagonal matrix
+\begin{equation}\label{eq:Q}
+  Q_{11}=1-\tfrac q2,\qquad Q_{jj}=1-q\ (2\le j\le n),\qquad Q_{j,j\pm1}=\tfrac q2 .
+\end{equation}
+For a start site $x_0\in\{1,\dots,n\}$ let $T$ be the absorption time, $d:=N-x_0$ the distance to the target,
+\[
+  f(t)=f_{x_0}(t):=\P_{x_0}(T=t)=\tfrac q2\,(Q^{t-1})_{x_0,n},\qquad t\ge 1 ,
+\]
+because $T=t$ means that the walker is at site $n$ at time $t-1$ without earlier absorption and then steps
+to the right. The \emph{continuous-time walk} has generator $Q-I$ on the transient sites (each neighbour is
+attempted at rate $q/2$); its absorption time has density $g(t)=g_{x_0}(t)=\frac q2(\ee^{t(Q-I)})_{x_0,n}$.
+A \emph{mode} is a maximiser of $f$ over $t\in\{1,2,\dots\}$ (resp.\ of $g$ over $t\ge0$).
+
+Throughout,
+\[
+  \theta_m:=\frac{(2m-1)\pi}{2N-1}=\frac{(2m-1)\pi}{2L},\qquad
+  \nu_m:=q(1-\cos\theta_m),\qquad \lambda_m:=1-\nu_m,\qquad m=1,\dots,n .
+\]
+For odd $k\ge1$ we write $y_k:=k\pi/4$, $\sigma_k:=(-1)^{(k-1)/2}$, so that with $k=2m-1$ we have
+$\theta_m/2=y_k/L=:x_k$ and $\sigma_k=(-1)^{m+1}$.
+
+A sequence $(a_t)_{t\ge1}$ of nonnegative numbers is called \emph{unimodal} if there is $t^*$ with
+$a_1\le\dots\le a_{t^*}\ge a_{t^*+1}\ge\cdots$, and \emph{log-concave} if $a_t^2\ge a_{t-1}a_{t+1}$ for all $t\ge2$
+and its support is an interval of integers.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Exact formulas}\label{sec:exact}
+
+\begin{lemma}[Spectrum of $Q$]\label{lem:spec}
+% src: code/msc_rigorous_1d/01_sanity_exact.py, data/msc_rigorous_1d/01_sanity.json
+For $m=1,\dots,n$ the vector $v_m(j)=\cos\bigl(\theta_m(j-\tfrac12)\bigr)$, $j=1,\dots,n$, satisfies
+$Qv_m=\lambda_mv_m$, and $\|v_m\|^2=\sum_{j=1}^n v_m(j)^2=(2N-1)/4$. The $\lambda_m$ are pairwise distinct,
+$1>\lambda_1>\dots>\lambda_n>1-2q$, and the $v_m$ form an orthogonal basis of $\R^n$.
+\end{lemma}
+\begin{proof}
+Put $v(j)=\cos(\theta(j-\frac12))$ for all integers $j$, $\theta=\theta_m$. From
+$\cos(A-\theta)+\cos(A+\theta)=2\cos A\cos\theta$,
+$(1-q)v(j)+\frac q2(v(j-1)+v(j+1))=(1-q+q\cos\theta)v(j)$ for every $j$. For $2\le j\le n-1$ this is
+$(Qv)(j)=\lambda v(j)$. For $j=1$: $v(0)=\cos(-\theta/2)=v(1)$, hence
+$(Qv)(1)=(1-\frac q2)v(1)+\frac q2v(2)=(1-q)v(1)+\frac q2(v(0)+v(2))=\lambda v(1)$. For $j=n$:
+$v(n+1)=\cos(\theta_m(N-\frac12))=\cos((2m-1)\pi/2)=0$, hence
+$(Qv)(n)=(1-q)v(n)+\frac q2v(n-1)=(1-q)v(n)+\frac q2(v(n-1)+v(n+1))=\lambda v(n)$.
+Since $0<\theta_1<\dots<\theta_n<\pi$ and $\cos$ is strictly decreasing on $[0,\pi]$, the eigenvalues are distinct
+and lie in $(1-2q,1)$; eigenvectors of a symmetric matrix for distinct eigenvalues are orthogonal.
+Finally $\sum_{j=1}^n\cos^2(\theta(j-\frac12))=\frac n2+\frac12\sum_{j=1}^n\cos((2j-1)\theta)
+=\frac n2+\frac{\sin(2n\theta)}{4\sin\theta}$, and $2n\theta_m=(2m-1)\pi-\theta_m$ gives
+$\sin(2n\theta_m)=\sin\theta_m$; so $\|v_m\|^2=\frac n2+\frac14=\frac{2N-1}4$.
+\end{proof}
+
+\begin{theorem}[Exact first-passage law, every start]\label{thm:exact}
+% src: code/msc_rigorous_1d/01_sanity_exact.py, data/msc_rigorous_1d/01_sanity.json (spectral formula vs exact rational recursion)
+Let $x_0\in\{1,\dots,N-1\}$ and $d=N-x_0$. Then for all $t\ge1$ (with $0^0:=1$) and all $s\ge0$,
+\begin{align}
+ f_{x_0}(t)&=\frac{2q}{2N-1}\sum_{m=1}^{N-1}\sin\theta_m\,\sin(d\,\theta_m)\,\lambda_m^{\,t-1},\label{eq:f}\\
+ g_{x_0}(s)&=\frac{2q}{2N-1}\sum_{m=1}^{N-1}\sin\theta_m\,\sin(d\,\theta_m)\,\ee^{-\nu_ms}.\label{eq:g}
+\end{align}
+For the reflecting end, $x_0=1$: $\sin(d\theta_m)=(-1)^{m+1}\cos(\theta_m/2)$. Moreover
+$f_{x_0}(t)=0$ for $t<d$, $f_{x_0}(d)=(q/2)^d$, and $g_{x_0}^{(i)}(0)=0$ for $i<d-1$,
+$g_{x_0}^{(d-1)}(0)=(q/2)^{d}$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:spec}, $(Q^{t-1})_{x_0,n}=\sum_m\lambda_m^{t-1}v_m(x_0)v_m(n)/\|v_m\|^2$. With
+$\theta_mL=(2m-1)\pi/2$ and $\cos((2m-1)\frac\pi2-a)=\sin((2m-1)\frac\pi2)\sin a=(-1)^{m+1}\sin a$,
+\[
+  v_m(n)=\cos(\theta_mL-\theta_m)=(-1)^{m+1}\sin\theta_m,\qquad
+  v_m(x_0)=\cos(\theta_mL-d\theta_m)=(-1)^{m+1}\sin(d\theta_m).
+\]
+Multiplying by $\frac q2\cdot\frac4{2N-1}$ gives \eqref{eq:f}; \eqref{eq:g} is the same computation for
+$\ee^{s(Q-I)}$. For $x_0=1$, $d\theta_m=\theta_mL-\theta_m/2$. Since $Q$ is tridiagonal,
+$(Q^{i})_{x_0,n}=0$ for $i<n-x_0=d-1$ and $(Q^{d-1})_{x_0,n}=(q/2)^{d-1}$ (a single path); the same holds for
+$(Q-I)^i$, which gives the statements on $f$ near $t=d$ and on the derivatives of $g$ at $0$.
+\end{proof}
+
+\begin{theorem}[Product formula from the reflecting end]\label{thm:product}
+% src: code/msc_rigorous_1d/01_sanity_exact.py, data/msc_rigorous_1d/01_sanity.json (product formula)
+Let $x_0=1$. Then $\P(T<\infty)=1$ and, for $|z|\le1$ and $s\ge0$,
+\begin{equation}\label{eq:product}
+  \E\,z^{T}=\prod_{m=1}^{N-1}\frac{(1-\lambda_m)\,z}{1-\lambda_mz},\qquad
+  \E\,\ee^{-sT_{\rm cont}}=\prod_{m=1}^{N-1}\frac{\nu_m}{\nu_m+s},\qquad
+  \prod_{m=1}^{N-1}\bigl(1-\cos\theta_m\bigr)=2^{-(N-1)} .
+\end{equation}
+Consequently: in continuous time $T$ is distributed as a sum of $N-1$ independent exponential variables with
+rates $\nu_1,\dots,\nu_{N-1}$; in discrete time, if all $\lambda_m\ge0$, i.e.\ if
+\begin{equation}\label{eq:qN}
+   q\le q_N:=\frac{1}{2\cos^2\!\bigl(\pi/(2N-1)\bigr)}\qquad(\text{note } q_N>\tfrac12,\ q_N\downarrow\tfrac12),
+\end{equation}
+$T$ is distributed as a sum of $N-1$ independent geometric variables on $\{1,2,\dots\}$ with success
+probabilities $1-\lambda_m$. In all cases
+$f(n+k)=(q/2)^{n}\,h_k(\lambda_1,\dots,\lambda_n)$, $k\ge0$, with $h_k$ the complete homogeneous symmetric
+polynomial of degree $k$.
+\end{theorem}
+\begin{proof}
+For $|z|\le 1$ the matrix $I-zQ$ is invertible (the eigenvalues of $Q$ lie in $(-1,1)$) and
+$\E z^T=\sum_{t\ge1}z^t\frac q2(Q^{t-1})_{1,n}=\frac{qz}2\bigl[(I-zQ)^{-1}\bigr]_{1,n}$. By Cramer's rule
+$[(I-zQ)^{-1}]_{1,n}=(-1)^{1+n}M_{n,1}/\det(I-zQ)$, where $M_{n,1}$ is the minor of $I-zQ$ obtained by deleting
+row $n$ and column $1$. That minor is the determinant of a lower triangular matrix (its $(j,k)$ entry is $(I-zQ)_{j,k+1}$, which vanishes for $k>j$) with diagonal entries
+$(I-zQ)_{j,j+1}=-zq/2$, $j=1,\dots,n-1$, so $M_{n,1}=(-zq/2)^{n-1}$ and
+\[
+   \E z^T=\frac{(qz/2)^{n}}{\det(I-zQ)}=\frac{(qz/2)^n}{\prod_m(1-\lambda_mz)} .
+\]
+The row sums of $Q$ are $1$ except the last, which is $1-q/2$; hence $(I-Q)\mathbf 1=\frac q2e_n$, i.e.\
+$\frac q2(I-Q)^{-1}e_n=\mathbf 1$, which says $\P_{x}(T<\infty)=\sum_tf_x(t)=1$ for every $x$. Putting $z=1$
+gives $(q/2)^n=\prod_m(1-\lambda_m)$, which is the third identity in \eqref{eq:product} and turns the display
+into the first. The second follows in the same way from
+$\E\ee^{-sT_{\rm cont}}=\frac q2[((s+1)I-Q)^{-1}]_{1,n}$. The factors in \eqref{eq:product} are the generating
+function of a geometric variable (if $0\le\lambda_m<1$) and the Laplace transform of an exponential
+variable, and $\lambda_n=1-q(1+\cos\frac{2\pi}{2N-1})=1-2q\cos^2\frac{\pi}{2N-1}$ is the smallest eigenvalue.
+Expanding $\prod_m(1-\lambda_mz)^{-1}=\sum_kh_k(\lambda)z^k$ gives the last statement.
+\end{proof}
+
+\begin{remark}
+The distributional statements are the Karlin--McGregor/Keilson theorem for birth--death chains
+(S.~Karlin, J.~McGregor, \emph{Coincidence properties of birth and death processes}, Pacific J.\ Math.\
+\textbf{9} (1959) 1109--1140; J.~Keilson, \emph{Log-concavity and log-convexity in passage time densities of
+diffusion and birth-death processes}, J.\ Appl.\ Probab.\ \textbf{8} (1971) 391--398); in the form used here
+they are J.~A.~Fill, \emph{The passage time distribution for a birth-and-death chain: strong stationary
+duality gives a first stochastic proof}, J.\ Theoret.\ Probab.\ \textbf{22} (2009) 543--557, Theorem~1.1
+(continuous time) and Theorem~1.2 (discrete time; the product form of the generating function holds for
+all eigenvalues in $[-1,1)$, the interpretation as a sum of geometric variables requires them to be
+nonnegative). The hypotheses of those theorems (birth--death chain on $\{0,\dots,d\}$, started at the
+reflecting state $0$, $d$ absorbing, positive birth and death probabilities) hold here with $d=N-1$. The proof
+above is self-contained. For $q>q_N$ some eigenvalues are negative and $T$ is \emph{not} a sum of geometric
+variables; this is the origin of the parity effects of Section~\ref{sec:unimodal}.
+\end{remark}
+
+\begin{corollary}[Moments]\label{cor:moments}
+% src: code/msc_rigorous_1d/01_sanity_exact.py, data/msc_rigorous_1d/01_sanity.json (MFPT and variance)
+For every start, $\E_{x_0}T=\bigl(N(N-1)-x_0(x_0-1)\bigr)/q$ in discrete and in continuous time. From the
+reflecting end, $\E T=N(N-1)/q=(L^2-\frac14)/q$,
+$\operatorname{Var}T_{\rm cont}=\sum_m\nu_m^{-2}$ and $\operatorname{Var}T=\sum_m\nu_m^{-2}-\E T$.
+\end{corollary}
+\begin{proof}
+$m(x):=(N(N-1)-x(x-1))/q$ satisfies $m(N)=0$, $\frac q2(m(1)-m(2))=1$ and, for $2\le x\le N-1$,
+$q\,m(x)-\frac q2(m(x-1)+m(x+1))=\frac12\bigl[-2x(x-1)+(x-1)(x-2)+(x+1)x\bigr]=1$; that is $(I-Q)m=\mathbf1$,
+the equation of the mean absorption time (the same linear system in continuous time). The variances follow
+from \eqref{eq:product}: cumulants add, an exponential of rate $\nu$ has variance $\nu^{-2}$ and the factor
+$(1-\lambda)z/(1-\lambda z)$ has second cumulant $\lambda/(1-\lambda)^2=\nu^{-2}-\nu^{-1}$ (as a formal identity
+this holds also for negative $\lambda$), and $\sum_m\nu_m^{-1}=\E T$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Unimodality and log-concavity}\label{sec:unimodal}
+
+\subsection{Descartes' rule for exponential sums}
+
+\begin{lemma}[Laguerre's extension of Descartes' rule]\label{lem:descartes}
+Let $\beta_1<\dots<\beta_r$ be real, $c_1,\dots,c_r$ real and not all zero, and
+$F(t)=\sum_{i=1}^rc_i\ee^{\beta_it}$. Then the number $Z(F)$ of real zeros of $F$, counted with multiplicity,
+is at most the number $V$ of sign changes in the sequence $(c_1,\dots,c_r)$ (zero entries discarded).
+\end{lemma}
+\begin{proof}
+We may assume all $c_i\ne0$. Induction on $V$. If $V=0$ all terms have the same sign and $F$ has no zero.
+Let $V\ge1$, choose $i$ with $c_ic_{i+1}<0$ and $\beta\in(\beta_i,\beta_{i+1})$, and put
+$h(t)=\ee^{-\beta t}F(t)$, which has the same zeros as $F$ with the same multiplicities. Then
+$h'(t)=\sum_jc_j(\beta_j-\beta)\ee^{(\beta_j-\beta)t}$; its coefficient sequence is obtained from $(c_j)$ by
+reversing the signs of $c_1,\dots,c_i$, so it has exactly $V-1$ sign changes and no zero entry. By induction
+$Z(h')\le V-1$. If $h$ had at least $V+1$ real zeros counted with multiplicity, say distinct zeros
+$t_1<\dots<t_p$ with multiplicities $\mu_1,\dots,\mu_p$, $\sum\mu_l\ge V+1$, then $h'$ would have a zero of
+multiplicity $\mu_l-1$ at each $t_l$ and, by Rolle's theorem, at least one zero in each of the $p-1$ gaps:
+$Z(h')\ge\sum(\mu_l-1)+p-1\ge V$, a contradiction. Hence $Z(F)=Z(h)\le V$.
+\end{proof}
+\noindent(E.~Laguerre, J.\ Math.\ Pures Appl.\ (3) \textbf{9} (1883) 99--146; see also G.~P\'olya and
+G.~Szeg\H{o}, \emph{Problems and Theorems in Analysis~II}, Part~V, Chapter~1.)
+
+\begin{lemma}\label{lem:signchanges}
+For integers $1\le D$ and reals $0<\vartheta_1<\dots<\vartheta_r<\Theta\le\pi$, the sequence
+$(\sin(D\vartheta_i))_{i=1}^r$ has at most as many sign changes as $\sin(D\vartheta)$ has zeros in $(0,\Theta)$,
+i.e.\ at most $\#\{j\ge1: j\pi/D<\Theta\}$. For $\Theta=\pi$ this is $D-1$; for $\Theta=\pi/2$ it is
+$\lceil D/2\rceil-1=\lfloor (D-1)/2\rfloor$.
+\end{lemma}
+\begin{proof}
+Between two sample points at which the values have opposite signs the continuous function $\sin(D\vartheta)$
+has a zero; disjoint index gaps give disjoint open intervals.
+\end{proof}
+
+\subsection{Continuous time, every start}
+
+\begin{theorem}[Strict unimodality in continuous time]\label{thm:unimodal-cont}
+Let $x_0\in\{1,\dots,N-1\}$, $d=N-x_0$.
+\begin{enumerate}
+\item If $d=1$, $g_{x_0}$ is completely monotone; in particular it is strictly decreasing on $[0,\infty)$.
+\item If $d\ge2$, then $g_{x_0}>0$ on $(0,\infty)$ and $g_{x_0}'$ has exactly one zero $t_c$ in $(0,\infty)$;
+$g_{x_0}'>0$ on $(0,t_c)$, $g_{x_0}'<0$ on $(t_c,\infty)$ and $g_{x_0}''(t_c)<0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By \eqref{eq:g}, $g=\frac{2q}{2N-1}\sum_mc_m\ee^{-\nu_mt}$ with $c_m=\sin\theta_m\sin(d\theta_m)$,
+$\sin\theta_m>0$, and exponents $-\nu_m$ strictly decreasing in $m$. If $d=1$ all $c_m=\sin^2\theta_m>0$.
+Let $d\ge2$. By Lemma~\ref{lem:signchanges} the coefficient sequence has $V\le d-1$ sign changes, and the
+same is true for the coefficient sequence $(-\nu_mc_m)$ of $g'$. By Theorem~\ref{thm:exact}, $g$ (an entire
+function of $t$) has a zero of multiplicity exactly $d-1$ at $t=0$ and $g^{(d-1)}(0)>0$. By
+Lemma~\ref{lem:descartes}, $g$ has no other real zero; hence $g>0$ on $(0,\infty)$. Likewise $g'$ has a zero
+of multiplicity exactly $d-2$ at $0$, so it has at most one other real zero, counted with multiplicity.
+Since $g(0)=0<g(t)$ for $t>0$ and $g(t)\to0$ as $t\to\infty$, $g$ attains its maximum at some $t_c>0$, where
+$g'(t_c)=0$. Thus $t_c$ is the only zero of $g'$ in $(0,\infty)$, it is simple, so $g''(t_c)\ne0$, and
+$g''(t_c)<0$ because $t_c$ is a maximum. The signs of $g'$ on the two sides follow.
+\end{proof}
+
+\begin{remark}
+For birth--death processes the unimodality of all passage-time densities is due to J.~Keilson,
+\emph{On the unimodality of passage time densities in birth-death processes}, Statist.\ Neerlandica
+\textbf{35} (1981) 49--55 (and, for diffusions, U.~R\"osler, \emph{Unimodality of passage times for
+one-dimensional strong Markov processes}, Ann.\ Probab.\ \textbf{8} (1980) 853--859). The argument above
+does not rely on these and gives in addition the non-degeneracy $g''(t_c)<0$.
+\end{remark}
+
+\subsection{Discrete time, nonnegative spectrum, every start}
+
+\begin{theorem}[Unimodality in discrete time when $q\le q_N$]\label{thm:unimodal-disc}
+Let $q\le q_N$ (see \eqref{eq:qN}; in particular any $q\le\frac12$), $x_0\in\{1,\dots,N-1\}$ and $d=N-x_0$. Then
+there is an integer $t^*\ge d$ such that
+\[
+ 0=f(1)=\dots=f(d-1)<f(d)<\dots<f(t^*),\qquad f(t^*)\ge f(t^*+1)>f(t^*+2)>\cdots .
+\]
+Thus $f_{x_0}$ is unimodal with at most two modes, which are then adjacent. If $q<q_N$ and $d\ge2$, the real-variable
+increment $\Psi$ defined in the proof has exactly one zero $t_0$ in $(d-1,\infty)$, and every mode lies in $[t_0,t_0+1]$.
+\end{theorem}
+\begin{proof}
+\emph{The case $q<q_N$.} All $\lambda_m$ are positive. Put $\Phi(t)=\sum_mc_m\lambda_m^{t-1}=\sum_m(c_m/\lambda_m)\ee^{t\ln\lambda_m}$ for
+real $t$, with $c_m=\sin\theta_m\sin(d\theta_m)$; then $f(t)=\frac{2q}{2N-1}\Phi(t)$ for integers $t\ge1$, the
+exponents $\ln\lambda_m$ are strictly decreasing, and $V\le d-1$ (Lemma~\ref{lem:signchanges}). The function
+$\Psi(t)=\Phi(t+1)-\Phi(t)=\sum_m(c_m/\lambda_m)(\lambda_m-1)\ee^{t\ln\lambda_m}$ has a coefficient sequence
+with the same number of sign changes. If $d=1$, $\Psi<0$ everywhere and the claim holds with $t^*=1$. Let
+$d\ge2$. $\Psi$ vanishes at $t=1,\dots,d-2$ (where $f(t)=f(t+1)=0$), so by Lemma~\ref{lem:descartes} it has at
+most one further real zero, counted with multiplicity. $\Psi(d-1)=\Phi(d)>0$, and $\Psi$ is negative at some
+integer $>d-1$ because $f(t)\to0$. Hence $\Psi$ has exactly one zero $t_0$ in $(d-1,\infty)$, it is simple,
+$\Psi>0$ on $[d-1,t_0)$ and $\Psi<0$ on $(t_0,\infty)$. Take $t^*=\lceil t_0\rceil$: the increments $f(t+1)-f(t)$ are
+positive for $d-1\le t<t_0$, nonpositive at $t=t^*$ and negative for $t>t_0$, which is the stated pattern (also when
+$t_0\in\Z$, where $f(t^*)=f(t^*+1)$).
+
+\emph{The case $q=q_N$} (relevant only for $N\ge3$, since $q_2=2$). Now $\lambda_n=1-2q_N\cos^2\frac\pi{2N-1}=0$ and
+$\lambda_1>\dots>\lambda_{n-1}>0$, so $\lambda_n^{t-1}=0$ for $t\ge2$ and, for integers $t\ge2$,
+$f(t)=\frac{2q}{2N-1}\Phi'(t)$ with the $(n-1)$-term exponential sum $\Phi'(t):=\sum_{m<n}c_m\lambda_m^{t-1}$; put
+$\Psi'(t):=\Phi'(t+1)-\Phi'(t)=\sum_{m<n}(c_m/\lambda_m)(\lambda_m-1)\ee^{t\ln\lambda_m}$ (real $t$). Its coefficient
+sequence is, up to the factors $(\lambda_m-1)/\lambda_m<0$, a subsequence of $(c_m)_{m\le n}$, so it has at most $d-1$ sign
+changes (Lemma~\ref{lem:signchanges}), and by Lemma~\ref{lem:descartes} $\Psi'$ has at most $d-1$ real zeros, counted with
+multiplicity. Moreover $c_1=\sin\theta_1\sin(d\theta_1)>0$ because $0<d\theta_1=d\pi/(2N-1)<\frac\pi2$, so the leading
+term gives $\Psi'(t)<0$ for all large $t$. For integers $t\ge2$ we have $f(t+1)-f(t)=\frac{2q}{2N-1}\Psi'(t)$.
+If $d=1$, all $c_m=\sin^2\theta_m>0$, so $\Psi'<0$ everywhere and $f$ is strictly decreasing from $t=2$ on; moreover
+$f(2)<f(1)=\frac q2$, because $f(2)=\frac q2(1-q)$ if $N\ge3$ (one rest at the interior site $N-1$, then a step to $N$);
+so $t^*=1$. If $d=2$, $\Psi'$ has at most one real zero, counted with multiplicity, and it is negative for large $t$; hence on
+$[2,\infty)$ either $\Psi'<0$, or $\Psi'$ has exactly one zero $t_0\ge2$, which is simple, with $\Psi'>0$ on $[2,t_0)$
+and $\Psi'<0$ on $(t_0,\infty)$; together with $f(2)=(q/2)^2>0=f(1)$ this gives the pattern with $t^*=2$, resp.\
+$t^*=\lceil t_0\rceil$. If $d\ge3$, $\Psi'$ vanishes at the $d-3$ integers $t=2,\dots,d-2$ (where $f(t)=f(t+1)=0$) and
+$\Psi'(d-1)=\frac{2N-1}{2q}f(d)>0$ (note $d-1\ge2$). Since $\Psi'(d-1)>0$ and $\Psi'<0$ for large $t$, the total
+multiplicity of the zeros of $\Psi'$ in $(d-1,\infty)$ is odd; these zeros are different from the $d-3$ known ones, so the
+total multiplicity in $(d-1,\infty)$ is at most $(d-1)-(d-3)=2$, hence it is $1$: there is exactly one zero $t_0>d-1$, it
+is simple, $\Psi'>0$ on $[d-1,t_0)$ and $\Psi'<0$ on $(t_0,\infty)$. With $t^*=\lceil t_0\rceil$ the stated strict pattern
+follows exactly as in the first case. (Numerical sanity check at $q=q_N$, $3\le N\le25$, all starts, $60$ digits:
+script \texttt{38}.) % src: code/msc_rigorous_1d/38_qN_strict.py, data/msc_rigorous_1d/38_qN_strict.json
+\end{proof}
+
+\subsection{Log-concavity from the reflecting end for \texorpdfstring{$q\le 2/3$}{q<=2/3}}
+
+\begin{theorem}[Log-concavity]\label{thm:logconcave}
+% src: code/msc_rigorous_1d/09_sec3_sec4_sanity.py, data/msc_rigorous_1d/09_sanity.json (log-concavity for q <= 2/3)
+Let $x_0=1$.
+\begin{enumerate}
+\item If $q\le\frac23$, the PMF $f$ is log-concave: $f(t)^2\ge f(t-1)f(t+1)$ for all $t\ge2$, and $f(t)>0$
+exactly for $t\ge N-1$. In particular $f$ is unimodal.
+\item In continuous time the density $g$ is log-concave on $(0,\infty)$, for every $q\in(0,1]$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) For $N=2$, $f$ is geometric. Let $n\ge2$ and $K_t(x):=(Q^t)_{x,n}$ for $x\in\{1,\dots,n\}$, $t\ge0$, so that
+$f(t)=\frac q2K_{t-1}(1)$ and $K_t(x)=\sum_zQ_{xz}K_{t-1}(z)$. Define, for $t\ge1$,
+$M_t(x,y):=K_t(x)K_{t-1}(y)-K_{t-1}(x)K_t(y)$.
+
+\emph{Claim: $M_t(x,y)\ge0$ for all $t\ge1$ and $x<y$.}
+For $t=1$, $K_0=e_n$ and $x<y\le n$ give $M_1(x,y)=Q_{x,n}\,\delta_{y,n}\ge0$. For the induction step,
+\[
+  M_{t+1}(x,y)=\sum_{z,w}Q_{xz}Q_{yw}\,M_t(z,w)=\sum_{z<w}\bigl(Q_{xz}Q_{yw}-Q_{xw}Q_{yz}\bigr)M_t(z,w),
+\]
+using $M_t(z,w)=-M_t(w,z)$. It remains to check that $Q$ is totally positive of order $2$:
+$Q_{xz}Q_{yw}\ge Q_{xw}Q_{yz}$ for $x<y$, $z<w$. If $Q_{xw}Q_{yz}\ne0$ then $|x-w|\le1$ and $|y-z|\le1$;
+with $x<y$ and $z<w$ this forces $z\ge y-1\ge x$ and $w\le x+1$, hence $z=x$, $w=x+1$, $y=x+1$, and the minor is
+$Q_{xx}Q_{x+1,x+1}-\frac{q^2}4\ge(1-q)^2-\frac{q^2}{4}=(1-\frac{3q}2)(1-\frac q2)\ge0$ for $q\le\frac23$.
+
+Now let $t\ge2$. From $K_t(1)=(1-\frac q2)K_{t-1}(1)+\frac q2K_{t-1}(2)$ and the same identity with $t-1$,
+\[
+  K_{t-1}(1)^2-K_{t-2}(1)K_t(1)=\tfrac q2\bigl[K_{t-1}(1)K_{t-2}(2)-K_{t-2}(1)K_{t-1}(2)\bigr]
+  =\tfrac q2M_{t-1}(1,2)\ \ge0 ,
+\]
+that is, $f(t)^2\ge f(t-1)f(t+1)$. The support statement is in Theorem~\ref{thm:exact} together with the
+existence of a path of every length $t\ge N-1$ (rest at site $1$). A log-concave sequence whose support is an
+interval has nonincreasing ratios $f(t+1)/f(t)$ on its support and is therefore unimodal; moreover
+$f(k)^2\ge f(k-j)f(k+j)$ for all $j\ge0$.
+
+(2) Let $A=Q-I$. For an integer $M\ge 3q/2$ the walk with move probability $q/M\le\frac23$ has transition matrix
+$I+A/M$ and PMF $f_{q/M}(k)=\frac{q}{2M}[(I+A/M)^{k-1}]_{1,n}$. If $k_M/M\to t$ then
+$(I+A/M)^{k_M-1}\to\ee^{tA}$, so $Mf_{q/M}(k_M)\to g(t)$. Given $0<t_1<t_2$ take $k_1=\lceil Mt_1\rceil$,
+$j=\lceil M(t_2-t_1)/2\rceil$; by (1), $f_{q/M}(k_1+j)^2\ge f_{q/M}(k_1)f_{q/M}(k_1+2j)$, and letting
+$M\to\infty$ gives $g(\frac{t_1+t_2}2)^2\ge g(t_1)g(t_2)$. A continuous midpoint-log-concave function is
+log-concave.
+\end{proof}
+
+\begin{remark}\label{rem:mlr}
+% src: code/msc_rigorous_1d/02_unimodality_scan.py, data/msc_rigorous_1d/02_unimodality_scan.json (q_lc values)
+The Claim in the proof holds for every $q\le\frac23$ and all $x<y$: the ratio $f_x(t+1)/f_x(t)$ is
+nonincreasing in the start site $x$ (monotone likelihood ratio in the distance to the target). Numerically,
+log-concavity of $f$ from the reflecting end holds exactly for $q\le q_{\rm lc}(N)$, where $q_{\rm lc}(N)$ is
+the root of $e_2(\lambda_1,\dots,\lambda_n)=0$ (the first inequality $f(N)^2\ge f(N-1)f(N+1)$ is the binding
+one); $q_{\rm lc}(3)=0.7639$, $q_{\rm lc}(4)=0.7847$, $q_{\rm lc}(5)=\frac45$, $q_{\rm lc}(N)\uparrow1$
+(Numerical observation, script \texttt{02}).
+\end{remark}
+
+\subsection{Monotonicity of unimodality in \texorpdfstring{$q$}{q}}
+
+\begin{lemma}[Slowing down preserves unimodality]\label{lem:qmono}
+Fix $N$ and $x_0$. If $f_{q_0}$ is unimodal for some $q_0\in(0,1]$, then $f_q$ is unimodal for every
+$q\in(0,q_0)$. Consequently $\{q\in(0,1]: f_q\text{ unimodal}\}$ is an interval $(0,q^*(N,x_0)]$.
+\end{lemma}
+\begin{proof}
+Let $p=q/q_0\in(0,1)$. Run the $q_0$-walk only at the times of an independent Bernoulli($p$) sequence and rest
+otherwise. The resulting chain moves left/right with probability $pq_0/2=q/2$ each (cancelled moves at site $1$
+remain rests), so it is the $q$-walk, and $T_q=\xi_1+\dots+\xi_{T_{q_0}}$ with i.i.d.\ geometric($p$) variables
+$\xi_i$ on $\{1,2,\dots\}$ independent of $T_{q_0}$. Hence, with $a_k:=f_{q_0}(k)$,
+\[
+  f_q(t)=\sum_{k\ge1}a_k\,K(k,t),\qquad K(k,t):=\binom{t-1}{k-1}p^k(1-p)^{t-k}\quad(k,t\ge1).
+\]
+Pascal's rule gives $K(k,t+1)=(1-p)K(k,t)+pK(k-1,t)$ with $K(0,t):=0$, hence
+\[
+  f_q(t+1)-f_q(t)=p\sum_{k\ge1}(a_{k+1}-a_k)K(k,t)=:p\,e(t).
+\]
+By unimodality of $a$ there is $k_0\ge0$ with $b_k:=a_{k+1}-a_k\ge0$ for $k\le k_0$ and $b_k\le0$ for $k>k_0$.
+We show: if $e(t_1)<0$ and $t_2>t_1$ then $e(t_2)\le0$; this gives the unimodality of $f_q$. Since
+$K(k,t_1)=0$ for $k>t_1$, $e(t_1)<0$ forces $k_0<t_1$ (otherwise $e(t_1)$ is a sum of nonnegative terms);
+if $k_0=0$ all $b_k\le0$ and $e\le0$ everywhere. For $1\le k\le t_1$,
+\[
+  \frac{K(k,t_2)}{K(k,t_1)}=(1-p)^{t_2-t_1}\prod_{i=0}^{k-2}\frac{t_2-1-i}{t_1-1-i}
+\]
+is nondecreasing in $k$. Let $\gamma$ be its value at $k=k_0$. Then $K(k,t_2)\le\gamma K(k,t_1)$ for $k\le k_0$
+(where $b_k\ge0$) and $K(k,t_2)\ge\gamma K(k,t_1)$ for $k>k_0$ (where $b_k\le0$; for $k>t_1$ the right side
+is $0$). Therefore $e(t_2)=\sum_kb_kK(k,t_2)\le\gamma\sum_kb_kK(k,t_1)=\gamma e(t_1)<0$.
+The last assertion follows because unimodality is preserved under the pointwise limit $q\uparrow q^*$.
+\end{proof}
+
+\subsection{What fails for \texorpdfstring{$q$}{q} close to 1}
+
+\begin{proposition}[Sharp obstruction at the first three values]\label{prop:fail}
+% src: code/msc_rigorous_1d/39_hand_constants.py, data/msc_rigorous_1d/39_hand_constants.json (identity, discriminant, N = 4 values)
+Let $x_0=1$.
+\begin{enumerate}
+\item For $N\ge4$ and every $q\in(0,1]$: $f(N+1)>f(N)$.
+\item $f(N)<f(N-1)$ if and only if $q>1-\frac1{2N-3}$.
+\item Hence for $N\ge4$ and $q>1-\frac{1}{2N-3}$ the PMF is not unimodal
+($f(N-1)>f(N)<f(N+1)$), so $q^*(N,1)\le1-\frac1{2N-3}$. In particular for every $q\in(\frac45,1]$ the PMF
+with $N=4$ is not unimodal, and for $q=1$ the PMF is not unimodal for any $N\ge4$.
+\item For $N\in\{2,3\}$ the PMF is unimodal for every $q\in(0,1]$. For $N=4$ it is unimodal if and only if
+$q\le\frac45$; at $q=\frac45$, $f(3)=f(4)=\frac{8}{125}<f(5)=\frac{208}{3125}$, the mode is $t=5$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:product}, $f(n+k)=(q/2)^nh_k(\lambda)$ with $h_0=1$,
+$h_1=\operatorname{tr}Q=n-(n-\frac12)q$ and $h_2=\frac12(h_1^2+\operatorname{tr}Q^2)$,
+$\operatorname{tr}Q^2=\sum_{i,j}Q_{ij}^2=(1-\frac q2)^2+(n-1)(1-q)^2+(n-1)\frac{q^2}2$. A direct expansion gives
+\[
+  2(h_2-h_1)=n(n-1)-n(2n-1)\,q+\bigl(n^2+\tfrac n2-1\bigr)q^2 ,
+\]
+a quadratic in $q$ with positive leading coefficient and discriminant $n(-2n^2+7n-4)<0$ for $n\ge3$. This proves
+(1). (2) is $h_1<1\iff q>(n-1)/(n-\frac12)$. (3) follows. (4): for $N=2$, $f$ is geometric. For $N=3$ and $q=1$,
+$e_1=\lambda_1+\lambda_2=\frac12$, $e_2=\lambda_1\lambda_2=\det Q=-\frac14$, so $h_{k+1}=\frac12h_k+\frac14h_{k-1}$,
+$h_0=1$, $h_1=\frac12$, i.e.\ $h_k=F_{k+1}/2^k$ with the Fibonacci numbers $F_1=F_2=1$; $h_{k+1}\le h_k$ is
+$F_{k+2}\le2F_{k+1}$, which holds. So $f$ is nonincreasing on its support at $q=1$, hence unimodal, and
+Lemma~\ref{lem:qmono} gives all $q<1$. For $N=4$, $q=\frac45$ the values $f(3)=f(4)=(\frac25)^3$ and $f(5)=(\frac25)^3h_2=\frac{208}{3125}$ follow from the
+formulas above, and beyond $t=5$ the sequence decreases (Theorem~\ref{thm:tp2}(2)), so $f$ is
+unimodal at $q=\frac45$, hence for $q\le\frac45$ by Lemma~\ref{lem:qmono}; for $q>\frac45$ use (3).
+\end{proof}
+
+\begin{theorem}[$q=1$: each parity class is unimodal]\label{thm:parity}
+% src: code/msc_rigorous_1d/09_sec3_sec4_sanity.py, data/msc_rigorous_1d/09_sanity.json; code/msc_rigorous_1d/21_q1_sanity.py, data/msc_rigorous_1d/21_q1_sanity.json
+Let $q=1$, $x_0\in\{1,\dots,N-1\}$, $d=N-x_0$ and $d'=2N-1-d=N+x_0-1$. Then $f(t)=0$ for $t<d$, and also for
+$t<d'$ with $t\equiv d'\pmod 2$. Each of the two sequences
+\[
+   i\mapsto f(d+2i)\quad\text{and}\quad i\mapsto f(d'+2i),\qquad i\ge0,
+\]
+is positive and strictly increasing up to an index $i^*$, satisfies $f(\cdot+2i^*)\ge f(\cdot+2i^*+2)$ there,
+and is strictly decreasing afterwards. Moreover, with $\vartheta_k=k\pi/(2N-1)$, for $D\in\{d,d'\}$ and
+$t\equiv D\pmod2$,
+\begin{equation}\label{eq:parityformula}
+   f(t)=\frac{2}{2N-1}\sum_{k=1}^{N-1}\sin\vartheta_k\,\sin(D\vartheta_k)\,\cos^{t-1}\vartheta_k .
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $W=2N-1$. For $m\le N/2$ put $k=2m-1$ (odd, $k\le N-1$): $\theta_m=\vartheta_k$, $\lambda_m=\cos\vartheta_k$.
+For $m>N/2$ put $k=2(N-m)$ (even, $2\le k\le N-1$): $\theta_m=\pi-\vartheta_k$, $\lambda_m=-\cos\vartheta_k$,
+$\sin\theta_m=\sin\vartheta_k$ and $\sin(d\theta_m)=(-1)^{d+1}\sin(d\vartheta_k)$. This is a bijection
+$m\leftrightarrow k\in\{1,\dots,N-1\}$, and \eqref{eq:f} becomes
+\[
+  \tfrac W2f(t)=\sum_{k\ \rm odd}\sin\vartheta_k\sin(d\vartheta_k)\cos^{t-1}\vartheta_k
+   +(-1)^{d+t}\sum_{k\ \rm even}\sin\vartheta_k\sin(d\vartheta_k)\cos^{t-1}\vartheta_k .
+\]
+For $t\equiv d$ this is \eqref{eq:parityformula} with $D=d$. For $t\equiv d+1\equiv d'$ the sign is
+$(-1)^{k+1}$ for all $k$, and $(-1)^{k+1}\sin(d\vartheta_k)=\sin(k\pi-d\vartheta_k)=\sin(d'\vartheta_k)$ because
+$k\pi=W\vartheta_k$; this is \eqref{eq:parityformula} with $D=d'$.
+
+Vanishing: a path from $x_0$ to $N$ of length $t$ has $r$ right steps, $l$ left steps and $s$ cancelled steps
+(rests at site $1$), $r-l=d$, $r+l+s=t$. If $t\equiv d'\equiv d+1$ then $s$ is odd, so the path visits
+site $1$; then $l\ge x_0-1$, $r=d+l\ge N-1$ and $t\ge(N-1)+(x_0-1)+1=d'$.
+
+Fix $D\in\{d,d'\}$ and let $\Phi_D(t)$ be the right-hand side of \eqref{eq:parityformula} times $W/2$, for
+real $t$. It is an exponential sum with exponents $\ln\cos\vartheta_k$, strictly decreasing in $k$ since
+$0<\vartheta_k<\pi/2$, and by Lemma~\ref{lem:signchanges} (with $\Theta=\pi/2$) its coefficients have at most
+$V_D:=\lfloor(D-1)/2\rfloor$ sign changes. The function $\Psi_D(t)=\Phi_D(t+2)-\Phi_D(t)$ has coefficients
+$-\sin^3\vartheta_k\sin(D\vartheta_k)$, with the same number of sign changes. $\Phi_D$ vanishes at the
+$V_D$ integers $t=D-2i\ge1$, $i\ge1$; hence $\Psi_D$ vanishes at the $\max(V_D-1,0)$ integers $t=D-2i\ge1$,
+$i\ge2$. If $V_D=0$, $\Psi_D<0$ everywhere and the class sequence is strictly decreasing. If $V_D\ge1$,
+Lemma~\ref{lem:descartes} leaves room for at most one further real zero of $\Psi_D$; since
+$\Psi_D(D-2)=\Phi_D(D)=\frac W2f(D)>0$ and $f(D+2i)\to0$, there is exactly one zero $t_0>D-2$,
+$\Psi_D>0$ on $[D-2,t_0)$ and $\Psi_D<0$ on $(t_0,\infty)$.
+\end{proof}
+
+\begin{remark}
+Unfolding the reflection identifies the class $t\equiv d$ with exit of the simple
+random walk from $(1-N,N)$ through $N$ and the class $t\equiv d'$ with exit through $1-N$. At $q=1$ the two
+classes have different envelopes (their ratio is $1+O(1/N)$), which is why the raw PMF oscillates.
+\end{remark}
+
+\subsection{Beyond \texorpdfstring{$q=\frac23$}{q=2/3}: eventual total positivity}
+
+For $q>\frac23$ the matrix $Q$ is not $TP_2$ (the minor $Q_{xx}Q_{x+1,x+1}-Q_{x,x+1}Q_{x+1,x}=(1-q)^2-\frac{q^2}4$ is
+negative), and the induction in the proof of Theorem~\ref{thm:logconcave} breaks down at its first step. What
+that proof really needs, however, is the total positivity of the \emph{powers} $Q^{t}$ for the relevant $t$, and
+high powers of $Q$ are $TP_2$ again. For a matrix $A$ and indices $x<y$, $z<w$ write
+$A[x,y|z,w]:=A_{xz}A_{yw}-A_{xw}A_{yz}$; a matrix with nonnegative entries is called $TP_2$ if all these minors are
+nonnegative. We keep the notation $K_t(x)=(Q^t)_{x,n}$ and $M_t(x,y)=K_t(x)K_{t-1}(y)-K_{t-1}(x)K_t(y)$ of the proof of
+Theorem~\ref{thm:logconcave}; recall $f(t)=\frac q2K_{t-1}(1)$ and, for $t\ge1$,
+\begin{equation}\label{eq:M12}
+   f(t+1)^2-f(t)f(t+2)=\bigl(\tfrac q2\bigr)^3M_t(1,2) .
+\end{equation}
+
+\begin{lemma}[Products]\label{lem:cb}
+\begin{enumerate}
+\item For $n\times n$ matrices $A$, $B$ and $x<y$, $z<w$: $(AB)[x,y|z,w]=\sum_{u<v}A[x,y|u,v]\,B[u,v|z,w]$. Hence a
+product of $TP_2$ matrices is $TP_2$.
+\item For $t\ge1$ and $x<y$: $M_t(x,y)=\sum_{u<v}(Q^{t-1})[x,y|u,v]\,M_1(u,v)$, and $M_1(u,v)=Q_{u,n}\delta_{v,n}\ge0$.
+Consequently, if $Q^{k}$ is $TP_2$, then $M_{k+1}(x,y)\ge0$ for all $x<y$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) $(AB)[x,y|z,w]=\sum_{u,v}A_{xu}A_{yv}\,\beta(u,v)$ with $\beta(u,v):=B_{uz}B_{vw}-B_{uw}B_{vz}=-\beta(v,u)$; grouping
+the terms $(u,v)$ and $(v,u)$ gives $\sum_{u<v}(A_{xu}A_{yv}-A_{xv}A_{yu})\beta(u,v)$ (the Cauchy--Binet formula for
+minors of order two). (2) Since $K_t=Q^{t-1}K_1$ and $K_{t-1}=Q^{t-1}K_0$,
+$M_t(x,y)=\sum_{u,v}(Q^{t-1})_{xu}(Q^{t-1})_{yv}\bigl[K_1(u)K_0(v)-K_0(u)K_1(v)\bigr]$, the bracket is antisymmetric and
+equals $M_1(u,v)$ for $u<v$; and $K_0=e_n$ gives $M_1(u,v)=K_1(u)\delta_{v,n}=Q_{u,n}\delta_{v,n}$ for $u<v\le n$.
+\end{proof}
+
+\begin{lemma}[Contiguous minors suffice]\label{lem:contig}
+Let $k\ge1$ and let $P$ be an $n\times n$ matrix with $P_{xz}>0$ if $|x-z|\le k$ and $P_{xz}=0$ otherwise. If
+$P[x,x+1|z,z+1]\ge0$ for all $x,z$ with $x+1-k\le z$ and $z+1\le x+k$, then $P$ is $TP_2$.
+\end{lemma}
+\begin{proof}
+Let $x<y$, $z<w$. If $P_{xw}P_{yz}=0$ then $P[x,y|z,w]=P_{xz}P_{yw}\ge0$. Otherwise $|x-w|\le k$ and $|y-z|\le k$, hence
+$y-k\le z<w\le x+k$. For all rows $r\in[x,y]$ and columns $c\in[z,w]$ we then have $r-c\le y-z\le k$ and
+$c-r\le w-x\le k$, so $P_{rc}>0$; and for $x\le r<y$, $z\le c<w$ the pair $(r,c)$ satisfies $r+1-k\le y-k\le c$ and
+$c+1\le w\le r+k$, so $P_{r,c}P_{r+1,c+1}\ge P_{r,c+1}P_{r+1,c}$ by hypothesis, i.e.\
+$P_{r+1,c+1}/P_{r+1,c}\ge P_{r,c+1}/P_{r,c}$. Multiplying these inequalities over $c=z,\dots,w-1$ gives
+$P_{r+1,w}/P_{r+1,z}\ge P_{r,w}/P_{r,z}$, and chaining over $r=x,\dots,y-1$ gives $P_{yw}/P_{yz}\ge P_{xw}/P_{xz}$, that is
+$P[x,y|z,w]\ge0$.
+\end{proof}
+
+For $0<q<1$ the support of $Q^k$ is exactly the band $|x-z|\le k$ (a path may rest), so Lemma~\ref{lem:contig}
+applies to $P=Q^k$.
+
+\begin{lemma}[Locality]\label{lem:local}
+Write $Q_N$ for the matrix \eqref{eq:Q} on $n=N-1$ sites. Let $k\ge1$ and $N\ge N_0$ with $N_0-1\ge4k$. Then every
+minor $Q_N^k[x,y|z,w]$ ($x<y$, $z<w$) is either nonnegative because $(Q_N^k)_{xw}(Q_N^k)_{yz}=0$, or equal to some
+minor $Q_{N_0}^k[x',y'|z',w']$. In particular, if $Q_{N_0}^k$ is $TP_2$, then $Q_N^k$ is $TP_2$ for every $N\ge N_0$.
+\end{lemma}
+\begin{proof}
+$(Q_N^k)_{x,z}$ is the sum over the paths $x=s_0,s_1,\dots,s_k=z$ in $\{1,\dots,n\}$ with $|s_{i+1}-s_i|\le1$ of the
+products of the weights $\frac q2$ (a move), $1-q$ (a rest at a site $\ge2$) and $1-\frac q2$ (a rest at site $1$).
+A path starting at $x$ stays in $[x-k,x+k]$. Hence: (a) if $x\le n-k$, the entry does not depend on $N$ (the
+absorbing end is not felt): $(Q_N^k)_{x,z}=W_k(x,z)$; (b) if $x\ge k+1$, no path rests at site $1$ and the entry
+depends only on the distances to the absorbing end: $(Q_N^k)_{x,z}=V_k(n-x,n-z)$; (c) if $k+1\le x\le n-k$,
+$(Q_N^k)_{x,z}=p_k(z-x)$ with the $k$-step kernel $p_k$ of the lazy walk on $\Z$.
+
+Let $(Q_N^k)_{xw}(Q_N^k)_{yz}\ne0$; then (bandwidth $k$) $y-k\le z<w\le x+k$, in particular $y-x\le2k-1$, and
+$n_0:=N_0-1\ge4k$, $n\ge n_0$.
+\emph{Case $y\le n-k$, $x\le k$.} Then $y\le3k-1\le n_0-k$, both rows are given by (a), and the minor equals
+$Q_{N_0}^k[x,y|z,w]$. \emph{Case $y\le n-k$, $x\ge k+1$.} Both rows are given by (c), so the minor depends only on
+$(y-x,z-x,w-x)$ and equals $Q_{N_0}^k[k+1,\,k+1+y-x\,|\,k+1+z-x,\,k+1+w-x]$; here $k+1+y-x\le3k\le n_0-k$ and
+$1\le k+1+z-x$, $k+1+w-x\le2k+1\le n_0$. \emph{Case $y\ge n-k+1$.} Then $x\ge y-2k+1\ge n-3k+2\ge k+1$, both rows are
+given by (b), the minor depends only on $(n-x,n-y,n-z,n-w)$ and equals the minor of $Q_{N_0}^k$ at the indices shifted
+by $n_0-n$; the shifted row index $x-(n-n_0)\ge n_0-3k+2\ge k+1$ and the shifted column index
+$z-(n-n_0)\ge n_0-2k+1\ge1$ are admissible.
+\end{proof}
+
+\begin{theorem}[$q=\frac45$: eventual total positivity, log-concavity, unimodality; exact \CA]\label{thm:tp2}
+% src: code/msc_rigorous_1d/31_tp2_powers.py, data/msc_rigorous_1d/31_tp2_powers_q4_5.json, data/msc_rigorous_1d/logs/31_tp2_powers_q4_5.log; code/msc_rigorous_1d/34_tp2_second_impl.py, data/msc_rigorous_1d/34_tp2_second_impl.json
+\begin{enumerate}
+\item For $q=\frac45$ and every $N\ge4$ the matrix $Q^k$ is $TP_2$ for all $k\ge10$. (For large $N$ it is not $TP_2$ for $k\le7$ and for $k=9$; e.g.\ $N=80$.)
+\item For $q=\frac45$ the PMF $f$ from the reflecting end is log-concave if $N=2$ or $N\ge5$. For $N\in\{3,4\}$ it is
+unimodal but not log-concave.
+\item For every $N\ge2$ and every $q\in(0,\frac45]$ the PMF $f$ from the reflecting end is unimodal. The bound
+$\frac45$ is optimal for a statement valid for all $N$ (Proposition~\ref{prop:fail}(4), $N=4$).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) Script \texttt{31\_tp2\_powers.py} computes the integer matrices $A^k$, $A:=10\,Q$ ($A_{11}=6$, $A_{jj}=2$,
+$A_{j,j\pm1}=4$), for $1\le k\le19$ and $3\le N\le80$ in exact integer arithmetic and verifies, for $4\le N\le80$
+and $10\le k\le19$, that all contiguous minors $A^k[x,x+1|z,z+1]$ are nonnegative ($712\,830$ minors; for
+safety the script also tests all $96\,377\,478$ minors $A^k[x,y|z,w]$ with $y-k\le z<w\le x+k$ directly). By
+Lemma~\ref{lem:contig}, $Q^k$ is $TP_2$ for these $N$ and $k$; by Lemma~\ref{lem:local} with $N_0=80$
+($N_0-1=79\ge4\cdot19$) the same holds for all $N\ge80$. Every integer $k\ge20$ is a sum of integers from
+$\{10,\dots,19\}$, and products of $TP_2$ matrices are $TP_2$ (Lemma~\ref{lem:cb}(1)). The negative minors for small $k$
+are listed in the output of the script.
+
+(2) $N=2$: $f$ is geometric. Let $N\ge5$. By (1) and Lemma~\ref{lem:cb}(2), $M_t(1,2)\ge0$ for all $t\ge11$. For
+$1\le t\le10$: if $N\ge14$ then $K_s(2)=0$ for $s\le10<n-2$, so $M_t(1,2)=0$; for $5\le N\le13$ the script computes the
+ten integers exactly and finds them nonnegative. By \eqref{eq:M12}, $f(t+1)^2\ge f(t)f(t+2)$ for all $t\ge1$, and
+the support of $f$ is $\{t\ge N-1\}$. For $N=3$, $M_2(1,2)<0$ and for $N=4$, $M_3(1,2)<0$ (script), so $f$ is not
+log-concave. $N=3$ is unimodal by Proposition~\ref{prop:fail}(4). For $N=4$ the script finds the signs of
+$f(t+1)-f(t)$, $t=1,\dots,12$, to be $0,+,0,+,-,-,-,-,-,-,-,-$ (exact), and $M_t(1,2)\ge0$ for $t\ge11$ shows that
+the ratios $f(t+1)/f(t)$ are nonincreasing for $t\ge11$; since $f(13)<f(12)$, $f$ decreases from $t=5$ on.
+
+(3) For $q=\frac45$ this is (2); for $q<\frac45$ apply Lemma~\ref{lem:qmono}.
+\end{proof}
+
+\begin{theorem}[Beyond $\frac45$; exact \CA]\label{thm:tp2b}
+% src: code/msc_rigorous_1d/31_tp2_powers.py, data/msc_rigorous_1d/31_tp2_powers_q17_20.json, data/msc_rigorous_1d/31_tp2_powers_q9_10.json; code/msc_rigorous_1d/33_tp2_sanity.py, data/msc_rigorous_1d/33_tp2_sanity.json
+\begin{enumerate}
+\item For $q=\frac{17}{20}$ and $N\ge5$, $Q^k$ is $TP_2$ for all $k\ge18$. The PMF $f$ is log-concave iff $N=2$ or
+$N\ge12$, and unimodal iff $N\notin\{4,5\}$.
+\item For $q=\frac9{10}$ and $N\ge7$, $Q^k$ is $TP_2$ for all $k\ge40$. The PMF $f$ is log-concave iff $N=2$ or
+$N\ge33$, and unimodal iff $N\notin\{4,5,6,7,8\}$.
+\item Consequently $f_q$ is unimodal for all $q\le\frac{17}{20}$ if $N\ge6$, and for all $q\le\frac9{10}$ if $N\ge9$; in
+the notation of Lemma~\ref{lem:qmono}: $q^*(N,1)\ge\frac45$ for all $N$, $q^*(N,1)\ge\frac{17}{20}$ for $N\ge6$,
+$q^*(N,1)\ge\frac9{10}$ for $N\ge9$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The same script with $(q,k_*,N_0)=(\frac{17}{20},18,141)$ and $(\frac9{10},40,320)$: for $3\le N\le N_0$ and
+$k_*\le k\le2k_*-1$ all contiguous minors of $A^k$ ($A=40Q$, resp.\ $20Q$) are computed exactly
+($7\,460\,898$, resp.\ $196\,413\,420$ minors); they are nonnegative for $N\ge5$, resp.\ $N\ge7$. Lemmas
+\ref{lem:contig}, \ref{lem:local} ($N_0-1\ge4(2k_*-1)$) and \ref{lem:cb} give the $TP_2$ statements, hence $M_t\ge0$ for
+$t\ge k_*+1$. For each $N\le N_0$ the script computes exactly the signs of $M_t(1,2)$, $t\le k_*$, and of the
+increments $f(t+1)-f(t)$, $t\le k_*+2$. $f$ is log-concave iff all these $M_t(1,2)$ are $\ge0$ (for $N>N_0$ they vanish).
+Since the ratios $f(t+1)/f(t)$ are nonincreasing for $t\ge k_*+1$, $f$ is unimodal iff the exact sign sequence of the
+increments up to $t=k_*+2$ contains no $-$ followed by a later $+$. This decides all $N\ge5$ ($N\ge7$ for
+$q=\frac9{10}$); for the remaining $N\in\{4,5,6\}$ at $q=\frac9{10}$ and $N=4$ at $q=\frac{17}{20}$ the sign sequence itself
+contains $-,+$ (not unimodal; also Proposition~\ref{prop:fail}(3) for $N\le6$, resp.\ $N=4$), and $N\in\{2,3\}$ are covered
+by Proposition~\ref{prop:fail}(4). (3) follows from Lemma~\ref{lem:qmono}.
+(Outputs: \texttt{data/31\_tp2\_powers\_q*.json}; brute-force confirmation for $N\le40$ by separately written code: script \texttt{33}.)
+\end{proof}
+
+\begin{remark}[The mechanism, and a question]\label{rem:tp2}
+% src: code/msc_rigorous_1d/30_tp2_pattern.py, data/msc_rigorous_1d/30_tp2_pattern.json; data/msc_rigorous_1d/31_tp2_powers_q7_10.json, data/msc_rigorous_1d/31_tp2_powers_q3_4.json
+(a) $M_t(x,y)\ge0$ for all $x<y$ means that $x\mapsto f_x(t+1)/f_x(t)$ is nonincreasing in the start $x$, or
+equivalently that the two walks started at the sites $n-1$ and $n$ next to the target are ordered in the monotone
+likelihood ratio order at time $t-1$: $x\mapsto(Q^{t-1})_{n-1,x}/(Q^{t-1})_{n,x}$ is nonincreasing. For $q>\frac23$
+this fails at early times because of parity oscillations, but only in a bounded neighbourhood of the target: for
+$q=\frac45$ exactly $16$ triples $(n-x,n-y,t)$ have $M_t(x,y)<0$, all with $n-x\le6$ and $t\le10$, the same for
+every $12\le N\le20$ (script \texttt{30}, $t\le N^2$; for $t\ge11$ there are none for any $N\ge4$ by
+Theorem~\ref{thm:tp2}(1)). Starting from the reflecting end one never sees them when $N\ge5$.
+(b) The smallest $k_*$ such that $Q^k$ is $TP_2$ for all $k\ge k_*$ and all large $N$ is $k_*=2,4,10,18,40$ for
+$q=\frac7{10},\frac34,\frac45,\frac{17}{20},\frac9{10}$ (exact computations; for $q\in\{\frac7{10},\frac34\}$ the $TP_2$ property holds for every $N\ge3$, and the proof of
+Theorem~\ref{thm:tp2}(2) then shows that $f$ is log-concave for \emph{every} $N\ge2$, see the logs of
+script \texttt{31}); heuristically $k_*\approx\frac{q^2}{2(1-q)^2}$, from the first two coefficients of
+$(b+az+bz^2)^k$. \emph{Question:} is $Q^k$ eventually $TP_2$ for every $q<1$, uniformly in $N$? This would give: for
+every $q<1$, $f$ is log-concave for all $N\ge N_1(q)$.
+\end{remark}
+
+\begin{proposition}[Table of modes for $q=\frac45$; \CA]\label{prop:ca45}
+% src: code/msc_rigorous_1d/08_unimodality_q45.py, data/msc_rigorous_1d/08_modes_q45.jsonl; code/msc_rigorous_1d/24_no_underflow.py, data/msc_rigorous_1d/24_no_underflow.json
+For $q=\frac45$ and every $N\in\{2,3,\dots,600\}$ the maximiser of $f$ is unique; the table of modes is
+\texttt{data/08\_modes\_q45.jsonl}. (The computation also proves unimodality for these $N$ a second time, by a
+method that does not use Theorem~\ref{thm:tp2}.)
+\end{proposition}
+\begin{proof}
+Script \texttt{08\_unimodality\_q45.py} computes
+$r_t=(Q^t)_{1,n}$ in IEEE double precision. All quantities are nonnegative and each entry of $Q^{t+1}e$ is a sum
+of at most three products of a rounded constant and a nonnegative number, so (round to nearest; no underflow, see
+below) the computed value equals
+$r_t(1+\vartheta_t)$ with $|\vartheta_t|\le(1+2^{-53})^{4t}-1<5t\,2^{-53}$ (one rounded constant, one multiplication and
+two additions per term and step; sums of nonnegative numbers do not amplify relative errors). The sign of $f(t+1)-f(t)$
+is accepted only if the computed lower bar of one value exceeds the computed upper bar of the other. These bars,
+$\mathrm{fl}(\hat r_t\cdot(1\mp5t\,2^{-53}))$, are themselves formed in floating point, which is harmless: with
+$u=2^{-53}$ and $P_t:=(1+u)^{4t}-1\le4tu+16t^2u^2$, the factor $1-5tu$ is an exact floating-point number, $1+5tu$ is exact
+for even $t$ and correct to within $u$ for odd $t$, the product is rounded with relative error at most $u$, and the
+comparison itself is exact. So the computed lower bar is at most $r_t(1+P_t)(1-5tu)(1+u)=r_t\bigl(1-(t-1)u+O(t^2u^2)\bigr)$
+and the computed upper bar at least $r_t(1-P_t)(1+5tu-u)(1-u)=r_t\bigl(1+(t-2)u+O(t^2u^2)\bigr)$ for odd $t$
+(and $r_t(1+(t-1)u+O(t^2u^2))$ for even $t$). Since all indices used satisfy $t\le t_{\rm end}+2\le1.1\times10^6$
+(\texttt{data/08\_modes\_q45.jsonl}, field \texttt{t\_end}), the second-order terms, at most $50t^2u^2<10^{-18}$ in absolute value, are far below $u$,
+and the bars are rigorous for every $t\ge2$. For $t\le1$ the compared values are exact zeros or differ by a relative
+amount of order $1$ (e.g.\ $r_0=1$, $r_1=1-\frac q2$ for $N=2$), far beyond any rounding. % src: code/msc_rigorous_1d/08_unimodality_q45.py, data/msc_rigorous_1d/08_modes_q45.jsonl
+The remaining indices ($435$ in all, for $210$ values of
+$N$: the exact tie $N=4$, $t=3$, and, for $N\ge251$, indices within distance $3$ of the mode, where the PMF is too flat
+for double precision) are decided in $200$-bit ball arithmetic from \eqref{eq:f}, and the exact tie $f(3)=f(4)$ for $N=4$
+by exact rational arithmetic.
+
+\emph{No underflow.} For $1\le j\le n$ and $t\ge j-1$ the Chapman--Kolmogorov equation (all terms nonnegative) gives
+$(Q^t)_{1,j}\ge(Q^{t-j+1})_{1,1}(Q^{j-1})_{1,j}=(q/2)^{j-1}(Q^{t-j+1})_{1,1}$, while $(Q^t)_{1,j}=0$ for $t<j-1$
+(and is computed as an exact zero). Moreover $(Q^s)_{1,1}\ge(1-\frac q2)\lambda_1^{s}\varphi_1(1)^2$ for all $s\ge0$,
+where $\varphi_1(1)^2=v_1(1)^2/\|v_1\|^2=4\cos^2(\theta_1/2)/(2N-1)$: for even $s$ by the spectral decomposition
+$(Q^s)_{1,1}=\sum_m\lambda_m^s\varphi_m(1)^2\ge\lambda_1^s\varphi_1(1)^2$ (Lemma~\ref{lem:spec}), and for odd $s$ because
+$(Q^s)_{1,1}\ge Q_{11}(Q^{s-1})_{1,1}$ and $\lambda_1<1$. Hence every nonzero entry of $Q^te_1$ with
+$t\le t_{\rm end}+2$ is at least $(\frac q2)^{N-2}(1-\frac q2)\lambda_1^{t_{\rm end}+2}\varphi_1(1)^2$; script \texttt{24}
+certifies that this number exceeds $10^{-242}$ for $q=\frac45$ and every $N\le600$. So all intermediate products
+exceed $10^{-243}$, far above the underflow threshold $2^{-1022}$, and the error model applies. For $t\ge t_{\rm end}(N)$ the increment is negative because in
+$f(t+1)-f(t)=-\frac{2q}{2N-1}\sum_mc_m\nu_m\lambda_m^{t-1}$ the term $m=1$ dominates:
+$(\max_{m\ge2}|\lambda_m|/\lambda_1)^{t-1}<c_1\nu_1/\sum_{m\ge2}|c_m|\nu_m$, with $t_{\rm end}$ computed in ball
+arithmetic. The script verifies that the certified signs are nonnegative up to the mode and nonpositive
+afterwards.
+\end{proof}
+
+\begin{remark}[Cross-check with exact-arithmetic certificates]\label{rem:t5}
+The exact-arithmetic certificates of the companion note R5 (\texttt{data/msc\_rigorous\_certified}; exact multi-limb integer
+arithmetic, a different method, written separately within the same project and run on the same machine) establish the
+same statement for $q=\frac45$, $2\le N\le600$, and in addition for $N\in\{800,1000\}$, in agreement with
+Theorem~\ref{thm:tp2}. Script \texttt{22} compares the two sets of certificates: all $598$ modes for $3\le N\le600$ agree,
+and so do the unimodality flags (both find the single plateau $N=4$). % src: code/msc_rigorous_1d/22_crosscheck_t5.py, data/msc_rigorous_1d/22_crosscheck_t5.json
+\end{remark}
+
+\begin{observation}\label{obs:qstar}
+% src: code/msc_rigorous_1d/02_unimodality_scan.py, data/msc_rigorous_1d/02_unimodality_scan.json
+Floating-point bisection (script \texttt{02}) gives $q^*(N,1)=1-\frac{1}{2N-3}$ for $N=4$, $N=20$ and
+$22\le N\le80$, and a strictly smaller value for $5\le N\le19$ and $N=21$ (e.g.\ $q^*(5,1)\approx0.8354$,
+$q^*(10,1)\approx0.9209$); in all cases $q^*(N,1)\ge\frac45$, with equality only for $N=4$ (the inequality is
+Theorem~\ref{thm:tp2}(3); the values are consistent with Theorem~\ref{thm:tp2b}).
+\end{observation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The continuum limit and the constant \texorpdfstring{$c$}{c}}\label{sec:continuum}
+
+\subsection{The limiting density}
+
+For $u>0$ and integers $j\ge0$ put
+\begin{equation}\label{eq:G}
+  G^{(j)}(u):=\sum_{k\ \mathrm{odd}}\sigma_k\,2y_k\,(-2y_k^2)^j\,\ee^{-2uy_k^2},\qquad
+  G(u):=G^{(0)}(u)=\frac\pi2\sum_{k\ \mathrm{odd}}\sigma_k\,k\,\ee^{-k^2\pi^2u/8}
+\end{equation}
+($y_k=k\pi/4$, $\sigma_k=(-1)^{(k-1)/2}$). The series converge absolutely and uniformly on $[u_0,\infty)$ for
+every $u_0>0$, together with all termwise derivatives; hence $G$ is real-analytic on $(0,\infty)$ and
+$G^{(j)}$ is its $j$-th derivative.
+
+\begin{lemma}[Tails]\label{lem:tail}
+Let $a>0$, $p\ge0$ and let $K\ge1$ be odd with $r:=(1+\frac2K)^p\,\ee^{-a\pi^2(K+1)/2}<1$. Then
+\[
+  \sum_{k\ge K,\ k\ \mathrm{odd}}y_k^{\,p}\,\ee^{-2ay_k^2}\ \le\ \frac{y_K^{\,p}\,\ee^{-2ay_K^2}}{1-r}.
+\]
+\end{lemma}
+\begin{proof}
+With $t_k=y_k^p\ee^{-2ay_k^2}$ and $y_{k+2}^2-y_k^2=\pi^2(k+1)/4$, we get
+$t_{k+2}/t_k=(1+\frac2k)^p\ee^{-a\pi^2(k+1)/2}\le r$ for $k\ge K$; sum the geometric series.
+\end{proof}
+
+Recall $g(s)=g_1(s)$, the continuous-time density from the reflecting end, and define the \emph{scaled lattice
+density}
+\begin{equation}\label{eq:GN}
+  G_N(u):=\frac{L^2}{q}\,g\Bigl(\frac{L^2u}{q}\Bigr)
+  =\sum_{\substack{k\ \mathrm{odd}\\ k\le 2N-3}}\sigma_k\,2y_k\,A_0(\zeta_k)\,\ee^{-2uy_k^2\beta(\zeta_k)},
+  \qquad x_k=\frac{y_k}{L},\quad \zeta_k=x_k^2 ,
+\end{equation}
+where, for $\zeta\ge0$ and $x=\sqrt\zeta$,
+\begin{equation}\label{eq:SCbeta}
+  S(\zeta):=\frac{\sin x}{x},\qquad C(\zeta):=\cos^2x=1-\zeta S(\zeta)^2,\qquad \beta:=S^2,\qquad
+  A_j:=S^{2j+1}C .
+\end{equation}
+Indeed, in \eqref{eq:g} with $x_0=1$, $k=2m-1$: $\theta_m=2x_k$, $\sin\theta_m\cos(\theta_m/2)=2\sin x_k\cos^2x_k$,
+$L\sin x_k=y_kS(\zeta_k)$ and $\nu_mL^2u/q=2uL^2\sin^2x_k=2uy_k^2\beta(\zeta_k)$. $G_N$ does not depend on $q$,
+$G_N$ is a probability density with mean $1-\frac1{4L^2}$ (Corollary~\ref{cor:moments}), and
+\begin{equation}\label{eq:GNj}
+  G_N^{(j)}(u)=\sum_{k\ \mathrm{odd},\,k\le2N-3}\sigma_k\,2y_k(-2y_k^2)^jA_j(\zeta_k)\,\ee^{-2uy_k^2\beta(\zeta_k)} .
+\end{equation}
+
+\begin{theorem}[Convergence]\label{thm:conv}
+For every $u_0>0$ and $j\ge0$, $\ \sup_{u\ge u_0}\bigl|G_N^{(j)}(u)-G^{(j)}(u)\bigr|\to0$ as $N\to\infty$.
+\end{theorem}
+\begin{proof}
+For $0<x\le\pi/2$ we have $\frac2\pi\le S\le1$ and $0\le C\le1$, so the $k$-th term of \eqref{eq:GNj} is bounded in
+absolute value by $b_k:=2^{j+1}y_k^{2j+1}\ee^{-8u_0y_k^2/\pi^2}$ for all $N$ and all $u\ge u_0$, and so is the
+$k$-th term of \eqref{eq:G}; $\sum_kb_k<\infty$. For fixed $k$, $\zeta_k\to0$ as $N\to\infty$, $A_j(\zeta_k)\to1$,
+$\beta(\zeta_k)\to1$, and
+$\sup_{u\ge u_0}|A_j(\zeta_k)\ee^{-2uy_k^2\beta(\zeta_k)}-\ee^{-2uy_k^2}|\le|A_j(\zeta_k)-1|+2y_k^2(1-\beta(\zeta_k))
+\sup_{u\ge u_0}u\,\ee^{-2uy_k^2\beta(\zeta_k)}\to0$ (mean value theorem in the exponent). Given $\varepsilon>0$ choose
+$K$ with $\sum_{k>K}b_k<\varepsilon$; the finitely many terms $k\le K$ converge uniformly. Hence the claim
+(Tannery's theorem). An explicit rate is given in Proposition~\ref{prop:lattice}.
+\end{proof}
+
+\begin{theorem}[The limiting density has a unique maximiser]\label{thm:Gunique}
+% src: code/msc_rigorous_1d/03_constant_enclosure.py, data/msc_rigorous_1d/03_constants.json (signs at 3/10, 2/5; G''(c) < 0)
+\begin{enumerate}
+\item $G>0$ on $(0,\infty)$ and $\ln G$ is concave.
+\item $G'$ has exactly one zero $c$ in $(0,\infty)$; $G'>0$ on $(0,c)$ and $G'<0$ on $(c,\infty)$. In particular $c$
+is the unique maximiser of $G$, and $\tfrac3{10}<c<\tfrac25$.
+\item $G''(c)<0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) By Theorem~\ref{thm:logconcave}(2) (and $g>0$ on $(0,\infty)$, Theorem~\ref{thm:unimodal-cont}), each
+$G_N$, $N\ge3$, is positive and log-concave on $(0,\infty)$:
+$G_N(\frac{u_1+u_2}2)^2\ge G_N(u_1)G_N(u_2)$. By Theorem~\ref{thm:conv} the same inequality holds for $G$, and $G\ge0$.
+$G$ is real-analytic and not identically zero, since $\ee^{\pi^2u/8}G(u)\to\frac\pi2$ as $u\to\infty$. Suppose
+$G(u_0)=0$ for some $u_0>0$. Zeros of $G$ are isolated, so there is $\delta\in(0,u_0)$ with $G(u_0\pm\delta)\ne0$,
+i.e.\ $G(u_0\pm\delta)>0$, and then $0=G(u_0)^2\ge G(u_0-\delta)G(u_0+\delta)>0$, a contradiction. Thus $G>0$, and
+a positive continuous midpoint-log-concave function is log-concave.
+
+(2) Since $\ln G$ is concave and differentiable, $G'/G$ is nonincreasing; therefore $\{G'=0\}$ is an interval.
+As $G'$ is real-analytic and not identically zero, this interval is empty or a single point. It is non-empty:
+ball arithmetic gives $G'(\tfrac3{10})>0>G'(\tfrac25)$ (script \texttt{03}; the series \eqref{eq:G} is summed up to
+an odd $K$ and the remainder is bounded by Lemma~\ref{lem:tail}). The sign statements follow from the
+monotonicity of $G'/G$.
+
+(3) By ball arithmetic, $G''<0$ on the enclosure of $c$ in Theorem~\ref{thm:c} (script \texttt{03}).
+\end{proof}
+
+\begin{remark}[A second proof of log-concavity]\label{rem:prekopa}
+Part (1) can also be obtained without the discrete $TP_2$ argument: by Theorem~\ref{thm:product}, $G_N$ is the density
+of a finite sum of independent exponential variables, exponential densities are log-concave, and the convolution of
+log-concave densities is log-concave (in dimension one due to I.~J.~Schoenberg (1951); see A.~Saumard and
+J.~A.~Wellner, \emph{Log-concavity and strong log-concavity: a review}, Statist.\ Surveys \textbf{8} (2014) 45--114,
+Proposition~3.5 in the numbering of arXiv:1404.5886v1, where the result is derived from Pr\'ekopa's theorem on
+marginals of log-concave functions and its history is given). We do not use this route; the proof given above is
+self-contained.
+\end{remark}
+
+\begin{remark}[Probabilistic meaning; why $c\approx\frac13$]\label{rem:theta}
+% src: code/msc_rigorous_1d/09_sec3_sec4_sanity.py, data/msc_rigorous_1d/09_sanity.json (identities); data/msc_rigorous_1d/39_hand_constants.json (c - 1/3, 3 e^{-12})
+$\int_0^\infty\ee^{-su}G(u)\,\dd u=1/\cosh\sqrt{2s}=\prod_{k\ \mathrm{odd}}(1+s/(2y_k^2))^{-1}$: $G$ is the density of the
+first time a standard Brownian motion started at $0$ leaves $(-1,1)$ (equivalently, reflected Brownian motion
+reaches $1$), which is the law of $\sum_{k\ \rm odd}\xi_k/(2y_k^2)$ with i.i.d.\ standard exponential $\xi_k$ (the
+limit of Theorem~\ref{thm:product}). By Poisson summation (method of images)
+$G(u)=\sum_{n\in\Z}(-1)^n\frac{2n+1}{\sqrt{2\pi u^3}}\ee^{-(2n+1)^2/(2u)}$; the two leading images $n\in\{0,-1\}$
+give the L\'evy density $2(2\pi u^3)^{-1/2}\ee^{-1/(2u)}$, whose maximiser is exactly $\frac13$, and the next
+images are of relative size $3\ee^{-4/u}\approx 2\times10^{-5}$ at $u=\frac13$. This is why
+$c=\frac13-4.9068\ldots\times10^{-5}$. (Both identities were checked numerically, script \texttt{09}; they are
+not used in the proofs.)
+\end{remark}
+
+\begin{theorem}[Enclosure of the constants; \CA]\label{thm:c}
+% src: code/msc_rigorous_1d/03_constant_enclosure.py, data/msc_rigorous_1d/03_constants.json
+With
+\[
+ c_\circ=0.33328426549494789874852691654344242109703655907113188526100593708624\ldots
+\]
+(the $80$-digit decimal stored in \texttt{data/03\_constants.json}) we have $|c-c_\circ|<10^{-70}$, and
+\begin{align*}
+ G(c)&=0.92506494218414348715254834\ldots, & G''(c)&=-12.514127592957827401576602\ldots,\\
+ G'''(c)&=149.52919423275263698621782\ldots,& G''''(c)&=-1523.6016850748786418965293\ldots,
+\end{align*}
+\begin{gather*}
+ \kappa:=\frac34+\frac c6\frac{G'''(c)}{G''(c)}=0.086273779378239017181791\ldots,\\
+ \rho:=-\frac c2\frac{G'''(c)}{G''(c)}=1.9911786618652829484546\ldots,
+\end{gather*}
+all digits shown being correct; note $\kappa=\frac34-\frac\rho3$.
+\end{theorem}
+\begin{proof}
+Script \texttt{03\_constant\_enclosure.py} certifies in $400$-bit ball arithmetic (Arb) that
+$G'(c_\circ-10^{-70})>0>G'(c_\circ+10^{-70})$; by Theorem~\ref{thm:Gunique}(2) the unique zero $c$ of $G'$ lies
+between. The other quantities are evaluated on the ball $[c_\circ\pm10^{-70}]$ with rigorous tails
+(Lemma~\ref{lem:tail}); their radii are below $10^{-56}$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The lattice expansion and the continuous-time mode}\label{sec:lattice}
+
+\subsection{Elementary bounds}
+
+\begin{lemma}\label{lem:elem}
+% src: code/msc_rigorous_1d/09_sec3_sec4_sanity.py, data/msc_rigorous_1d/09_sanity.json (elementary bounds on grids)
+Let $S,C,\beta,A_j$ be as in \eqref{eq:SCbeta}; primes denote $\dd/\dd\zeta$.
+\begin{enumerate}
+\item For $\zeta\in[0,\pi^2]$: $0\le S\le1$, $-\frac16\le S'\le0$, $0\le S''\le\frac1{60}$.
+\item For $\zeta\in[0,\pi^2/4]$: $S\ge\frac2\pi$, $0\le C\le1$, $-1\le C'\le0$, $0\le C''\le\frac23$,
+ $-\frac13\le\beta'\le0$, $0\le\beta''\le\frac4{45}$.
+\item For $\zeta\in[0,\pi^2/4]$ and $j\in\{0,1\}$: $0\le A_j\le1$, $-\alpha_{1,j}\le A_j'\le0$,
+ $0\le A_j''\le\alpha_{2,j}$, where $\alpha_{1,j}=\frac{2j+7}6$, $\alpha_{2,0}=\frac{61}{60}$, $\alpha_{2,1}=\frac{113}{60}$;
+ moreover $A_j(0)=1$, $A_j'(0)=-\frac{2j+7}6$, $\beta(0)=1$, $\beta'(0)=-\frac13$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) With $x=\sqrt\zeta\in[0,\pi]$ and $\dd/\dd\zeta=(2x)^{-1}\dd/\dd x$,
+\[
+ S'=-\frac{\varphi(x)}{2x^3},\quad \varphi(x):=\sin x-x\cos x;\qquad
+ S''=\frac{\psi(x)}{4x^5},\quad\psi(x):=3\sin x-3x\cos x-x^2\sin x .
+\]
+Now $\varphi(0)=0$, $\varphi'(x)=x\sin x\in[0,x^2]$, so $0\le\varphi\le x^3/3$; and $\psi(0)=0$,
+$\psi'(x)=x\varphi(x)\in[0,x^4/3]$, so $0\le\psi\le x^5/15$. This gives the bounds on $S',S''$; $0\le S\le1$ is clear.
+
+(2) $S$ is nonincreasing by (1), so $S\ge S(\pi^2/4)=2/\pi$. Since $C(\zeta)=\frac12(1+\cos(2\sqrt\zeta))$ and
+$\frac{\dd}{\dd\eta}\cos\sqrt\eta=-\frac12S(\eta)$, we get $C'(\zeta)=-S(4\zeta)$ and $C''(\zeta)=-4S'(4\zeta)$ with
+$4\zeta\in[0,\pi^2]$; apply (1). Finally $\beta'=2SS'$ and $\beta''=2S'^2+2SS''\le\frac2{36}+\frac2{60}=\frac4{45}$.
+
+(3) $A_j'=(2j+1)S^{2j}S'C+S^{2j+1}C'\in[-\frac{2j+1}6-1,0]$ and
+\[
+ A_j''=(2j+1)(2j)S^{2j-1}S'^2C+(2j+1)S^{2j}S''C+2(2j+1)S^{2j}S'C'+S^{2j+1}C'' ,
+\]
+a sum of four nonnegative terms bounded by $\frac{(2j+1)2j}{36}+\frac{2j+1}{60}+\frac{2j+1}3+\frac23$.
+The values at $0$ follow from $S=1-\frac\zeta6+\dots$, $C=1-\zeta+\dots$.
+\end{proof}
+
+For the discrete-time walk we need $\Lambda(w):=-\ln(1-w)/w=\sum_{i\ge0}w^i/(i+1)$, $0\le w<1$ ($\Lambda(0)=1$), and
+\begin{equation}\label{eq:B}
+  B(\zeta;q):=\beta(\zeta)\,\Lambda\bigl(w(\zeta)\bigr),\qquad w(\zeta):=2q\,\zeta\beta(\zeta)=2q\bigl(1-C(\zeta)\bigr)
+  =2q\sin^2\!\sqrt\zeta ,
+\end{equation}
+so that $\lambda=1-w$ satisfies $\lambda^{\,t-1}=\exp\bigl(-(t-1)w\Lambda(w)\bigr)$ whenever $w<1$. In continuous
+time we set $B:=\beta$ (formally $q=0$).
+
+\begin{lemma}\label{lem:B}
+% src: code/msc_rigorous_1d/39_hand_constants.py, data/msc_rigorous_1d/39_hand_constants.json (b_1, b_2)
+Let $0<q\le\bar q\le1$, $\bar w:=\bar q/2$ and $0\le\zeta\le\pi^2/36$ (the \emph{low range}). Then
+$0\le w\le\bar w$, $B\ge\beta\ge\beta_*:=9/\pi^2$, $B(0)=1$, $B'(0)=q-\frac13$, and
+\[
+ |B'|\le b_1:=\max\bigl\{\tfrac13\Lambda(\bar w),\,2\bar q\Lambda'(\bar w)\bigr\},\qquad
+ |B''|\le b_2:=\max\bigl\{\tfrac4{45}\Lambda(\bar w)+4\bar q^2\Lambda''(\bar w),\ \tfrac83\bar q\Lambda'(\bar w)\bigr\},
+\]
+where $\Lambda'(w)=\bigl(\frac w{1-w}+\ln(1-w)\bigr)/w^2$ and
+$\Lambda''(w)=\frac1{w(1-w)^2}-\frac2{w^2(1-w)}-\frac{2\ln(1-w)}{w^3}$. For $\bar q=\frac45$: $b_1<1.559$, $b_2<5.425$; for $\bar q=1$: $b_1<2.455$, $b_2<12.49$.
+In continuous time ($B=\beta$) the same holds with $b_1=\frac13$, $b_2=\frac4{45}$ and $B'(0)=-\frac13$. In all cases
+$|B'(0)|\le b_0:=\max\{\frac13,\bar q-\frac13\}$.
+\end{lemma}
+\begin{proof}
+On the low range $\sin^2\sqrt\zeta\le\frac14$, so $w\le q/2\le\bar w\le\frac12$; $\beta$ is nonincreasing, so
+$\beta\ge\beta(\pi^2/36)=(\frac{1/2}{\pi/6})^2=9/\pi^2$; $\Lambda\ge1$. The power series of $\Lambda,\Lambda',\Lambda''$
+have nonnegative coefficients, hence these functions are nonnegative and nondecreasing on $[0,\bar w]$, with the
+stated closed forms. By Lemma~\ref{lem:elem}, $w'=-2qC'\in[0,2q]$ and $w''=-2qC''\in[-\frac43q,0]$. Then
+\begin{align*}
+  B'&=\beta'\Lambda+\beta\Lambda'w'\in\bigl[-\tfrac13\Lambda(\bar w),\,2\bar q\Lambda'(\bar w)\bigr],\\
+  B''&=\underbrace{\beta''\Lambda}_{\in[0,\frac4{45}\Lambda(\bar w)]}+\underbrace{2\beta'\Lambda'w'}_{\in[-\frac43\bar q\Lambda'(\bar w),0]}
+     +\underbrace{\beta\Lambda''w'^2}_{\in[0,4\bar q^2\Lambda''(\bar w)]}+\underbrace{\beta\Lambda'w''}_{\in[-\frac43\bar q\Lambda'(\bar w),0]} .
+\end{align*}
+At $\zeta=0$: $\Lambda(0)=1$, $\Lambda'(0)=\frac12$, $w'(0)=2q$, so $B'(0)=-\frac13+q$.
+\end{proof}
+
+\begin{lemma}\label{lem:Fpp}
+For $j\in\{0,1\}$, $y>0$, $v>0$ put $a:=2vy^2$ and $F_j(\zeta):=A_j(\zeta)\,\ee^{-aB(\zeta;q)}$. Then
+$F_j(0)=\ee^{-a}$, $F_j'(0)=\bigl(-\frac{2j+7}6+a(\frac13-q)\bigr)\ee^{-a}$ and, on the low range,
+\[
+  F_j''=\bigl[A_j''-2aA_j'B'+A_j(a^2B'^2-aB'')\bigr]\ee^{-aB},\qquad
+  |F_j''|\le\bigl[\alpha_{2,j}+2a\,\alpha_{1,j}b_1+a^2b_1^2+a\,b_2\bigr]\ee^{-a\beta_*}.
+\]
+\end{lemma}
+\begin{proof}
+Differentiate twice and use Lemmas~\ref{lem:elem} and~\ref{lem:B}.
+\end{proof}
+
+\subsection{The expansion}
+
+For the discrete-time walk from the reflecting end and integers $t\ge1$ define, with $k=2m-1$ and
+$\lambda_m=1-2q\sin^2x_k$,
+\begin{equation}\label{eq:frakS}
+  \mathfrak S_j(t):=\sum_{m=1}^{N-1}\sigma_k\,2y_k(-2y_k^2)^jA_j(\zeta_k)\,\lambda_m^{\,t-1},\qquad
+  \frac{L^2}{q}f(t)=\mathfrak S_0(t),\qquad \frac{L^4}{q^2}\bigl(f(t+1)-f(t)\bigr)=\mathfrak S_1(t).
+\end{equation}
+(The two identities follow from \eqref{eq:f} exactly as \eqref{eq:GN} followed from \eqref{eq:g}, using
+$\lambda_m-1=-\frac{q}{L^2}\,2y_k^2\beta(\zeta_k)$.) In continuous time we write $\mathfrak S_j:=G_N^{(j)}(v)$. Put
+\begin{equation}\label{eq:H}
+  H_j^{(q)}(v):=\frac{7+2j}{12}\,G^{(j+1)}(v)+\frac v6\,(1-3q)\,G^{(j+2)}(v)\qquad(q=0\text{ in continuous time}).
+\end{equation}
+
+\begin{proposition}[Lattice expansion with certified remainder]\label{prop:lattice}
+% src: code/msc_rigorous_1d/core.py (R_enclosure); code/msc_rigorous_1d/11_expansion_sanity.py, data/msc_rigorous_1d/11_expansion_sanity.json
+Let $j\in\{0,1\}$, $\bar q\in[0,1)$, $0<v_-\le v_+$, and put
+\begin{equation}\label{eq:chi}
+  \chi(q):=\tfrac12\ \ (0\le q\le\tfrac45),\qquad \chi(q):=\min\bigl\{\tfrac12,\,-\ln(2q-1)/q\bigr\}\ \ (\tfrac45<q<1),
+\end{equation}
+a nonincreasing function of $q$. Let $L_0\ge3$ with $L_0^2>(2j+6)/(2\chi(\bar q)v_-)$, and let $k_0$ be odd
+with $k_0\le\frac23L_0$. Let $N$ be such that $L=N-\frac12\ge L_0$, and
+\begin{itemize}
+\item either (continuous time, $\bar q=0$) $v\in[v_-,v_+]$ and $\mathfrak S_j=G_N^{(j)}(v)$,
+\item or (discrete time) $q\in(0,\bar q]$, $t\ge1$ an integer with $v:=q(t-1)/L^2\in[v_-,v_+]$, and
+$\mathfrak S_j=\mathfrak S_j(t)$.
+\end{itemize}
+Then
+\begin{equation}\label{eq:expansion}
+  \mathfrak S_j=G^{(j)}(v)+\frac{H_j^{(q)}(v)}{L^2}+\frac{R}{L^4},\qquad
+  R=\sum_{\substack{k\le k_0\\ k\ \mathrm{odd}}}\sigma_k(-2)^jy_k^{2j+5}F_j''(\xi_k;y_k,v,q)+R',
+\end{equation}
+for some $\xi_k\in(0,y_k^2/L^2)\subset[0,y_k^2/L_0^2]$, where $|R'|\le B_{\rm low}+B_{\rm high}+B_{\rm tail}$,
+\begin{align*}
+ B_{\rm low}&:=\sum_{k>k_0,\ k\ \rm odd}2^jy_k^{2j+5}\ee^{-2v_-y_k^2\beta_*}
+     \bigl[\alpha_{2,j}+2a_k\alpha_{1,j}b_1+a_k^2b_1^2+a_kb_2\bigr],\qquad a_k:=2v_+y_k^2,\\
+ B_{\rm high}&:=2^{j+1}\bigl(\tfrac\pi2\bigr)^{2j+1}L_0^{2j+6}\,\ee^{-\chi(\bar q)v_-L_0^2},\\
+ B_{\rm tail}&:=\sum_{k>\frac23L_0,\ k\ \rm odd}2^{j+1}y_k^{2j+5}\ee^{-2v_-y_k^2}
+     \Bigl[\bigl(\tfrac6\pi\bigr)^4+\bigl(\tfrac6\pi\bigr)^2\bigl(\tfrac{2j+7}6+2v_+b_0y_k^2\bigr)\Bigr],
+\end{align*}
+with the constants of Lemmas~\ref{lem:elem}--\ref{lem:B} for $\bar q$. For an individual pair $(N,q)$ one may
+replace $B_{\rm high}$ by $B_{\rm high}(L,q):=2^{j+1}(\frac\pi2)^{2j+1}L^{2j+6}\ee^{-\chi(q)v_-L^2}$ (no condition linking
+$L_0$ and $\chi$ is then needed).
+\end{proposition}
+\begin{proof}
+Call a lattice mode $k=2m-1$ \emph{low} if $x_k\le\pi/6$, i.e.\ $k\le\frac23L$, and \emph{high} otherwise; all
+$k\le k_0$ are low.
+
+\emph{Low modes.} Here $\zeta_k\le\pi^2/36$ and $w=2q\sin^2x_k\le q/2<1$, so $\lambda_m>0$ and
+$\lambda_m^{t-1}=\exp(-(t-1)w\Lambda(w))=\exp(-2vy_k^2B(\zeta_k;q))$, because
+$(t-1)w=\frac{vL^2}q\,2q\sin^2x_k=2vy_k^2\beta(\zeta_k)$. Thus the $k$-th term of $\mathfrak S_j$ is
+$\sigma_k2(-2)^jy_k^{2j+1}F_j(\zeta_k)$ with $F_j$ from Lemma~\ref{lem:Fpp} (also in continuous time). By
+Taylor's formula with Lagrange remainder,
+$F_j(\zeta_k)=F_j(0)+\zeta_kF_j'(0)+\frac12\zeta_k^2F_j''(\xi_k)$ with $\xi_k\in(0,\zeta_k)$, and
+$\zeta_k=y_k^2/L^2$.
+
+\emph{Bookkeeping.} Summed over \emph{all} odd $k\ge1$, the first two Taylor terms give
+\[
+ \sum_k\sigma_k2(-2)^jy_k^{2j+1}\ee^{-2vy_k^2}=G^{(j)}(v),\qquad
+ \sum_k\sigma_k2(-2)^jy_k^{2j+3}\Bigl(-\tfrac{2j+7}6+2vy_k^2(\tfrac13-q)\Bigr)\ee^{-2vy_k^2}=H_j^{(q)}(v),
+\]
+because $\sum_k\sigma_k2(-2)^jy_k^{2j+3}\ee^{-2vy_k^2}=-\frac12G^{(j+1)}$ and
+$\sum_k\sigma_k2(-2)^jy_k^{2j+5}\ee^{-2vy_k^2}=\frac14G^{(j+2)}$. Therefore
+\begin{align*}
+ L^4\Bigl(\mathfrak S_j-G^{(j)}-\frac{H_j^{(q)}}{L^2}\Bigr)
+ =&\sum_{k\ \rm low}\sigma_k(-2)^jy_k^{2j+5}F_j''(\xi_k)
+  +L^4\!\!\sum_{k\ \rm high}(\text{$k$-th term of }\mathfrak S_j)\\
+  &-L^4\!\!\sum_{k>\frac23L,\ k\ \rm odd}\sigma_k2(-2)^jy_k^{2j+1}\bigl(F_j(0)+\tfrac{y_k^2}{L^2}F_j'(0)\bigr).
+\end{align*}
+The low modes $k\le k_0$ give the explicit sum in \eqref{eq:expansion}. The low modes $k>k_0$ are bounded by
+Lemma~\ref{lem:Fpp} with $a=2vy_k^2\le a_k$ and $\ee^{-a\beta_*}\le\ee^{-2v_-y_k^2\beta_*}$; summing over all odd
+$k>k_0$ gives $B_{\rm low}$.
+
+\emph{High modes.} Here $\frac14<\sin^2x_k<1$ and $|A_j|\le1$. In continuous time the exponential factor is
+$\exp(-2vL^2\sin^2x_k)\le\ee^{-vL^2/2}$. In discrete time $\lambda_m=1-w$ with $w\in(\frac q2,2q)$, hence
+$|\lambda_m|\le\max\{1-\frac q2,2q-1\}$. Now $(1-\frac q2)^{t-1}\le\ee^{-q(t-1)/2}=\ee^{-vL^2/2}$ and, for $q>\frac12$,
+$(2q-1)^{t-1}=\exp\bigl(-vL^2\cdot(-\ln(2q-1))/q\bigr)$; moreover $2q-1\le1-\frac q2$ iff $q\le\frac45$. Hence
+$|\lambda_m|^{t-1}\le\ee^{-\chi(q)vL^2}\le\ee^{-\chi(\bar q)v_-L^2}$ in all cases (in continuous time with
+$\chi=\frac12$). There are fewer than $L$ high modes and $y_k<\pi L/2$, so the
+high modes contribute at most $2^{j+1}(\pi/2)^{2j+1}L^{2j+6}\ee^{-\chi v_-L^2}$ to $|R'|$; the function
+$L\mapsto L^{2j+6}\ee^{-\chi v_-L^2}$ is decreasing for $L^2\ge(2j+6)/(2\chi v_-)$, which gives $B_{\rm high}$.
+
+\emph{Continuum tail.} For odd $k>\frac23L$ we have $L<6y_k/\pi$, $|F_j(0)|=\ee^{-a}$ and
+$|F_j'(0)|\le(\frac{2j+7}6+ab_0)\ee^{-a}$ with $a=2vy_k^2$; hence the last sum is bounded by $B_{\rm tail}$ (the index
+set $\{k>\frac23L\}$ is contained in $\{k>\frac23L_0\}$).
+\end{proof}
+
+\begin{remark}[How the proposition is used]\label{rem:usage}
+% src: data/msc_rigorous_1d/12_cont_theorem.json, data/msc_rigorous_1d/14_disc_N0_*.json (field Bnd)
+The numbers $B_{\rm low},B_{\rm high},B_{\rm tail}$ are evaluated rigorously (finitely many terms plus
+Lemma~\ref{lem:tail}); in all applications below they are smaller than $10^{-10}$. The explicit sum over $k\le k_0$
+(at most $8$ terms) is enclosed in ball arithmetic: $F_j''$ is evaluated by second-order Taylor-model
+arithmetic (``jets'' $(F,F',F'')$ in $\zeta$) on the ball $Z_k=[0,y_k^2/L_0^2]\ni\xi_k$, with $v$ and $q$ replaced
+by balls. The resulting ball contains $R$ for \emph{all} $L\ge L_0$ simultaneously. Implementation:
+\texttt{scripts/core.py} (\texttt{R\_enclosure}); sanity check against direct $50$-digit evaluation of
+$L^4(\mathfrak S_j-G^{(j)}-H_j/L^2)$ for sample $N$, $v$, $q$: \texttt{scripts/11\_expansion\_sanity.py}.
+\end{remark}
+
+\begin{corollary}[First-order asymptotics, all derivatives used]\label{cor:firstorder}
+For fixed $u>0$: $G_N^{(j)}(u)=G^{(j)}(u)+L^{-2}\bigl[\frac{7+2j}{12}G^{(j+1)}(u)+\frac u6G^{(j+2)}(u)\bigr]+O(L^{-4})$,
+$j=0,1$, with the explicit $O$-constant of Proposition~\ref{prop:lattice}.
+\end{corollary}
+
+\subsection{The mode in continuous time}
+
+For $N\ge3$ let $t_{\rm c}=t_{\rm c}(N,q)$ be the unique maximiser of $g$ (Theorem~\ref{thm:unimodal-cont}) and
+$u_N:=qt_{\rm c}/L^2$, the unique zero of $G_N'$; $u_N$ does not depend on $q$.
+
+\begin{theorem}[Continuous-time mode; analytic for $N\ge301$, \CA{} for $3\le N\le300$]\label{thm:cont}
+% src: code/msc_rigorous_1d/12_cont_theorem.py, data/msc_rigorous_1d/12_cont_theorem.json; code/msc_rigorous_1d/13_cont_small_N.py, data/msc_rigorous_1d/13_cont_small_N.json
+For every $N\ge3$,
+\begin{equation}\label{eq:contbound}
+  \Bigl|u_N-c+\frac{\kappa}{L^2}\Bigr|<\frac{1.78}{L^4},\qquad\text{i.e.}\qquad
+  \Bigl|t_{\rm c}-\frac{cL^2-\kappa}{q}\Bigr|<\frac{1.78}{qL^2},
+\end{equation}
+and $1.78$ can be replaced by $1.54$ for $N\ge201$. Moreover $c-0.3614\,L^{-2}<u_N<c-\kappa L^{-2}$ for all $N\ge3$.
+Finally the limit $\kappa_2:=\lim_{N\to\infty}L^4(u_N-c+\kappa L^{-2})$ exists and is given, with all derivatives of $G$
+taken at $c$, by
+\begin{equation}\label{eq:kappa2}
+ \kappa_2=-\frac{\Gamma_0}{G''(c)},\qquad
+ \Gamma_0=\tfrac12\kappa^2G'''-\kappa\Bigl(\tfrac{11}{12}G'''+\tfrac c6G''''\Bigr)
+   +\tfrac{113}{480}G'''+\tfrac{49c}{360}G''''+\tfrac{c^2}{72}G^{(5)} ;
+\end{equation}
+numerically $\Gamma_0=-19.1577530390322526\ldots$ and $\kappa_2=-1.5308900198375030446\ldots$ (all digits shown correct).
+% src: code/msc_rigorous_1d/37_kappa2.py, data/msc_rigorous_1d/37_kappa2.json (closed form, ball enclosure); data/msc_rigorous_1d/12_cont_theorem.json (row 2001)
+\end{theorem}
+\begin{proof}
+\emph{Analytic part.} Fix $N_0$, $L_0=N_0-\frac12$, $\varepsilon_0=L_0^{-2}$, $K>0$, and let $L\ge L_0$,
+$\varepsilon=L^{-2}$, $s\in[-K,K]$,
+\[
+  u=c-\kappa\varepsilon+s\varepsilon^2=c-\varepsilon d,\qquad d:=\kappa-s\varepsilon .
+\]
+By Proposition~\ref{prop:lattice} ($j=1$, continuous time), $G_N'(u)=G'(u)+\varepsilon H_1(u)+\varepsilon^2R(u)$ with
+$H_1=\frac34G''+\frac u6G'''$. Taylor's formula at $c$ (with $G'(c)=0$) gives
+\[
+ G'(u)=-\varepsilon d\,G''(c)+\tfrac12\varepsilon^2d^2G'''(c)-\tfrac16\varepsilon^3d^3G''''(\xi),\qquad
+ H_1(u)=H_1(c)-\varepsilon d\,H_1'(c)+\tfrac12\varepsilon^2d^2H_1''(\xi'),
+\]
+with $\xi,\xi'$ between $u$ and $c$, $H_1'=\frac{11}{12}G'''+\frac u6G''''$, $H_1''=\frac{13}{12}G''''+\frac u6G^{(5)}$.
+Since $H_1(c)=G''(c)\bigl(\frac34+\frac c6\frac{G'''(c)}{G''(c)}\bigr)=\kappa G''(c)$, the terms of order
+$\varepsilon$ combine to $\varepsilon G''(c)(\kappa-d)=\varepsilon^2sG''(c)$, and
+\begin{equation}\label{eq:Gamma}
+ L^4G_N'(u)=s\,G''(c)+\Gamma,\qquad
+ \Gamma:=\tfrac12G'''(c)d^2-H_1'(c)d+\varepsilon\bigl[-\tfrac16G''''(\xi)d^3+\tfrac12H_1''(\xi')d^2\bigr]+R(u).
+\end{equation}
+Script \texttt{12\_cont\_theorem.py} encloses $\Gamma$ in ball arithmetic simultaneously for all
+$\varepsilon\in[0,\varepsilon_0]$, $s\in[-K,K]$ (so $d$, $u$, $\xi$, $\xi'$ range over explicit balls, and $R$ is
+enclosed as in Remark~\ref{rem:usage}) and verifies $\sup|\Gamma|<K|G''(c)|$. Then
+$G_N'(c-\kappa\varepsilon-K\varepsilon^2)>0>G_N'(c-\kappa\varepsilon+K\varepsilon^2)$, and since $G_N'$ has a single
+zero, positive before and negative after (Theorem~\ref{thm:unimodal-cont}), $|u_N-c+\kappa\varepsilon|<K\varepsilon^2$.
+The certified values are
+\begin{center}\small
+\begin{tabular}{rrlll}
+\toprule
+$N_0$ & $k_0$ & enclosure of $\Gamma$ & $B_{\rm low}+B_{\rm high}+B_{\rm tail}$ & certified $K$\\
+\midrule
+$21$ & $9$ & $[-24.56,-13.69]$ & $<5\times10^{-11}$ & $1.975$\\
+$51$ & $11$ & $[-20.01,-18.29]$ & $<5\times10^{-18}$ & $1.603$\\
+$101$ & $13$ & $[-19.38,-18.94]$ & $<2\times10^{-26}$ & $1.556$\\
+$201$ & $13$ & $[-19.22,-19.10]$ & $<2\times10^{-26}$ & $1.54$\\
+$301$ & $15$ & $[-19.19,-19.13]$ & $<3\times10^{-36}$ & $1.54$\\
+$2001$ & $15$ & $[-19.1584,-19.1571]$ & $<3\times10^{-36}$ & $1.54$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(file \texttt{data/12\_cont\_theorem.json}; the $\Gamma$ column is rounded outward to the digits shown). % src: data/msc_rigorous_1d/12_cont_theorem.json
+In every row $\Gamma<0$, so the zero $s^*=\Gamma/|G''(c)|$ of
+$sG''(c)+\Gamma$ is negative: $u_N<c-\kappa\varepsilon$. For every $N\ge N_0$ the number
+$s_N^*:=L^4(u_N-c+\kappa L^{-2})$ is such a zero, so it lies in the certified enclosure of $-\Gamma/G''(c)$; for
+$N_0=2001$ the script gives the enclosure $[-1.5309330,-1.5308464]$ (computed directly, not from the rounded table).
+
+\emph{Existence and value of $\kappa_2$.} Put $\Gamma_N(s):=L^4G_N'(c-\kappa\varepsilon+s\varepsilon^2)-sG''(c)$, a
+well-defined function of $s$ for each $N$ ($\varepsilon=L^{-2}$). Since $G_N'(u_N)=0$ and $|s^*_N|<1.78$ for all $N\ge3$
+(first part of the proof), $s^*_N=-\Gamma_N(s^*_N)/G''(c)$. Hence it suffices to show that $\Gamma_N(s)\to\Gamma_0$ as
+$N\to\infty$, uniformly for $|s|\le K:=1.78$; then $|s^*_N-(-\Gamma_0/G''(c))|\le\sup_{|s|\le K}|\Gamma_N(s)-\Gamma_0|/|G''(c)|\to0$.
+Write $u=c-\varepsilon d$, $d=\kappa-s\varepsilon$, and decompose, by Proposition~\ref{prop:lattice} ($j=1$, continuous
+time, $H_1=\frac34G''+\frac u6G'''$),
+\[
+  \Gamma_N(s)=\underbrace{\varepsilon^{-2}G'(u)+\varepsilon^{-1}H_1(u)-sG''(c)}_{=:A_N(s)}+R_N(u),\qquad
+  R_N(u):=L^4\bigl(G_N'(u)-G'(u)-\varepsilon H_1(u)\bigr).
+\]
+(i) By Taylor's formula at $c$, exactly as in \eqref{eq:Gamma},
+$A_N(s)=\frac12G'''(c)d^2-H_1'(c)d+\varepsilon[-\frac16G''''(\xi)d^3+\frac12H_1''(\xi')d^2]$ with $\xi,\xi'\in[c-\varepsilon(\kappa+K\varepsilon),c]$;
+as $d\to\kappa$ uniformly and $G'''',H_1''$ are bounded near $c$, $A_N(s)\to\frac12G'''(c)\kappa^2-\kappa H_1'(c)$
+uniformly, with $H_1'(c)=\frac{11}{12}G'''(c)+\frac c6G''''(c)$.
+(ii) In the proof of Proposition~\ref{prop:lattice} write the Taylor remainder of each low mode in integral form,
+$F_1(\zeta_k)-F_1(0)-\zeta_kF_1'(0)=\zeta_k^2\int_0^1(1-\theta)F_1''(\theta\zeta_k)\,\dd\theta$. Then
+\[
+ R_N(u)=\sum_{k\le\frac23L,\ k\ \rm odd}\sigma_k(-2)y_k^7\,2\!\int_0^1(1-\theta)F_1''(\theta\zeta_k;y_k,u)\,\dd\theta
+  +\text{(high modes)}-\text{(continuum tail)},
+\]
+where, as shown in that proof, $|\text{high modes}|\le2^2(\frac\pi2)^3L^8\ee^{-uL^2/2}$ and
+$|\text{continuum tail}|\le B_{\rm tail}(L)$, the expression $B_{\rm tail}$ of Proposition~\ref{prop:lattice} with $L$
+in place of $L_0$. For $u$ in $[c-\varepsilon(\kappa+K\varepsilon),c]\subset[\frac c2,c]$ (all large $N$) both tend to
+$0$ uniformly in $|s|\le K$: the first because $L^8\ee^{-cL^2/4}\to0$, the second because it is a tail, over $k>\frac23L$,
+of a convergent series with $s$-independent terms (take $v_-=\frac c2$, $v_+=c$). In the low-mode sum, each summand is
+bounded, uniformly in $N$, $|s|\le K$ and $\theta$, by the $k$-th term of $B_{\rm low}$ (Lemma~\ref{lem:Fpp} with
+$v_-=\frac c2$, $v_+=c$), which is summable over $k$; and for each fixed $k$, $\theta\zeta_k\to0$ and $u\to c$ uniformly,
+so by continuity of $F_1''$ in $(\zeta,u)$ the summand tends to $\sigma_k(-2)y_k^7F_1''(0;y_k,c)$ uniformly. By
+dominated convergence (Tannery's theorem) $R_N(u)\to R_0:=\sum_{k\ \rm odd}\sigma_k(-2)y_k^7F_1''(0;y_k,c)$ uniformly in
+$|s|\le K$.
+(iii) Evaluation of $R_0$. With $a=2cy^2$, $A_1(0)=1$, $A_1'(0)=-\frac32$, $A_1''(0)=\frac{113}{60}$ (from
+$S^3C=1-\frac32\zeta+\frac{113}{120}\zeta^2+\dots$), $\beta'(0)=-\frac13$ and $\beta''(0)=\frac4{45}$ (from
+$\beta=1-\frac\zeta3+\frac2{45}\zeta^2+\dots$), the formula of Lemma~\ref{lem:Fpp} gives
+$F_1''(0;y,c)=\bigl[\frac{113}{60}-\frac{49}{45}a+\frac{a^2}9\bigr]\ee^{-a}$. By \eqref{eq:G},
+$\sum_k\sigma_k(-2)y_k^{7}\ee^{-2cy_k^2}=\frac18G'''(c)$, $\sum_k\sigma_k(-2)y_k^{9}\ee^{-2cy_k^2}=-\frac1{16}G''''(c)$ and
+$\sum_k\sigma_k(-2)y_k^{11}\ee^{-2cy_k^2}=\frac1{32}G^{(5)}(c)$, so
+$R_0=\frac{113}{480}G'''(c)+\frac{49c}{360}G''''(c)+\frac{c^2}{72}G^{(5)}(c)$. Together with (i) this is $\Gamma_0$ of
+\eqref{eq:kappa2}, and $\kappa_2=-\Gamma_0/G''(c)$.
+The Taylor coefficients are checked symbolically and the right-hand side of \eqref{eq:kappa2} is enclosed in $256$-bit ball
+arithmetic (series tails by Lemma~\ref{lem:tail}) by script \texttt{37}; the result
+$\kappa_2\in[-1.53089001983750304465868904580\pm6\times10^{-31}]$ lies inside the enclosure $[-1.5309330,-1.5308464]$ given by
+the row $N_0=2001$, as it must. As a numerical illustration (not used), $L^2(s^*_N-\kappa_2)=-4.74925\ldots$ for
+$N=501,\dots,8001$. % src: code/msc_rigorous_1d/37_kappa2.py, data/msc_rigorous_1d/37_kappa2.json, data/msc_rigorous_1d/logs/37_kappa2.log
+
+\emph{Computer-assisted part.} For each $3\le N\le300$, script \texttt{13\_cont\_small\_N.py} evaluates the finite
+sum \eqref{eq:GNj} ($j=1$) in $160$-bit ball arithmetic and certifies
+$G_N'(c-\kappa L^{-2}-1.78L^{-4})>0>G_N'(c-\kappa L^{-2}+1.78L^{-4})$, as well as
+$G_N'(c-0.3614L^{-2})>0>G_N'(c-\kappa L^{-2})$. For $N\ge301$ the bound $u_N>c-0.3614L^{-2}$ follows from
+\eqref{eq:contbound}. (The largest value of $L^4|u_N-c+\kappa L^{-2}|$ is $1.77465\ldots$, attained at $N=4$.)
+\end{proof}
+
+\begin{corollary}[Mode over mean in continuous time]\label{cor:contratio}
+% src: data/msc_rigorous_1d/03_constants.json (c/4 - kappa); data/msc_rigorous_1d/39_hand_constants.json (1.7808, 1.86)
+For $N\ge3$, with $\E T=(L^2-\frac14)/q$,
+\[
+  \frac{t_{\rm c}}{\E T}=\frac{u_N}{1-\frac1{4L^2}}=c+\frac{\frac c4-\kappa}{L^2}+\frac{\vartheta}{L^4},\qquad
+  \tfrac c4-\kappa=-0.0029527130\ldots,\quad|\vartheta|\le1.86 .
+\]
+In particular $|t_{\rm c}/\E T-c|\le0.0030\,L^{-2}+1.86\,L^{-4}$: the ratio mode/mean converges to
+$c=0.3332842654949\ldots$ at rate $O(N^{-2})$ with a tiny leading coefficient.
+\end{corollary}
+\begin{proof}
+Write $\delta=\frac1{4L^2}\le\frac1{25}$ and $u_N=c-\kappa L^{-2}+\theta_1L^{-4}$, $|\theta_1|<1.78$
+(Theorem~\ref{thm:cont}). Using $(1-\delta)^{-1}=1+\delta+\delta^2(1-\delta)^{-1}$ and $c\delta=\frac c4L^{-2}$,
+\[
+ \frac{u_N}{1-\delta}-c-\frac{c/4-\kappa}{L^2}
+ =\frac{c\,\delta^2}{1-\delta}-\frac{\kappa}{L^2}\,\frac{\delta}{1-\delta}+\frac{\theta_1}{L^4(1-\delta)}
+ =\frac1{L^4(1-\delta)}\Bigl[\theta_1+\frac c{16}-\frac\kappa4\Bigr],
+\]
+and $\frac{25}{24}\bigl(1.78+|\frac c{16}-\frac\kappa4|\bigr)<\frac{25}{24}\cdot1.7808<1.86$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The mode in discrete time for \texorpdfstring{$q\le\frac9{10}$}{q<=9/10}}\label{sec:discrete}
+
+Throughout this section $x_0=1$, $D(t):=f(t+1)-f(t)$, and
+\begin{equation}\label{eq:tau}
+  \tau=\tau(N,q):=\frac{cL^2-\kappa}{q}+1-\rho,\qquad E_K:=\frac{K}{qL^2}\quad(K>0).
+\end{equation}
+
+\begin{theorem}[Sign of the increments near the mode; $N\ge41$]\label{thm:local}
+% src: code/msc_rigorous_1d/14_disc_theorem.py, data/msc_rigorous_1d/14_disc_N0_*.json; code/msc_rigorous_1d/35_disc_uniformK.py, data/msc_rigorous_1d/35_disc_uniformK.json
+Let $N\ge41$, $q\in(0,\frac45]$ and $E=E_{1.68}$. Then
+\begin{enumerate}
+\item[(A)] $D(t)>0$ for every integer $t\in[\tau-E-1,\ \tau-E]$;
+\item[(B)] $D(t)<0$ for every integer $t\in[\tau+E,\ \tau+E+1]$.
+\end{enumerate}
+The constant $1.68$ can be replaced by $1.63$ for $N\ge51$, by $1.58$ for $N\ge101$ and by $1.56$ for $N\ge601$.
+Moreover (A) and (B) hold with $E=E_{1.61}$ for all $N\ge61$ and all $q\in(0,\frac9{10}]$.
+\end{theorem}
+\begin{proof}
+Let $L\ge L_0$, $\varepsilon=L^{-2}\le\varepsilon_0=L_0^{-2}$. For an integer $t$ write $t=\tau+\sigma$,
+$s:=q\sigma L^2$ and $v:=q(t-1)/L^2$. By \eqref{eq:tau}, $q(\tau-1)=cL^2-\kappa-q\rho$, so
+\[
+   v=c-\varepsilon d,\qquad d:=\kappa+q\rho-s\varepsilon .
+\]
+By \eqref{eq:frakS} and Proposition~\ref{prop:lattice} ($j=1$, discrete time, $\bar q=\frac45$),
+$\frac{L^4}{q^2}D(t)=\mathfrak S_1(t)=G'(v)+\varepsilon H(v)+\varepsilon^2R$ with
+$H=H_1^{(q)}=\frac34G''+\frac v6(1-3q)G'''$. Exactly as in the proof of Theorem~\ref{thm:cont},
+using now $H(c)=G''(c)\bigl(\frac34+\frac c6(1-3q)\frac{G'''(c)}{G''(c)}\bigr)=(\kappa+q\rho)G''(c)$,
+\begin{equation}\label{eq:discGamma}
+  \frac{L^8}{q^2}D(t)=\underbrace{s\,G''(c)+\tfrac12G'''(c)d^2-H'(c)d}_{=:M(s)}
+     +\underbrace{\varepsilon\bigl[-\tfrac16G''''(\xi)d^3+\tfrac12H''(\xi')d^2\bigr]+R}_{=:\,\Xi},
+\end{equation}
+with $\xi,\xi'$ between $v$ and $c$,
+$H'=\frac34G'''+\frac{1-3q}6G'''+\frac v6(1-3q)G''''$ and
+$H''=\frac34G''''+\frac{1-3q}3G''''+\frac v6(1-3q)G^{(5)}$.
+On the window (A), $\sigma\in[-E-1,-E]$, i.e.\ $s\in[-K-qL^2,-K]$ and $d\in\kappa+q\rho+[K\varepsilon,K\varepsilon+q]$; on
+(B), $s\in[K,K+qL^2]$ and $d\in\kappa+q\rho-[K\varepsilon,K\varepsilon+q]$. Since $\dd d/\dd s=-\varepsilon$,
+\[
+  M'(s)=G''(c)-\varepsilon\bigl(G'''(c)d-H'(c)\bigr)<0\ \ \text{if}\ \ 
+  |G''(c)|>\varepsilon_0\sup|G'''(c)d-H'(c)|\ \ (\text{``slope condition''}),
+\]
+so $M(s)\ge M(-K)$ on (A) and $M(s)\le M(K)$ on (B). The certificate splits $(0,\frac45]$ into
+$2400$ intervals $[q_{i},q_{i+1}]$ and, for each of them, encloses in ball arithmetic, simultaneously for all
+$\varepsilon\in[0,\varepsilon_0]$, all $q\in[q_i,q_{i+1}]$ and all $d$ in
+$\kappa+q\rho+[-(q+K\varepsilon_0),q+K\varepsilon_0]$ (hence all $v,\xi,\xi'$ in the corresponding ball $V$): the
+quantity $\Xi$ (with $R$ enclosed as in Remark~\ref{rem:usage}, $k_0$ as in the table), the slope condition, and
+\[
+  M(-K)+\Xi>0,\qquad M(K)+\Xi<0 .
+\]
+This is done in two steps. Script \texttt{14\_disc\_theorem.py} determines, for each interval, the smallest constant
+$K_i$ that it can certify; the maximum of the $K_i$ over the intervals is listed in the table below (it is attained as
+$q\to0$; the minimum is $\approx0.27$, near $q=0.45$). A certificate at $K_i$ covers the windows (A), (B) at $K_i$, which
+are not the windows at a larger $K$; therefore script \texttt{35\_disc\_uniformK.py} repeats the certification on every
+interval with the single constant $K$ of the statement ($1.68$, $1.63$, $1.58$, $1.56$ for $N_0=41,51,101,601$): no
+interval fails. % src: data/msc_rigorous_1d/14_disc_N0_41_q4_5.json, data/msc_rigorous_1d/14_disc_N0_51_q4_5.json, data/msc_rigorous_1d/14_disc_N0_101_q4_5.json, data/msc_rigorous_1d/14_disc_N0_601_q4_5.json
+% src: data/msc_rigorous_1d/35_disc_uniformK.json, data/msc_rigorous_1d/logs/35_disc_uniformK.log (uniform constants, 0 failing intervals)
+The constants are (files \texttt{data/14\_disc\_N0\_*.json} and \texttt{data/35\_disc\_uniformK.json}):
+\begin{center}\small
+\begin{tabular}{rrlll}
+\toprule
+$N_0$ & $k_0$ & $\max_iK_i$, $q\in(0,\frac45]$ & $\max_iK_i$, $q\in(0,\frac23]$ & uniform $K$ certified on all intervals\\
+\midrule
+$41$ & $11$ & $1.6733$ & $1.6590$ & $1.68$\\
+$51$ & $11$ & $1.6222$ & $1.6222$ & $1.63$\\
+$101$ & $13$ & $1.5732$ & $1.5732$ & $1.58$\\
+$601$ & $15$ & $1.5572$ & $1.5572$ & $1.56$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This proves (A) and (B) for $q\le\frac45$. For $q\le\frac9{10}$ the same two scripts are run with $\bar q=\frac9{10}$
+(Proposition~\ref{prop:lattice} with $\chi(\frac9{10})=-\frac{10}9\ln\frac45=0.2479\ldots$) and $2700$ intervals in $q$:
+$\max_iK_i=1.6023$ for $N_0=61$ ($k_0=15$), $1.5732$ for $N_0=101$, $1.5572$ for $N_0=601$
+(files \texttt{data/14\_disc\_N0\_*\_q9\_10.json}), and the uniform constants $1.61$, $1.58$, $1.56$ are certified on every
+interval (script \texttt{35}). % src: data/msc_rigorous_1d/14_disc_N0_61_q9_10.json, data/msc_rigorous_1d/14_disc_N0_101_q9_10.json, data/msc_rigorous_1d/14_disc_N0_601_q9_10.json, data/msc_rigorous_1d/35_disc_uniformK.json
+\end{proof}
+
+\begin{proposition}[Small $N$; \CA]\label{prop:smallN}
+% src: code/msc_rigorous_1d/15_disc_small_N.py, data/msc_rigorous_1d/15_disc_small_N.jsonl; code/msc_rigorous_1d/32_disc_small_N_ext.py, data/msc_rigorous_1d/32_disc_small_N_ext.jsonl; code/msc_rigorous_1d/40_examples.py, data/msc_rigorous_1d/40_examples.json (N = 6, 9)
+Let $E=E_{1.78}$, $t_-:=\lfloor\tau-E\rfloor$, $t_+:=\lceil\tau+E\rceil$, and let $(N,q)$ satisfy one of
+\begin{enumerate}
+\item[(a)] $3\le N\le40$ and $q\in(0,\frac45]$;
+\item[(b)] $7\le N\le9$ and $q\in[\frac45,\frac{17}{20}]$;
+\item[(c)] $10\le N\le60$ and $q\in[\frac45,\frac9{10}]$.
+\end{enumerate}
+Then $t_+\ge N-1$, $D(t_+)<0$, and either $t_-\le N-2$ or $D(t_-)>0$, with the single exception $N=4$, $q=\frac45$,
+$t_-=3$, where $D(3)=0$.
+\end{proposition}
+\begin{proof}
+Script \texttt{15\_disc\_small\_N.py}, $128$-bit ball arithmetic.
+
+\emph{Part 1: $0<q\le\frac12$.} All $\lambda_m$ are positive, and by the proof of Theorem~\ref{thm:unimodal-disc}
+the real-variable function $\Psi(t)=\Phi(t+1)-\Phi(t)$ (which equals a positive multiple of $D(t)$ at integers)
+has exactly one zero $t_0$ in $(N-2,\infty)$, is positive on $[N-2,t_0)$ and negative on $(t_0,\infty)$. In
+the scaled variable $v=q(t-1)/L^2$ (now $t$ real) we have $\frac{L^4}{q^2}\cdot\frac{2q}{2N-1}\,\Psi(t)=\mathfrak D(v;q)$,
+$\mathfrak D(v;q):=\sum_k\sigma_k2y_k(-2y_k^2)A_1(\zeta_k)\exp\bigl(-2vy_k^2\beta(\zeta_k)\Lambda(2q\sin^2x_k)\bigr)$
+(the sum over all lattice modes $k=2m-1$, $m\le N-1$; $2q\sin^2x_k<1$).
+The script certifies, by adaptive bisection of $q\in[0,\frac12]$ into balls, that
+$\mathfrak D(v_+(q);q)<0$ and $\tau+E>N-2$, and that $\mathfrak D(v_-(q);q)>0$ or $\tau-E\le N-2$, where
+$v_\mp(q)=c-(\kappa+q\rho)L^{-2}\mp1.78L^{-4}$ are the values of $v$ at $t=\tau\mp E$ ($\Lambda$ is enclosed on a
+ball $[w_1,w_2]$ by $[\Lambda(w_1),\Lambda(w_2)]$, monotonicity). Hence $\tau-E<t_0<\tau+E$, so $D(t_+)<0$ and, if
+$t_-\ge N-1$, $D(t_-)>0$.
+
+\emph{Part 2: $\frac12\le q\le\frac45$.} Put $q^\mp_t:=(cL^2-\kappa\mp1.78L^{-2})/(t-1+\rho)$; then
+$t_-=t\iff q\in(q^-_{t+1},q^-_t]$ and $t_+=t\iff q\in[q^+_t,q^+_{t-1})$. For every integer $t\ge N-1$ for which
+the interval $I=[q^-_{t+1},q^-_t]\cap[\frac12,\frac45]$ is non-empty the script certifies
+$\partial_q\mathfrak S_1(t)<0$ on $I$ (one ball evaluation of
+$\sum_kc_k(t-1)\lambda_k^{t-2}(-2\sin^2x_k)$) and $\mathfrak S_1(t)>0$ at the right end point of $I$; similarly
+on $I=[q^+_t,q^+_{t-1}]\cap[\frac12,\frac45]$, $\partial_q\mathfrak S_1(t)<0$ and $\mathfrak S_1(t)<0$ at the left
+end point (no such $t$ is smaller than $N-1$). The only case not of this form is $t=N-1$ on windows of type $t_-$,
+where $D(N-1)=(q/2)^{N-1}(h_1-1)$ has the sign of $1-\frac1{2N-3}-q$ (Proposition~\ref{prop:fail}(2)); for
+$3\le N\le40$ this is positive on the relevant $q$-interval except for $N=4$, where $D(3)\ge0$ with equality
+exactly at $q=\frac45$. All $38$ values of $N$ pass (\texttt{data/15\_disc\_small\_N.jsonl}; $782$ windows for
+$N=40$).
+
+\emph{Part 3: cases (b), (c).} Script \texttt{32\_disc\_small\_N\_ext.py} applies the method of Part 2 with
+$[\frac12,\frac45]$ replaced by $[\frac45,\frac{17}{20}]$ ($N=7,8,9$), resp.\ $[\frac45,\frac9{10}]$ ($10\le N\le60$); for
+integer $t$ the formula $\mathfrak S_1(t)=\sum_kc_k\lambda_k^{t-1}$ is valid for eigenvalues of either sign. All $54$
+cases pass ($6752$ windows; \texttt{data/32\_disc\_small\_N\_ext.jsonl}). The restrictions on $N$ cannot simply be dropped:
+the same computation fails for $N=6$ (at $t=11$, $q$ slightly below $0.829$) and for $N=9$ (at $t=26$, $q$ slightly below
+$0.888$), where the mode leaves the window \eqref{eq:discwindow}; e.g.\ for $N=6$, $q=0.828$ the mode is $t^*=11<\tau-E=11.0097$,
+and for $N=9$, $q=0.887$ it is $t^*=26<\tau-E=26.031$ (exact rational computation).
+\end{proof}
+
+\begin{theorem}[Mode in discrete time]\label{thm:discmode}
+% src: data/msc_rigorous_1d/35_disc_uniformK.json, data/msc_rigorous_1d/15_disc_small_N.jsonl, data/msc_rigorous_1d/32_disc_small_N_ext.jsonl; data/msc_rigorous_1d/39_hand_constants.json (tau, E at N = 4)
+Let $(N,q)$ satisfy one of
+\begin{enumerate}
+\item[(a)] $N\ge3$ and $q\in(0,\frac45]$;
+\item[(b)] $N\ge7$ and $q\in(0,\frac{17}{20}]$;
+\item[(c)] $N\ge10$ and $q\in(0,\frac9{10}]$.
+\end{enumerate}
+Then $f$ is unimodal and every maximiser $t^*$ of $f$ satisfies
+\begin{equation}\label{eq:discwindow}
+   \tau-E<t^*<\tau+1+E,\qquad \tau=\frac{cL^2-\kappa}{q}+1-\rho,\quad E=\frac{1.78}{qL^2}
+\end{equation}
+(with $1.68$ instead of $1.78$ for $N\ge41$, $q\le\frac45$, and with $1.61$ for $N\ge61$). In particular there are at most
+$\lfloor1+2E\rfloor+1$ maximisers, and exactly one or two adjacent ones as soon as $qL^2>3.56$.
+\end{theorem}
+\begin{proof}
+$f$ is unimodal by Theorem~\ref{thm:tp2}(3) in case (a) and by Theorem~\ref{thm:tp2b}(3) in cases (b), (c). Let
+$K:=1.61$ if $N\ge61$; $K:=1.68$ if $41\le N\le60$ and $q\le\frac45$; $K:=1.78$ otherwise; and in this proof let
+$E:=E_K\le E_{1.78}$, $t_-:=\lfloor\tau-E\rfloor$, $t_+:=\lceil\tau+E\rceil$. It suffices to prove
+$\tau-E<t^*<\tau+1+E$ for this $E$. We have $D(t_+)<0$, and $t_-\le N-2$ or $D(t_-)>0$ (apart
+from the exception $N=4$, $q=\frac45$): for $N\ge61$, and for $41\le N\le60$ with $q\le\frac45$, by
+Theorem~\ref{thm:local}, because $t_-$ is an integer of the window (A) and $t_+$ an integer of the window (B); for
+$41\le N\le60$ with $q>\frac45$ by Proposition~\ref{prop:smallN}(c); for $N\le40$ by Proposition~\ref{prop:smallN}.
+Now $D(t_+)<0$ means $f(t_++1)<f(t_+)$; if some maximiser satisfied $t^*\ge t_++1$, unimodality would force
+$f(t_+)\le f(t_++1)$. Hence $t^*\le t_+<\tau+E+1$. If $t_-\le N-2$ then $t^*\ge N-1>t_-$ trivially ($f$ vanishes below
+$N-1$). Otherwise $D(t_-)>0$, i.e.\ $f(t_-+1)>f(t_-)$, and a maximiser $t^*\le t_-$ would force $f(t_-)\ge f(t_-+1)$; hence
+$t^*\ge t_-+1>\tau-E$. (The per-interval constants $K_i\le K$ of script \texttt{14} would also suffice here: by
+unimodality, $D(\lfloor\tau-E_{K_i}\rfloor)>0$ gives $t^*>\tau-E_{K_i}\ge\tau-E_K$, and $D(\lceil\tau+E_{K_i}\rceil)<0$ gives
+$t^*<\tau+E_{K_i}+1\le\tau+E_K+1$.) In the exceptional case $N=4$, $q=\frac45$ the unique maximiser is $t^*=5$
+(Proposition~\ref{prop:fail}(4)), while $\tau=4.0043\ldots$ and $E=0.1816\ldots$, so \eqref{eq:discwindow} holds.
+The count: the open interval \eqref{eq:discwindow} has length $1+2E$,
+which is smaller than $2$ when $qL^2>3.56$, and then it contains at most two integers, necessarily adjacent.
+\end{proof}
+
+\begin{corollary}[Explicit finite-$N$ bounds]\label{cor:explicit}
+% src: data/msc_rigorous_1d/03_constants.json; code/msc_rigorous_1d/39_hand_constants.py, data/msc_rigorous_1d/39_hand_constants.json (all derived constants)
+Under the hypotheses of Theorem~\ref{thm:discmode}, every mode $t^*$ satisfies
+\begin{align}
+ &\Bigl|\,t^*-\frac{cL^2-\kappa}{q}+\rho-\frac32\Bigr|<\frac12+\frac{1.78}{qL^2},\label{eq:e1}\\
+ &-\frac{\kappa+(\rho-1)q}{L^2}-\frac{1.78}{L^4}\ <\ \frac{q\,t^*}{L^2}-c\ <\ -\frac{\kappa-(2-\rho)q}{L^2}+\frac{1.78}{L^4},
+ \label{eq:e2}
+\end{align}
+with $\kappa+(\rho-1)q=0.08627\ldots+0.99117\ldots q$ and $\kappa-(2-\rho)q=0.08627\ldots-0.00882\ldots q>0$. Consequently,
+for all $N\ge3$,
+\begin{equation}\label{eq:e3}
+  \Bigl|\frac{q\,t^*}{(N-\frac12)^2}-c\Bigr|<\frac{0.0863+0.9912\,q}{(N-\frac12)^2}+\frac{1.78}{(N-\frac12)^4}
+  \le\frac{0.372+0.992\,q}{(N-\frac12)^2}\le\frac{1.44\,(0.372+0.992\,q)}{N^2},
+\end{equation}
+$q\,t^*/L^2<c$ as soon as $N\ge6$, and for the ratio mode/mean, with $\E T=N(N-1)/q=(L^2-\frac14)/q$,
+\begin{equation}\label{eq:e4}
+  \frac{t^*}{\E T}=c+\frac{\frac c4-\kappa-q(\rho-\frac32)+\frac q2\vartheta_1}{L^2}+\frac{\vartheta_2}{L^4},\qquad
+  |\vartheta_1|<1,\quad|\vartheta_2|\le 2.2 ,
+\end{equation}
+where $\frac c4-\kappa=-0.00295\ldots$ and $\rho-\frac32=0.49117\ldots$. In particular
+$|t^*/\E T-c|\le(0.003+0.992\,q)L^{-2}+2.2\,L^{-4}$.
+The exponent $2$ in \eqref{eq:e3} is optimal: by the right-hand inequality in \eqref{eq:e2}, for all $N\ge6$,
+\[
+   c-\frac{q\,t^*}{L^2}>\frac{\kappa-(2-\rho)q}{L^2}-\frac{1.78}{L^4}\ \ge\ \frac{0.0774}{L^2}-\frac{1.78}{L^4}>0 .
+\]
+(The interval \eqref{eq:e2} has length $q/L^2+3.56/L^4$; the term $q/L^2$ reflects the integrality of $t^*$, which
+\eqref{eq:e1} determines up to at most two adjacent candidates.) Finally, the mode is given by an exact formula
+except near ties: if the distance from $\tau$ to the nearest integer is at least $E=1.78/(qL^2)$, then the maximiser
+is unique and
+\begin{equation}\label{eq:exactmode}
+   t^*=\lceil\tau\rceil=\Bigl\lceil\frac{c\,(N-\frac12)^2-\kappa}{q}+1-\rho\Bigr\rceil ;
+\end{equation}
+in the remaining cases, if $E<\frac12$ (i.e.\ $qL^2>3.56$), all modes lie in $\{\lceil\tau\rceil-1,\lceil\tau\rceil\}$ or
+all lie in $\{\lceil\tau\rceil,\lceil\tau\rceil+1\}$.
+\end{corollary}
+\begin{proof}
+\eqref{eq:e1} is \eqref{eq:discwindow}. Multiplying $\tau-E<t^*<\tau+1+E$ by $q/L^2$ gives \eqref{eq:e2}.
+For \eqref{eq:e3}: $2-\rho>0$, so the right side of \eqref{eq:e2} is at most $-(\kappa-0.0089)L^{-2}+1.78L^{-4}$,
+which is negative for $L^2>1.78/0.0774$, i.e.\ $N\ge6$, and in absolute value smaller than the left side; and
+$L^{-4}\le L^{-2}/6.25$, $L\ge\frac56N$ for $N\ge3$ (the middle inequality of \eqref{eq:e3} needs
+$1.78/L^2\le0.372-0.0863$, i.e.\ $L^2\ge6.23$, and $L^2=6.25$ at $N=3$; the last inequality is an equality at $N=3$,
+where $L=\frac56N$). For \eqref{eq:e4} write $qt^*/L^2=c-(\kappa+q(\rho-\frac32))L^{-2}
++\frac q2\vartheta_1L^{-2}+\vartheta_3L^{-4}$ with $|\vartheta_1|<1$, $|\vartheta_3|\le1.78$ (this is \eqref{eq:e2}),
+divide by $1-\delta$, $\delta=\frac1{4L^2}\le\frac1{25}$, and expand as in Corollary~\ref{cor:contratio}:
+the $L^{-4}$ coefficient is $(1-\delta)^{-1}\bigl[\vartheta_3+\frac c{16}-\frac14(\kappa+q(\rho-\frac32)-\frac q2\vartheta_1)\bigr]$,
+of modulus at most $\frac{25}{24}(1.78+0.0209+\frac14(0.0863+0.9912))<2.2$. For \eqref{eq:exactmode}: with
+$m=\lceil\tau\rceil\in[\tau,\tau+1)$ and $E<1$, the integers in the open interval $(\tau-E,\tau+1+E)$ are $m$, and in
+addition $m-1$ if $\tau-(m-1)<E$, and $m+1$ if $m-\tau<E$. If $\operatorname{dist}(\tau,\Z)\ge E$ (which forces
+$E\le\frac12$) only $m$ remains, and it is then the unique maximiser by Theorem~\ref{thm:discmode}. If $E<\frac12$ the two
+conditions exclude each other, because $(\tau-(m-1))+(m-\tau)=1>2E$.
+\end{proof}
+
+\begin{remark}
+For $q=\frac45$, \eqref{eq:exactmode} reads $t^*=\lceil\frac54cL^2-1.09902\ldots\rceil$, and for $q=\frac12$,
+$t^*=\lceil2cL^2-1.16372\ldots\rceil$. These are the empirical rules
+$t^*=\lfloor cL^2/q-0.099\rfloor$ ($q=\frac45$) and $t^*=\lfloor cL^2/q-0.164\rfloor$ ($q=\frac12$) found and certified
+case by case for $10\le N\le600$, resp.\ $10\le N\le300$, by the exact-arithmetic certificates of R5;
+here they follow from a theorem valid for all $N$, but only for the $N$ with $\operatorname{dist}(\tau,\Z)\ge E$; for the other $N$ the theorem leaves two adjacent candidates, and the rules rest on the certificates alone. % src: code/msc_rigorous_1d/22_crosscheck_t5.py, data/msc_rigorous_1d/22_crosscheck_t5.json
+(Script \texttt{22}: on those certified data the hypothesis $\operatorname{dist}(\tau,\Z)\ge E$ holds in
+$596$ of $600$ cases for $q=\frac45$ and in $289$ of $298$ cases for $q=\frac12$, and \eqref{eq:exactmode} gives the
+certified mode in each of them.)
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The simple random walk \texorpdfstring{$q=1$}{q=1} and the range \texorpdfstring{$\frac9{10}<q<1$}{9/10<q<1}}\label{sec:global}
+
+\subsection{Parity classes at \texorpdfstring{$q=1$}{q=1}: notation and expansions}
+
+In this section $x_0=1$. For $q=1$ we use the class representation of Theorem~\ref{thm:parity}: with $W=2N-1=2L$,
+$D\in\{N-1,N\}$ and $\Phi_D(t):=\sum_{k=1}^{N-1}\sin\vartheta_k\sin(D\vartheta_k)\cos^{t-1}\vartheta_k$ (real $t\ge1$;
+all $\cos\vartheta_k>0$) we have $f(t)=\Phi_D(t)/L$ for integers $t\equiv D\pmod 2$. The class $D=N-1$ is called
+\emph{near} (upper signs below), the class $D=N$ \emph{far} (lower signs). Put, for integers $k\ge1$,
+\[
+  \hat y_k:=\frac{k\pi}2,\quad x_k:=\frac{\hat y_k}{L}=\vartheta_k,\quad\zeta_k:=x_k^2,\quad
+  \tau_k:=(-1)^{k/2}\ (k\text{ even}),\quad\eta:=\frac1L,\quad v:=\frac{t-1}{L^2},
+\]
+(so $\hat y_k=2y_k$ for odd $k$), and for $0\le\zeta<\pi^2/4$
+\[
+  c_2(\zeta):=\cos\frac{\sqrt\zeta}2,\qquad S_4(\zeta):=S(\zeta/4),\qquad
+  M(\zeta):=-\frac{2\ln\cos\sqrt\zeta}{\zeta}\quad(M(0)=1),
+\]
+so that $\cos^{t-1}x_k=\exp\bigl(-\tfrac12v\hat y_k^2M(\zeta_k)\bigr)$. Finally
+\begin{equation}\label{eq:calE}
+  \mathcal E^{(j)}(v):=\sum_{k\ \mathrm{even},\ k\ge2}\tau_k\,\frac{\hat y_k^2}2\Bigl(-\frac{\hat y_k^2}2\Bigr)^{j}
+     \ee^{-v\hat y_k^2/2},\qquad \mathcal E:=\mathcal E^{(0)}=\sum_{k\ \rm even}(-1)^{k/2}\frac{k^2\pi^2}{8}\,\ee^{-k^2\pi^2v/8}.
+\end{equation}
+
+\begin{lemma}[Class sums]\label{lem:classsums}
+For real $t\ge1$,
+\[
+  L\,\Phi_D(t)=P(t)\mp\eta\,E(t),\qquad L^3\bigl(\Phi_D(t+2)-\Phi_D(t)\bigr)=P_1(t)\mp\eta\,E_1(t),
+\]
+\begin{align*}
+ P&:=\sum_{k\ \mathrm{odd}}\sigma_k\hat y_k\,(Sc_2)(\zeta_k)\cos^{t-1}x_k, &
+ E&:=\sum_{k\ \mathrm{even}}\tau_k\frac{\hat y_k^2}2\,(SS_4)(\zeta_k)\cos^{t-1}x_k,\\
+ P_1&:=-\sum_{k\ \mathrm{odd}}\sigma_k\hat y_k^3\,(S^3c_2)(\zeta_k)\cos^{t-1}x_k,&
+ E_1&:=-\sum_{k\ \mathrm{even}}\tau_k\frac{\hat y_k^4}2\,(S^3S_4)(\zeta_k)\cos^{t-1}x_k,
+\end{align*}
+the sums running over $1\le k\le N-1$. Thus $L^2f(t)=P\mp\eta E$ and $L^4(f(t+2)-f(t))=P_1\mp\eta E_1$ for integers
+$t\equiv D$.
+\end{lemma}
+\begin{proof}
+$D=L\mp\frac12$, so $D\vartheta_k=\hat y_k\mp\frac{x_k}2$ and
+$\sin(D\vartheta_k)=\sin\hat y_k\cos\frac{x_k}2\mp\cos\hat y_k\sin\frac{x_k}2$, where $\sin\hat y_k=\sigma_k$,
+$\cos\hat y_k=0$ for odd $k$ and $\sin\hat y_k=0$, $\cos\hat y_k=\tau_k$ for even $k$. Use $L\sin x_k=\hat y_kS(\zeta_k)$,
+$\sin\frac{x_k}2=\frac{\hat y_k}{2L}S_4(\zeta_k)$ and $\cos^{t+1}x-\cos^{t-1}x=-\sin^2x\cos^{t-1}x=-L^{-2}\hat y^2S^2\cos^{t-1}x$.
+\end{proof}
+
+\begin{lemma}[Bounds on the low range $\zeta\le\pi^2/9$]\label{lem:Mbounds}
+% src: code/msc_rigorous_1d/39_hand_constants.py, data/msc_rigorous_1d/39_hand_constants.json (m_1, m_2, 111/320); code/msc_rigorous_1d/21_q1_sanity.py
+The power series of $M$ at $0$ has nonnegative coefficients and radius of convergence $\pi^2/4$; hence
+$M,M',M''$ are nonnegative and nondecreasing on $[0,\pi^2/4)$. With $x=\sqrt\zeta$,
+$M'=\frac{x\tan x+2\ln\cos x}{x^4}$ and $M''=\frac{x^2\sec^2x-5x\tan x-8\ln\cos x}{2x^6}$, so on $[0,\pi^2/9]$
+\[
+  M\ge1,\quad 0\le M'\le m_1:=M'(\tfrac{\pi^2}9)=0.35548\ldots,\quad 0\le M''\le m_2:=M''(\tfrac{\pi^2}9)=0.32707\ldots .
+\]
+Moreover, on $[0,\pi^2/4]$: $-\frac18\le c_2'\le0$, $0\le c_2''\le\frac1{192}$, $-\frac1{24}\le S_4'\le0$, and
+\[
+ |(Sc_2)'|\le\tfrac7{24},\quad|(SS_4)'|\le\tfrac5{24},\quad|(S^3S_4)'|\le\tfrac{13}{24},\quad
+ -\tfrac58\le(S^3c_2)'\le0,\quad 0\le(S^3c_2)''\le\hat\alpha_2:=\tfrac{111}{320};
+\]
+$(S^3c_2)'(0)=-\frac58$, $M'(0)=\frac16$; all four functions $Sc_2,SS_4,S^3S_4,S^3c_2$ take values in $[0,1]$.
+\end{lemma}
+\begin{proof}
+$\tan$ has nonnegative Maclaurin coefficients (from $\tan'=1+\tan^2$ by induction), hence so has
+$-\ln\cos x=\int_0^x\tan$, and $M(\zeta)=-2\ln\cos(\sqrt\zeta)/\zeta$ is a power series in $\zeta$ with nonnegative
+coefficients. The formulas for $M',M''$ follow from $\dd/\dd\zeta=(2x)^{-1}\dd/\dd x$. As in Lemma~\ref{lem:elem},
+$c_2(\zeta)=\cos\sqrt{\zeta/4}$ gives $c_2'=-\frac18S(\zeta/4)$ and $c_2''=-\frac1{32}S'(\zeta/4)$; $S_4'=\frac14S'(\zeta/4)$.
+The product rule and Lemma~\ref{lem:elem}(1) give the remaining bounds, e.g.\
+$(S^3c_2)''=(6SS'^2+3S^2S'')c_2+6S^2S'c_2'+S^3c_2''\le\frac16+\frac1{20}+\frac18+\frac1{192}=\frac{111}{320}$,
+all terms being nonnegative.
+\end{proof}
+
+\begin{lemma}[Expansions for $q=1$]\label{lem:q1exp}
+% src: code/msc_rigorous_1d/q1.py; code/msc_rigorous_1d/21_q1_sanity.py, data/msc_rigorous_1d/21_q1_sanity.json
+Let $0<v_-\le v\le v_+$, $L\ge L_0\ge3$, $L_0^2>8/(2v_-\ln2)$, and $t=1+vL^2$ (real). Then
+\begin{align*}
+  P&=G(v)+\eta^2R_{P0}, & E&=\mathcal E(v)+\eta^2R_{E0},\\
+  P_1&=2G'(v)+\eta^2\bigl[\tfrac52G''(v)-\tfrac{2v}3G'''(v)\bigr]+\eta^4R_P, & E_1&=2\mathcal E'(v)+\eta^2R_E,
+\end{align*}
+with $|R_{P0}|\le\rho_{P0}$, $|R_{E0}|\le\rho_{E0}$, $|R_P|\le\rho_P$, $|R_E|\le\rho_E$, where, writing
+$a_k^\pm:=\frac12v_\pm\hat y_k^2$ and $\sum'$ for sums over $k>\frac23L_0$,
+\begin{align*}
+ \rho_P&:=\tfrac12\!\!\sum_{k\ \rm odd}\!\hat y_k^7\bigl[\hat\alpha_2+a_k^+(\tfrac54m_1+m_2)+(a_k^+m_1)^2\bigr]\ee^{-a_k^-}
+     +\bigl(\tfrac\pi2\bigr)^3L_0^8\,2^{-v_-L_0^2}\\
+     &\qquad+\sideset{}{'}\sum_{k\ \rm odd}\hat y_k^7\bigl[(\tfrac3\pi)^4+(\tfrac3\pi)^2(\tfrac58+\tfrac{a_k^+}6)\bigr]\ee^{-a_k^-},\\
+ \rho_E&:=\tfrac12\!\!\sum_{k\ \rm even}\!\hat y_k^6\bigl[\tfrac{13}{24}+a_k^+m_1\bigr]\ee^{-a_k^-}
+     +\tfrac12\bigl(\tfrac\pi2\bigr)^4L_0^7\,2^{-v_-L_0^2}+\tfrac12(\tfrac3\pi)^2\sideset{}{'}\sum_{k\ \rm even}\hat y_k^6\ee^{-a_k^-},\\
+ \rho_{P0}&:=\sum_{k\ \rm odd}\hat y_k^3\bigl[\tfrac7{24}+a_k^+m_1\bigr]\ee^{-a_k^-}+\tfrac\pi2L_0^4\,2^{-v_-L_0^2}
+     +(\tfrac3\pi)^2\sideset{}{'}\sum_{k\ \rm odd}\hat y_k^3\ee^{-a_k^-},\\
+ \rho_{E0}&:=\tfrac12\!\!\sum_{k\ \rm even}\!\hat y_k^4\bigl[\tfrac5{24}+a_k^+m_1\bigr]\ee^{-a_k^-}
+     +\tfrac12\bigl(\tfrac\pi2\bigr)^2L_0^5\,2^{-v_-L_0^2}+\tfrac12(\tfrac3\pi)^2\sideset{}{'}\sum_{k\ \rm even}\hat y_k^4\ee^{-a_k^-}.
+\end{align*}
+\end{lemma}
+\begin{proof}
+The proof is that of Proposition~\ref{prop:lattice}, with the split at $x_k=\pi/3$ (low modes: $k\le\frac23L$,
+$\cos x_k\ge\frac12$, $\zeta_k\le\pi^2/9$) and without the computer-assisted part. On a low mode the summand is
+$\pm\hat y_k^p\hat A(\zeta_k)\exp(-aM(\zeta_k))$ with $a=\frac12v\hat y_k^2$ and
+$\hat A\in\{Sc_2,SS_4,S^3c_2,S^3S_4\}$. Put $F=\hat A\ee^{-aM}$; by Lemma~\ref{lem:Mbounds},
+$|F'|\le(|\hat A'|+am_1)\ee^{-a}$ and $|F''|\le(\hat\alpha_2+2a\cdot\frac58m_1+a^2m_1^2+am_2)\ee^{-a}$ (for
+$\hat A=S^3c_2$) on the low range. For $P,E,E_1$ use $F(\zeta_k)=F(0)+\zeta_kF'(\xi_k)$; for $P_1$ use
+$F(\zeta_k)=F(0)+\zeta_kF'(0)+\frac12\zeta_k^2F''(\xi_k)$ with $F(0)=\ee^{-a}$,
+$F'(0)=(-\frac58-\frac a6)\ee^{-a}$. Summing the Taylor polynomials over all $k$ of the relevant parity gives
+$G$, $\mathcal E$, $2\mathcal E'$ (by \eqref{eq:G}, \eqref{eq:calE} and $\hat y_k=2y_k$) and, for $P_1$,
+\[
+  -\sum_{k\ \rm odd}\sigma_k\hat y_k^3\ee^{-a}+\eta^2\sum_{k\ \rm odd}\sigma_k\hat y_k^5\bigl(\tfrac58+\tfrac{v\hat y_k^2}{12}\bigr)\ee^{-a}
+  =2G'+\eta^2\bigl[\tfrac58\cdot4G''+\tfrac v{12}\cdot(-8G''')\bigr].
+\]
+The three parts of each $\rho$ bound, in this order, the Taylor remainders of the low modes (summed over all $k$ of
+the parity), the high lattice modes ($|\cos x_k|^{t-1}\le2^{-vL^2}$, fewer than $L$ of them, $\hat y_k<\pi L/2$; the
+bound is decreasing in $L$ for $L^2>8/(2v_-\ln2)$), and the Taylor polynomials for $k>\frac23L$ (where
+$L<3\hat y_k/\pi$).
+\end{proof}
+
+\subsection{The mode at \texorpdfstring{$q=1$}{q=1}}
+
+Define the constants (enclosed in ball arithmetic, script \texttt{16}; all digits correct)
+\begin{align}
+  \mathcal E(c)&=-0.92536002838\ldots,\quad \mathcal E'(c)=4.1610548333\ldots,\quad\mathcal E''(c)=-12.547560414\ldots,\notag\\
+  b&:=-\frac{\mathcal E'(c)}{G''(c)}=0.33250858299642786\ldots,\label{eq:b}\\
+  s_2&:=-\frac{\Gamma_0}{G''(c)}=-2.2503062886311552\ldots,\qquad
+  \Gamma_0:=\tfrac12G'''(c)b^2+b\,\mathcal E''(c)+\tfrac54G''(c)-\tfrac c3G'''(c),\notag\\
+  \tau_1&:=cL^2-bL+1+s_2 .\notag
+\end{align}
+
+\begin{theorem}[Mode of the simple random walk]\label{thm:q1}
+% src: code/msc_rigorous_1d/16_q1_theorem.py, data/msc_rigorous_1d/16_q1_theorem.json; code/msc_rigorous_1d/17_q1_small_N.py, data/msc_rigorous_1d/17_q1_small_N.json
+Let $q=1$, $x_0=1$, $N\ge3$. Every global maximiser $t^*$ of $f$ satisfies
+\begin{enumerate}
+\item $t^*\equiv N-1\pmod 2$ (the mode lies in the near class), and
+\item $\tau_1-\dfrac{K}{L}<t^*<\tau_1+2+\dfrac KL$ with $K=10.3$; for $3\le N\le600$ this holds with $K=0.031$, and
+ moreover $-0.0032<t^*-\tau_1<1.9986$ there.
+\end{enumerate}
+Consequently there are at most two maximisers (then $t^*$ and $t^*+2$; this happens for $N\in\{5,6,8,9\}$ and for
+no other $N\le600$), and
+\begin{equation}\label{eq:q1rate}
+  \Bigl|\frac{t^*}{L^2}-c+\frac bL\Bigr|<\frac{1.2504+K/L}{L^2},\qquad
+  \lim_{N\to\infty}L\Bigl(c-\frac{t^*}{L^2}\Bigr)=b=0.33250858\ldots\ne0 ;
+\end{equation}
+so for $q=1$ the scaled mode converges to $c$ exactly at rate $N^{-1}$, not $N^{-2}$, and
+$t^*/\E T=c-b/L+O(L^{-2})$.
+\end{theorem}
+\begin{proof}
+\emph{Analytic part, $N\ge601$.} Let $L\ge L_0=600.5$, $\eta\le\eta_0=1/L_0$. By Lemmas~\ref{lem:classsums}
+and~\ref{lem:q1exp}, for real $t$ and $v=(t-1)/L^2$ in a window $[v_-,v_+]\ni c$,
+\begin{equation}\label{eq:q1incr}
+  \tfrac12L^3\Psi_D(t)=G'(v)\mp\eta\,\mathcal E'(v)+\eta^2J(v)+\eta^3r,\qquad J:=\tfrac54G''-\tfrac v3G''',\qquad
+  |r|\le\tfrac12(\rho_E+\eta_0\rho_P),
+\end{equation}
+where $\Psi_D(t)=\Phi_D(t+2)-\Phi_D(t)$. Write $v=c\mp b\eta+s\eta^2$ and $\delta:=\mp b+s\eta$, so $v-c=\eta\delta$.
+Taylor's formula at $c$ gives $G'(v)=G''(c)\eta\delta+\frac12G'''(c)\eta^2\delta^2+\frac16G''''(\xi)\eta^3\delta^3$,
+$\mathcal E'(v)=\mathcal E'(c)+\mathcal E''(c)\eta\delta+\frac12\mathcal E'''(\xi')\eta^2\delta^2$,
+$J(v)=J(c)+J'(\xi'')\eta\delta$. The terms of order $\eta$ are $\eta\,(G''(c)\delta\mp\mathcal E'(c))=\eta^2sG''(c)$ by
+the definition of $b$, and collecting the rest,
+\begin{equation}\label{eq:q1Gamma}
+\begin{aligned}
+  \tfrac12L^5\Psi_D(t)&=(s-s_2)\,G''(c)+\eta\,\Gamma_1,\\
+  \Gamma_1&:=\tfrac12G'''(c)(\mp2bs+s^2\eta)\mp\mathcal E''(c)s+\tfrac16G''''(\xi)\delta^3\mp\tfrac12\mathcal E'''(\xi')\delta^2
+     +J'(\xi'')\delta+r ,
+\end{aligned}
+\end{equation}
+because $\frac12G'''(c)\delta^2\mp\mathcal E''(c)\delta+J(c)=\Gamma_0+\eta[\frac12G'''(c)(\mp2bs+s^2\eta)\mp\mathcal E''(c)s]$
+and $\Gamma_0=-s_2G''(c)$. Script \texttt{16\_q1\_theorem.py} encloses $\Gamma_1$ for both classes, all
+$\eta\in[0,\eta_0]$ and all $s\in[s_2-K_1\eta_0,s_2+K_1\eta_0]$ (the window $[v_-,v_+]$ is chosen to contain all
+occurring $v$, here $[0.33272,0.33385]$; $\rho_P\le4190$, $\rho_E\le231$, $|r|\le118.7$) and certifies
+\[
+   \sup|\Gamma_1|<K_1\,|G''(c)|\qquad\text{with }K_1=10.21 .
+\]
+Hence $\Psi_D>0$ at $s=s_2-K_1\eta$ and $\Psi_D<0$ at $s=s_2+K_1\eta$. By Theorem~\ref{thm:parity} (proof),
+$\Psi_D$ has exactly one zero $t_0^D$ in $(D-2,\infty)$, is positive on $[D-2,t_0^D)$ and negative on
+$(t_0^D,\infty)$; since $\tau_1-K_1\eta>N-2$ (checked in the script), we conclude
+\[
+  \bigl|t_0^{N-1}-(cL^2-bL+1+s_2)\bigr|<\frac{K_1}L,\qquad\bigl|t_0^{N}-(cL^2+bL+1+s_2)\bigr|<\frac{K_1}L .
+\]
+Within the class $D$, $f(t+2)-f(t)=\Psi_D(t)/L$ is positive for class points $t<t_0^D$ and negative for
+$t>t_0^D$; therefore every maximiser of $f$ over the class lies in $[t_0^D,t_0^D+2]$.
+
+\emph{The near class wins.} Let $t_{\rm n},t_{\rm f}$ be class maximisers, $v_{\rm n}=c+\eta\delta_{\rm n}$,
+$v_{\rm f}=c+\eta\delta_{\rm f}$, with $\delta_{\rm n}=-b+s_{\rm n}\eta$, $\delta_{\rm f}=b+s_{\rm f}\eta$ and
+$s_{\rm n},s_{\rm f}\in[s_2-K_1\eta_0,s_2+2+K_1\eta_0]$. By Lemmas~\ref{lem:classsums}--\ref{lem:q1exp} and Taylor's
+formula ($G'(c)=0$),
+\[
+  \frac{L^2\bigl(f(t_{\rm n})-f(t_{\rm f})\bigr)}{\eta}
+  =-2\mathcal E(c)+\eta\Bigl[\tfrac12G''(\xi_1)\delta_{\rm n}^2-\tfrac12G''(\xi_2)\delta_{\rm f}^2
+   -\mathcal E'(\xi_3)\delta_{\rm n}-\mathcal E'(\xi_4)\delta_{\rm f}+\theta\Bigr]
+\]
+with $|\theta|\le2(\rho_{P0}+\eta_0\rho_{E0})$,
+and the script certifies that the right-hand side lies in $[1.832,1.869]$ for all $L\ge600.5$ (it is close to
+$-2\mathcal E(c)=1.8507\ldots>0$). Hence every global maximiser is a near-class maximiser, $t^*\in[t_0^{N-1},t_0^{N-1}+2]$, which
+gives (1) and (2) with $K=K_1$ for $N\ge601$.
+
+\emph{Computer-assisted part, $3\le N\le600$.} Script \texttt{17\_q1\_small\_N.py}: for $N\le14$ the PMF is computed
+exactly (integer path counts), all maximisers are listed, and the monotone tail is guaranteed by
+Theorem~\ref{thm:parity}. For $15\le N\le600$ the script certifies in $256$-bit ball arithmetic, for each class,
+$\Psi_D(t_D-2)>0>\Psi_D(t_D)$ at a class point $t_D$ (so $t_D$ is the unique class maximiser) and
+$\Phi_{N-1}(t_{N-1})>\Phi_N(t_N)$. In all cases the maximisers are in the near class and
+$-0.0032<t^*-\tau_1<1.9986$, $L\cdot\max\{\tau_1-t^*,\,t^*-\tau_1-2,\,0\}\le0.0309$
+(\texttt{data/17\_q1\_small\_N.json}). The exact ties $f(t^*)=f(t^*+2)$ occur for $N=5,6,8,9$
+(modes $\{4,6\},\{7,9\},\{15,17\},\{20,22\}$).
+
+\emph{Consequences.} $(1)$,$(2)$ give $1+s_2-K/L<t^*-cL^2+bL<3+s_2+K/L$ and $\max(|1+s_2|,|3+s_2|)=1.2503\ldots$.
+Two maximisers in the near class differ by $2$ and must both lie in $[t_0,t_0+2]$.
+\end{proof}
+
+\begin{remark}
+% src: data/msc_rigorous_1d/17_q1_small_N.json (K = 0.031 observed for N <= 600)
+(a) The first-order shift $-bL$ has a simple meaning: unfolding the reflection, the near class is the exit of the
+simple random walk from an interval through the end at distance $L-\frac12$, the far class through the end at
+distance $L+\frac12$; to first order the near class has the larger and earlier peak. For $q<1$ the two classes are
+mixed by the holding times and the shift disappears (Theorem~\ref{thm:global}). (b) The analytic constant $K_1=10.21$
+is far from optimal (we used absolute values for $R_E$, $R_P$); the certified data suggest that $(2)$ holds with
+$K\approx0.03$ for all $N$ (numerical observation).
+\end{remark}
+
+\subsection{Global maximisers for \texorpdfstring{$\frac23<q<1$}{2/3<q<1}}
+
+For $q>\frac9{10}$ we have no unimodality theorem (Theorems~\ref{thm:tp2}, \ref{thm:tp2b} stop at $\frac9{10}$), and
+for $q>1-\frac1{2N-3}$ the PMF is \emph{not} unimodal (Proposition~\ref{prop:fail}). The following results locate all
+global maximisers without using unimodality; they are needed for $\frac9{10}<q<1$ (and give a second proof of
+the localisation for $\frac23<q\le\frac9{10}$, $N\ge601$). The next lemma controls the far left tail,
+where the oscillations live, by the $q=1$ walk.
+
+\begin{lemma}[Comparison with the simple random walk]\label{lem:compare}
+For $q\in(0,1)$, $N\ge2$ and $t\ge1$: $f_q(t)=q\,\E\bigl[f_1(1+\mathrm{Bin}(t-1,q))\bigr]\le q\max_{1\le k\le t}f_1(k)$.
+\end{lemma}
+\begin{proof}
+By the proof of Lemma~\ref{lem:qmono} with $q_0=1$, $p=q$: $f_q(t)=\sum_{k=1}^tf_1(k)\binom{t-1}{k-1}q^k(1-q)^{t-k}$, and
+$\sum_{k=1}^t\binom{t-1}{k-1}q^k(1-q)^{t-k}=q$.
+\end{proof}
+
+\begin{theorem}[All global maximisers, $q<1$, $N\ge601$]\label{thm:global}
+% src: code/msc_rigorous_1d/18_global.py, data/msc_rigorous_1d/18_global_N0_601_q1_1_tol.json, data/msc_rigorous_1d/18_global_N0_601_q999_1000.json, data/msc_rigorous_1d/18_global_N0_2001_q9999_10000.json; data/msc_rigorous_1d/35_disc_uniformK.json; data/msc_rigorous_1d/39_hand_constants.json
+Let $N\ge601$, $q\in(0,1)$, and assume
+\begin{equation}\label{eq:hcond}
+  \mathfrak h(q,L):=4\bigl(\tfrac\pi2\bigr)^3L^8\exp\bigl(-0.15\,\chi(q)L^2\bigr)\le10^{-12},
+\end{equation}
+with $\chi$ from \eqref{eq:chi}. Then, with $\tau=(cL^2-\kappa)/q+1-\rho$ and $E=1.56/(qL^2)$:
+\begin{enumerate}
+\item $D(t)>0$ for all integers $t$ with $q(t-1)/L^2\ge0.15$ and $t\le\tau-E$; $D(t)<0$ for all integers $t\ge\tau+E$.
+\item If $q\ge\frac23$: $f(t)<\max f$ for all $t$ with $q(t-1)/L^2<0.15$.
+\item Every global maximiser $t^*$ of $f$ satisfies $\tau-E<t^*<\tau+1+E$; there are at most two, and they are adjacent.
+\end{enumerate}
+Condition \eqref{eq:hcond} holds for all $N\ge601$ if $q\le0.999$, for all $N\ge2001$ if $q\le0.9999$, and in
+general whenever $\min\{\frac12,2(1-q)\}\,L^2\ge(8\ln L+30.4)/0.15$.
+\end{theorem}
+\begin{proof}
+For $q\le\frac23$ the PMF is log-concave, so the ratios $f(t+1)/f(t)$ are nonincreasing on the support, and (1), (3)
+follow from Theorem~\ref{thm:local} (with $K=1.56$, $N\ge601$) as in the proof of Theorem~\ref{thm:discmode}. So let
+$q\in[\frac23,1)$. Put
+$\varepsilon=L^{-2}\le\varepsilon_0=600.5^{-2}$. For the given pair $(N,q)$, Proposition~\ref{prop:lattice} holds
+with $B_{\rm high}$ replaced by $B_{\rm high}(L,q)\le\mathfrak h(q,L)\le10^{-12}$ whenever $v_-\ge0.15$, $j\le1$
+(``tolerance mode'' of the scripts: \texttt{core.HIGH\_TOL}); the other parts of the enclosure of $R$ are uniform in
+$L\ge600.5$ and $q$ in a ball, with $\bar q=1$ in Lemma~\ref{lem:B}.
+
+\emph{(1), near $c$.} Script \texttt{14} (run with $N_0=601$, $q\in(0,1]$ split into $3000$ balls, tolerance mode)
+certifies (A) and (B) of Theorem~\ref{thm:local} on each $q$-interval with its own constant $K_i\le1.5572$ (file
+\texttt{14\_disc\_N0\_601\_q1\_tol.json}), and script \texttt{35} certifies them on every interval with the single
+constant $K=1.56$ used in the statement (file \texttt{35\_disc\_uniformK.json}). % src: data/msc_rigorous_1d/14_disc_N0_601_q1_tol.json, data/msc_rigorous_1d/35_disc_uniformK.json
+
+\emph{(1), $|v-c|\le\delta_0:=0.01$.} Write $v=c-d\varepsilon$. By Proposition~\ref{prop:lattice} and Taylor's formula
+($G'(v)=-G''(c)d\varepsilon+\frac12G'''(\xi)d^2\varepsilon^2$, $H(v)=H(c)-H'(\xi')d\varepsilon$,
+$H(c)=(\kappa+q\rho)G''(c)$),
+\[
+  \frac{\mathfrak S_1(t)}{\varepsilon}=|G''(c)|\,(d-\kappa-q\rho)+d\varepsilon\bigl[\tfrac12G'''(\xi)d-H'(\xi')\bigr]+\varepsilon R .
+\]
+Let $M_3:=\sup_{|v-c|\le\delta_0}|G'''|\le170.4$, $M_{H'}:=\sup|H'|\le315.2$, $R_{\max}:=\sup|R|\le406$ (suprema over
+$|v-c|\le\delta_0$, $q\in[\frac23,1]$, $L\ge600.5$) and $m:=|G''(c)|-\frac12M_3\delta_0-\varepsilon_0M_{H'}\ge11.66$.
+If $d\ge0$, $|d\varepsilon|\le\delta_0$: $\mathfrak S_1/\varepsilon\ge md-|G''(c)|(\kappa+q\rho)-\varepsilon_0R_{\max}>0$ as soon as
+$d>d_1(q):=(|G''(c)|(\kappa+q\rho)+\varepsilon_0R_{\max})/m$, and the script checks $d_1(q)<\kappa+q\rho+q$ on $64$
+subintervals of $[\frac23,1]$. Since window (A) of Theorem~\ref{thm:local} is $d\in\kappa+q\rho+[K\varepsilon,K\varepsilon+q]$,
+this gives $D(t)>0$ for all integers $t\le\tau-E$ with $v\ge c-\delta_0$. If $0\le d\le\kappa+q\rho-q$:
+$\mathfrak S_1/\varepsilon\le-|G''(c)|q+d\varepsilon_0(\frac12M_3d+M_{H'})+\varepsilon_0R_{\max}<0$; if $d<0$, $|d\varepsilon|\le\delta_0$:
+$\mathfrak S_1/\varepsilon\le-m|d|-|G''(c)|(\kappa+q\rho)+\varepsilon_0R_{\max}<0$; together with window (B) this gives
+$D(t)<0$ for all integers $t\ge\tau+E$ with $v\le c+\delta_0$.
+
+\emph{(1), $v\in[0.15,c-\delta_0]$ and $v\in[c+\delta_0,0.5]$.} Each interval is divided into $400$ pieces $V_i$; on
+each the script encloses $G'(V_i)+\varepsilon H(V_i)+\varepsilon^2R(V_i)$ for all $\varepsilon\in[0,\varepsilon_0]$, $q\in[\frac23,1]$
+and finds it $\ge0.1319$, resp.\ $\le-0.1172$.
+
+\emph{(1), $v\ge v_b:=0.5$.} In $\mathfrak S_1(t)=\sum_kc_k\lambda_k^{t-1}$, $c_k=-\sigma_k4y_k^3A_1(\zeta_k)$, the first term is
+$-4y_1^3A_1(\zeta_1)\lambda_1^{t-1}<0$. For a low mode $k\ge3$,
+$|c_k\lambda_k^{t-1}|\le4y_1^3\lambda_1^{t-1}\cdot(y_k/y_1)^3\exp\bigl(-2v(y_k^2B(\zeta_k)-y_1^2B(\zeta_1))\bigr)$ with
+$B(\zeta_k)\ge\beta_*$ and $B(\zeta_1)\le\Lambda(w_1)\le(1-w_1)^{-1}$, $w_1\le2q\zeta_1$; the exponent is negative and
+decreasing in $v$, so the last factor is at most its value at $v_b$. For a high mode the corresponding factor is at most
+$(\pi L/(2y_1))^3\exp(-v_b(\chi L^2-2y_1^2(1-w_1)^{-1}))$, and there are fewer than $L$ of them; this total is
+$\le\mathfrak h(q,L)$. The script certifies
+$\sum_{k\ge3\ \rm odd}(y_k/y_1)^3\ee^{-2v_b(\beta_*y_k^2-(1-w_1)^{-1}y_1^2)}+10^{-12}\le0.3169<0.9999\le A_1(\zeta_1)$.
+Hence $\mathfrak S_1(t)<0$.
+
+\emph{(2).} Let $t$ be an integer with $q(t-1)/L^2<0.15$; then $t\le K_a:=\lceil0.225L^2\rceil+1$ because $q\ge\frac23$.
+By the proof of Theorem~\ref{thm:q1}, both parity classes of $f_1$ are increasing up to
+$t_0^D>cL^2-bL+1+s_2-K_1/L>K_a+2$ (checked at $L_0$; the difference increases with $L$). Hence
+$\max_{k\le t}f_1(k)\le\max\{f_1(K_a-1),f_1(K_a)\}$, and for $k\in\{K_a-1,K_a\}$,
+$w:=(k-1)/L^2\in[0.225-\varepsilon_0,0.225+\varepsilon_0]$ (here $v=w$, $q=1$); by Lemmas~\ref{lem:classsums},~\ref{lem:q1exp} and since $G$ is
+increasing on $(0,c)$,
+\[
+  L^2f_1(k)\le G(0.225+\varepsilon_0)+\eta_0\sup|\mathcal E(w)|+\eta_0^2(\rho_{P0}+\eta_0\rho_{E0})\le0.8126 .
+\]
+On the other hand, for the integer $t_1:=\lfloor\tau-E\rfloor+1$ we have $v_1=q(t_1-1)/L^2\in[c-4\varepsilon_0,c+\varepsilon_0]$
+and, by Proposition~\ref{prop:lattice} with $j=0$, $\frac{L^2}qf_q(t_1)=G(v_1)+\varepsilon H_0^{(q)}(v_1)+\varepsilon^2R\ge0.9250$.
+By Lemma~\ref{lem:compare}, $f_q(t)\le q\cdot0.8126\,L^{-2}<q\cdot0.9250\,L^{-2}\le f_q(t_1)$.
+
+\emph{(3).} By (1), on $\{t:q(t-1)/L^2\ge0.15\}$ the PMF increases strictly up to $\lfloor\tau-E\rfloor+1$ and
+decreases strictly from $\lceil\tau+E\rceil$ on; with (2), all global maximisers lie in
+$[\lfloor\tau-E\rfloor+1,\lceil\tau+E\rceil]\subset(\tau-E,\tau+E+1)$, an interval of length $1+2E<2$.
+
+All certificates: \texttt{scripts/18\_global.py}, outputs \texttt{data/18\_global\_N0\_601\_q1\_1\_tol.json} (and, with
+the explicit $B_{\rm high}$ instead of the hypothesis \eqref{eq:hcond},
+\texttt{18\_global\_N0\_601\_q999\_1000.json}, \texttt{18\_global\_N0\_2001\_q9999\_10000.json}). For the last
+statement: $\chi(q)\ge\min\{\frac12,2(1-q)\}$ because $-\ln(1-x)\ge x$ with $x=2(1-q)$, and \eqref{eq:hcond} is
+$0.15\chi L^2\ge8\ln L+\ln(4(\pi/2)^3)+12\ln10=8\ln L+30.37\ldots$; for $q\le0.999$ and $L=600.5$:
+$0.15\chi L^2\ge108.39>81.56\ge8\ln L+30.38$, and for $q\le0.9999$, $L=2000.5$: $0.15\chi L^2\ge120.08>91.19$; in both
+cases the left side grows faster than the right for larger $L$. % src: code/msc_rigorous_1d/39_hand_constants.py, data/msc_rigorous_1d/39_hand_constants.json
+\end{proof}
+
+\begin{corollary}[Limit theorem for every $q$]\label{cor:limit}
+Let $q\in(0,1]$ be fixed, $x_0=1$, and let $t_N^*$ be any global maximiser of $f=f_{N,q}$. Then
+\[
+   \frac{q\,t^*_N}{(N-\frac12)^2}\longrightarrow c\qquad\text{and}\qquad\frac{t_N^*}{\E T}\longrightarrow c=0.33328426549494789874\ldots
+\]
+as $N\to\infty$; the error is $O(N^{-2})$ for $q<1$ (Corollary~\ref{cor:explicit}, which by
+Theorem~\ref{thm:global} holds with $1.56$ for all $N\ge N_0(q)$) and $-b/L+O(N^{-2})$ for $q=1$
+(Theorem~\ref{thm:q1}). The same holds for the continuous-time walk for every $q$ (Corollary~\ref{cor:contratio}).
+\end{corollary}
+
+\begin{remark}[The two-pole closed form does not apply in $d=1$]\label{rem:closedform}
+The closed-form approximation of the computations of Sections~5--6 of the article (Section~6 of the article; \texttt{data/msc\_modes}),
+mode $\approx\E T\cdot\ln(2dX)/(X+2d-1)$ with $X=\mu_1\E T$ and $\mu_1=\frac qd(1-\cos\frac\pi N)$, was obtained from the
+two slowest poles of the renewal ratio and is designed for $d\ge2$, where the target is small. For $d=1$ one has
+$X=(1-\cos\frac\pi N)N(N-1)\to\frac{\pi^2}2$, so that formula would give
+mode$/\E T\to\ln(\pi^2)/(1+\frac{\pi^2}2)=0.385768\ldots$, whereas by Corollary~\ref{cor:limit} the true limit is
+$c=0.333284\ldots$: in one dimension the closed form overestimates the mode by a factor tending to $1.15747\ldots$
+(in agreement with the certified overestimates of $15.8$--$22.5\%$ for $10\le N\le600$, $q=\frac45$, in
+R5). In $d=1$ % src: data/msc_rigorous_1d/39_hand_constants.json (limit, ratio); data/msc_rigorous_certified/closedform_d1_q4-5.jsonl (percentages)
+all poles $\nu_m$ are of the same order $L^{-2}$ and all of them contribute at the mode; the correct statement is
+Theorem~\ref{thm:discmode}.
+\end{remark}
+
+\begin{remark}[The crossover]\label{rem:crossover}
+% src: code/msc_rigorous_1d/40_examples.py, data/msc_rigorous_1d/40_examples.json (N = 10, q = 0.99)
+The hypothesis \eqref{eq:hcond} is essentially $(1-q)L^2\gtrsim27\ln L+100$. It is not an artefact: for
+$1-q\lesssim L^{-2}$ the holding times do not mix the parity classes before the mode, and the mode follows the
+$q=1$ law of Theorem~\ref{thm:q1} (e.g.\ $N=10$, $q=0.99$: $t^*=27$, the $q=1$ mode, while
+$\tau=29.3$). The transition between the two laws, i.e.\ the regime $(1-q)L^2=O(\ln L)$, is not covered by our
+theorems (Section~\ref{sec:gaps}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{General start}\label{sec:start}
+
+\subsection{The limit density and the limit theorem}
+
+Let now $x_0\in\{1,\dots,N-1\}$ be arbitrary, $d=N-x_0$, and $\xi_N:=(x_0-\frac12)/L\in(0,1)$, the relative position
+of the start measured from the reflecting wall. By \eqref{eq:g} and $\sin(d\theta_m)=(-1)^{m+1}\cos(\theta_m(x_0-\frac12))$,
+\begin{equation}\label{eq:GNxi}
+  G_{N,x_0}(u):=\frac{L^2}q\,g_{x_0}\Bigl(\frac{L^2u}q\Bigr)=\sum_{k\ \mathrm{odd},\,k\le2N-3}\sigma_k\,2y_k\,S(\zeta_k)\cos x_k\,
+      \cos(2y_k\xi_N)\,\ee^{-2uy_k^2\beta(\zeta_k)},
+\end{equation}
+and, for $0\le\xi<1$, the candidate limit is
+\begin{equation}\label{eq:Gxi}
+  G_\xi(u):=\sum_{k\ \rm odd}\sigma_k\,2y_k\cos(2y_k\xi)\,\ee^{-2uy_k^2}
+           =\frac\pi2\sum_{k\ \rm odd}\sigma_k\,k\cos\frac{k\pi\xi}2\,\ee^{-k^2\pi^2u/8},\qquad G_0=G .
+\end{equation}
+
+\begin{lemma}[Image form]\label{lem:image}
+% src: code/msc_rigorous_1d/19_general_start.py, data/msc_rigorous_1d/19_general_start.json (identity to 60 digits)
+For $u>0$ and $0\le\xi<1$, with $h_a(u):=\dfrac{a}{\sqrt{2\pi u^3}}\,\ee^{-a^2/(2u)}$ ($a\in\R$),
+\[
+   G_\xi(u)=\sum_{n\in\Z}\bigl[h_{4n+1-\xi}(u)+h_{4n+1+\xi}(u)\bigr] .
+\]
+In particular there is $C_\xi<\infty$ with $|G_\xi(u)|\le C_\xi\,u^{-3/2}\ee^{-(1-\xi)^2/(2u)}$ for $0<u\le1$, so that
+$G_\xi(u)=o(u^p)$ as $u\downarrow0$ for every $p$; and $G_\xi(u)\,\ee^{\pi^2u/8}\to\frac\pi2\cos\frac{\pi\xi}2>0$ as $u\to\infty$.
+\end{lemma}
+\begin{proof}
+Let $p_u(z)=(2\pi u)^{-1/2}\ee^{-z^2/(2u)}$, whose Fourier transform is
+$\int p_u(z)\ee^{-2\pi\mathrm i\omega z}\dd z=\ee^{-2\pi^2\omega^2u}$. The Poisson summation formula for the Schwartz
+function $z\mapsto p_u(a+4z)$ (E.~M.~Stein and R.~Shakarchi, \emph{Fourier Analysis: an Introduction}, Princeton
+Univ.\ Press 2003, Chapter~5, Theorem~3.1) gives
+$\sum_{n\in\Z}p_u(a+4n)=\frac14\sum_{m\in\Z}\ee^{-\pi^2m^2u/8}\ee^{\mathrm i\pi ma/2}$. Both sides may be differentiated
+termwise in $a$; since $-\partial_ap_u(a)=h_a(u)$,
+\[
+  \sum_{n\in\Z}h_{a+4n}(u)=\frac\pi4\sum_{m\ge1}m\,\sin\frac{\pi ma}2\,\ee^{-\pi^2m^2u/8}.
+\]
+Adding this for $a=1-\xi$ and $a=1+\xi$ and using
+$\sin\frac{\pi m(1-\xi)}2+\sin\frac{\pi m(1+\xi)}2=2\sin\frac{\pi m}2\cos\frac{\pi m\xi}2$, which vanishes for even $m$
+and equals $2\sigma_m\cos\frac{\pi m\xi}2$ for odd $m$, gives \eqref{eq:Gxi}. All indices $a=4n+1\mp\xi$ satisfy $|a|\ge a_0:=1-\xi>0$, and for $0<u\le1$ we have
+$\ee^{-a^2/(2u)}\le\ee^{-a_0^2/(2u)}\ee^{-(a^2-a_0^2)/2}$; hence
+$\sum_a|h_a(u)|\le(2\pi u^3)^{-1/2}\ee^{-a_0^2/(2u)}\sum_a|a|\ee^{-(a^2-a_0^2)/2}$, which is the stated bound with
+$C_\xi=(2\pi)^{-1/2}\sum_a|a|\ee^{-(a^2-a_0^2)/2}<\infty$. The behaviour at infinity is read off
+from \eqref{eq:Gxi}. (Numerical check of the identity to $60$ digits: script \texttt{19}.)
+\end{proof}
+
+\begin{lemma}[Zero counts on the lattice]\label{lem:zerocount}
+Let $x_0\in\{1,\dots,N-1\}$, $d=N-x_0$ and $0\le i\le d-1$. Then the $i$-th derivative $g_{x_0}^{(i)}$ has at most $i$
+zeros in $(0,\infty)$, counted with multiplicity. The same holds for $G_{N,x_0}^{(i)}$.
+\end{lemma}
+\begin{proof}
+By \eqref{eq:g}, $g^{(i)}(t)=\frac{2q}{2N-1}\sum_mc_m(-\nu_m)^i\ee^{-\nu_mt}$ with $c_m=\sin\theta_m\sin(d\theta_m)$; the
+coefficient sequence $((-1)^i\nu_m^ic_m)_m$ has the same number $V\le d-1$ of sign changes as $(c_m)_m$
+(Lemma~\ref{lem:signchanges}). By Theorem~\ref{thm:exact}, $g^{(l)}(0)=0$ for $l<d-1$ and $g^{(d-1)}(0)\ne0$, so $g^{(i)}$
+has a zero of multiplicity exactly $d-1-i$ at $t=0$. By Lemma~\ref{lem:descartes} the number of real zeros of
+$g^{(i)}$ other than $0$, counted with multiplicity, is at most $V-(d-1-i)\le i$. $G_{N,x_0}$ is $g_{x_0}$ up to
+positive scalings of the variable and of the function.
+\end{proof}
+
+\begin{theorem}[The limit density for a general start]\label{thm:Gxi}
+% src: code/msc_rigorous_1d/27_start_sanity.py, data/msc_rigorous_1d/27_start_sanity.json (sign patterns)
+Let $0\le\xi<1$.
+\begin{enumerate}
+\item $G_\xi>0$ on $(0,\infty)$, $G_\xi$ is real-analytic, and there is a unique $c(\xi)\in(0,\infty)$
+such that $G_\xi$ is nondecreasing on $(0,c(\xi)]$ and nonincreasing on $[c(\xi),\infty)$, with
+$G_\xi(u)<G_\xi(c(\xi))$ for all $u\ne c(\xi)$. Moreover $c(0)=c$.
+\item $G_\xi'$ has exactly one zero in $(0,\infty)$, namely $c(\xi)$; $G_\xi'>0$ on $(0,c(\xi))$ and $G_\xi'<0$ on
+$(c(\xi),\infty)$.
+\item $G_\xi''(c(\xi))<0$. More precisely there are $0<a_1<c(\xi)<a_2$ such that $G_\xi''\ge0$ on $(0,a_1]\cup[a_2,\infty)$
+and $G_\xi''\le0$ on $[a_1,a_2]$ ($G_\xi$ has exactly two inflection points in the sense of sign changes of $G_\xi''$).
+\item The function $\xi\mapsto c(\xi)$ is real-analytic on $[0,1)$ (it extends to an even real-analytic function on
+$(-1,1)$).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) Choose $x_0=x_0(N)$ with $\xi_N\to\xi$ and $d=N-x_0\ge2$. Exactly as in Theorem~\ref{thm:conv} (dominated
+convergence; $|S\cos x_k\cos(2y_k\xi_N)|\le1$), $G_{N,x_0}\to G_\xi$ uniformly on $[u_0,\infty)$ for every $u_0>0$.
+By Theorem~\ref{thm:unimodal-cont}, $G_{N,x_0}>0$ is increasing on $(0,u_N]$ and decreasing on $[u_N,\infty)$ for
+some $u_N>0$. Pass to a subsequence with $u_N\to u^*\in[0,\infty]$. If $u<u'<u^*$ then $u'<u_N$ eventually, so
+$G_{N,x_0}(u)\le G_{N,x_0}(u')$ and in the limit $G_\xi(u)\le G_\xi(u')$; likewise $G_\xi$ is nonincreasing on
+$(u^*,\infty)$; and $G_\xi\ge0$. If $u^*=\infty$, $G_\xi$ would be nondecreasing on $(0,\infty)$ with limit $0$ at
+infinity, hence $G_\xi\equiv0$; if $u^*=0$, $G_\xi$ would be nonincreasing with limit $0$ at $0^+$
+(Lemma~\ref{lem:image}), hence again $G_\xi\equiv0$; both contradict the last statement of
+Lemma~\ref{lem:image}. So $u^*\in(0,\infty)$ and $G_\xi$ is unimodal.
+If $G_\xi(u_1)=0$ for some $u_1>0$, unimodality and $G_\xi\ge0$ force $G_\xi=0$ on $(0,u_1]$ or on $[u_1,\infty)$,
+which is impossible for a non-zero real-analytic function; so $G_\xi>0$. The set of maximisers of a unimodal
+function is an interval, and it is a single point $c(\xi)$ because a non-constant real-analytic function is not
+constant on an interval; then $G_\xi(u)<G_\xi(c(\xi))$ for $u\ne c(\xi)$, and monotonicity on both sides of
+$c(\xi)$ follows from unimodality. $c(0)=c$ by Theorem~\ref{thm:Gunique}.
+
+(2), (3). Write $G=G_\xi$ and let $x_0(N)$ be as in (1); then $d=N-x_0\to\infty$. Differentiating \eqref{eq:GNxi} and
+\eqref{eq:Gxi} termwise $i$ times multiplies the $k$-th terms by $(-2y_k^2\beta(\zeta_k))^i$ and $(-2y_k^2)^i$, and the
+dominated-convergence argument of Theorem~\ref{thm:conv} (majorant $2^{i+1}y_k^{2i+1}\ee^{-8u_0y_k^2/\pi^2}$) gives
+$G_{N,x_0}^{(i)}\to G^{(i)}$ uniformly on $[u_0,\infty)$ for every $i\ge0$ and $u_0>0$. Say that a function $w$ on
+$(0,\infty)$ \emph{has at least $r$ sign changes} if there are points $u_0<u_1<\dots<u_r$ with
+$w(u_{l})w(u_{l+1})<0$ for all $l$. If $G^{(i)}$ had at least $i+1$ sign changes, then for all large $N$ the function
+$G_{N,x_0}^{(i)}$ would have the same strict signs at the points $u_0,\dots,u_{i+1}$, hence at least $i+1$ zeros in
+$(0,\infty)$, contradicting Lemma~\ref{lem:zerocount} (note $i\le d-1$ for large $N$). Thus
+\begin{equation}\label{eq:Si}
+  G^{(i)}\ \text{has at most $i$ sign changes on }(0,\infty),\qquad i=0,1,2,3 .
+\end{equation}
+Each $G^{(i)}$, $i\le3$, is real-analytic and not identically zero (otherwise $G$ would be a polynomial of degree
+$<i$, which is incompatible with $G>0$ and $G(u)\to0$ as $u\to\infty$). Hence its zeros are isolated, and by
+\eqref{eq:Si} the half-line splits into at most $i+1$ intervals on each of which $G^{(i)}$ has a weak sign ($\ge0$ or
+$\le0$, with isolated zeros); in particular $G^{(i)}$ has a weak sign near $0$ and near $\infty$. We also use
+$G^{(i)}(u)\to0$ as $u\to\infty$ (from \eqref{eq:Gxi}) and $G(u)=o(u^2)$ as $u\downarrow0$ (Lemma~\ref{lem:image}).
+
+\emph{$G''$ near $0$ and near $\infty$.} If $G''\le0$ on some $(0,\delta)$, then $G$ is concave there and, since
+$G(0^+)=0$, $G(u)\ge(u/\delta')G(\delta')$ for $0<u<\delta'<\delta$, contradicting $G(u)=o(u)$. Hence $G''\ge0$ near $0$,
+and $G''(p_1)>0$ for some $p_1$ arbitrarily close to $0$. If $G''\le0$ on some $(M,\infty)$, then $G'$ is nonincreasing
+there; by (1), $G'\le0$ on $(c(\xi),\infty)$ and $G'(u_1)<0$ for some $u_1>\max(M,c(\xi))$, so $G'\le G'(u_1)<0$ on
+$(u_1,\infty)$ and $G\to-\infty$, which is absurd. Hence $G''\ge0$ near $\infty$ and $G''(p_4)>0$ for some arbitrarily
+large $p_4$. Finally, by (1) there are $p<c(\xi)<p'$ with $G'(p)>0>G'(p')$, and the mean value theorem gives
+$\eta\in(p,p')$ with $G''(\eta)<0$. So $G''$ has at least two sign changes ($+,-,+$ at $p_1<\eta<p_4$), and by
+\eqref{eq:Si} exactly two: there are $a_1<a_2$ with $G''\ge0$ on $(0,a_1]$, $G''\le0$ on $[a_1,a_2]$, $G''\ge0$ on
+$[a_2,\infty)$, the zeros being isolated; by continuity $G''(a_1)=G''(a_2)=0$.
+
+\emph{The zero of $G'$.} $G'$ is strictly increasing on $(0,a_1]$, strictly decreasing on $[a_1,a_2]$ and strictly
+increasing on $[a_2,\infty)$. Since $G'\ge0$ near $0$ by (1), $G'>0$ on $(0,a_1]$. Since $G'(u)\to0$ as $u\to\infty$,
+$G'<0$ on $[a_2,\infty)$. On $[a_1,a_2]$, $G'$ decreases strictly from a positive to a negative value, so it has
+exactly one zero there, and none elsewhere. This zero is the maximiser $c(\xi)$ of (1), $a_1<c(\xi)<a_2$, and the signs
+of $G'$ are as stated. This proves (2) and the second assertion of (3).
+
+\emph{Non-degeneracy.} Suppose $G''(c(\xi))=0$. We exhibit six points at which $G'''$ has strictly alternating signs.
+(i) There is $q_0<p_1$ with $G'''(q_0)>0$: otherwise $G''$ would be nonincreasing on $(0,p_1)$, so $G''\ge G''(p_1)>0$
+there, and (as $G'\ge0$ near $0$) $G(u)\ge\frac12G''(p_1)u^2$ for small $u$, contradicting $G(u)=o(u^2)$.
+(ii) Since $G''(p_1)>0=G''(a_1)$, $G'''<0$ somewhere in $(p_1,a_1)$. (iii) On $[a_1,c(\xi)]$, $G''\le0$ vanishes at
+both ends and is negative at some interior point $p_2$; hence $G'''>0$ somewhere in $(p_2,c(\xi))$. (iv) Likewise on
+$[c(\xi),a_2]$ there is $p_3$ with $G''(p_3)<0$, hence $G'''<0$ somewhere in $(c(\xi),p_3)$ and (v) $G'''>0$ somewhere
+in $(p_3,a_2)$. (vi) Since $G''(p_4)>0$ and $G''(u)\to0$ as $u\to\infty$, $G'''<0$ somewhere in $(p_4,\infty)$, where
+$p_4>a_2$. These six points are increasing and the signs are $+,-,+,-,+,-$: five sign changes, contradicting
+\eqref{eq:Si} for $i=3$. Hence $G''(c(\xi))\ne0$, and $G''(c(\xi))<0$ because $a_1<c(\xi)<a_2$.
+
+(4) The series $\sum_k\sigma_k2y_k(-2y_k^2)\cos(2y_k\xi)\ee^{-2uy_k^2}$ converges locally uniformly for complex $(\xi,u)$
+with $\operatorname{Re}u>0$ (since $|\cos(2y_k\xi)|\le\ee^{2y_k|\operatorname{Im}\xi|}$); so $(\xi,u)\mapsto G_\xi'(u)$ is
+jointly real-analytic on $\R\times(0,\infty)$, and even in $\xi$. For $|\xi|<1$, $c(|\xi|)$ is a zero of $G'_\xi$ with
+$\partial_uG_\xi'(c)=G_\xi''(c)\ne0$ by (3); by the analytic implicit function theorem there is a real-analytic
+function $\tilde c$ near $\xi$ with $G'_{\xi'}(\tilde c(\xi'))=0$, and by the uniqueness in (2) $\tilde c(\xi')=c(|\xi'|)$.
+\end{proof}
+
+\begin{remark}\label{rem:third}
+For $\xi=0$, parts (2) and (3) give a proof of Theorem~\ref{thm:Gunique}(2),(3) which uses neither log-concavity nor
+any numerical evaluation: the uniqueness of the maximiser of $G$ and its non-degeneracy follow from Descartes' rule on
+the lattice alone. (The numerical \emph{value} of $c$ of course still requires the enclosure of Theorem~\ref{thm:c}.)
+\end{remark}
+
+\begin{theorem}[Limit theorem for a general start]\label{thm:startlimit}
+Let $0\le\xi<1$ and $x_0=x_0(N)$ with $(x_0-\frac12)/(N-\frac12)\to\xi$.
+\begin{enumerate}
+\item (Continuous time, every $q\in(0,1]$.) The unique mode $t_{\rm c}$ of $g_{x_0}$ satisfies
+ $q\,t_{\rm c}/L^2\to c(\xi)$.
+\item (Discrete time, $q\le\frac12$.) Every mode $t^*$ of $f_{x_0}$ satisfies $q\,t^*/L^2\to c(\xi)$.
+\end{enumerate}
+In both cases mode$/\E T\to c(\xi)/(1-\xi^2)$, since $\E_{x_0}T=(N(N-1)-x_0(x_0-1))/q=L^2(1-\xi_N^2)/q$.
+\end{theorem}
+\begin{proof}
+(1) Fix $\delta\in(0,c(\xi))$. By Theorem~\ref{thm:Gxi},
+$G_\xi(c(\xi)\pm\delta)<G_\xi(c(\xi))$, so for large $N$, $G_{N,x_0}(c(\xi)\pm\delta)<G_{N,x_0}(c(\xi))$. If the mode
+$u_N$ of the unimodal function $G_{N,x_0}$ were $\le c(\xi)-\delta$, then $G_{N,x_0}$ would be nonincreasing on
+$[c(\xi)-\delta,\infty)$, contradicting $G_{N,x_0}(c(\xi)-\delta)<G_{N,x_0}(c(\xi))$; similarly
+$u_N<c(\xi)+\delta$. Hence $|u_N-c(\xi)|<\delta$ eventually, and $u_N=qt_{\rm c}/L^2$.
+
+(2) For $q\le\frac12$ all $\lambda_m\in(0,1)$ and $f_{x_0}$ is unimodal (Theorem~\ref{thm:unimodal-disc}). As in
+\eqref{eq:frakS}, $\frac{L^2}qf_{x_0}(t)=\sum_k\sigma_k2y_kS(\zeta_k)\cos x_k\cos(2y_k\xi_N)\exp(-2vy_k^2B(\zeta_k;q))$,
+$v=q(t-1)/L^2$, with $B=\beta\Lambda(2q\sin^2x_k)\ge\beta$; the dominated-convergence argument of
+Theorem~\ref{thm:conv} applies verbatim and gives $\frac{L^2}qf_{x_0}(t)-G_\xi(v)\to0$ uniformly in $v\ge u_0$. Take
+integers $t_1<t_2<t_3$ with $q(t_i-1)/L^2\to c(\xi)-\delta,\ c(\xi),\ c(\xi)+\delta$. For large $N$,
+$f_{x_0}(t_1)<f_{x_0}(t_2)>f_{x_0}(t_3)$, and by unimodality every mode lies in $(t_1,t_3)$.
+
+The formula for $\E_{x_0}T$ is Corollary~\ref{cor:moments}:
+$N(N-1)-x_0(x_0-1)=(L^2-\frac14)-((x_0-\frac12)^2-\frac14)=L^2(1-\xi_N^2)$.
+\end{proof}
+
+\begin{proposition}[Values of $c(\xi)$; \CA]\label{prop:cxi}
+% src: code/msc_rigorous_1d/19_general_start.py, data/msc_rigorous_1d/19_general_start.json
+The following enclosures hold (all digits correct; script \texttt{19\_general\_start.py}, $600$-bit ball
+arithmetic, certified sign change of $G_\xi'$ on an interval of radius $10^{-40}$, which brackets $c(\xi)$ by
+Theorem~\ref{thm:Gxi}):
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+$\xi$ & $c(\xi)$ & $(1-\xi)^2/3$ & $G_\xi(c(\xi))$\\
+\midrule
+$0$ & $0.33328426549494\ldots$ & $0.33333\ldots$ & $0.9250649\ldots$\\
+$0.1$ & $0.32286309733114\ldots$ & $0.27$ & $0.9255105\ldots$\\
+$0.2$ & $0.28518014581572\ldots$ & $0.21333\ldots$ & $0.9340642\ldots$\\
+$0.3$ & $0.19477604582332\ldots$ & $0.16333\ldots$ & $1.0022603\ldots$\\
+$0.4$ & $0.12173600568561\ldots$ & $0.12$ & $1.2888334\ldots$\\
+$0.5$ & $0.08334564332977\ldots$ & $0.08333\ldots$ & $1.8501980\ldots$\\
+$0.6$ & $0.05333333387474\ldots$ & $0.05333\ldots$ & $2.8908811\ldots$\\
+$0.7$ & $0.03000000000000000002859\ldots$ & $0.03$ & $5.1393443\ldots$\\
+$0.8$ & $0.01333333333333\ldots$ & $0.01333\ldots$ & $11.563524\ldots$\\
+$0.9$ & $0.00333333333333\ldots$ & $0.00333\ldots$ & $46.254098\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\begin{remark}
+At the tabulated values $\xi\ge\frac12$ the single image $h_{1-\xi}$ dominates and $c(\xi)\approx(1-\xi)^2/3$ (the mode
+of the L\'evy density of the first passage over the distance $1-\xi$) to within $1.5\times10^{-4}$ relative error; for small
+$\xi$ the reflected image $h_{1+\xi}$ matters and $c(\xi)/((1-\xi)^2/3)$ is not monotone (it is $0.99985$, $1.196$,
+$1.337$, $1.193$, $1.014$ at $\xi=0,0.1,\dots,0.4$). For $N=400$, $q=\frac12$, the exact discrete modes satisfy
+$|qt^*/L^2-c(\xi_N)|\le2.1\times10^{-6}\approx0.33/L^2$ for all twelve tested starts (numerical observation,
+script \texttt{19}); this is explained and made rigorous by Theorem~\ref{thm:startexp} below. % src: data/msc_rigorous_1d/19_general_start.json
+In discrete time with $q>q_N$ and $x_0\ne1$, unimodality fails in general (Proposition~\ref{prop:startfail}); the exact
+threshold is not known.
+\end{remark}
+
+\begin{proposition}[Failure of discrete-time unimodality for starts away from the wall]\label{prop:startfail}
+Let $N\ge3$, $2\le x_0\le N-1$, $d=N-x_0$ and $q\in(0,1]$. Then
+\[
+  f(d)=\bigl(\tfrac q2\bigr)^d,\qquad f(d+1)=\bigl(\tfrac q2\bigr)^d\,d\,(1-q),\qquad
+  f(d+2)=\bigl(\tfrac q2\bigr)^d\Bigl[\tfrac{d(d+1)}2(1-q)^2+\tfrac d4q^2\Bigr].
+\]
+Consequently $f(d)>f(d+1)<f(d+2)$, so that $f_{x_0}$ is \emph{not} unimodal, whenever $q>q_{\rm fail}(d)$, where
+\[
+  q_{\rm fail}(1)=\tfrac45,\qquad q_{\rm fail}(2)=\tfrac{4+\sqrt2}7=0.77346\ldots,\qquad q_{\rm fail}(d)=1-\tfrac1d\quad(d\ge3).
+\]
+In the notation of Lemma~\ref{lem:qmono}, $q_N\le q^*(N,x_0)\le q_{\rm fail}(N-x_0)$ for $2\le x_0\le N-1$ (the lower bound is
+Theorem~\ref{thm:unimodal-disc}). For example, $N=3$, $x_0=2$, $q=\frac9{10}$ gives $f(1),f(2),f(3)=0.45,\ 0.045,\ 0.095625$,
+and $N=5$, $x_0=2$, $q=\frac7{10}$ gives $f(3),f(4),f(5)=0.042875,\ 0.0385875,\ 0.0389090625$.
+\end{proposition}
+\begin{proof}
+A path of length $t$ from $x_0$ to the first visit of $N$ consists of $r$ moves to the right, $l$ moves to the left and $s$
+rests, with $r-l=d$ and $r+l+s=t$. For $t=d$ there is one path, of probability $(\frac q2)^d$. For $t=d+1$: $r=d$, $s=1$;
+the rest is made at one of the $d$ sites $x_0,\dots,N-1$, all $\ge2$, so it has probability $1-q$. For $t=d+2$: either
+$s=2$, $l=0$, and the two rests are a multiset of size two from the same $d$ sites ($\frac{d(d+1)}2$ choices, probability
+$(1-q)^2(\frac q2)^d$ each); or $s=0$, $l=1$, $r=d+1$, and the left move is made from one of the $d$ sites
+$x_0,\dots,N-1$ (all $\ge2$, so it is a genuine move of probability $\frac q2$), each such path having probability
+$(\frac q2)^{d+2}$. No other decomposition is possible, which gives the three values. Hence $f(d+1)<f(d)$ iff $d(1-q)<1$,
+i.e.\ $q>1-\frac1d$, and with $r:=1-q$,
+\[
+  \bigl(\tfrac q2\bigr)^{-d}\bigl(f(d+2)-f(d+1)\bigr)=\tfrac d4\bigl[(2d+3)r^2-6r+1\bigr].
+\]
+For $d=1$ the bracket is $(5r-1)(r-1)$, positive iff $r<\frac15$, and $f(2)<f(1)$ for every $q>0$. For $d=2$ the bracket
+$7r^2-6r+1$ is positive iff $r<\frac{3-\sqrt2}7$ or $r>\frac{3+\sqrt2}7$; together with $r<\frac12$ (from $q>\frac12$) this
+means $q>\frac{4+\sqrt2}7$. For $d=3$ the bracket is $(3r-1)^2$, positive for $q\ne\frac23$, in particular for $q>\frac23$. For
+$d\ge4$ its discriminant $36-4(2d+3)=8(3-d)$ is negative, so $f(d+2)>f(d+1)$ for every $q$. A unimodal sequence cannot have
+$f(d)>f(d+1)<f(d+2)$. Finally $q_N\le q^*$ by Theorem~\ref{thm:unimodal-disc}, and $q^*\le q_{\rm fail}$ because the set of
+$q$ with unimodal $f$ is the interval $(0,q^*]$ (Lemma~\ref{lem:qmono}). The three formulas were checked symbolically for
+$N\le9$ and all $x_0\ge2$, and the two examples in exact rational arithmetic (script \texttt{36}).
+% src: code/msc_rigorous_1d/36_start_failure.py, data/msc_rigorous_1d/36_start_failure.json, data/msc_rigorous_1d/logs/36_start_failure.log
+\end{proof}
+
+\begin{observation}\label{obs:startfail}
+An exact scan ($3\le N\le13$, $2\le x_0\le N-1$, $q\in\{\frac35,\frac23,\frac34,\frac45,\frac9{10},1\}$, times
+$t\le6N^2$; script \texttt{36}) finds a certified failure of unimodality (a triple $j<k<l$ with $f(k)<\min\{f(j),f(l)\}$,
+in exact rational arithmetic) in $171$ of the $396$ cases. All $165$ cases with $q>q_{\rm fail}(d)$ are among them; the
+remaining $6$ are $d=5$, $q=\frac45=q_{\rm fail}(5)$, $8\le N\le13$, with the dip at $t=10$ instead of $t=d+1$. So
+$q_{\rm fail}$ is not the exact threshold. In the remaining $225$ cases no failure was found up to $t=6N^2$ (which, being a
+finite search, proves nothing). % src: data/msc_rigorous_1d/36_start_failure.json
+\end{observation}
+
+\subsection{Explicit finite-\texorpdfstring{$N$}{N} law for starts in the half next to the wall}
+
+We now make Theorem~\ref{thm:startlimit} quantitative, by the method of
+Sections~\ref{sec:lattice}--\ref{sec:discrete}. The key point is to expand around the limit density
+$G_{\xi_N}$ with the \emph{exact} relative start position $\xi_N=(x_0-\frac12)/L$ of the given pair $(N,x_0)$; then no
+drift term appears. Put
+\[
+   A^{\rm st}_j(\zeta):=S(\zeta)^{2j+1}\cos\sqrt\zeta ,\qquad
+   F^{\rm st}_j(\zeta;y,v,q):=A^{\rm st}_j(\zeta)\,\ee^{-2vy^2B(\zeta;q)}\qquad(j\in\{0,1\}),
+\]
+with $B$ as in \eqref{eq:B} ($B=\beta$ in continuous time), and for real $t\ge1$ (for integer $t\ge1$ if $q>\frac12$)
+\begin{equation}\label{eq:frakSst}
+  \mathfrak S^{\rm st}_j(t):=\sum_{m=1}^{N-1}\sigma_k\cos(2y_k\xi_N)\,2y_k(-2y_k^2)^jA^{\rm st}_j(\zeta_k)\,\lambda_m^{\,t-1},\qquad k=2m-1 .
+\end{equation}
+Exactly as in \eqref{eq:frakS} (now with $\sin\theta_m\sin(d\theta_m)=\sigma_k\,2\sin x_k\cos x_k\cos(2y_k\xi_N)$),
+\[
+   \frac{L^2}qf_{x_0}(t)=\mathfrak S^{\rm st}_0(t),\qquad \frac{L^4}{q^2}\bigl(f_{x_0}(t+1)-f_{x_0}(t)\bigr)=\mathfrak S^{\rm st}_1(t),
+\]
+and in continuous time $G_{N,x_0}^{(j)}(v)$ is the same sum with $\lambda_m^{t-1}$ replaced by
+$\ee^{-2vy_k^2\beta(\zeta_k)}$; we then write $\mathfrak S^{\rm st}_j:=G_{N,x_0}^{(j)}(v)$.
+
+\begin{lemma}\label{lem:Ast}
+% src: code/msc_rigorous_1d/27_start_sanity.py, data/msc_rigorous_1d/27_start_sanity.json
+For $\zeta\in[0,\pi^2/4]$ and $j\in\{0,1\}$: $0\le A^{\rm st}_j\le1$, $-\alpha^{\rm st}_{1,j}\le(A^{\rm st}_j)'\le0$ and
+$0\le(A^{\rm st}_j)''\le\alpha^{\rm st}_{2,j}$, where $\alpha^{\rm st}_{1,j}=\frac{j+2}3$, $\alpha^{\rm st}_{2,0}=\frac4{15}$,
+$\alpha^{\rm st}_{2,1}=\frac45$; moreover $A^{\rm st}_j(0)=1$ and $(A^{\rm st}_j)'(0)=-\frac{j+2}3$.
+\end{lemma}
+\begin{proof}
+Let $C_1(\zeta)=\cos\sqrt\zeta\in[0,1]$. As in the proof of Lemma~\ref{lem:elem}, $C_1'=-\frac12S\in[-\frac12,0]$ and
+$C_1''=-\frac12S'\in[0,\frac1{12}]$. Hence $(A^{\rm st}_j)'=(2j+1)S^{2j}S'C_1+S^{2j+1}C_1'\in[-\frac{2j+1}6-\frac12,0]$ and
+$(A^{\rm st}_j)''=\bigl[(2j+1)2jS^{2j-1}S'^2+(2j+1)S^{2j}S''\bigr]C_1+2(2j+1)S^{2j}S'C_1'+S^{2j+1}C_1''$ is a sum of
+nonnegative terms bounded by $\frac{(2j+1)2j}{36}+\frac{2j+1}{60}+\frac{2j+1}6+\frac1{12}$, which is $\frac4{15}$ for $j=0$
+and $\frac45$ for $j=1$.
+\end{proof}
+
+\begin{proposition}[Lattice expansion, general start]\label{prop:latticest}
+% src: code/msc_rigorous_1d/start.py; code/msc_rigorous_1d/27_start_sanity.py, data/msc_rigorous_1d/27_start_sanity.json
+Let $j$, $\bar q\le\frac45$, $v_\pm$, $L_0$, $k_0$, $N$ be as in Proposition~\ref{prop:lattice}, let $x_0\in\{1,\dots,N-1\}$,
+$\xi:=\xi_N$, and let either (continuous time, $\bar q=0$) $v\in[v_-,v_+]$, or (discrete time) $q\in(0,\bar q]$ and
+$t\ge1$ with $v:=q(t-1)/L^2\in[v_-,v_+]$, where $t$ is an integer or, if $\bar q\le\frac12$, any real number. Then
+\begin{equation}\label{eq:expansionst}
+  \mathfrak S^{\rm st}_j=G_\xi^{(j)}(v)+\frac{H^{(q)}_{\xi,j}(v)}{L^2}+\frac R{L^4},\qquad
+  H^{(q)}_{\xi,j}:=\frac{j+2}6\,G_\xi^{(j+1)}+\frac v6(1-3q)\,G_\xi^{(j+2)}
+\end{equation}
+(with $q=0$ in continuous time), where
+\[
+   R=\sum_{k\le k_0,\ k\ \rm odd}\sigma_k\cos(2y_k\xi)\,(-2)^jy_k^{2j+5}\,(F^{\rm st}_j)''(\tilde\zeta_k;y_k,v,q)+R',\qquad
+   |R'|\le B_{\rm low}+B_{\rm high}+B_{\rm tail},
+\]
+with $\tilde\zeta_k\in(0,y_k^2/L^2)$ and $B_{\rm low},B_{\rm high},B_{\rm tail}$ as in Proposition~\ref{prop:lattice}, but with
+$\alpha^{\rm st}_{1,j},\alpha^{\rm st}_{2,j}$ in place of $\alpha_{1,j},\alpha_{2,j}$ (and $\frac{j+2}3$ in place of
+$\frac{2j+7}6$ in $B_{\rm tail}$).
+\end{proposition}
+\begin{proof}
+The proof of Proposition~\ref{prop:lattice} applies word for word: the $k$-th term of $\mathfrak S^{\rm st}_j$ is
+$\sigma_k\cos(2y_k\xi)\,2(-2)^jy_k^{2j+1}F^{\rm st}_j(\zeta_k)$ on a low mode, the factor $\cos(2y_k\xi)$ does not depend on
+$\zeta$ and has modulus at most $1$, $F^{\rm st}_j(0)=\ee^{-a}$ and
+$(F^{\rm st}_j)'(0)=\bigl(-\frac{j+2}3+a(\frac13-q)\bigr)\ee^{-a}$ with $a=2vy_k^2$, and the Taylor polynomials sum to
+$G_\xi^{(j)}(v)$ and to $\frac{j+2}6G_\xi^{(j+1)}+\frac v6(1-3q)G_\xi^{(j+2)}$ because
+$\sum_k\sigma_k\cos(2y_k\xi)2(-2)^jy_k^{2j+3}\ee^{-2vy_k^2}=-\frac12G_\xi^{(j+1)}$ and
+$\sum_k\sigma_k\cos(2y_k\xi)2(-2)^jy_k^{2j+5}\ee^{-2vy_k^2}=\frac14G_\xi^{(j+2)}$. The bound for $(F^{\rm st}_j)''$ is that of
+Lemma~\ref{lem:Fpp} with the constants of Lemma~\ref{lem:Ast}. For real $t\ge1$ and $q\le\frac12$ all $\lambda_m$ are
+positive, the identity $\lambda_m^{t-1}=\exp(-2vy_k^2B(\zeta_k;q))$ on low modes and the bound
+$\lambda_m^{t-1}\le\ee^{-vL^2/2}$ on high modes hold as before.
+\end{proof}
+
+For $0\le\xi<1$ define, with $c(\xi)$ from Theorem~\ref{thm:Gxi},
+\begin{equation}\label{eq:rhokappaxi}
+  \rho(\xi):=-\frac{c(\xi)}2\,\frac{G_\xi'''(c(\xi))}{G_\xi''(c(\xi))},\qquad
+  \kappa(\xi):=\frac12-\frac{\rho(\xi)}3=\frac12+\frac{c(\xi)}6\,\frac{G_\xi'''(c(\xi))}{G_\xi''(c(\xi))}
+\end{equation}
+(well defined by Theorem~\ref{thm:Gxi}(3); $\rho(0)=\rho$ and $\kappa(0)=\kappa-\frac14$ in the notation of
+Theorem~\ref{thm:c}).
+
+\begin{theorem}[Explicit finite-$N$ law, general start; analytic for $N\ge101$, \CA{} for $3\le N\le100$]\label{thm:startexp}
+% src: code/msc_rigorous_1d/25_start_theorem.py, data/msc_rigorous_1d/25_start_N0_101_K3p5.jsonl; code/msc_rigorous_1d/26_start_small_N.py, data/msc_rigorous_1d/26_start_small_N_K3p5.jsonl; data/msc_rigorous_1d/28_start_constants.json (table)
+Let $N\ge3$ and let the start $x_0$ satisfy $\xi_N=(x_0-\frac12)/(N-\frac12)\le\frac12$, i.e.\ $x_0\le\frac{2N+1}4$. Put
+$c_N:=c(\xi_N)$, $\rho_N:=\rho(\xi_N)$, $\kappa_N:=\kappa(\xi_N)$.
+\begin{enumerate}
+\item (Continuous time, every $q\in(0,1]$.) The unique mode $t_{\rm c}$ of $g_{x_0}$ satisfies
+\[
+   \Bigl|\frac{q\,t_{\rm c}}{L^2}-c_N+\frac{\kappa_N}{L^2}\Bigr|<\frac{3.5}{L^4} .
+\]
+\item (Discrete time, $q\le\frac12$.) Every mode $t^*$ of $f_{x_0}$ satisfies
+\[
+   \tau-E<t^*<\tau+1+E,\qquad \tau:=\frac{c_NL^2-\kappa_N}q+1-\rho_N,\qquad E:=\frac{3.5}{qL^2}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For $0\le q\le\frac12$ and real $v>0$ let
+\[
+  \fD(v;q):=\sum_{m=1}^{N-1}\sigma_k\cos(2y_k\xi_N)\,2y_k(-2y_k^2)A^{\rm st}_1(\zeta_k)\exp\bigl(-2vy_k^2B(\zeta_k;q)\bigr),
+\]
+where $B(\zeta_k;q)=\beta(\zeta_k)\Lambda(2q\sin^2x_k)$ (all arguments of $\Lambda$ are $<1$) and $B(\cdot\,;0)=\beta$. For $q=0$
+this is $G_{N,x_0}'(v)$, which has exactly one zero $u_N=qt_{\rm c}/L^2$ in $(0,\infty)$, positive before and negative
+after (Theorem~\ref{thm:unimodal-cont}; $d=N-x_0\ge2$ because $x_0\le\frac{2N+1}4$ and $N\ge3$). For $0<q\le\frac12$,
+$\fD(v;q)=\mathfrak S^{\rm st}_1(t)$ at the real time $t=1+vL^2/q$ is a positive multiple of the function $\Psi(t)$ in the
+proof of Theorem~\ref{thm:unimodal-disc}, which has exactly one zero $t_0$ in $(d-1,\infty)$, is positive on
+$[d-1,t_0)$ and negative on $(t_0,\infty)$; every mode lies in $[t_0,t_0+1]$. Put
+\[
+   v_\mp(q):=c_N-\frac{\kappa_N+q\rho_N}{L^2}\mp\frac{K}{L^4},\qquad K=3.5 ,
+\]
+so that $1+v_\mp L^2/q=\tau\mp E$. We claim that for all $q\in[0,\frac12]$
+\begin{equation}\label{eq:startclaim}
+   \fD(v_-(q);q)>0>\fD(v_+(q);q)\qquad\text{and, if }q>0,\qquad v_+(q)L^2>q(d-2).
+\end{equation}
+Given \eqref{eq:startclaim}: for $q=0$, $v_-<u_N<v_+$, which is (1) (the density $g_{x_0}$ for a given $q$ is a rescaling of
+the one for $q=1$). For $q>0$: $\tau+E>d-1$ and $\Psi(\tau+E)<0$ give $\tau+E>t_0$; and $\tau-E<t_0$, either because
+$\tau-E\le d-1<t_0$ or because $\tau-E>d-1$ and $\Psi(\tau-E)>0$. Hence $t^*\in[t_0,t_0+1]\subset(\tau-E,\tau+1+E)$.
+
+\emph{Proof of \eqref{eq:startclaim} for $N\ge101$.} Let $L\ge L_0=100.5$, $\varepsilon=L^{-2}\le\varepsilon_0=L_0^{-2}$,
+$\xi=\xi_N$, $G=G_\xi$, $c=c(\xi)$, $v=c-\varepsilon d$ with $d=\kappa(\xi)+q\rho(\xi)-s\varepsilon$, $s\in[-K,K]$. By
+Proposition~\ref{prop:latticest} ($j=1$), $\fD(v;q)=G'(v)+\varepsilon H(v)+\varepsilon^2R$ with
+$H=\frac12G''+\frac v6(1-3q)G'''$ and $H(c)=G''(c)\bigl(\frac12+\frac c6(1-3q)\frac{G'''(c)}{G''(c)}\bigr)=(\kappa(\xi)+q\rho(\xi))G''(c)$.
+Taylor's formula at $c$ (where $G'(c)=0$), exactly as in \eqref{eq:Gamma} and \eqref{eq:discGamma}, gives
+\[
+   L^4\fD(v;q)=s\,G''(c)+\Gamma,\qquad
+   \Gamma=\tfrac12G'''(c)d^2-H'(c)d+\varepsilon\bigl[-\tfrac16G''''(\eta)d^3+\tfrac12H''(\eta')d^2\bigr]+R ,
+\]
+with $\eta,\eta'$ between $v$ and $c$, $H'=\frac12G'''+\frac{1-3q}6G'''+\frac v6(1-3q)G''''$ and
+$H''=\frac12G''''+\frac{1-3q}3G''''+\frac v6(1-3q)G^{(5)}$. Script \texttt{25\_start\_theorem.py} covers the rectangle
+$(\xi,q)\in[0,\frac12]\times[0,\frac12]$ by $49\,238$ boxes $\Xi\times Q$ (adaptive bisection, starting from $100$ strips in
+$\xi$) and certifies for each box, in $128$-bit ball arithmetic and simultaneously for all $\xi\in\Xi$, $q\in Q$,
+$\varepsilon\in[0,\varepsilon_0]$, $s\in[-K,K]$:
+(i) an enclosure $C\ni c(\xi)$ for all $\xi\in\Xi$, obtained from $G_\xi'(C_{\min})>0>G_\xi'(C_{\max})$ on $\Xi$ and
+Theorem~\ref{thm:Gxi}(2); (ii) $G_\xi''<0$ on $C\times\Xi$; (iii) $\sup|\Gamma|<K\inf|G_\xi''(c)|$, where $c$, $G^{(i)}(c)$,
+$\kappa$, $\rho$, $d$, $v$, $\eta$, $\eta'$ are replaced by their balls and $R$ is enclosed as in
+Remark~\ref{rem:usage} (with $k_0=31$ and the weights $\cos(2y_k\Xi)$; module \texttt{start.py}); (iv)
+$v_{\min}L_0>\frac12(1-\xi_{\min})$, which gives $vL^2>\frac12L(1-\xi)\ge q(d-2)$ for all $L\ge L_0$ since $d=L(1-\xi)$.
+From (iii), $L^4\fD=sG''(c)+\Gamma$ is positive at $s=-K$ and negative at $s=K$, which is \eqref{eq:startclaim}
+(file \texttt{data/25\_start\_N0\_101\_K3p5.jsonl}; the largest value of $\sup|\Gamma|/\inf|G''(c)|$ over the boxes is
+$3.4999930\ldots$ (upper end of its ball), the smallest box has $\xi$-width $3.9\times10^{-5}$ and $q$-width
+$9.8\times10^{-4}$). The closeness of $3.49999$ to $K$ is a feature of the adaptive bisection, which subdivides a box
+until the certified bound drops below $K$; it does not indicate that the true quantity comes close to $3.5$ for
+$N\ge101$ (the largest value found in the numerical tests of script \texttt{29}, which include small $N$, is $3.419\ldots$, at
+$N=6$, $x_0=3$; Remark~\ref{rem:startK}).
+% src: data/msc_rigorous_1d/25_start_N0_101_K3p5.jsonl (fields max_need, min_dxi, min_dq, leaves); data/msc_rigorous_1d/29_start_stress.json
+
+\emph{Proof of \eqref{eq:startclaim} for $3\le N\le100$.} Script \texttt{26\_start\_small\_N.py} treats the $2499$ pairs
+$(N,x_0)$ one by one in $160$-bit ball arithmetic: $\xi_N$ is rational, $c_N$ is enclosed as in (i) (radius $<10^{-20}$),
+and the two functions $F_\mp(q)=\fD(v_\mp(q);q)$ are enclosed on subintervals $Q\ni q_{\rm mid}$ of $[0,\frac12]$ by the mean
+value form $F(Q)\subset F(q_{\rm mid})+F'(Q)(Q-q_{\rm mid})$, with
+$F'(q)=\sum_k(\cdots)\exp(-ve_k\Lambda(w))(-e_k)\bigl[v'(q)\Lambda(w)+vs_k\Lambda'(w)\bigr]$, $e_k=2L^2\sin^2x_k$,
+$s_k=2\sin^2x_k$, $w=qs_k$, $v'(q)=-\rho_N/L^2$, and $\Lambda,\Lambda'$ enclosed on $[w_{\min},w_{\max}]$ by monotonicity
+(both have nonnegative power series coefficients); adaptive bisection in $q$ ($13\,115$ evaluations in all). All pairs
+pass (\texttt{data/26\_start\_small\_N\_K3p5.jsonl}), including the condition $v_+L^2>q(d-2)$.
+\end{proof}
+
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+$\xi$ & $c(\xi)$ & $\rho(\xi)$ & $\kappa(\xi)$\\
+\midrule
+$0$ & $0.333284265494\ldots$ & $1.991178661865\ldots$ & $-0.163726220621\ldots$\\
+$0.1$ & $0.322863097331\ldots$ & $1.9305185174\ldots$ & $-0.1435061724\ldots$\\
+$0.2$ & $0.285180145816\ldots$ & $1.7587199904\ldots$ & $-0.0862399968\ldots$\\
+$0.3$ & $0.194776045823\ldots$ & $2.251816232\ldots$ & $-0.250605410\ldots$\\
+$0.4$ & $0.121736005686\ldots$ & $2.233308210\ldots$ & $-0.244436070\ldots$\\
+$0.5$ & $0.083345643329\ldots$ & $2.008874178629\ldots$ & $-0.169624726209\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(Certified values, script \texttt{28}.)
+
+\begin{remark}\label{rem:startK}
+% src: code/msc_rigorous_1d/29_start_stress.py, data/msc_rigorous_1d/29_start_stress.json, data/msc_rigorous_1d/26_start_small_N_K3p5.jsonl
+(a) The constant $3.5$ is nearly optimal on the range $\xi_N\le\frac12$: for $N=6$, $x_0=3$ one has
+$L^4(u_N-c_N+\kappa_N/L^2)=-3.419\ldots$, and for $\xi_N\to\frac12$, $N\to\infty$ this quantity tends to $\approx-2.86$
+(numerical observation, script \texttt{29}). Numerically it behaves like $-0.75/(1-\xi)^2$, in accordance with the fact that
+the natural length scale for a start close to the target is the distance $d=(1-\xi)L$; a version of
+Theorem~\ref{thm:startexp} uniform in $\xi<1$ would have to be formulated in terms of $d$ and is not attempted here.
+(b) For $x_0=1$, $\xi_N=\frac1{2L}$ and $c(\xi)=c-\xi^2+O(\xi^4)$ (indeed $\partial_\xi^2G_\xi=2\partial_uG_\xi$, so
+$c''(0)=-2$), $\kappa(0)=\kappa-\frac14$; thus $c_NL^2-\kappa_N=cL^2-\kappa+O(L^{-2})$ and Theorem~\ref{thm:startexp} is
+consistent with Theorems~\ref{thm:cont} and~\ref{thm:discmode}.
+\end{remark}
+
+\begin{corollary}[Uniform constants]\label{cor:startuniform}
+% src: code/msc_rigorous_1d/28_start_constants.py, data/msc_rigorous_1d/28_start_constants.json
+In the situation of Theorem~\ref{thm:startexp}, $1.7206<\rho_N<2.5171$ and $-0.3391<\kappa_N<-0.0735$, and
+\begin{align*}
+  \Bigl|\frac{q\,t_{\rm c}}{L^2}-c(\xi_N)\Bigr|&<\frac{0.34}{L^2}+\frac{3.5}{L^4}, &
+  \Bigl|\frac{q\,t^*}{L^2}-c(\xi_N)\Bigr|&<\frac{0.44}{L^2}+\frac{3.5}{L^4}\quad(q\le\tfrac12),\\
+  \Bigl|\frac{t_{\rm c}}{\E_{x_0}T}-\frac{c(\xi_N)}{1-\xi_N^2}\Bigr|&<\frac{0.46}{L^2}+\frac{4.7}{L^4}, &
+  \Bigl|\frac{t^*}{\E_{x_0}T}-\frac{c(\xi_N)}{1-\xi_N^2}\Bigr|&<\frac{0.59}{L^2}+\frac{4.7}{L^4}\quad(q\le\tfrac12),
+\end{align*}
+where $\E_{x_0}T=L^2(1-\xi_N^2)/q$ and $0.1110<c(\xi)/(1-\xi^2)<0.3333$ for $\xi\le\frac12$.
+\end{corollary}
+\begin{proof}
+Script \texttt{28\_start\_constants.py} encloses $c(\xi)$, $\rho(\xi)$, $\kappa(\xi)$ on $4000$ balls covering
+$[0,\frac12]$ (ball arithmetic, $c(\xi)$ enclosed as above): $\rho\in[1.72068,2.51708]$, $\kappa\in[-0.33903,-0.07356]$,
+$\kappa+\frac12(\rho-1)\in[0.2829,0.4370]$, $\kappa+\frac12(\rho-2)\in[-0.2171,-0.0630]$,
+$c(\xi)/(1-\xi^2)\in[0.11107,0.33329]$. By Theorem~\ref{thm:startexp}(2),
+$-(\kappa_N+q(\rho_N-1))L^{-2}-3.5L^{-4}<qt^*/L^2-c_N<-(\kappa_N+q(\rho_N-2))L^{-2}+3.5L^{-4}$; the two coefficients are
+affine in $q\in[0,\frac12]$, so their absolute values are at most $\max\{0.3391,0.4370,0.2171\}<0.44$. The continuous-time
+bound is (1) with $|\kappa_N|<0.34$. Dividing by $1-\xi_N^2\ge\frac34$ gives the last line.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary: what is proved, what is computer-assisted, what is open}\label{sec:gaps}
+
+\paragraph{Proved by hand (complete proofs above).}
+Exact spectral law for every start (Theorem~\ref{thm:exact}), product formula and sum-of-geometrics/exponentials
+representation (Theorem~\ref{thm:product}), moments (Corollary~\ref{cor:moments}); strict unimodality in continuous
+time for every start (Theorem~\ref{thm:unimodal-cont}); strict unimodality in discrete time for every start when
+$q\le q_N$ (Theorem~\ref{thm:unimodal-disc}), and its failure for every start $x_0\ge2$ when $q>q_{\rm fail}(N-x_0)$
+(Proposition~\ref{prop:startfail}); log-concavity from the reflecting end for $q\le\frac23$
+(Theorem~\ref{thm:logconcave}); monotonicity of unimodality in $q$ (Lemma~\ref{lem:qmono}); the reduction of
+unimodality for $q>\frac23$ to the total positivity of finitely many powers $Q^k$ on one finite chain
+(Lemmas~\ref{lem:cb}, \ref{lem:contig}, \ref{lem:local}); failure of unimodality
+for $q>1-\frac1{2N-3}$, $N\ge4$ (Proposition~\ref{prop:fail}); parity-class unimodality at $q=1$
+(Theorem~\ref{thm:parity}); convergence to the limit density, its strict unimodality and the uniqueness of its
+maximiser up to one sign evaluation (Theorems~\ref{thm:conv},~\ref{thm:Gunique}); the lattice expansion with
+explicit remainder (Proposition~\ref{prop:lattice}, Lemmas~\ref{lem:elem}--\ref{lem:Fpp},
+\ref{lem:classsums}--\ref{lem:q1exp}); the comparison Lemma~\ref{lem:compare}; the limit density for a general
+start, its strict unimodality with a unique non-degenerate critical point, the analyticity of $\xi\mapsto c(\xi)$, and
+the limit theorem (Lemmas~\ref{lem:image},~\ref{lem:zerocount}, Theorems~\ref{thm:Gxi},~\ref{thm:startlimit}).
+
+\paragraph{Computer-assisted (rigorous ball arithmetic or exact arithmetic; scripts and outputs are part of the proof).}
+\begin{center}\small
+\begin{tabular}{p{0.37\textwidth}p{0.27\textwidth}p{0.27\textwidth}}
+\toprule
+statement & script & what is computed\\
+\midrule
+$G'(\frac3{10})>0>G'(\frac25)$, $G''(c)<0$, $70$-digit enclosure of $c$, $\kappa$, $\rho$ (Thms~\ref{thm:Gunique},~\ref{thm:c})
+ & \texttt{03} & $4$ signs, $6$ balls\\
+continuous-time mode, $N\ge301$ (Thm~\ref{thm:cont}) & \texttt{12} (\texttt{core.py}) & enclosure of $\Gamma$\\
+value of $\kappa_2$ from its closed form \eqref{eq:kappa2} (Thm~\ref{thm:cont}) & \texttt{37} & one ball\\
+continuous-time mode, $3\le N\le300$ & \texttt{13} & $4$ signs per $N$\\
+discrete increments near the mode, $N\ge41$, $q\le\frac45$; $N\ge61$, $q\le\frac9{10}$ (Thm~\ref{thm:local}) & \texttt{14}, \texttt{35} & $2400$, resp.\ $2700$ $q$-balls; uniform constants\\
+discrete increments, $3\le N\le40$, $q\le\frac45$ (Prop.~\ref{prop:smallN}) & \texttt{15} & bisection in $q$; $\le782$ windows per $N$\\
+discrete increments, $\frac45\le q\le\frac9{10}$, $N\le60$ (Prop.~\ref{prop:smallN}(b),(c)) & \texttt{32} & $6752$ windows\\
+unimodality: $q\le\frac45$, all $N$; $q\le\frac{17}{20}$, $N\ge6$; $q\le\frac9{10}$, $N\ge9$ (Thms~\ref{thm:tp2},~\ref{thm:tp2b}) & \texttt{31} & exact integers: contiguous minors of $(2q_{\rm den}Q)^k$, $k_*\le k<2k_*$\\
+table of modes, $q=\frac45$, $N\le600$ (Prop.~\ref{prop:ca45}) & \texttt{08}, \texttt{24} & certified signs of all increments; no-underflow bound\\
+$q=1$ mode, $N\ge601$ (Thm~\ref{thm:q1}) & \texttt{16} (\texttt{q1.py}) & enclosure of $\Gamma_1$, class comparison\\
+$q=1$ mode, $3\le N\le600$ & \texttt{17} & exact / ball\\
+global maximisers $\frac23\le q<1$, $N\ge601$, without unimodality (Thm~\ref{thm:global}) & \texttt{14}, \texttt{35}, \texttt{18} & $3000$ $q$-balls, $800$ $v$-pieces, $4$ inequalities\\
+$c(\xi)$ table (Prop.~\ref{prop:cxi}) & \texttt{19} & sign changes\\
+general start, $\xi_N\le\frac12$, $q\le\frac12$ or continuous time, $N\ge101$ (Thm~\ref{thm:startexp}) & \texttt{25} (\texttt{start.py}) & $49\,238$ boxes in $(\xi,q)$\\
+general start, $3\le N\le100$ & \texttt{26} & $2499$ pairs $(N,x_0)$, bisection in $q$\\
+ranges of $\rho(\xi),\kappa(\xi)$ (Cor.~\ref{cor:startuniform}) & \texttt{28} & $4000$ $\xi$-balls\\
+failure examples for starts $x_0\ge2$ (Prop.~\ref{prop:startfail}; checks only, the proof is by hand) & \texttt{36} & exact rationals, sympy\\
+\bottomrule
+\end{tabular}
+\end{center}
+Sanity checks of every lemma against separately written high-precision or exact computations (same project, same
+machine): scripts \texttt{01}
+(Section~\ref{sec:exact}), \texttt{09} (Sections~\ref{sec:unimodal}--\ref{sec:lattice}), \texttt{11}
+(Proposition~\ref{prop:lattice}), \texttt{21} (Lemmas~\ref{lem:tail}, \ref{lem:classsums}--\ref{lem:q1exp}); validation of the
+final theorems against other data: \texttt{20} (exact modes of the computations of Sections~5--6 of the article and a fresh grid),
+\texttt{33} (Section~\ref{sec:unimodal}.7: Cauchy--Binet identity,
+locality, brute-force confirmation of Theorems~\ref{thm:tp2},~\ref{thm:tp2b} for $N\le40$), \texttt{34} (a second,
+separately written implementation of the $TP_2$ test of Theorem~\ref{thm:tp2}(1): all $2\times2$ minors, no band shortcut),
+\texttt{22} (the exact-arithmetic certificates of R5: $600$ modes at $q=\frac45$, $298$ at
+$q=\frac12$, $198$ at $q=1$), \texttt{23} (randomised stress test: $450+60$ pairs $(N,q)$ with $q\le\frac45$, $N\le4000$; a fine scan of $400$ values of $q$ for each
+$N\le12$; continuous time up to $N=6000$; $q=1$ up to $N=2200$; $\frac9{10}<q<1$; $285$ pairs with $\frac45<q\le\frac9{10}$), \texttt{27} (Section~\ref{sec:start}: lattice identities,
+Lemma~\ref{lem:Ast}, Proposition~\ref{prop:latticest}, sign patterns of Lemma~\ref{lem:zerocount} and
+Theorem~\ref{thm:Gxi}), \texttt{29} (Theorem~\ref{thm:startexp}: $610$ discrete and $22$ continuous-time cases).
+All pass, with no violation; outputs in \texttt{data/}, logs in
+\texttt{logs/}. The observed extreme values of $t^*-\tau$ in these tests are $-E+0.00197$ and $1+E-0.00305$, so the % src: code/msc_rigorous_1d/23_stress.py, data/msc_rigorous_1d/23_stress.json, data/msc_rigorous_1d/logs/23_stress.log
+window \eqref{eq:discwindow} is essentially sharp.
+
+\paragraph{Not proved.}
+\begin{enumerate}
+\item \emph{Unimodality for $\frac9{10}<q<1$.} The exact threshold $q^*(N,1)$ is known only through the bounds
+$\max\{\frac45,\ \frac{17}{20}[N\ge6],\ \frac9{10}[N\ge9]\}\le q^*(N,1)\le1-\frac1{2N-3}$ ($N\ge4$) and numerically
+(Observation~\ref{obs:qstar}). The method of Theorem~\ref{thm:tp2b} applies to any given rational $q<1$ (with
+$k_*\approx q^2/(2(1-q)^2)$), but we have no proof that $Q^k$ is eventually $TP_2$ for every $q<1$ (Remark~\ref{rem:tp2}).
+\item \emph{The crossover}: $\frac9{10}<q<1$ with $N\le600$ or $\mathfrak h(q,L)>10^{-12}$, i.e.\ roughly
+$(1-q)L^2\lesssim27\ln L+100$, and the few small $N$ excluded in Theorem~\ref{thm:discmode}(b),(c): here the mode is
+in general \emph{not} in the window \eqref{eq:discwindow}; it
+interpolates between the laws of Theorems~\ref{thm:global} and~\ref{thm:q1}. No theorem.
+\item \emph{Sharp constant for $q=1$}: $K=10.3$ is proved, $K\approx0.03$ is observed for $N\le600$.
+\item \emph{General start}: explicit finite-$N$ bounds for starts with $\xi_N>\frac12$ (they should be formulated in
+terms of the distance $d=N-x_0$) and, in discrete time, for $q>\frac12$; the exact unimodality threshold $q^*(N,x_0)$ for
+$x_0\ge2$, which is only known to satisfy $q_N\le q^*(N,x_0)\le q_{\rm fail}(N-x_0)$ (Theorem~\ref{thm:unimodal-disc},
+Proposition~\ref{prop:startfail}; unimodality does \emph{not} hold in general for $q>q_N$, and $q_{\rm fail}$ is not sharp,
+Observation~\ref{obs:startfail}); monotonicity of $\xi\mapsto c(\xi)$ (it is real-analytic and $c(\xi)=c-\xi^2+O(\xi^4)$,
+but $c(\xi)/((1-\xi)^2/3)$ is not monotone).
+\end{enumerate}
+
+\end{document}

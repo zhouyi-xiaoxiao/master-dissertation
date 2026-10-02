@@ -1,0 +1,159 @@
+% sup_mechanism.tex -- Supplementary Section S7: the factorisation, the ingredients of the closed form, accuracy
+% figure, shape in discrete time, and other placements.  Tables: code/article/s6_mechanism_tables.py;
+% figures: code/article/s3s6_modes_figures.py.
+\section{Pole structure and shape: proofs and further results}\label{sup_mechanism:sec}
+
+\subsection{Proof of Proposition~\ref{s6_mechanism:prop-factorisation}}
+
+By \eqref{s2_model:eq-renewal} the first-passage transform from a start $\vx\neq\va$ is
+$\Phat(\va,s\,|\,\vx)/\Phat(\va,s\,|\,\va)$, and the same expression equals $1$ for $\vx=\va$, in agreement with
+$\FPT_{\mathrm u}=0$ there. Averaging over $\vx$ gives
+$\Fhat_{\mathrm u}(s)=\nn^{-1}\sum_{\vx}\Phat(\va,s\,|\,\vx)/\Phat(\va,s\,|\,\va)$. Since $\Pm$ is symmetric,
+$\sum_{\vx}p(\va,t\,|\,\vx)=\sum_{\vx}p(\vx,t\,|\,\va)=1$ for all $t$, hence $\sum_{\vx}\Phat(\va,s\,|\,\vx)=1/s$; this is the
+first identity. The second follows because $s\,\hat u(s)\,\Fhat_{\mathrm u}(s)=\Phat(\va,s\,|\,\vo)/\Phat(\va,s\,|\,\va)$. As
+$u(0)=\nn\,\delta_{\vo\va}=0$, $s\hat u(s)$ is the transform of $u'$, and a product of transforms is the transform of a
+convolution. For \eqref{s6_mechanism:eq-u}: at unit rate the $\dd$ coordinates are independent one-dimensional walks of
+rate $1/\dd$ (Lemma~\ref{appA_proofs:lem-spectrum}), so $p$ is a product of one-dimensional propagators
+$\sum_k\psi_k(m)\psi_k(m')\eu^{-\varepsilon_k t}$, and $\psi_k(N-1)\psi_k(0)=(\alk{k}/N)(-1)^{k}\ck{k}^{2}$ because
+$\thk{k}{N-1}=\pi k-\thk{k}{0}$. Finally $\varepsilon_k/\muone=\sk{k}^{2}/\sk{1}^{2}\to k^{2}$ and $\ck{k}\to1$ for fixed $k$,
+while $\sk{k}\ge k/N$ and $\sk{1}\le\pi/(2N)$ give $\varepsilon_k/\muone\ge4k^{2}/\pi^{2}$ for all $1\le k\le N-1$; the
+$k$-th term is therefore bounded by $2\eu^{-4k^{2}x/\pi^{2}}$ uniformly in $N$, and dominated convergence gives the
+limit. \hfill$\square$
+% src: data/article/s6_mechanism_tables.json (factorisation_check: identities reproduced by dense linear algebra to 3.5e-14 on four small lattices, d = 2, 3; arrival_profile_convergence: max |u - theta_4^d| on 0.05 <= x <= 12 is 1.3e-2, 1.3e-4, 1.3e-6 at N = 10, 100, 1000, d = 2)
+
+Numerically the two identities \eqref{s6_mechanism:eq-factor} are reproduced by dense linear algebra to
+$3.5\times10^{-14}$ on four small lattices ($\dd=2,3$), and $\max|u(x/\muone)-\theta_4(\eu^{-x})^{2}|$ on
+$0.05\le x\le12$ is $1.3\times10^{-2}$, $1.3\times10^{-4}$ and $1.3\times10^{-6}$ at $N=10$, $100$ and $1000$ ($\dd=2$).
+
+\subsection{The ingredients of the closed form}\label{sup_mechanism:ssec-ingredients}
+
+In \eqref{s6_mechanism:eq-poles} the two smallest zeros $\nu_{(0)}$, $\nu_{(1)}$ of
+Proposition~\ref{s2_model:prop-interlacing} are written $\nu_0$, $\nu_1$, which is consistent with
+\eqref{s2_model:eq-spectral} whenever both residues are non-zero, as they are for the corner start. The two zero
+conditions are $1/\nu_0=W/(\mu-\nu_0)+R(-\nu_0)$ and $W/(\nu_1-\mu)=R(-\nu_1)-1/\nu_1$, and the residues are dominated
+by the terms in $1/s$ at $-\nu_0$ and by the terms in $1/(s+\mu)$ at $-\nu_1$.
+
+Equation~\eqref{s6_mechanism:eq-L1} corrects the rate difference but not $\nu_0\,q\MF$, the ratio $b_1/b_0$ or the
+argument of the logarithm, and the omitted terms partly cancel. At $\dd=2$, $N=100$, replacing the exact argument
+$-b_1\nu_1/b_0\nu_0$ by $AX$ lowers the prediction by $2.5\%$, the first-order rate difference raises it by $1.1\%$ and
+the neglect of the poles $j\ge2$ raises it by $0.4\%$; the net error is $-0.97\%$.
+% src: data/article/s6_mechanism_tables.json (ingredients/2d_CC, N = 100: factor_log 0.97535, factor_rate 1.01128, factor_third_pole 1.00401)
+The ingredients can also be checked one by one against the numerically exact poles: $\nu_0\,q\MF$ falls from $1.164$
+($N=5$) to $1.021$ ($N=16\,777\,216$) for $\dd=2$ and from $1.076$ to $1.0001$ ($N=4096$) for $\dd=3$; $(\nu_1/\muone-1)X/W$
+goes from $1.15$ to $1.036$ and from $0.911$ to $0.9998$; and $b_1/b_0$ reaches $-4.087$ and $-5.9994$ at the largest
+sizes, against $-A=-4$ and $-6$.
+% src: data/article/s6_mechanism_tables.json (ingredients; from data/msc_modes/laplace_modes.jsonl); data/msc_modes/fit_results.json (pole_structure)
+The maximum sits where the two regimes of Fig.~\ref{s6_mechanism:fig-density} meet: $\nu_1\tmodec$ is $4.81$ to $6.13$ for
+$\dd=2$ ($N=35$ to $16\,777\,216$) and $7.44$ to $12.07$ for $\dd=3$ ($N=40$ to $4096$), against $\ln(2\dd X)=4.51$ to $6.04$
+and $7.42$ to $12.07$.
+% src: data/article/s6_mechanism_tables.json (ingredients: nu1_tmode, ln_2dX)
+
+\emph{Accuracy.} The leading-order form \eqref{s6_mechanism:eq-L0} errs by $+7.3\%$ at $N=10$ and $+0.017\%$ at $N=4096$
+for $\dd=3$; the closed-form approximation \eqref{s6_mechanism:eq-L1} is within $2.6\times10^{-4}$ for $N\ge35$ in three dimensions, and
+below $N=10$ the errors are larger ($+2.7\%$ at $N=5$ for $\dd=2$). The exact two-exponential truncation is within
+$0.66\%$ ($\dd=2$) and $0.15\%$ ($\dd=3$), with an error of the opposite sign to that of \eqref{s6_mechanism:eq-L1}, and
+the exact three-exponential truncation reaches $1.4\times10^{-8}$ at $N=16\,777\,216$ (Fig.~\ref{s6_mechanism:fig-accuracy}).
+% src: data/article/closed_form_checks.json (3d_CC: L0, L1_weights); data/msc_modes/summary_tables.md (M2); data/article/s6_mechanism_tables.json (accuracy/2d_CC/rows; accuracy: two_pole, three_pole); data/msc_modes/tables.md (accuracy lines)
+In discrete time the error of \eqref{s6_mechanism:eq-L1-simple} is certified on finite ranges: at most $0.970\%$ for
+$\dd=2$ ($q=0.8$, $10\le N\le301$ and five larger sizes) and $0.275\%$ for $\dd=3$ ($q=0.8$, $10\le N\le120$ and four larger
+sizes), and for $\dd=3$ it stays below $0.3\%$ for every $N\ge10$ (Theorem~\ref{s6b_rigorous:thm-cffinite} and
+Corollary~\ref{s6b_rigorous:cor-cf}).
+% src: data/msc_rigorous_certified/closedform_summary_c128.json (d2_q4-5, d3_q4-5: eps[10,...]); data/article/s6b_rigorous_checks.json (continuous_time_against_windows; corollary_closed_form_all_N)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s6_mechanism_accuracy.pdf}
+\caption{Absolute relative error of the predicted continuous-time mode (unit rate), corner to corner, against
+the lattice size: (a) $\dd=2$, 43 sizes, $5\le N\le16\,777\,216$; (b) $\dd=3$, 27 sizes, $5\le N\le4096$.
+Circles: leading order \eqref{s6_mechanism:eq-L0}; squares: closed-form approximation \eqref{s6_mechanism:eq-L1}
+(for these placements $A=W$); triangles and diamonds: exact two- and three-exponential truncations. Dips of the
+closed-form curves mark sign changes of the error. The three-exponential curve in (b)
+levels off near $10^{-10}$, the accuracy to which the reference modes are known for $\dd=3$.}
+\label{s6_mechanism:fig-accuracy}
+% src: code/article/s3s6_modes_figures.py; data data/msc_modes/laplace_modes.jsonl
+\end{figure}
+
+\subsection{Shape in discrete time}
+
+The shape statistics of Table~\ref{s6_mechanism:tab-shape} are found in discrete time at $q=0.8$ as well, from
+distributions summed over their whole support ($\Prob(\FPT\le\tmode)=0.0981$, median $10\,145$ steps against
+$\MF=14\,100.8$ for $\dd=2$, $N=35$), where the coefficient of variation is $0.816$ ($\dd=1$; the continuum value is
+$\sqrt{2/3}$), $0.918$ ($\dd=2$, $N=35$) and $0.976$ ($\dd=3$, $N=15$), increasing towards the value 1 of an exponential law.
+% src: data/msc_modes/full_tail.json; data/msc_modes/summary_tables.md (U); data/msc_modes_verify/constants.json (1d_cv)
+The density at its maximum is within $5.5\%$ ($\dd=2$, $N=35$) and $1.2\%$ ($\dd=3$, $N=40$) of $1/\MF$, and for $\dd=3$ it
+stays within $1\%$ of its maximum from $0.62$ to $5.6$ modal times at $N=640$. In the variable $x=\muone t$ the density
+follows $\theta_4(\eu^{-x})^{\dd}$ closely for $\dd=3$ and converges slowly for $\dd=2$, as expected when the corrections are
+of order $1/X$.
+% src: data/msc_modes/medians.json; data/article/s6_mechanism_tables.json (shape_table); data/msc_modes/profile_stats.json (d = 3, N = 640: t_lo_0.99/mode = 0.616, t_hi_0.99/mode = 5.570)
+
+\subsection{Other placements and extended targets}\label{sup_mechanism:ssec-geometries}
+
+\begin{table}[tbp]
+\centering
+\caption{Other placements. (a) Point targets, continuous time at unit rate: corner start and centre target
+(\CtM) and centre start and corner target (\MtC), odd $N$; the last column is the signed error of
+\eqref{s6_mechanism:eq-L1}, which does not apply to \MtC{} ($A=0$, $b_1>0$). (b) Exit from the centre through
+an absorbing boundary layer (\EXIT): continuum limit of $\tmode/\MF$ and exact lattice value at $q=0.8$
+(discrete time).}
+\label{s6_mechanism:tab-geometries}
+% src: data/article/s6_mechanism_rows.tex, s6_mechanism_tables.json (geometries), from data/msc_modes/laplace_modes.jsonl (C2M, M2C), data/msc_modes/discrete_modes.jsonl (group exit), data/msc_modes/fit_results.json (continuum_exit); agrees with data/msc_modes/summary_tables.md (G) and data/msc_modes_verify/constants.json
+\begin{tabular}{rlrcccc}
+\toprule
+\multicolumn{7}{l}{(a) point targets}\\
+$\dd$ & placement & $N$ & $\tmodec/N^{2}$ & $\tmodec/q\MF$ & sign of $b_1$ & error of \eqref{s6_mechanism:eq-L1} (\%)\\
+\midrule
+2 & \CtM & 11 & 0.3838 & 0.19761 & $-$ & $-0.1930$ \\
+2 & \CtM & 161 & 0.4694 & 0.12858 & $-$ & $-0.9491$ \\
+2 & \CtM & 10\,241 & 0.5369 & 0.08529 & $-$ & $-0.7060$ \\
+2 & \CtM & 655\,361 & 0.5779 & 0.06463 & $-$ & $-0.5307$ \\
+2 & \MtC & 11 & 0.3122 & 0.05568 & $+$ & -- \\
+2 & \MtC & 161 & 0.4504 & 0.03623 & $+$ & -- \\
+2 & \MtC & 10\,241 & 0.5452 & 0.02370 & $+$ & -- \\
+2 & \MtC & 655\,361 & 0.5990 & 0.01783 & $+$ & -- \\
+3 & \CtM & 11 & 0.9446 & 0.06011 & $-$ & $+0.2055$ \\
+3 & \CtM & 161 & 1.3894 & 0.00571 & $-$ & $+0.0021$ \\
+3 & \CtM & 1281 & 1.7087 & 0.00088 & $-$ & $+0.0002$ \\
+3 & \MtC & 11 & 0.7765 & 0.01827 & $+$ & -- \\
+3 & \MtC & 161 & 1.3902 & 0.00201 & $+$ & -- \\
+3 & \MtC & 1281 & 1.7779 & 0.00032 & $+$ & -- \\
+\midrule
+\multicolumn{7}{l}{(b) exit through an absorbing boundary}\\
+$\dd$ & & $N$ & continuum $\tmode/\MF$ & lattice $\tmode/\MF$ & $\tmode$ (steps) & $\MF$ (steps)\\
+\midrule
+1 & \EXIT & 401 & 0.333284 & 0.33328 & 16\,664 & 50\,000.0 \\
+2 & \EXIT & 201 & 0.474907 & 0.47489 & 6997 & 14\,734.0 \\
+3 & \EXIT & 51 & 0.560839 & 0.56107 & 591 & 1053.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s6_mechanism_geometries.pdf}
+\caption{Mode-to-mean ratio $\tmode/\MF$ against the lattice size for four placements, (a) $\dd=2$, (b) $\dd=3$.
+Lines: continuous time; open symbols: exact discrete-time modes at $q=0.8$ (circles: corner to opposite corner;
+squares: corner to centre; triangles: centre to corner). Diamonds: exit from the centre through an absorbing
+boundary layer, discrete time, $q=0.8$; dotted line: its continuum limit, $0.474907$ ($\dd=2$) and $0.560839$
+($\dd=3$).}
+\label{s6_mechanism:fig-geometries}
+% src: code/article/s3s6_modes_figures.py; data data/msc_modes/laplace_modes.jsonl, discrete_modes.jsonl, fit_results.json
+\end{figure}
+
+Table~\ref{s6_mechanism:tab-geometries} and Fig.~\ref{s6_mechanism:fig-geometries} show how far the results extend. For both
+centre placements the law is unimodal (Theorem~\ref{s6b_rigorous:thm-unimodal}), but the mode laws are proved only for
+corner-to-corner transport. A centre target reached from a corner behaves as the corner target does, with
+$\mu\approx4\muone$. For a centre start and a corner target the density approaches its exponential tail from above, and
+$\tmodec/N^{2}$ again grows slowly with $N$. Only these placements were examined.
+% src: data/article/s6_mechanism_tables.json (c2m_weights_check: stored mu, W, A equal these expressions to round-off)
+
+An extended target is different. If the walker starts at the centre and the whole boundary layer absorbs, there is no
+small parameter: capture and relaxation happen on the same scale. In continuous time the coordinates are independent,
+so the survival probability is the $\dd$-th power of that of a one-dimensional walk of rate $1/\dd$ between two absorbing
+ends, and in the diffusive limit $\tmode/\MF$ tends to a constant: $0.333284$, $0.474907$ and $0.560839$ for $\dd=1,2,3$
+(for $\dd=1$ this is the constant \eqref{s5_modes:eq-1d-ratio}, by symmetry about the centre). The lattice values at
+$q=0.8$ agree with these constants to between three and five digits (Table~\ref{s6_mechanism:tab-geometries}b). For exit
+the ratio therefore tends to a constant that grows with the dimension, whereas for a point target in $\dd\ge2$ it
+decreases with $N$.
+% src: data/msc_modes/fit_results.json (continuum_exit); data/msc_modes_verify/constants.json (0.3332842655, 0.4749066852, 0.5608388055); data/msc_modes/discrete_modes.jsonl (group exit)
+
+The activity dependence is tabulated in Table~\ref{appC_tables:tab-activity}.

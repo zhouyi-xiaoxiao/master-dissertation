@@ -1,0 +1,106 @@
+{
+"cases": 10,
+"mismatches": 0,
+"results": [
+{
+"d": 1,
+"N": 300,
+"q": "4/5",
+"reduced": 1,
+"bytes": 1242929,
+"sha256": "70bcef8b69722b9deea071e7fd9d9ff8cb33120588c45218e9bf58416e9e5505",
+"identical": true,
+"seconds_python": 10.8
+},
+{
+"d": 2,
+"N": 60,
+"q": "4/5",
+"reduced": 1,
+"bytes": 312020,
+"sha256": "a693919a0a1c324be4ad374f8cebdf4bed0cb5abdc8899baf33411e758b19c24",
+"identical": true,
+"seconds_python": 19.3
+},
+{
+"d": 2,
+"N": 40,
+"q": "4/5",
+"reduced": 0,
+"bytes": 160153,
+"sha256": "eb246cbb9610b7af683ca56ed0040ed1de25a87ebffa715461cceb24ed728f8c",
+"identical": true,
+"seconds_python": 6.7
+},
+{
+"d": 3,
+"N": 20,
+"q": "4/5",
+"reduced": 1,
+"bytes": 114343,
+"sha256": "932039b0d4e9b4c7ff97b1ffc8aac2f2e81e77decb3be15a2ecee48b9116a607",
+"identical": true,
+"seconds_python": 4.4
+},
+{
+"d": 3,
+"N": 12,
+"q": "4/5",
+"reduced": 0,
+"bytes": 76403,
+"sha256": "b9e6cb8b385543dcf55725b80bf8bd193ebf398be1d5db4293a039baa3bf30f3",
+"identical": true,
+"seconds_python": 1.7
+},
+{
+"d": 2,
+"N": 50,
+"q": "1/2",
+"reduced": 1,
+"bytes": 318317,
+"sha256": "df4236d7f9b0b4631c26a20f5da0f529d8478a8f2a7559b4be16cfc73df20ad3",
+"identical": true,
+"seconds_python": 13.7
+},
+{
+"d": 3,
+"N": 16,
+"q": "1/2",
+"reduced": 1,
+"bytes": 89855,
+"sha256": "531e347c1e7cffcec75fc861e884b5df2657fbbfe2bac2f768814f22cf260009",
+"identical": true,
+"seconds_python": 2.3
+},
+{
+"d": 1,
+"N": 200,
+"q": "1/1",
+"reduced": 1,
+"bytes": 2463435,
+"sha256": "f8a34371da352f1f3726396bd48d4a12046608570d2c459aa67bfcfc9d21843d",
+"identical": true,
+"seconds_python": 11.8
+},
+{
+"d": 2,
+"N": 38,
+"q": "1/1",
+"reduced": 1,
+"bytes": 102074,
+"sha256": "180b2ac42467e9b9c2db206e0861c8303a13c2ba35c6739376cd7e585caf44ff",
+"identical": true,
+"seconds_python": 2.1
+},
+{
+"d": 3,
+"N": 16,
+"q": "1/1",
+"reduced": 1,
+"bytes": 58043,
+"sha256": "7db4129df70f49bd4d82525167ef5c14bc94147ccb33c8e164e2cd46777d5a6f",
+"identical": true,
+"seconds_python": 1.1
+}
+]
+}

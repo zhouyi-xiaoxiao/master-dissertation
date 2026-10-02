@@ -1,0 +1,394 @@
+{
+ "Z1 closed forms of Proposition 7.3 (exact)": {
+  "ok": true,
+  "cases": 70,
+  "violations": 0
+ },
+ "Z2 dip f(M)>f(M+1)<f(M+2) above the elementary threshold (exact, M<=30)": {
+  "ok": true,
+  "cases": 1200,
+  "violations": 0
+ },
+ "Z3 hand computations (N=4 end-to-end and N=3 centre->corner at q=4/5)": {
+  "ok": true
+ },
+ "Z4 end-to-end brackets and bound on long exact windows (own integer code)": {
+  "ok": true,
+  "brackets": {
+   "5": [
+    835384,
+    835385,
+    true
+   ],
+   "6": [
+    871885,
+    871886,
+    true
+   ],
+   "7": [
+    882823,
+    882824,
+    true
+   ],
+   "8": [
+    898653,
+    898654,
+    true
+   ],
+   "9": [
+    917913,
+    917914,
+    true
+   ],
+   "10": [
+    920871,
+    920872,
+    true
+   ],
+   "11": [
+    937309,
+    937310,
+    true
+   ],
+   "12": [
+    940937,
+    940938,
+    true
+   ],
+   "13": [
+    952643,
+    952644,
+    true
+   ],
+   "14": [
+    956690,
+    956691,
+    true
+   ],
+   "15": [
+    960857,
+    960858,
+    true
+   ],
+   "16": [
+    962997,
+    962998,
+    true
+   ],
+   "17": [
+    965456,
+    965457,
+    true
+   ],
+   "18": [
+    969511,
+    969512,
+    true
+   ],
+   "19": [
+    969312,
+    969313,
+    true
+   ],
+   "21": [
+    974226,
+    974227,
+    true
+   ]
+  }
+ },
+ "Z4b centre->corner brackets and elementary bound on long exact windows": {
+  "ok": true,
+  "brackets": {
+   "3": [
+    800000,
+    800001,
+    true
+   ],
+   "5": [
+    773459,
+    773460,
+    true
+   ],
+   "7": [
+    666666,
+    666667,
+    true
+   ],
+   "9": [
+    750000,
+    750001,
+    true
+   ],
+   "11": [
+    783458,
+    783459,
+    true
+   ],
+   "13": [
+    830332,
+    830333,
+    true
+   ],
+   "15": [
+    854370,
+    854371,
+    true
+   ],
+   "17": [
+    875000,
+    875001,
+    true
+   ],
+   "19": [
+    885540,
+    885541,
+    true
+   ],
+   "21": [
+    900000,
+    900001,
+    true
+   ],
+   "23": [
+    909090,
+    909091,
+    true
+   ]
+  }
+ },
+ "Z5 exact witnesses: N=21 end-to-end at 38/39; N=5,7,9,11 centre->corner at 4/5": {
+  "ok": true,
+  "rel_dip": 3.5278739577947782e-06,
+  "rel_rise": 2.5350011891115418e-05,
+  "tie_first": true
+ },
+ "Z6 q*(5) = (4+sqrt2)/7 for centre->corner (80 digits + symbolic tie + Z[sqrt2] record)": {
+  "ok": true,
+  "f3_minus_f4": "-1.3178e-82"
+ },
+ "Z7 both certificate engines vs definition-level long windows (60 random cases)": {
+  "ok": true,
+  "cases": 60,
+  "violations": 0
+ },
+ "Z8 audit of records (end-to-end bound, both engines; centre->corner bound)": {
+  "ok": true,
+  "e2e_range": [
+   4,
+   300
+  ],
+  "e2e_not_unimodal": [
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   21
+  ],
+  "python_engine_overlap": [
+   4,
+   200
+  ],
+  "engines_agree": true,
+  "cone_at_mode_minus_1": true,
+  "m2c_range": [
+   7,
+   301
+  ],
+  "m2c_not_unimodal": [
+   11,
+   13,
+   15,
+   19
+  ],
+  "max_bits": 276116,
+  "max_steps": 29945
+ },
+ "Z9 Theorem 4.1(d): f(1)=0<f(D)=G(2d)^-D (exact), total mass sum C_j = 0, some C_j<0 (float)": {
+  "ok": true,
+  "cases": 30,
+  "violations": 0,
+  "largest_min_residue": -0.025046284324472964
+ },
+ "Z10 Lemma 3.1: every component has a wall site and P'^(2(n'-1)) > 0 entrywise": {
+  "ok": true,
+  "components": 79,
+  "violations": 0
+ },
+ "Z11 Corollary 2.6(4): number of local maxima = ceil((S+1)/2)": {
+  "ok": true,
+  "violations": 0
+ },
+ "Z12 Remark 7.5(1): shape of the failure at the bound for the exceptional N (exact windows)": {
+  "ok": true,
+  "cases": {
+   "5": {
+    "dips": 1,
+    "dip_times": [
+     7
+    ],
+    "last_increase": 8,
+    "global_mode": 6,
+    "shape_ok": true
+   },
+   "6": {
+    "dips": 2,
+    "dip_times": [
+     8,
+     10
+    ],
+    "last_increase": 11,
+    "global_mode": 11,
+    "shape_ok": true
+   },
+   "7": {
+    "dips": 3,
+    "dip_times": [
+     11,
+     13,
+     15
+    ],
+    "last_increase": 16,
+    "global_mode": 14,
+    "shape_ok": true
+   },
+   "8": {
+    "dips": 3,
+    "dip_times": [
+     16,
+     18,
+     20
+    ],
+    "last_increase": 21,
+    "global_mode": 19,
+    "shape_ok": true
+   },
+   "9": {
+    "dips": 2,
+    "dip_times": [
+     23,
+     25
+    ],
+    "last_increase": 26,
+    "global_mode": 24,
+    "shape_ok": true
+   },
+   "10": {
+    "dips": 3,
+    "dip_times": [
+     28,
+     30,
+     32
+    ],
+    "last_increase": 33,
+    "global_mode": 31,
+    "shape_ok": true
+   },
+   "11": {
+    "dips": 2,
+    "dip_times": [
+     37,
+     39
+    ],
+    "last_increase": 40,
+    "global_mode": 38,
+    "shape_ok": true
+   },
+   "12": {
+    "dips": 2,
+    "dip_times": [
+     44,
+     46
+    ],
+    "last_increase": 47,
+    "global_mode": 45,
+    "shape_ok": true
+   },
+   "13": {
+    "dips": 2,
+    "dip_times": [
+     53,
+     55
+    ],
+    "last_increase": 56,
+    "global_mode": 54,
+    "shape_ok": true
+   },
+   "14": {
+    "dips": 1,
+    "dip_times": [
+     62
+    ],
+    "last_increase": 63,
+    "global_mode": 63,
+    "shape_ok": true
+   },
+   "15": {
+    "dips": 2,
+    "dip_times": [
+     71,
+     73
+    ],
+    "last_increase": 74,
+    "global_mode": 72,
+    "shape_ok": true
+   },
+   "16": {
+    "dips": 1,
+    "dip_times": [
+     82
+    ],
+    "last_increase": 83,
+    "global_mode": 83,
+    "shape_ok": true
+   },
+   "17": {
+    "dips": 1,
+    "dip_times": [
+     93
+    ],
+    "last_increase": 94,
+    "global_mode": 94,
+    "shape_ok": true
+   },
+   "18": {
+    "dips": 1,
+    "dip_times": [
+     104
+    ],
+    "last_increase": 105,
+    "global_mode": 105,
+    "shape_ok": true
+   },
+   "19": {
+    "dips": 1,
+    "dip_times": [
+     117
+    ],
+    "last_increase": 118,
+    "global_mode": 116,
+    "shape_ok": true
+   },
+   "21": {
+    "dips": 1,
+    "dip_times": [
+     143
+    ],
+    "last_increase": 144,
+    "global_mode": 144,
+    "shape_ok": true
+   }
+  }
+ }
+}

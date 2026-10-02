@@ -1,0 +1,25 @@
+{
+ "generated_by": "code/article/s3_methods_log1p_demo.py",
+ "rows": [
+  {
+   "N": 100000,
+   "q": 0.8,
+   "mode_log1p": 4166011658,
+   "mode_log_of_rounded_difference": 4166012011,
+   "displacement_steps": 353,
+   "mode_log1p_is_argmax_50_digits": true,
+   "log_of_rounded_difference_is_argmax_50_digits": false,
+   "mu1": 9.869703097670657e-11
+  },
+  {
+   "N": 1000000,
+   "q": 0.8,
+   "mode_log1p": 416604915263,
+   "mode_log_of_rounded_difference": 416605300966,
+   "displacement_steps": 385703,
+   "mode_log1p_is_argmax_50_digits": true,
+   "log_of_rounded_difference_is_argmax_50_digits": false,
+   "mu1": 9.869614270699133e-13
+  }
+ ]
+}

@@ -1,0 +1,104 @@
+% s3_methods.tex -- Exact computation of first-passage distributions (main text; details in Supplementary Section S2).
+% Computations of this section:
+%   code/article/s3_methods_validation.py  -> data/article/s3_methods_validation.json
+%   code/article/s3_methods_certificate.py -> data/article/s3_methods_certificate.jsonl, .json
+%        (certificate of the global mode for every run of route A)
+%   code/article/s3_methods_certificate_roundoff.py -> data/article/s3_methods_certificate_roundoff.json
+%        (a-priori round-off bound for the runs not certified in exact arithmetic)
+\section{Exact computation of first-passage distributions}\label{s3_methods:sec}
+
+Every mode reported in this article is the maximiser of a computed first-passage distribution; no smoothing,
+acceptance window or fitted parameter enters. For time stepping and for the closed form of the chain (routes A and B
+below) ``exact'' means exact up to double-precision round-off; for Laplace inversion (route C) it means numerically
+exact to a measured accuracy: the position of the mode is reproduced by a separately written route to $1.1\times10^{-10}$
+or better.
+% src: data/msc_modes_verify/analysis.json (summary_d2, summary_d3: max_rel_diff_mode_vs_talbot)
+The implementation, the checks of Table~\ref{s3_methods:tab-validation}, a Monte Carlo simulation of the walker rule
+and a demonstration of the pitfalls of inverting a generating function numerically are in Supplementary
+Section~\ref{sup_methods:sec}.
+
+\subsection{Four routes}\label{s3_methods:ssec-routes}
+
+\emph{Route A (time stepping).} The vector $\rho_t(\vx)=\Prob_{\vo}(X_t=\vx,\ \FPT>t)$ obeys $\rho_{t+1}=\Qm\rho_t$, a
+nearest-neighbour stencil of cost $\Order(N^{\dd})$ per step, and $\pmf(t+1)=\sum_{\vx}\rho_t(\vx)\Pm(\vx,\va)$. The data
+set consists of 193 runs: the chain up to $N=1000$, \CC{} in two dimensions up to $N=401$ and in three dimensions up to
+$N=100$ ($10^{6}$ sites), the geometries \CtM, \MtC{} and \EXIT, and activities $q\in\{0.3,0.5,0.8,0.9,1\}$.
+% src: data/msc_modes/discrete_modes.jsonl; data/article/s3_methods_validation.json (stored_runs_summary.discrete_runs)
+\emph{Route B (one dimension).} For the chain the PMF has the closed form \eqref{s5_modes:eq-1d-pmf}; for large $N$
+the integer maximiser is located from the sign of $\pmf(t+1)-\pmf(t)$, with the logarithm of each eigenvalue
+formed as $\mathrm{log1p}(-q\nu_m)$.
+\emph{Route C (Laplace space).} We evaluate the renewal ratio \eqref{s2_model:eq-renewal} at unit rate, with one of
+the $\dd$ spectral sums of $\Phat$ carried out in closed form (Lemma~\ref{s3_methods:lem-resolvent}), and invert it
+with the fixed-Talbot rule \citep{Talbot1979,AbateValko2004,Weideman2006}; the mode $\tmodec$ is the root of $\gd'$,
+bracketed to a relative width below $10^{-11}$. Against the exact density, written as the Erlang mixture of the PMF at
+$q=1$, the median relative error of the inversion is $1.4\times10^{-13}$ and the largest $5.4\times10^{-11}$. This
+route reaches $N=16\,777\,216$ for $\dd=2$ and $N=4096$ for $\dd=3$.
+% src: data/msc_modes/validation.json (talbot_vs_erlang_mixture); data/msc_modes/laplace_modes.jsonl
+\emph{Route P (pole expansion).} A second implementation, written separately and sharing with route C only the
+spectral form of the propagator, finds the poles $-\nu_j$ of $\Fhat$ as the zeros of $\Phat(\va,s\mid\va)$, one between
+consecutive reflecting rates (Proposition~\ref{s2_model:prop-interlacing}), and maximises the finite sum
+\eqref{s2_model:eq-spectral} directly. For corner-to-corner transport the continuous-time modes of routes C and P agree
+to $7\times10^{-13}$ at all 40 sizes compared for $\dd=2$ and to $1.1\times10^{-10}$ at all 24 sizes for $\dd=3$; the
+weaker agreement in three dimensions reflects how flat the density is near its maximum. A second time-stepping code
+reproduces every integer mode in the 148 cases it was run on.
+% src: data/msc_modes_verify/analysis.json (summary_d2, summary_d3: max_rel_diff_mode_vs_talbot, n_compared; discrete_compare)
+
+Routes A and B work in discrete time at activity $q$, routes C and P in continuous time at unit rate. In the 54
+cases computed by both at $q=0.8$, $\tmode=\tmodec/q+c$ with $-3.05\le c\le-0.22$ steps; the relative difference is
+below $10^{-4}$ for all $N\ge100$. At $q=1$ parity is visible (the PMF of the chain lies on two branches); the
+discrete-time results below are for $q=0.8$, where it is not, unless another activity is stated.
+% src: data/msc_modes/fit_results.json (discrete_vs_continuous_offsets, max_abs_offset_steps); data/article/s3_methods_validation.json (stored_runs_summary.discrete_vs_continuous_offset_q0.8)
+
+\subsection{Certificate of the global mode}\label{s3_methods:ssec-unimodal}
+
+Definition~\ref{s2_model:def-mode} asks for the maximiser of $\pmf$ over all $t\ge1$, whereas a computation covers a
+finite range. The gap is closed by a bound that uses only the symmetry of $\Qm$; it therefore holds on the clean
+lattice, for extended targets, and on the lattices with blocked sites of Section~\ref{s7_defects:sec}.
+
+\begin{proposition}[Certificate of the global mode]\label{s3_methods:prop-certificate}
+Let $\Pm$ be a symmetric stochastic matrix, $\Qm$ the matrix obtained by deleting the rows and columns of the
+target states, $r=(I-\Qm)\one$ and $\pmf(t)=\ve_{\vo}^{\T}\Qm^{t-1}r$. Let $\lambda_k$ and $v_k$ be the eigenvalues
+and orthonormal eigenvectors of $\Qm$ and $w_k=v_k(\vo)\,(v_k^{\T}r)$, so that $\pmf(t)=\sum_k w_k\lambda_k^{\,t-1}$,
+and put $\Env(t)=\sum_k|w_k|\,|\lambda_k|^{\,t-1}$. Then:
+\begin{enumerate}
+\item[(a)] $\Env$ is non-increasing and $\pmf(t')\le\Env(t)$ for all $t'\ge t\ge1$;
+\item[(b)] for all integers $j,l\ge0$ and all $t'\ge j+l+1$,
+$\pmf(t')\le\|\Qm^{j}\ve_{\vo}\|\,\|\Qm^{l}r\|$ (Euclidean norms);
+\item[(c)] if $\tcert\ge2$ and $\Env(\tcert)$, or the bound of \textup{(b)} for some
+$j+l+1=\tcert$, is smaller than $\max_{1\le t<\tcert}\pmf(t)$, then the mode of
+Definition~\ref{s2_model:def-mode} is the smallest maximiser of $\pmf$ on $\{1,\dots,\tcert-1\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$\Qm$ is symmetric with non-negative entries and row sums at most one, so $\|\Qm\|_2\le1$ and $|\lambda_k|\le1$.
+(a) For $t'\ge t$, $|\lambda_k|^{t'-1}\le|\lambda_k|^{t-1}$. (b) Write $t'-1=j'+l'$ with $j'\ge j$ and $l'\ge l$; by
+\eqref{s2_model:eq-pmf}, the symmetry of $\Qm$ and the Cauchy--Schwarz inequality,
+$\pmf(t')=(\Qm^{j'}\ve_{\vo})^{\T}(\Qm^{l'}r)\le\|\Qm^{j}\ve_{\vo}\|\,\|\Qm^{l}r\|$. (c) By (a) or (b),
+$\pmf(t')<\max_{1\le t<\tcert}\pmf(t)$ for every $t'\ge\tcert$.
+\end{proof}
+
+We applied bound (b) with $j=l=k$ to every run of route~A, with a third time-stepping code that advances
+$u_k=\Qm^{k}\ve_{\vo}$ and $v_k=\Qm^{k}r$ alternately and stops at the first $k$ with
+$\|u_k\|\,\|v_k\|<(1-10^{-6})\max_{t\le2k}\pmf(t)$. All 193 runs are certified, and every mode equals the one found
+by route~A; for corner-to-corner transport at $q=0.8$ and $N\ge20$ the certificate is reached at $\tcert/\tmode$
+between $1.40$ and $1.53$ for the chain, $1.25$ and $1.32$ for $\dd=2$, and $1.15$ and $1.19$ for $\dd=3$.
+% src: data/article/s3_methods_certificate.json (all_runs: n_certified, n_mode_equals_stored; CC_q0.8_d1, CC_q0.8_d2, CC_q0.8_d3); data/article/s3_methods_certificate.jsonl (t_cert_over_mode for N >= 20)
+Below $\tcert$ the maximiser is found by comparing computed values. For the 97 corner-to-corner runs at $q\in\{0.5,0.8,1\}$ the
+sizes lie in the ranges in which the companion note R5 certifies the mode in exact arithmetic
+(Theorems~\ref{s6b_rigorous:thm-finite} and~\ref{s6b_rigorous:thm-certified}; for the chain at $q=1$,
+\Sref{R5}{Thms 13, 40}), and all 97 modes agree with the certified ones. For the other 96 runs we use an a-priori bound
+of the round-off of the stepping: all its operations act on non-negative numbers, so every computed value of $\pmf(t)$
+lies within the factors $(1\pm\delta)^{t}$ of the exact value (with a further factor $(1\pm u)^{m-1}$, $u=2^{-53}$, for
+$m$ target sites), where $\delta\le1.0\times10^{-15}$ per step, and in each of
+these runs every other computed value, inflated by this factor, stays below the deflated maximum (the smallest relative
+gap between the maximum and any other value is $6.59\times10^{-11}$; Supplementary
+Section~\ref{sup_methods:ssec-certificate}). Every discrete-time mode of Sections~\ref{s3_methods:sec}--\ref{s6b_rigorous:sec}
+(the 193 runs of route~A on the lattice without defects) --- in particular all 81 corner-to-corner modes behind
+Table~\ref{s5_modes:tab-modes} --- is therefore the global maximiser of its PMF. The modes of the lattices with blocked
+sites of Section~\ref{s7_defects:sec} are certified by the same proposition, but in double precision and without this
+a-priori bound on round-off.
+% src: data/article/s6b_rigorous_checks.json (certified_modes: n_compared, n_agree); data/article/s3_methods_certificate_roundoff.json (n_runs_checked_here, n_certified_against_roundoff, max_delta_per_step, min_rel_gap_checked)
+That the PMF has a single local maximum is not assumed; for the placements studied it is proved in
+Section~\ref{s6b_rigorous:ssec-unimodal}, so that the single sign change of $\gd'$ found by route C at sizes beyond
+time stepping is the global maximiser as well.

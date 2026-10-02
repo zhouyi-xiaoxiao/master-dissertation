@@ -1,0 +1,542 @@
+{
+ "n": 74,
+ "n_fail": 0,
+ "items": [
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.8830352\\ldots",
+   "matches": [
+    "19:c_tau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.3508943\\ldots",
+   "matches": [
+    "19:c_mtau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.5321408\\ldots",
+   "matches": [
+    "19:C_2^(0)",
+    "Gamma(1/4)^8/(576 pi^4)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "4.320460169373\\ldots",
+   "matches": [
+    "06:C_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.7573985\\ldots",
+   "matches": [
+    "16:c0_tau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.2989172\\ldots",
+   "matches": [
+    "16:c0_mtau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.4584812\\ldots",
+   "matches": [
+    "16:C_3''"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.3285\\ldots",
+   "matches": [
+    "mu_-(3) lower bound (pi^2/6)(1-1/9)(1-pi^2/108)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "6.0268120\\ldots",
+   "matches": [
+    "06:Z_2_closed",
+    "14:Z_2",
+    "14:Z_2_closed"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "6.02681203969194012\\ldots",
+   "matches": [
+    "06:Z_2_closed",
+    "14:Z_2",
+    "14:Z_2_closed"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "16.5323159597616696\\ldots",
+   "matches": [
+    "14:Z_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "3.22591076832683889\\ldots",
+   "matches": [
+    "14:Z_2'"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "14.7022972380072310\\ldots",
+   "matches": [
+    "14:Z_3'"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.727904612791689\\ldots",
+   "matches": [
+    "06:c_tau_2D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.882542400610606\\ldots",
+   "matches": [
+    "06:c_m_minus_tau_2D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.154637787818917\\ldots",
+   "matches": [
+    "06:c_m_2D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.1398576\\ldots",
+   "matches": [
+    "06:S1"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0642886\\ldots",
+   "matches": [
+    "06:S2"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.7395811\\ldots",
+   "matches": [
+    "06:S3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.5105105\\ldots",
+   "matches": [
+    "06:S4"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.851279\\ldots",
+   "matches": [
+    "R_tau(2) = 5 - (32/pi) ln 2 - 4 c_tau"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.883035\\ldots",
+   "matches": [
+    "19:c_tau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.530169\\ldots",
+   "matches": [
+    "R_mtau(2) = 3 - 16 ln 2/pi"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.350894\\ldots",
+   "matches": [
+    "19:c_mtau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0037558\\ldots",
+   "matches": [
+    "19:S_5"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0075537\\ldots",
+   "matches": [
+    "19:S_6"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0795774\\ldots",
+   "matches": [
+    "19:S_7"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0733219\\ldots",
+   "matches": [
+    "19:S_8"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.8830352\\ldots",
+   "matches": [
+    "19:c_tau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.3508943\\ldots",
+   "matches": [
+    "19:c_mtau^(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.5321408\\ldots",
+   "matches": [
+    "19:C_2^(0)",
+    "Gamma(1/4)^8/(576 pi^4)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.5321408832\\ldots",
+   "matches": [
+    "19:C_2^(0)",
+    "Gamma(1/4)^8/(576 pi^4)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.014720007338\\ldots",
+   "matches": [
+    "06:E_inf"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-5.418839026578\\ldots",
+   "matches": [
+    "06:c_tau_3D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.531584884077\\ldots",
+   "matches": [
+    "06:c_m_minus_tau_3D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.0695430676\\ldots",
+   "matches": [
+    "16:delta_inf"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.2336942394\\ldots",
+   "matches": [
+    "16:alpha_inf"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.7573985\\ldots",
+   "matches": [
+    "16:c0_tau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.2989172\\ldots",
+   "matches": [
+    "16:c0_mtau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-3.887254142500\\ldots",
+   "matches": [
+    "06:c_m_3D",
+    "C_3' = c_tau3 + c_mtau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.4584812\\ldots",
+   "matches": [
+    "16:C_3''"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.5163860591\\ldots",
+   "matches": [
+    "06:u0_Watson"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-1.965419\\ldots",
+   "matches": [
+    "09:g1(0)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "2.206121\\ldots",
+   "matches": [
+    "09:g1(1)=g3(1)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "4.2446532915\\ldots",
+   "matches": [
+    "09:K(1)",
+    "16:K(1) closed form"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.62099\\ldots",
+   "matches": [
+    "09:kappa_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.197812\\ldots",
+   "matches": [
+    "09:B_D"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.029091\\ldots",
+   "matches": [
+    "09:B_e"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-6.4014175\\ldots",
+   "matches": [
+    "09:A_0"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "4.32046016937353\\ldots",
+   "matches": [
+    "06:C_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-0.9827\\ldots",
+   "matches": [
+    "6 ln 2 - 2 - pi"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "1.1030\\ldots",
+   "matches": [
+    "K(1) - pi"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "24.2486\\ldots",
+   "matches": [
+    "16:G(0+)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-3.5877\\ldots",
+   "matches": [
+    "16:G(1)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "6.9590\\ldots",
+   "matches": [
+    "16:(G(0+)-G(1))/4"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.28696\\ldots",
+   "matches": [
+    "16:3 zeta(3)/(4 pi)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-1.7960326\\ldots",
+   "matches": [
+    "(pi^2/4) c_tau"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "7.1068721\\ldots",
+   "matches": [
+    "16:pi^2 C_3/6",
+    "(pi^2/6) C_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-8.9136329\\ldots",
+   "matches": [
+    "16:pi^2 c_tau3/6",
+    "(pi^2/6) c_tau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "2.5193561\\ldots",
+   "matches": [
+    "16:pi^2 c_mtau3/6",
+    "(pi^2/6) c_mtau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "4.10\\ldots",
+   "matches": [
+    "X_-(d=2,N=3)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "8.38\\ldots",
+   "matches": [
+    "X_-(d=3,N=3)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.984\\ldots",
+   "matches": [
+    "X_-(d=2,N=2)"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "2.17758\\ldots",
+   "matches": [
+    "pi ln 2"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "2.51935\\ldots",
+   "matches": [
+    "16:pi^2 c_mtau3/6",
+    "(pi^2/6) c_mtau3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "6.02681\\ldots",
+   "matches": [
+    "06:Z_2_upper",
+    "06:Z_2_closed",
+    "14:Z_2",
+    "14:Z_2_closed"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "16.53231\\ldots",
+   "matches": [
+    "14:Z_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "3.22591\\ldots",
+   "matches": [
+    "14:Z_2'"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "14.70229\\ldots",
+   "matches": [
+    "14:Z_3'"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "-1.7960326424\\ldots",
+   "matches": [
+    "(pi^2/4) c_tau"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "2.788\\ldots\\cdot10^{-5}",
+   "matches": [
+    "7.1069 - (pi^2/6) C_3"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "3.7841\\ldots",
+   "matches": [
+    "c_* = 1 + pi^{3/2}/2"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "6.0268120396919401\\ldots",
+   "matches": [
+    "06:Z_2_closed",
+    "14:Z_2",
+    "14:Z_2_closed"
+   ]
+  },
+  {
+   "file": "R2_spectral_structure.tex",
+   "printed": "0.8830352\\ldots",
+   "matches": [
+    "19:c_tau^(0)"
+   ]
+  }
+ ]
+}

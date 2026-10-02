@@ -1,0 +1,52 @@
+{
+ "provenance": "computed by code/article/checks_1d_exact_formula.py from data/msc_rigorous_1d/03_constants.json and the certified exact modes data/msc_rigorous_certified/c128_d1_q4-5.jsonl, c128_d1_q1-2.jsonl",
+ "rule": "t* = ceil(tau) when dist(tau, Z) >= E; L = N - 1/2, tau = (c L^2 - kappa)/q + 1 - rho, E = K/(q L^2), K = 1.78 for N <= 40 and 1.68 for N >= 41",
+ "q=4/5": {
+  "certificate_file": "c128_d1_q4-5.jsonl",
+  "N_range": [
+   2,
+   2000
+  ],
+  "n_records": 1500,
+  "n_cases_N_ge_3": 1499,
+  "n_hypothesis_holds": 1495,
+  "n_formula_equals_certified_mode": 1495,
+  "N_with_tau_within_E_of_an_integer": [
+   4,
+   9,
+   12,
+   13
+  ],
+  "sub_range": "N <= 600 and N = 800, 1000",
+  "n_cases_sub_range": 600,
+  "n_hypothesis_holds_sub_range": 596,
+  "min_abs_dist_minus_E": "0.000203221"
+ },
+ "q=1/2": {
+  "certificate_file": "c128_d1_q1-2.jsonl",
+  "N_range": [
+   2,
+   1000
+  ],
+  "n_records": 999,
+  "n_cases_N_ge_3": 998,
+  "n_hypothesis_holds": 989,
+  "n_formula_equals_certified_mode": 989,
+  "N_with_tau_within_E_of_an_integer": [
+   3,
+   4,
+   6,
+   7,
+   9,
+   10,
+   12,
+   13,
+   59
+  ],
+  "sub_range": "N <= 300",
+  "n_cases_sub_range": 298,
+  "n_hypothesis_holds_sub_range": 289,
+  "min_abs_dist_minus_E": "0.000552851"
+ },
+ "all_agree": true
+}

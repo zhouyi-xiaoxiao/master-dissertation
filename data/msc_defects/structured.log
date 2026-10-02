@@ -1,0 +1,48 @@
+clean                            M=   0 n=1225 MFPT=   14100.8 mode=   2493 ratio=0.1768 CV=0.9183 med/MFPT=0.719 tau_rel=621 chem=68
+wall_mid_gap_centre_g1           M=  34 n=1191 MFPT=   24822.5 mode=   7826 ratio=0.3153 CV=0.8553 med/MFPT=0.752 tau_rel=5898 chem=68
+wall_mid_gap_centre_g3           M=  32 n=1193 MFPT=   19366.8 mode=   5711 ratio=0.2949 CV=0.8656 med/MFPT=0.745 tau_rel=3179 chem=68
+wall_mid_gap_centre_g9           M=  26 n=1199 MFPT=   16363.7 mode=   3996 ratio=0.2442 CV=0.8908 med/MFPT=0.732 tau_rel=1690 chem=68
+wall_mid_gap_startedge_g3        M=  32 n=1193 MFPT=   24599.2 mode=   6166 ratio=0.2507 CV=0.8886 med/MFPT=0.736 tau_rel=5421 chem=68
+wall_mid_gap_targetedge_g3       M=  32 n=1193 MFPT=   21117.2 mode=   6921 ratio=0.3277 CV=0.8393 med/MFPT=0.762 tau_rel=5421 chem=68
+wall_nearstart_gap_centre_g3     M=  32 n=1193 MFPT=   15306.9 mode=   4665 ratio=0.3048 CV=0.8504 med/MFPT=0.749 tau_rel=1760 chem=68
+wall_neartarget_gap_centre_g3    M=  32 n=1193 MFPT=   32212.4 mode=   4341 ratio=0.1348 CV=0.9485 med/MFPT=0.710 tau_rel=1760 chem=68
+serpentine_k1_g3                 M=  32 n=1193 MFPT=   21343.1 mode=   6750 ratio=0.3163 CV=0.8471 med/MFPT=0.758 tau_rel=5407 chem=68
+serpentine_k2_g3                 M=  64 n=1161 MFPT=   43869.9 mode=  14302 ratio=0.3260 CV=0.8257 med/MFPT=0.755 tau_rel=8978 chem=128
+serpentine_k3_g3                 M=  96 n=1129 MFPT=   49880.9 mode=  16886 ratio=0.3385 CV=0.8199 med/MFPT=0.757 tau_rel=13450 chem=128
+serpentine_k4_g3                 M= 128 n=1097 MFPT=   93318.3 mode=  30424 ratio=0.3260 CV=0.8225 med/MFPT=0.755 tau_rel=18539 chem=188
+serpentine_k6_g3                 M= 192 n=1033 MFPT=  165747.9 mode=  54165 ratio=0.3268 CV=0.8220 med/MFPT=0.756 tau_rel=33168 chem=248
+target_box_R3_g1                 M=   6 n=1219 MFPT=   30307.9 mode=   3029 ratio=0.0999 CV=0.9597 med/MFPT=0.706 tau_rel=624 chem=68
+start_box_R3_g1                  M=   6 n=1219 MFPT=   14125.0 mode=   2610 ratio=0.1848 CV=0.9114 med/MFPT=0.722 tau_rel=624 chem=68
+target_box_R5_g1                 M=  10 n=1215 MFPT=   32882.3 mode=   3040 ratio=0.0925 CV=0.9627 med/MFPT=0.705 tau_rel=701 chem=68
+start_box_R5_g1                  M=  10 n=1215 MFPT=   14354.9 mode=   3112 ratio=0.2168 CV=0.8946 med/MFPT=0.728 tau_rel=701 chem=68
+target_box_R8_g1                 M=  16 n=1209 MFPT=   35239.3 mode=   3188 ratio=0.0905 CV=0.9623 med/MFPT=0.705 tau_rel=1461 chem=68
+start_box_R8_g1                  M=  16 n=1209 MFPT=   15101.7 mode=   4444 ratio=0.2943 CV=0.8548 med/MFPT=0.745 tau_rel=1461 chem=68
+target_box_R5_g3                 M=   8 n=1217 MFPT=   22256.5 mode=   2782 ratio=0.1250 CV=0.9463 med/MFPT=0.710 tau_rel=650 chem=68
+start_box_R5_g3                  M=   8 n=1217 MFPT=   14166.5 mode=   2740 ratio=0.1934 CV=0.9074 med/MFPT=0.723 tau_rel=650 chem=68
+both_box_R5_g1                   M=  20 n=1205 MFPT=   33014.3 mode=   3799 ratio=0.1151 CV=0.9507 med/MFPT=0.709 tau_rel=747 chem=68
+block6_near_target               M=  36 n=1189 MFPT=   17302.6 mode=   2536 ratio=0.1466 CV=0.9342 med/MFPT=0.714 tau_rel=648 chem=68
+block6_centre                    M=  36 n=1189 MFPT=   13951.0 mode=   2674 ratio=0.1917 CV=0.9104 med/MFPT=0.722 tau_rel=705 chem=68
+block6_near_start                M=  36 n=1189 MFPT=   13689.9 mode=   2498 ratio=0.1825 CV=0.9132 med/MFPT=0.721 tau_rel=648 chem=68
+block12_centre                   M= 144 n=1081 MFPT=   13458.9 mode=   3074 ratio=0.2284 CV=0.8896 med/MFPT=0.730 tau_rel=929 chem=68
+periodic_a4                      M=  81 n=1144 MFPT=   16422.8 mode=   2863 ratio=0.1743 CV=0.9197 med/MFPT=0.719 tau_rel=707 chem=68
+periodic_a3                      M= 121 n=1104 MFPT=   15272.7 mode=   2945 ratio=0.1928 CV=0.9089 med/MFPT=0.723 tau_rel=771 chem=68
+periodic_a2                      M= 289 n= 936 MFPT=   17588.7 mode=   3494 ratio=0.1987 CV=0.9054 med/MFPT=0.724 tau_rel=932 chem=68
+                        mfpt      mode     ratio  ratio_sem       acc
+kind        M                                                        
+anywhere    10  14321.833935  2537.320  0.177378   0.000335  1.000000
+            20  14566.070431  2581.695  0.177761   0.000527  1.000000
+            30  14863.063023  2632.545  0.177821   0.000604  0.995025
+            40  15309.312123  2692.525  0.177100   0.000802  1.000000
+centre      10  14102.508674  2567.460  0.182057   0.000047  1.000000
+            20  14126.059318  2653.745  0.187860   0.000095  1.000000
+            30  14167.931803  2754.365  0.194403   0.000144  1.000000
+            40  14221.830814  2866.180  0.201522   0.000212  1.000000
+near_start  10  14006.820843  2522.145  0.180065   0.000076  0.970874
+            20  13950.024739  2614.420  0.187399   0.000321  0.925926
+            30  13985.307082  2881.250  0.205757   0.001387  0.851064
+            40  14086.092379  3289.535  0.232934   0.002012  0.680272
+near_target 10  17467.948252  2631.595  0.153030   0.001019  1.000000
+            20  23390.048909  2826.360  0.124925   0.001227  0.947867
+            30  32161.676069  3066.930  0.099433   0.001154  0.896861
+            40  47474.563423  3381.910  0.075225   0.001094  0.711744
+done in 337s

@@ -1,0 +1,221 @@
+% s5_modes.tex -- Section 5: exact modes and their dependence on dimension (main text; details in Supplementary
+% Section S6).  Paths in "% src:" comments are relative to the root of the repository (see README.md).
+% Numbers are quoted from the research result files; the derived quantities (table rows, ratios, counts,
+% re-checks) are collected by  code/article/s5_modes_tables.py -> data/article/s5_modes_tables.json.
+% Figures: code/article/s5_modes_figures.py -> figures/s5_modes_{mode_mean,ratio,exponents}.pdf.
+\section{Exact modes and their dependence on dimension}\label{s5_modes:sec}
+
+This section reports the exact modes $\tmode$ for corner-to-corner transport (end to end for $\dd=1$) and compares
+their growth with $N$ with that of the means. Discrete-time values are for $q=0.8$. In each of the 81 discrete-time
+runs used here (33, 31 and 17 sizes for $\dd=1,2,3$) the maximiser is unique and certified to be global
+(Proposition~\ref{s3_methods:prop-certificate}), and all 81 coincide with the modes certified in exact integer
+arithmetic in Theorem~\ref{s6b_rigorous:thm-certified}. Continuous-time values are for unit jump rate and enter only
+through $q\tmode$ and $\tmode/\MF$, which differ from their discrete-time counterparts by an offset of at most about
+three steps in $\tmode$.
+% src: data/article/s3_methods_certificate.json (CC_q0.8: n_certified, n_exact_ties, n_mode_equals_stored); data/msc_modes/discrete_modes.jsonl (ties_exact); data/article/s6b_rigorous_checks.json (certified_modes: by_case d1_q0.8, d2_q0.8, d3_q0.8); data/msc_modes/fit_results.json (max_abs_offset_steps = 3.05)
+Selected values are collected in Table~\ref{s5_modes:tab-modes}, and Fig.~\ref{s5_modes:fig-mode-mean} shows mean and
+mode against $N$; the full tables, the compensated plots, the local exponents and the mode-to-mean ratio are in
+Supplementary Section~\ref{sup_modes:sec}.
+
+\begin{table}[tbp]
+\centering
+\caption{Exact modes, corner to opposite corner. $\tmode$: smallest maximiser of the exact discrete-time PMF at
+$q=0.8$, in steps; unmarked rows are certified global maximisers (Proposition~\ref{s3_methods:prop-certificate}).
+Rows marked $\dagger$ are continuous-time modes at unit rate (Laplace inversion), for which $q\tmode$ stands for
+$\tmodec$. Rows marked $\ddagger$: local maximum of \eqref{s5_modes:eq-1d-pmf} nearest the continuum prediction,
+confirmed in 50-digit arithmetic; by Theorem~\ref{s6b_rigorous:thm-1d}(c) (computer-assisted) it is the global
+maximiser. Limit for $\dd=1$: $2\xi^{*}=0.3332843$ \eqref{s5_modes:eq-1d-ratio}. $q\tmode/N^{2}$ is given to four
+decimals and $\tmode/\MF$ to four significant digits (to seven decimals for $\dd=1$, to show the approach to the
+limit).}
+\label{s5_modes:tab-modes}
+\small
+\begin{tabular}{@{}rrrll@{}}
+\toprule
+$\dd$ & $N$ & $\tmode$ (steps) & $q\tmode/N^{2}$ & $\tmode/\MF$\\
+\midrule
+% src (all rows): data/article/s5_modes_tables.json (tab_modes_rows), built from
+%   data/msc_modes/discrete_modes.jsonl (discrete rows; = tables.md T1-T3, summary_tables.md M1-M3),
+%   data/msc_modes_verify/bigN_1d_mp.json, data/msc_modes/laplace_modes.jsonl (rows marked \ddagger),
+%   data/article/s3_methods_certificate.jsonl (certificate of the unmarked discrete rows),
+%   data/msc_modes/laplace_modes.jsonl (rows marked \dagger)
+1 & 5 & 8 & 0.2560 & 0.3200000\\
+1 & 50 & 1020 & 0.3264 & 0.3330612\\
+1 & 100 & 4124 & 0.3299 & 0.3332525\\
+1 & 200 & 16\,580 & 0.3316 & 0.3332663\\
+1 & 1000 & 416\,188 & 0.3330 & 0.3332837\\
+1 & $10^{5}$ $\ddagger$ & 4\,166\,011\,658 & 0.3333 & 0.3332843\\
+1 & $10^{6}$ $\ddagger$ & 416\,604\,915\,263 & 0.3333 & 0.3332843\\
+\midrule
+2 & 5 & 36 & 1.1520 & 0.2696\\
+2 & 35 & 2493 & 1.6281 & 0.1768\\
+2 & 100 & 22\,110 & 1.7688 & 0.1489\\
+2 & 200 & 92\,116 & 1.8423 & 0.1350\\
+2 & 401 & 383\,013 & 1.9055 & 0.1236\\
+2 & 1810 $\dagger$ & -- & 2.0174 & 0.1048\\
+2 & 20\,480 $\dagger$ & -- & 2.1523 & 0.08462\\
+2 & 1\,048\,576 $\dagger$ & -- & 2.3077 & 0.06509\\
+2 & 16\,777\,216 $\dagger$ & -- & 2.3905 & 0.05622\\
+\midrule
+3 & 5 & 85 & 2.7200 & 0.1531\\
+3 & 35 & 6644 & 4.3389 & 0.02945\\
+3 & 40 & 8863 & 4.4315 & 0.02623\\
+3 & 100 & 62\,998 & 5.0398 & 0.01177\\
+3 & 320 $\dagger$ & -- & 5.7737 & 0.004188\\
+3 & 1280 $\dagger$ & -- & 6.6268 & 0.001199\\
+3 & 4096 $\dagger$ & -- & 7.3366 & 0.0004147\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_modes_mode_mean.pdf}
+\caption{Mean first-passage time $\MF$ and mode $\tmode$ against lattice size, corner to opposite corner (end to end for
+$\dd=1$), in steps at $q=0.8$. Lines: exact values in continuous time (unit rate, divided by $q$). Circles:
+maximiser of the exact discrete-time PMF. Dashed: closed-form approximation \eqref{s6_mechanism:eq-L1}.}
+% src: code/article/s5_modes_figures.py; data/msc_modes/laplace_modes.jsonl, discrete_modes.jsonl
+\label{s5_modes:fig-mode-mean}
+\end{figure}
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{One dimension}\label{s5_modes:ssec-1d}
+
+In one dimension the whole distribution is available in closed form (proofs in Supplementary
+Section~\ref{sup_modes:ssec-1d-proofs}).
+
+\begin{proposition}[First-passage law of the chain, $\dd=1$]\label{s5_modes:prop-1d}
+For the walk on $\{0,\dots,N-1\}$ started at the reflecting end $0$ with target $N-1$, put
+$\omega_m=(2m-1)\pi/(2N-1)$ and $\lambda_m=1-q+q\cos\omega_m$, $m=1,\dots,N-1$. Then $\MF=N(N-1)/q$ and, for
+all $t\ge1$,
+\begin{equation}\label{s5_modes:eq-1d-pmf}
+  \pmf(t)=\frac{2q}{2N-1}\sum_{m=1}^{N-1}(-1)^{m+1}\cos\frac{\omega_m}{2}\,\sin\omega_m\;\lambda_m^{\,t-1}.
+\end{equation}
+\end{proposition}
+
+Put $\ell=N-\tfrac12$, so that $\omega_m=(2m-1)\pi/(2\ell)$ exactly, and let
+\begin{equation}\label{s5_modes:eq-1d-continuum}
+  \Phi(\xi)=\pi\sum_{m\ge1}(-1)^{m+1}(2m-1)\,
+  \exp\Bigl[-\frac{(2m-1)^{2}\pi^{2}}{4}\,\xi\Bigr],\qquad \xi>0 ,
+\end{equation}
+the first-passage density of diffusion across an interval from a reflecting to an absorbing end, in units of the
+diffusion time \citep{Redner2001}; it has mean $\tfrac12$ and variance $\tfrac16$.
+% src: data/msc_modes_verify/constants.json; data/article/s5_modes_tables.json (continuum_1d)
+
+\begin{proposition}[Mode-to-mean ratio of the chain]\label{s5_modes:prop-1d-limit}
+\begin{enumerate}
+\item[(a)] $\Phi$ is log-concave and real-analytic on $(0,\infty)$ and has a unique maximiser $\xi^{*}$, which lies
+in $(0.05,0.5)$.
+\item[(b)] For the continuous-time walk on the chain, at any activity, $\tmodec/(q\MF)\to2\xi^{*}$ as $N\to\infty$.
+\item[(c)] For the discrete-time walk with $q\le\tfrac12$, $\tmode/\MF\to2\xi^{*}$ as $N\to\infty$.
+\end{enumerate}
+\end{proposition}
+
+The maximiser, computed in 30-digit arithmetic, is $\xi^{*}=0.166642132747$, so that
+% src: data/msc_modes_verify/constants.json (1d_tau_star, 1d_mode_over_mfpt); data/msc_modes/fit_results.json (continuum_1d); data/article/s5_modes_tables.json (continuum_1d)
+\begin{equation}\label{s5_modes:eq-1d-ratio}
+  2\xi^{*}=0.3332842655 ,
+\end{equation}
+which is the constant $c$ of Theorem~\ref{s6b_rigorous:thm-1d}, enclosed there to within $10^{-70}$. It lies below
+$\tfrac13$ by $4.9\times10^{-5}$: the first term of the image expansion of $\Phi$ peaks at exactly $\xi=\tfrac16$, the
+mode $(x_0-x_a)^{2}/6$ of direct trajectories discussed by \citet{GodecMetzler2016} (its three-dimensional
+counterpart $(r-\rho)^{2}/(6D)$ is Eq.~(3) of \citet{Grebenkov2018}), and the further images move the maximum.
+% src: data/msc_rigorous_1d/03_constants.json (c_mid_80_digits, c_radius); data/msc_modes_verify/constants.json (1d_minus_one_third); data/article/s5_modes_tables.json (continuum_1d: one_third_minus_ratio, first_image_term_maximiser)
+Proposition~\ref{s5_modes:prop-1d-limit} does not cover the discrete walk at $q=0.8$, where some $\lambda_m$ are
+negative; Theorem~\ref{s6b_rigorous:thm-1d} (computer-assisted) does, for every $q\in(0,1]$. At $q=0.8$ the exact modes are
+$\tmode=1020$, $4124$, $16\,580$ and $416\,188$ for $N=50$, $100$, $200$ and $1000$, with $\tmode/\MF=0.33306$,
+$0.33325$, $0.33327$ and $0.3332837$, and the modes at $N=10^{5}$ and $10^{6}$ give $0.33328427$.
+% src: data/msc_modes/tables.md (T1); data/msc_modes/discrete_modes.jsonl; data/article/s5_modes_tables.json (modes_1d_closed_form, modes_1d_large_N, tab_modes_rows); data/msc_modes_verify/bigN_1d_mp.json
+The one-dimensional law has a fixed shape: in the continuum limit $\Prob(\FPT\le\tmode)=0.1665$, the median is
+$0.7575\,\MF$, the coefficient of variation is $\sqrt{2/3}=0.8165$ and the maximum of the density is $0.925/\MF$.
+% src: data/msc_modes_verify/constants.json (1d_cdf_at_mode, 1d_median_over_mfpt, 1d_cv, 1d_gmax_times_mfpt); data/article/s5_modes_tables.json (continuum_1d)
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{Two and three dimensions}\label{s5_modes:ssec-2d}
+
+\begin{observation}[Two dimensions]\label{s5_modes:obs-2d}
+The compensated mode $q\tmode/N^{2}$ equals $1.152$, $1.628$, $1.769$, $1.842$ and $1.906$ at $N=5$, $35$, $100$,
+$200$ and $401$ and, in continuous time, $2.017$, $2.152$, $2.308$ and $2.390$ at $N=1810$, $20\,480$, $1\,048\,576$
+and $16\,777\,216$; it increases, and $\tmode/\MF$ decreases, from each computed size to the next (31 sizes in
+discrete time, 43 in continuous time). The ratio $\tmode/\MF$ falls from $0.2696$ at $N=5$ to $0.0562$ at
+$N=16\,777\,216$.
+% src: data/msc_modes/tables.md (T2); data/msc_modes/summary_tables.md (M2); data/article/s5_modes_tables.json (tab_modes_rows, monotonicity["2"])
+\end{observation}
+
+The two-dimensional mode is therefore not proportional to $N^{2}$: its prefactor changes by $60\%$ over
+$5\le N\le200$ and keeps growing over the next five decades. The growth is slow: the local exponent
+$\dif\ln\tmode/\dif\ln N$ falls from $2.27$ near $N=6$ to $2.06$ near $N=134$ and $2.013$ near $N=3\times10^{6}$, while
+that of the mean falls from $2.54$ to $2.20$ and $2.07$.
+% src: data/article/s5_modes_tables.json (d2_prefactor_growth_N5_to_200 = 1.599, local_exponents); data/msc_modes/fit_results.json (effective_exponents["2"])
+The leading law $q\tmode\simeq(4/\pi^{2})N^{2}[\ln\ln N+\ln8\pi]$ of Section~\ref{s6_mechanism:sec} is a theorem with an
+explicit remainder (Theorem~\ref{s6b_rigorous:thm-laws}), but the data do not display it: against $\ln\ln N$ the local
+slope of $q\tmode/N^{2}$ decreases from $0.587$ near $N=6$ to $0.451$ near $N=1.2\times10^{7}$, still $11\%$ above
+$4/\pi^{2}=0.405$, and the constant $\ln8\pi=3.22$ exceeds $\ln\ln N=2.81$ at the largest size computed; the proved
+remainder decays only like $\ln\ln N/\ln N$. We therefore describe the two-dimensional mode by the closed form
+\eqref{s6_mechanism:eq-L1-simple}, and use `$N^{2}\ln\ln N$' as the name of its leading asymptote.
+% src: data/msc_modes/fit_results.json (asymptotics: 2d_slope_d(mode/N^2)/d(lnlnN), theory_limit); data/article/s5_modes_tables.json (local_slopes, d2_ln_8pi, d2_lnlnN_at_largest_N)
+
+\begin{observation}[Three dimensions]\label{s5_modes:obs-3d}
+The compensated mode $q\tmode/N^{2}$ equals $2.72$, $4.43$ and $5.04$ at $N=5$, $40$ and $100$ and, in continuous
+time, $5.77$, $6.63$ and $7.34$ at $N=320$, $1280$ and $4096$; it increases, and $\tmode/\MF$ decreases, from each
+computed size to the next (17 sizes in discrete time, 27 in continuous time). Against $\ln N$ its local slope is
+$0.959$ near $N=6$, $0.636$ near $N=134$ and $0.6095$ near $N=3200$. The ratio $\tmode/\MF$ is $0.1531$, $0.0262$
+and $0.0118$ at $N=5$, $40$ and $100$, and $4.1\times10^{-4}$ at $N=4096$.
+% src: data/msc_modes/tables.md (T3); data/msc_modes/summary_tables.md (M3); data/msc_modes/fit_results.json (asymptotics: 3d_slope_d(mode/N^2)/d(lnN)); data/article/s5_modes_tables.json (tab_modes_rows, monotonicity["3"], local_slopes)
+\end{observation}
+
+Over the computed range the three-dimensional mode thus grows as $N^{2}\ln N$, not as $N^{3}$: the measured slope
+$0.6095$ is within $0.3\%$ of the coefficient $6/\pi^{2}=0.6079$ of the proved law (Theorem~\ref{s6b_rigorous:thm-laws}),
+the local exponent of the mode falls to $2.085$ near $N=3200$ while that of the mean is $3.0003$, and $\tmode/\MF$ falls
+like $\ln N/N$. The three-dimensional maximum is very flat: at $N=40$ the two neighbours of the maximiser lie below the
+maximum by relative amounts of only $4\times10^{-10}$ and $2\times10^{-9}$. Its position is resolved by exact
+computation (three time-stepping codes and the exact certificates agree), but it is sensitive to small errors in the
+PMF (Section~\ref{s6_mechanism:ssec-shape}).
+% src: data/msc_modes/fit_results.json (effective_exponents["3"]); data/article/s5_modes_tables.json (local_exponents, stepper_recheck: d = 3, N = 40, "f(mode-1)/f(mode)-1", "f(mode+1)/f(mode)-1"); data/msc_modes_verify/analysis.json (discrete_compare: n_overlap 148, n_mismatch 0); data/article/s3_methods_certificate.json (all_runs.n_mode_equals_stored)
+
+% ---------------------------------------------------------------------------------------------------------
+\subsection{The separation between mean and mode grows with dimension}\label{s5_modes:ssec-summary}
+
+Table~\ref{s5_modes:tab-laws} summarises the three cases. At the common size $N=100$ the mean exceeds the mode by the
+factors $3.0$, $6.7$ and $85$ for $\dd=1,2,3$; the factor is constant in one dimension, grows logarithmically in two
+and almost linearly in three.
+% src: data/article/s5_modes_tables.json (separation_T_over_mode)
+The reason, made quantitative in Section~\ref{s6_mechanism:sec}, is that the mode is tied to the time of relaxation
+across the box, of order $N^{2}$ in every dimension, whereas the mean is tied to the time needed to find the target.
+That the most probable first-passage time can lie far below the mean is known for diffusion in confined continuous
+domains \citep{GodecMetzler2016,Grebenkov2018}; the lattice values and laws given here are exact counterparts for the
+lazy walk.
+
+Scaling fits over short ranges of $N$ cannot reveal these laws. The data are exact, so least-squares intervals
+measure misfit, not noise. Fitted on $10\le N\le200$, a free power law $AN^{a}$ gives $a=2.093\pm0.011$ for $\dd=2$,
+and the exponent drifts with the window ($2.019\pm0.001$ on $10^{3}\le N\le1.7\times10^{7}$); extrapolated to
+$N=16\,777\,216$, the pure quadratic law is off by $-31\%$, the free power law by $+125\%$, the form
+$N^{2}(A\ln\ln N+B)$ by $+3.8\%$ and the closed-form approximation \eqref{s6_mechanism:eq-L1}, which has no fitted
+parameter, by $-0.45\%$. In three dimensions a cubic law fitted on $10\le N\le100$ over-predicts the mode at $N=4096$ by a
+factor $69$, and the closed-form approximation errs by $6\times10^{-7}$ (Supplementary Table~\ref{s5_modes:tab-fits}).
+% src: data/msc_modes/tables.md (2D mode fit blocks, row P; extrapolated tables); data/msc_modes/fit_results.json (fits); data/article/s5_modes_tables.json (tab_fits: power_law_exponent_2d_continuous_by_window, N3_fit_overprediction_factor_at_4096 = 68.99)
+
+\begin{table}[tbp]
+\centering
+\caption{Mean, mode and their ratio, corner to opposite corner. Means: Theorems~\ref{s4_mfpt:thm-cosine} and
+\ref{s4_mfpt:thm-expansion} ($\dd=1,2$) and Theorem~\ref{s4_mfpt:thm-3d} ($\dd=3$). Modes: for $\dd=1$ the continuum
+constant \eqref{s5_modes:eq-1d-ratio}; for $\dd=2,3$ `$\approx$' marks the closed form \eqref{s6_mechanism:eq-L1-simple}
+with $X=\muone q\MF$ (\eqref{s4_mfpt:eq-X2d}, \eqref{s4_mfpt:eq-X3d}), whose scaled error is bounded for every $N\ge12$
+($\dd=2$) and $N\ge10$ ($\dd=3$) (Theorem~\ref{s6b_rigorous:thm-cfcont}), and `$\simeq$' the leading laws
+(Theorem~\ref{s6b_rigorous:thm-laws}).}
+% src: data/article/s4_mfpt_checks.json (three_dimensions: pi2_K3_over_6, pi2_K3prime_over_6); data/msc_modes_verify/constants.json; data/article/closed_form_checks.json (X_const_2d)
+\label{s5_modes:tab-laws}
+\small
+\begin{tabular}{@{}clll@{}}
+\toprule
+$\dd$ & mean $q\MF$ & mode $q\tmode$ & ratio $\tmode/\MF$\\
+\midrule
+1 & $N(N-1)$ & $0.33328\,(N-\tfrac12)^{2}$ & $\to0.3332843$\\[5pt]
+2 & $\dfrac8\pi N^{2}\ln N+C_{2}N^{2}+\cdots$ &
+    $\simeq\dfrac{4}{\pi^{2}}N^{2}\bigl[\ln\ln N+\ln8\pi\bigr]$ &
+    $\approx\dfrac{\ln(4X)}{X+3}\simeq\dfrac{\ln(8\pi\ln N)}{2\pi\ln N}$\\[9pt]
+3 & $\Kthree N^{3}+\Kthreep N^{2}+\cdots$ &
+    $\simeq\dfrac{6}{\pi^{2}}N^{2}\bigl[\ln N+3.753\bigr]$ &
+    $\approx\dfrac{\ln(6X)}{X+5}\simeq0.1407\,\dfrac{\ln N+3.753}{N}$\\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,100 @@
+{
+ "q": "7/10",
+ "KLO": 2,
+ "KHI": 3,
+ "NMAX": 13,
+ "full": true,
+ "full_agrees": true,
+ "contiguous_minors_tested": 780,
+ "general_minors_tested": 5249,
+ "tp2_fails_for_N": [],
+ "not_logconcave": [],
+ "not_unimodal": [],
+ "undetermined": [],
+ "last_k_with_negative_minor_at_NMAX": 1,
+ "rows": [
+  {
+   "N": 3,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "+---"
+  },
+  {
+   "N": 4,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0+++"
+  },
+  {
+   "N": 5,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "00++"
+  },
+  {
+   "N": 6,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "000+"
+  },
+  {
+   "N": 7,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 8,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 9,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 10,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 11,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 12,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000"
+  },
+  {
+   "N": 13,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null,
+   "negative_contiguous_minor_counts_all_k": {
+    "1": 10,
+    "2": 0,
+    "3": 0,
+    "4": 0
+   }
+  }
+ ]
+}

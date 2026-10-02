@@ -1,0 +1,23 @@
+{
+ "Lemma basic: f = (q/2d) sigma = S(t-1)-S(t) (exact)": true,
+ "Q symmetric (exact)": true,
+ "Lemma positivity: every row of Q has a positive entry": true,
+ "Lemma absorption: ||Q^n0||_inf <= 1 - (q/2d)^n0 (exact)": true,
+ "Lemma tail: after T, v and f keep decreasing (exact, horizon 4T)": true,
+ "Lemma tail: geometric bound f(T+s) <= gamma^s f(T) (exact)": true,
+ "Lemma enclosure: L <= 2^P v <= U <= 2^P (exact, P = 8, 20, 40)": true,
+ "Lemma limb: floor/ceil step identical to Python integers (360 random vectors incl. extreme limbs)": true,
+ "Lemma MFPT: enclosure contains the exact rational q*MFPT; 1D equals N(N-1)": true,
+ "exact q*MFPT values": {
+  "d=1,N=2": "2",
+  "d=1,N=9": "72",
+  "d=2,N=2": "8",
+  "d=2,N=3": "27",
+  "d=2,N=4": "416/7",
+  "d=2,N=5": "1175/11",
+  "d=2,N=6": "9368/55",
+  "d=3,N=2": "20",
+  "d=3,N=3": "1161/14"
+ },
+ "Theorem log-concavity: product formula (6.1) and (q/2)^n = prod(1-theta_j) (float, 1e-12)": true
+}

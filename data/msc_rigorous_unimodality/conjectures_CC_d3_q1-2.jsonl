@@ -1,0 +1,7 @@
+{"geo": "CC", "d": 3, "N": 2, "q": "1/2", "T_cone": 11, "window": 72, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 0.0}
+{"geo": "CC", "d": 3, "N": 3, "q": "1/2", "T_cone": 38, "window": 234, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 0.0}
+{"geo": "CC", "d": 3, "N": 4, "q": "1/2", "T_cone": 79, "window": 480, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 0.2}
+{"geo": "CC", "d": 3, "N": 5, "q": "1/2", "T_cone": 136, "window": 822, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 1.5}
+{"geo": "CC", "d": 3, "N": 6, "q": "1/2", "T_cone": 209, "window": 1260, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 8.8}
+{"geo": "CC", "d": 3, "N": 7, "q": "1/2", "T_cone": 299, "window": 1800, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 34.2}
+{"geo": "CC", "d": 3, "N": 8, "q": "1/2", "T_cone": 407, "window": 2448, "logconcave": true, "lc_fail_t": [], "ifr": true, "ifr_fail_t": [], "p1prime": true, "p1_fail_t": [], "seconds": 95.2}

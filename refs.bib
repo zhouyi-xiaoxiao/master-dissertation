@@ -1,0 +1,786 @@
+% refs.bib -- bibliography of the article and of its Supplementary Material.
+% Every entry is cited in the article or in its Supplementary Material.  Every DOI below was resolved on Crossref on
+% 1 October 2026 with code/article/reference_checks.py (registered metadata in
+% data/article/references_crossref.json); entries without a DOI carry a stable URL.
+% The non-standard field `citedfor' records what the entry is cited for (ignored by plainnat) and, where the
+% full text was not available, at which level the source was consulted.
+
+% ---------------------------------------------------------------- code and data of this article
+@misc{ZhouyiRepo,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {Code, data and companion proofs for ``{M}ean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices''},
+  year         = {2026},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/zhouyi-xiaoxiao/master-dissertation},
+  citedfor     = {code, data, certificates and companion notes of this article}
+}
+
+@misc{NoteR0,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {The most probable first-passage time of the lazy walk in a reflecting box: rigorous results, a dependency-ordered synthesis. {C}ompanion note {R0}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R0\_rigorous\_results/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+@misc{NoteR1,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {The most probable first-passage time of the lazy walk on a segment: a rigorous one-dimensional theory. {C}ompanion note {R1}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R1\_one\_dimension/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+@misc{NoteR2,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {Rigorous spectral structure of first-passage times to a point target on the reflecting hypercubic lattice, $d\ge2$. {C}ompanion note {R2}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R2\_spectral\_structure/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+@misc{NoteR3,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {The mode of the corner-to-corner first-passage time in two and three dimensions: rigorous asymptotics. {C}ompanion note {R3}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R3\_mode\_two\_three\_dimensions/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+@misc{NoteR4,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {Unimodality of point-target first-passage laws on the reflecting box: theorems, counter-examples, certified computations, and what remains open. {C}ompanion note {R4}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R4\_unimodality/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+@misc{NoteR5,
+  author       = {Zhouyi, Xiaoxiao},
+  title        = {Computer-assisted certification of first-passage modes, unimodality, the closed-form mode formula and two constants for the lazy walk in a reflecting box. {C}ompanion note {R5}},
+  year         = {2026},
+  howpublished = {Dated 1 October 2026; folder \texttt{proofs/R5\_certified\_computations/} of the code and data repository of this article},
+  citedfor     = {complete proofs of the results of Sections 4 and 7}
+}
+
+% ---------------------------------------------------------------- first passage, general
+@book{Redner2001,
+  author    = {Redner, Sidney},
+  title     = {A Guide to First-Passage Processes},
+  publisher = {Cambridge University Press},
+  address   = {Cambridge},
+  year      = {2001},
+  doi       = {10.1017/CBO9780511606014},
+  citedfor  = {general background on first-passage processes}
+}
+
+@article{MontrollWeiss1965,
+  author   = {Montroll, Elliott W. and Weiss, George H.},
+  title    = {Random Walks on Lattices. {II}},
+  journal  = {Journal of Mathematical Physics},
+  volume   = {6},
+  number   = {2},
+  pages    = {167--181},
+  year     = {1965},
+  doi      = {10.1063/1.1704269},
+  citedfor = {generating-function (renewal) formalism for lattice walks}
+}
+
+@article{Montroll1969,
+  author   = {Montroll, Elliott W.},
+  title    = {Random Walks on Lattices. {III}. {C}alculation of First-Passage Times with Application to Exciton Trapping on Photosynthetic Units},
+  journal  = {Journal of Mathematical Physics},
+  volume   = {10},
+  number   = {4},
+  pages    = {753--765},
+  year     = {1969},
+  doi      = {10.1063/1.1664902},
+  citedfor = {mean time to a single trap on periodic lattices: N ln N (2D) and N (3D) laws per site count}
+}
+
+@book{Spitzer1976,
+  author    = {Spitzer, Frank},
+  title     = {Principles of Random Walk},
+  edition   = {2nd},
+  series    = {Graduate Texts in Mathematics},
+  volume    = {34},
+  publisher = {Springer},
+  address   = {New York},
+  year      = {1976},
+  citedfor  = {potential kernel of the planar simple random walk (values a(1,0)=1, a(2,0)=4-8/pi)}
+}
+
+@article{Giuggioli2020,
+  author   = {Giuggioli, Luca},
+  title    = {Exact Spatiotemporal Dynamics of Confined Lattice Random Walks in Arbitrary Dimensions: A Century after {S}moluchowski and {P}{\'o}lya},
+  journal  = {Physical Review X},
+  volume   = {10},
+  number   = {2},
+  pages    = {021045},
+  year     = {2020},
+  doi      = {10.1103/PhysRevX.10.021045},
+  citedfor = {exact propagators of the lazy walk in reflecting hypercubes; nested-sum MFPT (Eqs. 30-31); finite trigonometric sums (Appendix E, Eqs. E1-E2)}
+}
+
+@article{HartichGodec2018,
+  author   = {Hartich, David and Godec, Alja{\v{z}}},
+  title    = {Duality between relaxation and first passage in reversible {M}arkov dynamics: rugged energy landscapes disentangled},
+  journal  = {New Journal of Physics},
+  volume   = {20},
+  pages    = {112002},
+  year     = {2018},
+  doi      = {10.1088/1367-2630/aaf038},
+  citedfor = {interlacing of relaxation and first-passage time scales in reversible Markov dynamics (title; companion of HartichGodec2019)}
+}
+
+@article{HartichGodec2019,
+  author   = {Hartich, David and Godec, Alja{\v{z}}},
+  title    = {Interlacing relaxation and first-passage phenomena in reversible discrete and continuous space {M}arkovian dynamics},
+  journal  = {Journal of Statistical Mechanics: Theory and Experiment},
+  volume   = {2019},
+  pages    = {024002},
+  year     = {2019},
+  doi      = {10.1088/1742-5468/ab00df},
+  citedfor = {the time scales of relaxation and first passage interlace in ergodic reversible Markov dynamics, proved for discrete-state processes in arbitrary dimension (abstract consulted, arXiv:1802.10049)}
+}
+
+@article{SarvaharmanGiuggioli2023,
+  author   = {Sarvaharman, Seeralan and Giuggioli, Luca},
+  title    = {Particle-environment interactions in arbitrary dimensions: A unifying analytic framework to model diffusion with inert spatial heterogeneities},
+  journal  = {Physical Review Research},
+  volume   = {5},
+  number   = {4},
+  pages    = {043281},
+  year     = {2023},
+  doi      = {10.1103/PhysRevResearch.5.043281},
+  citedfor = {analytic framework for lattice walks with inert spatial heterogeneities; Sec. IV.B, Eq. (12): a single permeable barrier on the chain with a reflecting end raises the MFPT linearly in its distance from the wall when it lies between start and target, and leaves the MFPT unchanged (while changing mode and tail) when it lies behind the start, disorder indifference (full text read, arXiv:2209.09014)}
+}
+
+@article{CondaminBenichou2006,
+  author   = {Condamin, S. and B{\'e}nichou, O.},
+  title    = {Exact expressions of mean first-passage times and splitting probabilities for random walks in bounded rectangular domains},
+  journal  = {The Journal of Chemical Physics},
+  volume   = {124},
+  number   = {20},
+  pages    = {206103},
+  year     = {2006},
+  doi      = {10.1063/1.2192770},
+  citedfor = {cosine double sum for the MFPT on a reflecting rectangle with the same boundary rule (their Eqs. 1 and 5)}
+}
+
+@article{Condamin2005,
+  author   = {Condamin, S. and B{\'e}nichou, O. and Moreau, M.},
+  title    = {First-Passage Times for Random Walks in Bounded Domains},
+  journal  = {Physical Review Letters},
+  volume   = {95},
+  number   = {26},
+  pages    = {260601},
+  year     = {2005},
+  doi      = {10.1103/PhysRevLett.95.260601},
+  citedfor = {pseudo-Green-function formula for MFPTs in bounded domains}
+}
+
+@article{Condamin2007PRE,
+  author   = {Condamin, S. and B{\'e}nichou, O. and Moreau, M.},
+  title    = {Random walks and {B}rownian motion: A method of computation for first-passage times and related quantities in confined geometries},
+  journal  = {Physical Review E},
+  volume   = {75},
+  number   = {2},
+  pages    = {021111},
+  year     = {2007},
+  doi      = {10.1103/PhysRevE.75.021111},
+  citedfor = {pseudo-Green-function method for first-passage quantities in confinement}
+}
+
+@article{Condamin2007Nature,
+  author   = {Condamin, S. and B{\'e}nichou, O. and Tejedor, V. and Voituriez, R. and Klafter, J.},
+  title    = {First-passage times in complex scale-invariant media},
+  journal  = {Nature},
+  volume   = {450},
+  number   = {7166},
+  pages    = {77--80},
+  year     = {2007},
+  doi      = {10.1038/nature06201},
+  citedfor = {scaling of MFPTs with volume and source-target distance in confined media}
+}
+
+@article{Benichou2010,
+  author   = {B{\'e}nichou, O. and Chevalier, C. and Klafter, J. and Meyer, B. and Voituriez, R.},
+  title    = {Geometry-controlled kinetics},
+  journal  = {Nature Chemistry},
+  volume   = {2},
+  number   = {6},
+  pages    = {472--477},
+  year     = {2010},
+  doi      = {10.1038/nchem.622},
+  citedfor = {full first-passage-time distribution in confinement; two regimes controlled by geometry; full text read in arXiv:1006.3477}
+}
+
+@article{Meyer2011,
+  author   = {Meyer, B. and Chevalier, C. and Voituriez, R. and B{\'e}nichou, O.},
+  title    = {Universality classes of first-passage-time distribution in confined media},
+  journal  = {Physical Review E},
+  volume   = {83},
+  number   = {5},
+  pages    = {051116},
+  year     = {2011},
+  doi      = {10.1103/PhysRevE.83.051116},
+  citedfor = {first-passage-time distributions in confined media fall, for large volumes, into universality classes set by the walk dimension and the fractal dimension of the medium (abstract consulted; cited only for this)}
+}
+
+@article{BenichouVoituriez2014,
+  author   = {B{\'e}nichou, O. and Voituriez, R.},
+  title    = {From first-passage times of random walks in confinement to geometry-controlled kinetics},
+  journal  = {Physics Reports},
+  volume   = {539},
+  number   = {4},
+  pages    = {225--284},
+  year     = {2014},
+  doi      = {10.1016/j.physrep.2014.02.003},
+  citedfor = {review of first-passage times in confinement and geometry-controlled kinetics (title and abstract consulted; cited only as a review)}
+}
+
+@article{Mattos2012,
+  author   = {Mattos, Thiago G. and Mej{\'i}a-Monasterio, Carlos and Metzler, Ralf and Oshanin, Gleb},
+  title    = {First passages in bounded domains: When is the mean first passage time meaningful?},
+  journal  = {Physical Review E},
+  volume   = {86},
+  number   = {3},
+  pages    = {031143},
+  year     = {2012},
+  doi      = {10.1103/PhysRevE.86.031143},
+  citedfor = {the mean first-passage time need not be representative of the distribution in bounded domains, where it can lie far above the most probable value (full text read, arXiv:1206.1003)}
+}
+
+@article{GodecMetzler2016,
+  author   = {Godec, Alja{\v{z}} and Metzler, Ralf},
+  title    = {Universal Proximity Effect in Target Search Kinetics in the Few-Encounter Limit},
+  journal  = {Physical Review X},
+  volume   = {6},
+  number   = {4},
+  pages    = {041037},
+  year     = {2016},
+  doi      = {10.1103/PhysRevX.6.041037},
+  citedfor = {most likely versus mean first-passage times; disparity of time scales in target search; sharp mode t_typ = (x0 - xa)^2/6 of direct trajectories (arXiv:1611.07788v1, p. 9); full text read}
+}
+
+@article{Grebenkov2018,
+  author   = {Grebenkov, Denis S. and Metzler, Ralf and Oshanin, Gleb},
+  title    = {Strong defocusing of molecular reaction times results from an interplay of geometry and reaction control},
+  journal  = {Communications Chemistry},
+  volume   = {1},
+  number   = {1},
+  pages    = {96},
+  year     = {2018},
+  doi      = {10.1038/s42004-018-0096-x},
+  citedfor = {most probable reaction time orders of magnitude below the mean in confined domains; Eq. (3): most probable time of direct trajectories (r - rho)^2/(6D); Eq. (31): median close to ln 2 times the mean when the survival is exponential (full text read, arXiv:1911.00942)}
+}
+
+% ---------------------------------------------------------------- Markov chains, hitting times, resistance
+@book{LevinPeresWilmer2009,
+  author    = {Levin, David A. and Peres, Yuval and Wilmer, Elizabeth L.},
+  title     = {Markov Chains and Mixing Times},
+  publisher = {American Mathematical Society},
+  address   = {Providence, RI},
+  year      = {2009},
+  doi       = {10.1090/mbk/058},
+  citedfor  = {hitting times, commute-time identity, electrical networks (textbook reference)}
+}
+
+@misc{AldousFill,
+  author       = {Aldous, David and Fill, James Allen},
+  title        = {Reversible {M}arkov Chains and Random Walks on Graphs},
+  year         = {2002},
+  howpublished = {Unfinished monograph},
+  note         = {Recompiled 2014},
+  url          = {https://www.stat.berkeley.edu/~aldous/RWG/book.html},
+  citedfor     = {fundamental-matrix formulas for hitting times; exponential approximation of hitting-time laws for reversible chains; hitting times from the stationary and the quasi-stationary distribution (completely monotone; exponential)}
+}
+
+@incollection{AldousBrown1992,
+  author    = {Aldous, David J. and Brown, Mark},
+  title     = {Inequalities for rare events in time-reversible {M}arkov chains. {I}},
+  booktitle = {Stochastic Inequalities},
+  series    = {Institute of Mathematical Statistics Lecture Notes -- Monograph Series},
+  volume    = {22},
+  pages     = {1--16},
+  publisher = {Institute of Mathematical Statistics},
+  address   = {Hayward, CA},
+  year      = {1992},
+  doi       = {10.1214/lnms/1215461937},
+  citedfor  = {explicit bounds on the exponential approximation of hitting times from the stationary start in reversible chains}
+}
+
+@inproceedings{Chandra1989,
+  author    = {Chandra, Ashok K. and Raghavan, Prabhakar and Ruzzo, Walter L. and Smolensky, Roman and Tiwari, Prasoon},
+  title     = {The Electrical Resistance of a Graph Captures its Commute and Cover Times},
+  booktitle = {Proceedings of the 21st Annual {ACM} Symposium on Theory of Computing ({STOC} '89)},
+  pages     = {574--586},
+  publisher = {ACM},
+  address   = {New York},
+  year      = {1989},
+  doi       = {10.1145/73007.73062},
+  citedfor  = {commute-time identity: commute time = 2 |E| x effective resistance}
+}
+
+@article{Tetali1991,
+  author   = {Tetali, Prasad},
+  title    = {Random walks and the effective resistance of networks},
+  journal  = {Journal of Theoretical Probability},
+  volume   = {4},
+  number   = {1},
+  pages    = {101--109},
+  year     = {1991},
+  doi      = {10.1007/BF01046996},
+  citedfor = {hitting times expressed through effective resistances}
+}
+
+@article{KleinRandic1993,
+  author   = {Klein, D. J. and Randi{\'c}, M.},
+  title    = {Resistance distance},
+  journal  = {Journal of Mathematical Chemistry},
+  volume   = {12},
+  number   = {1},
+  pages    = {81--95},
+  year     = {1993},
+  doi      = {10.1007/BF01164627},
+  citedfor = {effective resistance as a quadratic form of the Laplacian pseudo-inverse}
+}
+
+@article{KarlinMcGregor1959,
+  author   = {Karlin, Samuel and McGregor, James},
+  title    = {Coincidence properties of birth and death processes},
+  journal  = {Pacific Journal of Mathematics},
+  volume   = {9},
+  number   = {4},
+  pages    = {1109--1140},
+  year     = {1959},
+  doi      = {10.2140/pjm.1959.9.1109},
+  citedfor = {passage-time structure of birth-and-death processes (origin of the sum-of-exponentials representation)}
+}
+
+@article{Keilson1971,
+  author   = {Keilson, Julian},
+  title    = {Log-concavity and log-convexity in passage time densities of diffusion and birth-death processes},
+  journal  = {Journal of Applied Probability},
+  volume   = {8},
+  number   = {2},
+  pages    = {391--398},
+  year     = {1971},
+  doi      = {10.2307/3211909},
+  citedfor = {log-concavity (hence unimodality) of passage-time densities between neighbouring-state passages in birth-death processes}
+}
+
+@article{Fill2009,
+  author   = {Fill, James Allen},
+  title    = {The Passage Time Distribution for a Birth-and-Death Chain: Strong Stationary Duality Gives a First Stochastic Proof},
+  journal  = {Journal of Theoretical Probability},
+  volume   = {22},
+  number   = {3},
+  pages    = {543--557},
+  year     = {2009},
+  doi      = {10.1007/s10959-009-0235-5},
+  citedfor = {passage time from 0 to d of a birth-and-death chain is a sum of independent geometric (discrete time, non-negative eigenvalues) or exponential (continuous time) random variables}
+}
+
+% ---------------------------------------------------------------- numerical transform inversion
+@article{AbateWhitt1992ORL,
+  author   = {Abate, Joseph and Whitt, Ward},
+  title    = {Numerical inversion of probability generating functions},
+  journal  = {Operations Research Letters},
+  volume   = {12},
+  number   = {4},
+  pages    = {245--251},
+  year     = {1992},
+  doi      = {10.1016/0167-6377(92)90050-D},
+  citedfor = {the 2t-node trapezoidal (lattice-Poisson) rule for inverting probability generating functions and its aliasing error bound}
+}
+
+@article{AbateWhitt1992QS,
+  author   = {Abate, Joseph and Whitt, Ward},
+  title    = {The {F}ourier-series method for inverting transforms of probability distributions},
+  journal  = {Queueing Systems},
+  volume   = {10},
+  number   = {1--2},
+  pages    = {5--87},
+  year     = {1992},
+  doi      = {10.1007/BF01158520},
+  citedfor = {Fourier-series method for transform inversion (general reference)}
+}
+
+@article{AbateValko2004,
+  author   = {Abate, Joseph and Valk{\'o}, Peter P.},
+  title    = {Multi-precision {L}aplace transform inversion},
+  journal  = {International Journal for Numerical Methods in Engineering},
+  volume   = {60},
+  number   = {5},
+  pages    = {979--993},
+  year     = {2004},
+  doi      = {10.1002/nme.995},
+  citedfor = {fixed-Talbot rule for numerical Laplace inversion}
+}
+
+@article{Talbot1979,
+  author   = {Talbot, A.},
+  title    = {The Accurate Numerical Inversion of {L}aplace Transforms},
+  journal  = {IMA Journal of Applied Mathematics},
+  volume   = {23},
+  number   = {1},
+  pages    = {97--120},
+  year     = {1979},
+  doi      = {10.1093/imamat/23.1.97},
+  citedfor = {Talbot's deformed-contour method for Laplace inversion}
+}
+
+@article{Weideman2006,
+  author   = {Weideman, J. A. C.},
+  title    = {Optimizing {T}albot's Contours for the Inversion of the {L}aplace Transform},
+  journal  = {SIAM Journal on Numerical Analysis},
+  volume   = {44},
+  number   = {6},
+  pages    = {2342--2362},
+  year     = {2006},
+  doi      = {10.1137/050625837},
+  citedfor = {convergence analysis of Talbot-type contours}
+}
+
+% ---------------------------------------------------------------- resistor networks (prior art for the 2D MFPT)
+@article{Wu2004,
+  author   = {Wu, F. Y.},
+  title    = {Theory of resistor networks: the two-point resistance},
+  journal  = {Journal of Physics A: Mathematical and General},
+  volume   = {37},
+  number   = {26},
+  pages    = {6653--6673},
+  year     = {2004},
+  doi      = {10.1088/0305-4470/37/26/004},
+  citedfor = {two-point resistance of a rectangular resistor network with free boundaries as a cosine double sum (Eq. 37); Example 4: R = 13/7 between opposite corners of the 4 x 4 grid}
+}
+
+@article{EssamWu2009,
+  author   = {Essam, J. W. and Wu, F. Y.},
+  title    = {The exact evaluation of the corner-to-corner resistance of an {$M\times N$} resistor network: asymptotic expansion},
+  journal  = {Journal of Physics A: Mathematical and Theoretical},
+  volume   = {42},
+  number   = {2},
+  pages    = {025205},
+  year     = {2009},
+  doi      = {10.1088/1751-8113/42/2/025205},
+  citedfor = {single-sum form of the corner-to-corner resistance (M, N even) and its large-size expansion with numerical constants 0.077318..., 0.266070..., -0.534779...}
+}
+
+@article{IzmailianHuang2010,
+  author   = {Izmailian, N. Sh. and Huang, Ming-Chang},
+  title    = {Asymptotic expansion for the resistance between two maximally separated nodes on an {$M$} by {$N$} resistor network},
+  journal  = {Physical Review E},
+  volume   = {82},
+  number   = {1},
+  pages    = {011125},
+  year     = {2010},
+  doi      = {10.1103/PhysRevE.82.011125},
+  citedfor = {all coefficients of the large-size expansion of the corner-to-corner resistance in terms of theta functions / Kronecker double series (Eqs. 39-43)}
+}
+
+@article{IzmailianKennaWu2014,
+  author   = {Izmailian, N. Sh. and Kenna, R. and Wu, F. Y.},
+  title    = {The two-point resistance of a resistor network: a new formulation and application to the cobweb network},
+  journal  = {Journal of Physics A: Mathematical and Theoretical},
+  volume   = {47},
+  number   = {3},
+  pages    = {035003},
+  year     = {2014},
+  doi      = {10.1088/1751-8113/47/3/035003},
+  citedfor = {single-sum two-point resistance of the cobweb network (a different network; cited as related work, title and abstract consulted)}
+}
+
+@article{Tan2015,
+  author   = {Tan, Zhi-Zhong},
+  title    = {Recursion-transform method for computing resistance of the complex resistor network with three arbitrary boundaries},
+  journal  = {Physical Review E},
+  volume   = {91},
+  number   = {5},
+  pages    = {052122},
+  year     = {2015},
+  doi      = {10.1103/PhysRevE.91.052122},
+  citedfor = {single-sum resistances, by the recursion-transform method, of an m x n network with one edge of zero resistance and three modified boundaries (a different network; arXiv:1501.00750 read)}
+}
+
+@article{Essam2015,
+  author   = {Essam, John W. and Izmailyan, Nikolay Sh. and Kenna, Ralph and Tan, Zhi-Zhong},
+  title    = {Comparison of methods to determine point-to-point resistance in nearly rectangular networks with application to a `hammock' network},
+  journal  = {Royal Society Open Science},
+  volume   = {2},
+  number   = {4},
+  pages    = {140420},
+  year     = {2015},
+  doi      = {10.1098/rsos.140420},
+  citedfor = {point-to-point resistances of the 'hammock' network by the Laplacian and recursion-transform methods (a different network; arXiv:1411.1916 read)}
+}
+
+@article{TanTan2020,
+  author   = {Tan, Zhi-Zhong and Tan, Zhen},
+  title    = {The basic principle of {$m\times n$} resistor networks},
+  journal  = {Communications in Theoretical Physics},
+  volume   = {72},
+  number   = {5},
+  pages    = {055001},
+  year     = {2020},
+  doi      = {10.1088/1572-9494/ab7702},
+  citedfor = {single-sum resistance between two arbitrary nodes of the regular m x n rectangle with free boundaries (their Eq. 57) and between opposite corners (their Eq. 64), valid for every size; both evaluated numerically and found to coincide with Theorem thm-pair (commute time) and with form (a) of Theorem thm-single term by term (code/article/s4_mfpt_literature_check.py)}
+}
+
+@article{Cserti2000,
+  author   = {Cserti, J{\'o}zsef},
+  title    = {Application of the lattice {G}reen's function for calculating the resistance of an infinite network of resistors},
+  journal  = {American Journal of Physics},
+  volume   = {68},
+  number   = {10},
+  pages    = {896--906},
+  year     = {2000},
+  doi      = {10.1119/1.1285881},
+  citedfor = {two-point resistances of the infinite square lattice from the lattice Green function (R(1,0)=1/2, R(2,0)=2-4/pi)}
+}
+
+@article{Watson1939,
+  author   = {Watson, G. N.},
+  title    = {Three triple integrals},
+  journal  = {The Quarterly Journal of Mathematics},
+  volume   = {os-10},
+  number   = {1},
+  pages    = {266--276},
+  year     = {1939},
+  doi      = {10.1093/qmath/os-10.1.266},
+  citedfor = {closed form of the simple-cubic lattice Green function at the origin (Watson's integral, 1.5163860592...)}
+}
+
+% ---------------------------------------------------------------- special functions
+@incollection{Zagier2008,
+  author    = {Zagier, Don},
+  title     = {Elliptic Modular Forms and Their Applications},
+  booktitle = {The 1-2-3 of Modular Forms},
+  editor    = {Ranestad, Kristian},
+  series    = {Universitext},
+  pages     = {1--103},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {2008},
+  doi       = {10.1007/978-3-540-74119-0_1},
+  citedfor  = {Eisenstein series E2, E4, E6: transformation laws, Ramanujan's differential equations, values at tau = i (Chowla-Selberg)}
+}
+
+@misc{DLMF,
+  key          = {DLMF},
+  author       = {{DLMF}},
+  title        = {{NIST} Digital Library of Mathematical Functions},
+  howpublished = {Release 1.2.8 of 2026-09-15. F. W. J. Olver, A. B. Olde Daalhuis, D. W. Lozier, B. I. Schneider, R. F. Boisvert, C. W. Clark, B. R. Miller, B. V. Saunders, H. S. Cohl and M. A. McClain (eds.)},
+  url          = {https://dlmf.nist.gov/},
+  year         = {2026},
+  citedfor     = {Euler-Maclaurin formula with remainder (2.10.1); digamma function (5.4.13-5.4.15, 5.9.16, 5.11.2); theta functions and Jacobi triple product (20.2, 20.5.9)}
+}
+
+% ---------------------------------------------------------------- disordered media
+@article{Nieuwenhuizen1986,
+  author   = {Nieuwenhuizen, Th. M. and van Velthoven, P. F. J. and Ernst, M. H.},
+  title    = {Diffusion and Long-Time Tails in a Two-Dimensional Site-Percolation Model},
+  journal  = {Physical Review Letters},
+  volume   = {57},
+  number   = {20},
+  pages    = {2477--2480},
+  year     = {1986},
+  doi      = {10.1103/PhysRevLett.57.2477},
+  citedfor = {exact expansion, through second order in the fraction of excluded sites, of the diffusion coefficient and static conductivity of a random walk on the square lattice with randomly excluded sites (abstract consulted; the coefficients are quoted from Ernst, Nieuwenhuizen and van Velthoven 1987, where they are printed)}
+}
+
+@article{Ernst1987,
+  author   = {Ernst, M. H. and Nieuwenhuizen, Th. M. and van Velthoven, P. F. J.},
+  title    = {Density expansion of transport coefficients on a {2D} site-disordered lattice: {II}},
+  journal  = {Journal of Physics A: Mathematical and General},
+  volume   = {20},
+  number   = {15},
+  pages    = {5335--5350},
+  year     = {1987},
+  doi      = {10.1088/0305-4470/20/15/045},
+  citedfor = {printed coefficients of the exact low-density expansion for excluded sites on the square lattice: conductivity 1 - pi c + 1.2858 c^2 (their Eq. 4.2) and diffusion coefficient 1 - (pi - 1) c - 0.8558 c^2 (their Eq. 4.3; Table 2, row b = 1); full text read}
+}
+
+@article{WatsonLeath1974,
+  author   = {Watson, B. P. and Leath, P. L.},
+  title    = {Conductivity in the two-dimensional-site percolation problem},
+  journal  = {Physical Review B},
+  volume   = {9},
+  number   = {11},
+  pages    = {4893--4896},
+  year     = {1974},
+  doi      = {10.1103/PhysRevB.9.4893},
+  citedfor = {measured conductivity of a 137 x 137 conducting mesh with removed sites, and an effective-medium theory sigma(x)/sigma(0) = 1 - pi x + pi x^2/2 (both from the abstract)}
+}
+
+@article{Kirkpatrick1973,
+  author   = {Kirkpatrick, Scott},
+  title    = {Percolation and Conduction},
+  journal  = {Reviews of Modern Physics},
+  volume   = {45},
+  number   = {4},
+  pages    = {574--588},
+  year     = {1973},
+  doi      = {10.1103/RevModPhys.45.574},
+  citedfor = {effective-medium theory and numerical conductivities of diluted resistor networks}
+}
+
+@article{HavlinBenAvraham1987,
+  author   = {Havlin, Shlomo and Ben-Avraham, Daniel},
+  title    = {Diffusion in disordered media},
+  journal  = {Advances in Physics},
+  volume   = {36},
+  number   = {6},
+  pages    = {695--798},
+  year     = {1987},
+  doi      = {10.1080/00018738700101072},
+  citedfor = {review of diffusion on percolation systems (``ant in the labyrinth'', blind and myopic ants)}
+}
+
+@book{StaufferAharony1994,
+  author    = {Stauffer, Dietrich and Aharony, Ammon},
+  title     = {Introduction to Percolation Theory},
+  edition   = {Revised 2nd},
+  publisher = {Taylor \& Francis},
+  address   = {London},
+  year      = {1994},
+  citedfor  = {percolation background: thresholds, correlation length, conductivity and diffusion near the threshold}
+}
+
+@article{NewmanZiff2000,
+  author   = {Newman, M. E. J. and Ziff, R. M.},
+  title    = {Efficient {M}onte {C}arlo Algorithm and High-Precision Results for Percolation},
+  journal  = {Physical Review Letters},
+  volume   = {85},
+  number   = {19},
+  pages    = {4104--4107},
+  year     = {2000},
+  doi      = {10.1103/PhysRevLett.85.4104},
+  citedfor = {site-percolation threshold of the square lattice, p_c = 0.59274621(13) (occupied fraction)}
+}
+
+% ---- added by Section 3 (unimodality of log-concave laws); DOIs resolved on Crossref on 1 October 2026
+@article{KeilsonGerber1971,
+  author   = {Keilson, J. and Gerber, H.},
+  title    = {Some Results for Discrete Unimodality},
+  journal  = {Journal of the American Statistical Association},
+  volume   = {66},
+  number   = {334},
+  pages    = {386--389},
+  year     = {1971},
+  doi      = {10.1080/01621459.1971.10482273},
+  citedfor = {lattice analogue of Ibragimov's theorem: a log-concave distribution on the integers is strongly unimodal (its convolution with any unimodal lattice distribution is unimodal)}
+}
+
+@article{Ibragimov1956,
+  author   = {Ibragimov, I. A.},
+  title    = {On the Composition of Unimodal Distributions},
+  journal  = {Theory of Probability \& Its Applications},
+  volume   = {1},
+  number   = {2},
+  pages    = {255--260},
+  year     = {1956},
+  doi      = {10.1137/1101021},
+  citedfor = {strong unimodality of log-concave probability densities (the convolution of a log-concave density with any unimodal density is unimodal)}
+}
+
+% ---- DOIs resolved on Crossref on 1 October 2026
+@article{Hasimoto1959,
+  author   = {Hasimoto, H.},
+  title    = {On the periodic fundamental solutions of the {S}tokes equations and their application to viscous flow past a cubic array of spheres},
+  journal  = {Journal of Fluid Mechanics},
+  volume   = {5},
+  number   = {2},
+  pages    = {317--328},
+  year     = {1959},
+  doi      = {10.1017/S0022112059000222},
+  citedfor = {origin of the lattice constant of the periodic simple-cubic lattice (periodic fundamental solutions by Fourier series; abstract consulted, the numerical value is quoted from Yeh and Hummer 2004)}
+}
+
+@article{YehHummer2004,
+  author   = {Yeh, In-Chul and Hummer, Gerhard},
+  title    = {System-Size Dependence of Diffusion Coefficients and Viscosities from Molecular Dynamics Simulations with Periodic Boundary Conditions},
+  journal  = {The Journal of Physical Chemistry B},
+  volume   = {108},
+  number   = {40},
+  pages    = {15873--15879},
+  year     = {2004},
+  doi      = {10.1021/jp0477147},
+  citedfor = {printed value 2.837297 of the periodic simple-cubic lattice constant (finite-size correction of diffusion coefficients; from the abstract)}
+}
+
+@article{WardKeller1993,
+  author   = {Ward, Michael J. and Keller, Joseph B.},
+  title    = {Strong Localized Perturbations of Eigenvalue Problems},
+  journal  = {SIAM Journal on Applied Mathematics},
+  volume   = {53},
+  number   = {3},
+  pages    = {770--798},
+  year     = {1993},
+  doi      = {10.1137/0153038},
+  citedfor = {matched-asymptotic perturbation of eigenvalues when a small subdomain is removed from a domain, with application to exit times through small holes in reflecting walls (abstract consulted; cited only for this)}
+}
+
+@article{IsaacsonNewby2013,
+  author   = {Isaacson, Samuel A. and Newby, Jay},
+  title    = {Uniform asymptotic approximation of diffusion to a small target},
+  journal  = {Physical Review E},
+  volume   = {88},
+  number   = {1},
+  pages    = {012820},
+  year     = {2013},
+  doi      = {10.1103/PhysRevE.88.012820},
+  citedfor = {uniform-in-time approximation of the first-passage density to a small spherical target in a three-dimensional domain: long-time part from the first eigenvalue plus a short-time correction (their Eqs 2.47-2.49); the mode of that density obtained by numerical maximisation as a function of the starting position (their Sec. III.1 and Fig. 7), no closed formula; remark that the mode, unlike the mean, depends strongly on the starting position (Introduction); full text consulted in arXiv:1303.3016}
+}
+
+@article{WeissHavlinBunde1985,
+  author   = {Weiss, George H. and Havlin, Shlomo and Bunde, Armin},
+  title    = {On the survival probability of a random walk in a finite lattice with a single trap},
+  journal  = {Journal of Statistical Physics},
+  volume   = {40},
+  number   = {1--2},
+  pages    = {191--199},
+  year     = {1985},
+  doi      = {10.1007/BF01010532},
+  citedfor = {earlier study of the survival probability of a lattice walk with a single trap on a finite lattice (cited for the problem it addresses, as stated in its title; full text not consulted)}
+}
+
+@article{HolcmanSchuss2014,
+  author   = {Holcman, D. and Schuss, Z.},
+  title    = {The Narrow Escape Problem},
+  journal  = {SIAM Review},
+  volume   = {56},
+  number   = {2},
+  pages    = {213--257},
+  year     = {2014},
+  doi      = {10.1137/120898395},
+  citedfor = {review of the asymptotics of the mean first-passage time of diffusion to a small target on a reflecting boundary (abstract consulted; cited only for this)}
+}
+
+% ---- DOIs resolved on Crossref on 1 October 2026
+@article{BagnoliBergstrom2005,
+  author   = {Bagnoli, Mark and Bergstrom, Ted},
+  title    = {Log-concave probability and its applications},
+  journal  = {Economic Theory},
+  volume   = {26},
+  number   = {2},
+  pages    = {445--469},
+  year     = {2005},
+  doi      = {10.1007/s00199-004-0514-4},
+  citedfor = {Theorem 1: the distribution function of a log-concave density is log-concave}
+}
+
+@article{DavenportPolya1949,
+  author   = {Davenport, H. and P{\'o}lya, G.},
+  title    = {On the Product of Two Power Series},
+  journal  = {Canadian Journal of Mathematics},
+  volume   = {1},
+  number   = {1},
+  pages    = {1--5},
+  year     = {1949},
+  doi      = {10.4153/CJM-1949-001-1},
+  citedfor = {the binomial convolution of two log-concave sequences is log-concave}
+}
+

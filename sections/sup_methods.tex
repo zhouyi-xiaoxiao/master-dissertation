@@ -1,0 +1,381 @@
+% sup_methods.tex -- Supplementary Section S2: numerical methods in detail, their validation, the certificate of
+% the global mode, unimodality on the chain, and the numerical inversion of generating functions.
+% Computations:
+%   code/article/s3_methods_validation.py  -> data/article/s3_methods_validation.json,
+%        data/article/s3_methods_mc_times.npz, figures/s3_methods_validation.pdf
+%   code/article/s3_methods_certificate.py -> data/article/s3_methods_certificate.jsonl, .json
+%   code/article/s3_methods_inversion_other_sizes.py -> data/article/s3_methods_inversion_other_sizes.json
+%   code/article/s3s6_modes_figures.py     -> figures/s3_methods_parity.pdf
+\section{Numerical methods and their validation}\label{sup_methods:sec}
+
+Two qualifications of ``exact'' apply in addition to those of Section~\ref{s3_methods:sec} of the main text: where a
+maximiser is needed to a fraction of a step (the offsets of Section~\ref{sup_methods:ssec-parity} and the
+single-defect responses of Section~\ref{s7_defects:sec}) it is refined by a parabola through three exact values, and
+the one-dimensional modes at $N=10^{5}$ and $10^{6}$ were located as local maxima from the sign of the exact
+increment (their global maximality follows from Theorem~\ref{s6b_rigorous:thm-1d}(c)).
+
+\subsection{The routes in detail}
+
+\paragraph{Route A: time stepping.}
+We read $\pmf(t+1)$ as the probability of landing on the target in that step, $\pmf(t+1)=\sum_{\vx}\rho_t(\vx)\Pm(\vx,\va)$;
+the difference $\Sv(t)-\Sv(t+1)$ would lose digits by cancellation. The 193 runs reach $1\,248\,768$ steps for the
+chain with $N=1000$, $517\,376$ steps for $\dd=2$, $N=401$, and $85\,248$ steps for $\dd=3$, $N=100$.
+Each run continues until $t$ exceeds $1.5$ times the running argmax ($1.35$ for the six largest lattices, $3$ for
+the chain, $4$ for \EXIT); 35 further runs at smaller sizes continue until $\Sv(t)<10^{-12}$ and so cover the whole
+support. No exact tie for the maximum occurred in any run.
+% src: data/msc_modes/discrete_modes.jsonl; code/msc_modes/02_run_discrete.py (GROUPS); data/msc_modes/full_tail.json; data/article/s3_methods_validation.json (stored_runs_summary)
+
+\paragraph{Route B: one dimension.} For the chain the PMF is the closed form \eqref{s5_modes:eq-1d-pmf} of
+Proposition~\ref{s5_modes:prop-1d}. Double precision suffices if the logarithm of each eigenvalue
+$\lambda_m=1-q\nu_m$ is formed as $\mathrm{log1p}(-q\nu_m)$: taking the logarithm of the rounded difference
+$1-q\nu_m$ loses the digits that decide the integer and displaces the located maximum by $353$ steps at $N=10^{5}$ and
+by $385\,703$ steps at $N=10^{6}$. The values found in this way by two codes were confirmed as local maxima in
+50-digit arithmetic.
+% src: code/msc_modes/03_run_laplace.py (run_point, d = 1; log1p); data/article/s3_methods_log1p_demo.json (displacement_steps; both integers checked in 50 digits); code/article/s3_methods_log1p_demo.py; data/msc_modes/laplace_modes.jsonl (d = 1, N = 1e5, 1e6: mode_discrete_q0.8); code/msc_modes_verify/v07_extra.py (mode1d); code/msc_modes_verify/v08_1d_bigN_mp.py; data/msc_modes_verify/bigN_1d_mp.json
+
+\paragraph{Route C: Laplace space.} The $\dd$-fold spectral sum for $\Phat$ is reduced to a $(\dd-1)$-fold sum by
+carrying out one index in closed form.
+
+\begin{lemma}[Resolvent of the one-dimensional reflecting chain]\label{s3_methods:lem-resolvent}
+Let $\mathsf T$ be the $N\times N$ matrix of Lemma~\ref{appA_proofs:lem-spectrum}, $\beta>0$, and let $\zeta\in\mathbb C$ be
+such that $\zeta I+\beta(I-\mathsf T)$ is invertible, that is, $\zeta\neq-\beta\,(1-\cos(\pi k/N))$ for $k=0,\dots,N-1$.
+Let $\varphi\in\mathbb C$ be any solution of $\cosh\varphi=1+\zeta/\beta$. Then, for $0\le m,m'\le N-1$,
+\begin{equation}\label{s3_methods:eq-resolvent}
+  G_1(\zeta;m,m'):=\bigl[(\zeta I+\beta(I-\mathsf T))^{-1}\bigr]_{m,m'}
+  =\frac{\cosh\bigl(\varphi\,(m_<+\tfrac12)\bigr)\,\cosh\bigl(\varphi\,(N-\tfrac12-m_>)\bigr)}
+        {\tfrac{\beta}{2}\,\sinh\varphi\,\sinh N\varphi},
+\end{equation}
+where $m_<=\min(m,m')$ and $m_>=\max(m,m')$. At $\zeta=-2\beta$, where numerator and denominator both vanish, the
+right-hand side is understood as its limit.
+\end{lemma}
+
+\begin{proof}
+Put $u(m)=\cosh(\varphi(m+\tfrac12))$ and $v(m)=\cosh(\varphi(N-\tfrac12-m))$ for all integers $m$. Since
+$\cosh\varphi(x+1)+\cosh\varphi(x-1)=2\cosh\varphi\,\cosh\varphi x$ and $\beta\cosh\varphi=\zeta+\beta$, both satisfy
+$(\zeta+\beta)w(m)-\tfrac{\beta}{2}[w(m-1)+w(m+1)]=0$ for every $m$; moreover $u(-1)=u(0)$ and $v(N)=v(N-1)$. The matrix
+$M=\zeta I+\beta(I-\mathsf T)$ acts on a vector $w$ by the same three-term expression with the conventions
+$w(-1):=w(0)$ and $w(N):=w(N-1)$, because $\mathsf T(0,0)=\mathsf T(N-1,N-1)=\tfrac12$. Fix $m'$ and let
+$g(m)=u(m_<)v(m_>)$. For $m<m'$, $(Mg)(m)=v(m')\cdot0$, and for $m>m'$, $(Mg)(m)=u(m')\cdot0$; the boundary
+conventions hold for $g$ because they hold for $u$ at the left end and for $v$ at the right end. At $m=m'$ the
+recurrence for $u$ gives
+\begin{align*}
+  (Mg)(m')&=\tfrac{\beta}{2}\bigl[u(m'+1)v(m')-u(m')v(m'+1)\bigr]\\
+          &=\tfrac{\beta}{4}\bigl[\cosh(N+1)\varphi-\cosh(N-1)\varphi\bigr]=\tfrac{\beta}{2}\sinh\varphi\,\sinh N\varphi ,
+\end{align*}
+by the product formula for hyperbolic cosines. Hence $Mg=\tfrac{\beta}{2}\sinh\varphi\,\sinh N\varphi\;\ve_{m'}$. The
+factor $\sinh\varphi\sinh N\varphi$ vanishes only if $\cosh\varphi=\cos(\pi j/N)$ for an integer $j$, i.e.\ at the
+excluded values of $\zeta$ or at $\zeta=-2\beta$; elsewhere division gives the $m'$-th column of $M^{-1}$. The
+right-hand side does not depend on the choice of $\varphi$, being even and $2\pi\iu$-periodic in it.
+\end{proof}
+
+For $\zeta>0$ the lemma is equivalent to the ring identity \eqref{appA_proofs:eq-ring-half} of
+Lemma~\ref{appA_proofs:lem-ring}, and hence to Eq.~(E1) of \citet{Giuggioli2020}; the direct proof also covers the
+complex and negative arguments that the inversion and the pole search need. Against dense inverses the formula holds
+to $2\times10^{-13}$ in $164\,020$ matrix entries with positive, complex and negative real $\zeta$.
+% src: data/article/s3_methods_validation.json (lemma_resolvent); data/article/closed_form_checks.json (resolvent_1d_max_rel_err)
+By Lemma~\ref{appA_proofs:lem-spectrum}, $I-\Pm_1=\frac1\dd\sum_i(I-\mathsf T^{(i)})$. Expanding the first $\dd-1$
+coordinates in the cosine basis and applying \eqref{s3_methods:eq-resolvent} with $\beta=1/\dd$ to the last one gives
+\begin{equation}\label{s3_methods:eq-reduced}
+  \Phat(\vx,s\mid\vy)=\sum_{k_1,\dots,k_{\dd-1}=0}^{N-1}\
+  \Bigl[\prod_{i=1}^{\dd-1}\frac{\alk{k_i}}{N}\cos\thk{k_i}{x_i}\cos\thk{k_i}{y_i}\Bigr]\;
+  G_1\Bigl(s+\frac{2}{\dd}\sum_{i=1}^{\dd-1}\sk{k_i}^{2};\,x_{\dd},y_{\dd}\Bigr),
+\end{equation}
+a single sum for $\dd=2$ and a double sum for $\dd=3$. For $\dd=2$ and $s=0$ the angle is $\varphi=\phk{k}$, and
+\eqref{s3_methods:eq-reduced} is the summation that yields the single-sum mean of Theorem~\ref{s4_mfpt:thm-single}.
+
+Two devices make large lattices cheap. First, the terms of \eqref{s3_methods:eq-reduced} whose shift
+$\frac{2}{\dd}\sum_i\sk{k_i}^{2}$ exceeds $20\,s_{\max}$, where $s_{\max}$ is the largest $|s|$ required, are analytic
+in $|s|<20\,s_{\max}$; their sum is replaced once by its Taylor polynomial of degree 15, obtained from 16 samples on
+the circle $|s|=s_{\max}$. The number of terms summed for each $s$ then does not grow with $N$ (79 of 3000 at
+$N=3000$, $\dd=2$), and accelerated and plain sums of $\Fhat$ agree to $5\times10^{-16}$ ($\dd=2$, $N=3000$) and
+$2\times10^{-13}$ ($\dd=3$, $N=120$).
+% src: code/msc_modes/fptlib.py (LaplaceFP.prepare, KAPPA = 20, NFAR = 16); data/article/s3_methods_validation.json (far_term_acceleration)
+Second, $\gd(t)$ is recovered from $\Fhat$ by the fixed-Talbot rule of \citet{AbateValko2004}, a trapezoidal rule
+with $M$ nodes on Talbot's deformed Bromwich contour \citep{Talbot1979,Weideman2006}. In double precision $M=20$ is the
+best choice among $M=16,20,24,28,32$: compared with the exact density, written as the Erlang mixture
+$\gd(t)=\sum_{n\ge1}\pmf_{1}(n)\,t^{n-1}\eu^{-t}/(n-1)!$ of the PMF $\pmf_1$ at $q=1$, the median relative error is
+$1.4\times10^{-13}$ and the largest $5.4\times10^{-11}$ over 30 values of $t$ between $0.2$ and $20$ modal times.
+% src: data/msc_modes/validation.json (talbot_vs_erlang_mixture)
+The mode $\tmodec$ is the root of $\gd'$, which we obtain by inverting $s\Fhat(s)$ (legitimate because $\gd(0)=0$ when
+the start is not adjacent to the target), bracketing the sign change on a logarithmic grid and subdividing until the
+bracket has relative width below $10^{-11}$. The same code gives $\MF$ from the limit $s\to0$ and the smallest poles
+$-\nu_j$ of $\Fhat$ with their residues $b_j$.
+% src: code/msc_modes/03_run_laplace.py; data/msc_modes/laplace_modes.jsonl; data/article/s3_methods_validation.json (stored_runs_summary.continuous_time_sign_scan)
+
+\paragraph{Route P.} The poles are found by bracketed root finding (all $\nu_j$ below $14\muone$ for $\dd=2$ and
+$11\muone$ for $\dd=3$), and the residues are $b_j=\Phat(\va,-\nu_j\mid\vo)/\partial_s\Phat(\va,s\mid\va)|_{s=-\nu_j}$.
+The truncation matters only for $t$ well below the mode: raising the number of poles from 8--11 to 21--33 changes the
+mode by less than $10^{-15}$ in the four cases tested.
+% src: code/msc_modes_verify/vspec.py, v04_poles.py; data/msc_modes_verify/extra.json (pole_convergence_and_farfield)
+
+\begin{table}[tbp]
+\centering
+\caption{Cross-checks of the numerical routes. Deviations are relative unless marked ``abs.''\ (absolute) or given in
+steps. ``Solve'' is a sparse direct solution of $(I-\Qm)h=\one$, which gives $\MF=h(\vo)$; cases are
+corner-to-corner unless stated.}
+\label{s3_methods:tab-validation}
+\footnotesize
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\toprule
+Check & Cases & Largest deviation\\
+\midrule
+Route A against explicit powers of the sparse matrix $\Qm$ & $\dd=1,2,3$; $N=9,6,5$; 399 steps & $4\times10^{-16}$ (abs.)\\ % src: data/msc_modes/validation.json (stepper_vs_Qpowers)
+$1-\sum_t\pmf(t)$ over the full support & 6 cases, $\dd=1,2,3$ & $2\times10^{-13}$ (abs.)\\ % src: data/msc_modes/validation.json (normalisation_and_mean)
+$\sum_t t\,\pmf(t)$ against solve & same 6 cases & $3\times10^{-12}$\\ % src: data/msc_modes/validation.json (normalisation_and_mean)
+Route B against route A; argmax & $N=5$--$200$, $q=0.3,0.8,1$ (6 cases) & $3\times10^{-17}$ (abs.); identical\\ % src: data/msc_modes/validation.json (chain1d_closed_form_vs_stepper)
+$\MF$ from route C ($s\to0$) and from \eqref{s4_mfpt:eq-single-a} against solve & $\dd=2$, $N=2$--$200$, $q=0.3,0.8,1$ (24 cases) & $9\times10^{-11}$\\ % src: data/msc_modes/validation.json (mfpt_2d_three_way)
+\eqref{s4_mfpt:eq-single-a} against the spectral sum, second code & $\dd=2$, $N=2$--$40$, $60$, $100$, $150$, $200$; same $q$ & $1.9\times10^{-14}$\\ % src: data/msc_modes_verify/validate.json (mfpt2d_form_a_vs_spec_max_rel); code/msc_modes_verify/v02_validate.py
+$\MF$ from route C against solve & \CC, \CtM, \MtC; $\dd=2,3$; $N\le25$ (13 cases) & $5\times10^{-12}$\\ % src: data/msc_modes/validation.json (mfpt_geometries_laplace_vs_linear_solve)
+Lemma~\ref{s3_methods:lem-resolvent} against dense inverses & $N\le64$; real and complex $\zeta$ & $2\times10^{-13}$\\ % src: data/article/s3_methods_validation.json (lemma_resolvent)
+Far-term Taylor acceleration against plain sums & $\dd=2$, $N=3000$; $\dd=3$, $N=120$ & $5\times10^{-16}$; $2\times10^{-13}$\\ % src: data/article/s3_methods_validation.json (far_term_acceleration)
+Talbot ($M=20$) against the Erlang mixture of the exact $q=1$ PMF & $\dd=1,2,3$; three geometries; 30 values of $t$ & $5.4\times10^{-11}$\\ % src: data/msc_modes/validation.json (talbot_vs_erlang_mixture)
+Talbot ($M=24$) against the closed-form density, $\dd=1$ & $N=20,200,2000$; 18 values of $t$ & $4\times10^{-10}$\\ % src: data/msc_modes/validation.json (talbot_vs_closed_form_1d)
+Identity \eqref{s2_model:eq-transform} against $\sum_t\pmf(t)z^{t}$ & 15 points, $\dd=1,2,3$ & $3\times10^{-16}$ (abs.)\\ % src: data/msc_modes/validation.json (z_transform_identity)
+Rule \eqref{s3_methods:eq-aw} ($\gamma=10$) against route A (Fig.~\ref{s3_methods:fig-aw}(b)) & $\dd=2$, $N=35$, $1000\le t\le6000$ & $6.4\times10^{-10}$\\ % src: data/article/s3_methods_validation.json (inversion.summary: max_rel_correct_gamma10_t>=1000); a separate run with gamma = 11 (data/msc_modes/validation.json, abate_whitt_check) gives 1.1e-9 for 400 <= t <= 6000
+Route P against dense eigen-decomposition: rates; residues & $\dd=2$, $N=8,13$; $\dd=3$, $N=5$ & $6\times10^{-14}$; $7\times10^{-13}$\\ % src: data/msc_modes_verify/validate.json (pole_checks)
+Mode $\tmodec$: route C against route P & 40 sizes ($\dd=2$); 24 sizes ($\dd=3$) & $7\times10^{-13}$; $1.1\times10^{-10}$\\ % src: data/msc_modes_verify/analysis.json (summary_d2, summary_d3)
+Integer mode $\tmode$: two time-stepping codes & 148 cases & no difference\\ % src: data/msc_modes_verify/analysis.json (discrete_compare)
+Certificate of the global mode (Proposition~\ref{s3_methods:prop-certificate}), third stepping code & all 193 runs of route A & all certified; modes identical\\ % src: data/article/s3_methods_certificate.json (all_runs)
+Interpolated maximiser of route A against the exact three-exponential truncation of \eqref{s2_model:eq-spectral} & $\dd=2,3$; \CC, \CtM; $N\ge30$ & $0.087$ steps\\ % src: data/msc_modes/fit_results.json (discrete_three_pole_check_max_abs_diff_N>=30)
+Monte Carlo against the exact PMF (Fig.~\ref{s3_methods:fig-aw}(a)) & $\dd=2$, $N=35$, $q=0.8$; $4\times10^{6}$ walkers & $z=0.58$; $\chi^{2}_{99}=112.5$\\ % src: data/article/s3_methods_validation.json (monte_carlo.pooled)
+Monte Carlo mean against \eqref{s4_mfpt:eq-pair} & three pairs, $N=5,6,7$ & $|z|\le0.52$\\ % src: data/msc_proof_verify/v2_identities.json (monte_carlo)
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Monte Carlo check of the walker rule.}
+As a check that involves no linear algebra, we simulated the rule of Section~\ref{s2_model:sec} literally for the
+corner-to-corner problem at $N=35$, $q=0.8$: in every step a uniform number decides whether the walker attempts a
+move, a second one selects the direction, and a move off the lattice is cancelled. Eight independent batches of
+$500\,000$ walkers (fixed seeds, all batches reported) give a sample mean of $14\,104.6$ steps against the exact
+$\MF=14\,100.808$ (standard error $6.5$, $z=0.58$).
+% src: data/article/s3_methods_validation.json (monte_carlo.pooled, exact_pmf)
+A $\chi^{2}$ test of the arrival times on 100 bins that are equiprobable under the exact PMF gives $112.5$ on 99
+degrees of freedom ($p=0.17$), the fraction of walkers that arrive by the exact modal time $\tmode=2493$ is
+$0.09805$ against $0.09806$, and the Kolmogorov--Smirnov distance is $3.2\times10^{-4}$ ($0.64/\sqrt n$). Batch by
+batch, $|z|\le1.27$ and $\chi^{2}_{99}$ lies between $77.6$ and $134.9$.
+% src: data/article/s3_methods_validation.json (monte_carlo.pooled, per_batch_z_mean, per_batch_chi2)
+The sample confirms the distribution (Fig.~\ref{s3_methods:fig-aw}(a)) but could not have located the mode: the PMF
+stays within $1\%$ of its maximum for $2162\le t\le2913$, that is from $0.87\,\tmode$ to $1.17\,\tmode$,
+% src: data/article/s3_methods_validation.json (exact_pmf.band_f_ge_0.99_fmax); data/msc_modes_verify/extra.json (pole_convergence_and_farfield, key 2|35: band_lo, band_hi)
+while a histogram bin of 200 steps near the peak has a relative standard error of $0.4\%$. The mode has to come
+from the exact routes.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s3_methods_validation.pdf}
+\caption{Corner-to-corner first passage on the square lattice, $N=35$, $q=0.8$, discrete time. (a)~Exact PMF from
+time stepping (line) and histogram of $4\times10^{6}$ simulated walkers in bins of 200 steps (circles; bars are
+$\pm2$ standard errors and are smaller than the symbols). Dashed line: mode $\tmode=2493$; dotted line: mean
+$\MF=14\,100.8$. (b)~Relative error of three numerical inversions of the generating function against the exact PMF:
+the trapezoidal rule on a circle of fixed radius $r=0.9$ truncated after $K=54$ nodes, the same rule with all $2t$
+nodes, and the rule \eqref{s3_methods:eq-aw} with $\gamma=10$. The two fixed-radius curves leave the frame near
+$t=700$; at $\tmode$ (dashed) the truncated fixed-radius rule returns $3.6\times10^{93}$.}
+% src: code/article/s3_methods_validation.py; data/article/s3_methods_validation.json; data/article/s3_methods_mc_times.npz
+\label{s3_methods:fig-aw}
+\end{figure}
+
+\subsection{Discrete and continuous time; parity}\label{sup_methods:ssec-parity}
+
+In the 54 cases computed by both discrete and continuous routes at $q=0.8$ ($\dd=1,2,3$; \CC, \CtM, \MtC),
+$\tmode=\tmodec/q+c$ with $-3.05\le c\le-0.22$ steps, and $-2.81\le c\le-0.52$ in the 17 cases of the second
+implementation; the relative difference is below $10^{-4}$ for all $N\ge100$.
+% src: data/msc_modes/fit_results.json (discrete_vs_continuous_offsets, max_abs_offset_steps); data/msc_modes_verify/analysis.json (summary_d2.offsets, summary_d3.offsets); data/article/s3_methods_validation.json (stored_runs_summary.discrete_vs_continuous_offset_q0.8)
+The offset of the interpolated maximiser is $-0.45$ steps for the chain and drifts slowly with $N$ for $\dd\ge2$
+(from $-0.56$ to $-1.01$ for $\dd=2$, $N=5$ to $200$, and from $-1.05$ to $-2.59$ for $\dd=3$, $N=5$ to $100$;
+Fig.~\ref{s3_methods:fig-parity}(b)); whether it stays bounded as $N\to\infty$ is not established.
+% src: data/msc_modes/fit_results.json (discrete_vs_continuous_offsets, offset_refined)
+Other activities follow from the scaling with $q$ (Table~\ref{appC_tables:tab-activity}).
+
+If $q\le\tfrac12$ no component of $\pmf$ alternates in sign, and at $q=0.8$ alternating components decay at least as
+fast as $0.6^{t}$ (Proposition~\ref{s2_model:prop-structure}(d)). At $q=1$ parity is visible. On the chain only a
+cancelled move at the reflecting end changes the parity of position plus time, the values of $\pmf$ at even and at
+odd $t$ lie on two branches, the maximum of the even branch exceeding that of the odd branch by $4.0\%$ at $N=51$
+(Fig.~\ref{s3_methods:fig-parity}(a)) and by $1.0\%$ at $N=201$, and the raw argmax is biased: $N=51$ gives $832$
+against $\tmodec=849.9$, and $N=201$ gives $13\,332$ against $13\,398.0$. The two-step average
+$\tfrac12[\pmf(t)+\pmf(t+1)]$ is maximal at $t=848$ and $t=13\,398$.
+% src: data/article/derived_checks.json (B_parity_branches_chain_q1: larger_branch_maximum_over_smaller_minus_1); data/msc_modes/summary_tables.md (Table Q); data/article/s3_methods_validation.json (stored_runs_summary.parity_q1_1d, discrete_runs.q1_cases)
+For $\dd=2$ and $q=1$ the PMF has a ripple at its peak, with two local maxima two steps apart ($t=678$ and $680$ at
+$N=21$; also at $N=15$ and $N=51$, but not at $N=101$); for $\dd=3$ none was seen. Exact certificates confirm and
+complete this: for $2\le N\le160$ the ripple occurs exactly at 16 sizes, among them 15, 21 and 51 but not 101, and
+for $\dd=3$, $2\le N\le60$, never (Theorem~\ref{s6b_rigorous:thm-finite}, computer-assisted).
+% src: data/msc_modes/discrete_modes.jsonl (local_maxima_first10); data/msc_modes_verify/analysis.json (discrete_unimodal.multi_max_q_1); data/msc_modes_verify/extra.json (q1_2d_N21_local_maxima_t)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s3_methods_parity.pdf}
+\caption{(a)~Parity at $q=1$: exact PMF of the one-dimensional chain (reflecting end to absorbing end, $N=51$) for
+$700\le t\le1000$. Values at even $t$ (circles) and odd $t$ (squares) lie on two branches; the two-step average
+(solid line) follows the continuous-time density at unit rate (dashed). Dotted vertical lines: raw argmax ($t=832$)
+and maximiser of the two-step average. (b)~Difference, in steps, between the interpolated maximiser of the
+discrete-time PMF at $q=0.8$ (three-point parabola through the exact values) and $\tmodec/q$, for corner-to-corner
+transport in $\dd=1,2,3$ against $N$.}
+% src: code/article/s3s6_modes_figures.py; data/msc_modes/pmf/pmf_d1_CC_N51_q1.0.npz; data/msc_modes/fit_results.json (discrete_vs_continuous_offsets)
+\label{s3_methods:fig-parity}
+\end{figure}
+
+\subsection{The certificate of the global mode in practice}\label{sup_methods:ssec-certificate}
+
+In the third time-stepping code the vectors $u_k=\Qm^{k}\ve_{\vo}$ and $v_k=\Qm^{k}r$ are advanced alternately;
+$\pmf(2k+1)=u_k^{\T}v_k$ and $\pmf(2k+2)=u_{k+1}^{\T}v_k$ are sums of non-negative terms; and the run stops at the
+first $k$ (tested every 16 steps) with $\|u_k\|\,\|v_k\|<(1-10^{-6})\max_{t\le2k}\pmf(t)$, so that $\tcert=2k+1$. The
+cost is that of one time-stepping run of length $\tcert$. At the largest sizes $N=1000$, $401$ and $100$ for
+$\dd=1,2,3$, $\tcert=584\,097$, $478\,369$ and $72\,673$ (up to $4.2\,\tmode$ for the smallest lattices).
+% src: data/article/s3_methods_certificate.json (all_runs, CC_q0.8_d1, CC_q0.8_d2, CC_q0.8_d3, examples); data/article/s3_methods_certificate.jsonl (t_cert, t_cert_over_mode); code/article/s3_methods_certificate.py
+\emph{Round-off.} The certificate has a relative margin of at least $10^{-6}$. The integer maximiser on
+$\{1,\dots,\tcert-1\}$ is found by comparing computed values. For the 97 corner-to-corner runs at $q\in\{0.5,0.8,1\}$
+the modes are also certified in exact arithmetic (Section~\ref{s3_methods:ssec-unimodal}). For the other 96 runs (the
+placements \CtM, \MtC{} and \EXIT, and corner to corner at $q=0.3$ and $0.9$) we use an a-priori bound of the round-off
+of route~A. Each component of $\rho_{t+1}$ is computed as a sum of at most $2\dd+1$ products of non-negative numbers,
+each product rounded once and the sum rounded at most $2\dd$ times, with stored coefficients $q/(2\dd)$ and
+$1-q+\frac{q}{2\dd}n$ ($n$ the number of cancelled directions) whose relative error $e$ against the exact values for the
+exact activity is computed in rational arithmetic. Hence every computed component equals
+$\sum_{\vy}\Qm(\vx,\vy)\tilde\rho_t(\vy)(1+\epsilon_{\vy})$ with $|\epsilon_{\vy}|\le\delta:=(1+u)^{2\dd+1}(1+e)-1$, $u=2^{-53}$,
+and by induction, since $\Qm$ is non-negative, every computed $\pmf(t)$ lies between $(1-\delta)^{t}$ and
+$(1+\delta)^{t}$ times the exact value (times $(1\mp u)^{m-1}$ for the sum over the $m$ target sites of \EXIT);
+underflow adds an absolute error below $10^{-300}$. In these runs $\delta\le1.0\times10^{-15}$. The computed maximiser is
+the exact one if every other computed value, multiplied by the upper factor at the maximiser, stays below the computed
+maximum multiplied by the lower factor at its own time; this holds in all 96 runs. The smallest relative gap between
+the maximum and any other computed value is $6.59\times10^{-11}$ ($\dd=2$, $N=141$, centre to corner), the relative
+allowance $1-L(\tcert-1)/U(\tmode)$, where $U(t)$ and $L(t)$ denote the upper and lower factors, is at most $9.2\times10^{-11}$ (at $\dd=2$, $N=101$, $q=0.3$,
+$\tmode=60\,187$), and in every run the gap exceeds the allowance, by a factor of at least $1.09$. The round-off of the
+tail bound (norms of vectors of up to $10^{6}$ components) is below $2\times10^{-10}$, far below its margin. As a
+consistency check, two evaluations of the same $\pmf(t)$ in the certificate code from different pairs of vectors,
+$u_k^{\T}v_k$ and $u_{k+1}^{\T}v_{k-1}$, differ by at most $1.2\times10^{-15}$ in relative terms; this measures the
+agreement of two evaluations, not the accumulated round-off, which is larger (see below).
+% src: data/article/s3_methods_certificate_roundoff.json (n_runs_checked_here, n_certified_against_roundoff, max_delta_per_step, min_rel_gap_checked, max_roundoff_allowance_rel, min_gap_over_allowance, max_tail_roundoff_rel, rows); code/article/s3_methods_certificate_roundoff.py; data/article/s3_methods_certificate.jsonl (margin_rel, roundoff_rel_all_t)
+
+One further size of the chain, $N=10\,240$, was certified with a compiled stepper: $\tcert=61\,300\,289$
+($1.40\,\tmode$) and the maximiser is $\tmode=43\,679\,969$, the value located by route~B.
+% src: data/article/s3_methods_certificate_chain_N10240.json (t_cert, t_cert_over_mode, mode, mode_equals_expected, certified); code/article/s3_methods_certificate_chain.c
+At this size the maximum is too flat for the stepping to resolve the integer: neighbouring values of $\pmf$ differ
+by $1.7\times10^{-16}$ in relative terms, whereas the stepped values, compared with the closed form
+\eqref{s5_modes:eq-1d-pmf} in multi-precision arithmetic, carry an accumulated round-off of $1.1\times10^{-10}$ at
+the mode (at most $1.5\times10^{-10}$ over the run).
+% src: data/article/s3_methods_certificate_chain.json (multi_precision.gap_rel_to_larger_neighbour_50_digits; stepper_against_closed_form: rel_err_at_mode, whole_run.max_abs_rel_err); data/article/s3_methods_certificate_chain_N10240_probes.txt
+The stepping is therefore used only where its margin exceeds its worst-case round-off. All its operations act on
+non-negative numbers, so the relative error of every stepped quantity grows by at most five units of round-off per
+step, which gives the a-priori bound $3.4\times10^{-8}$ for the whole run; underflow affects only components below
+$10^{-300}$. Beyond $\tcert$ the bound (b) lies below the maximum by a relative $1.1\times10^{-6}$, and for
+$t<\tcert$ outside a window of $\pm20\,000$ steps around the maximiser the stepped values lie below it by at least
+$1.5\times10^{-7}$; both statements survive the a-priori bound. Inside the window the increments
+$\pmf(t+1)-\pmf(t)$ of \eqref{s5_modes:eq-1d-pmf}, evaluated in 60-digit arithmetic at all $40\,001$ times (24
+slowest terms; the omitted ones are bounded by $10^{-428}$, the smallest increment being $10^{-24}$), are positive up
+to $\tmode-1$ and negative from $\tmode$ on. The same comparison shows that accumulated round-off is common to
+neighbouring times: the relative error of the stepped values varies by $1.6\times10^{-15}$ within 60 steps of the mode
+and by $3.8\times10^{-14}$ over the window. The a-priori comparison used for the 96 runs above
+does not rely on this observation.
+% src: data/article/s3_methods_certificate_chain.json (a_priori_roundoff.delta; part1_beyond_t_cert; part2_below_t_cert_outside_window; part3_window_closed_form: n_t, terms_kept, log10_tail_bound_on_increment, log10_smallest_abs_increment, increments_positive_for_t_below_mode, increments_negative_from_mode_on; certified_global_maximiser; stepper_against_closed_form: near_mode.max_abs_variation_of_rel_err, stored_window.max_abs_variation_of_rel_err); code/article/s3_methods_certificate_chain_check.py (derivation of the a-priori bound)
+
+\subsection{Unimodality on the chain and the observed single maximum}
+
+\begin{proposition}[Unimodality on the chain]\label{s3_methods:prop-1d-unimodal}
+Let $\dd=1$, start at the reflecting end $0$ and target $N-1$, and let $\lambda_m=1-q+q\cos\omega_m$,
+$\omega_m=(2m-1)\pi/(2N-1)$, be as in Proposition~\ref{s5_modes:prop-1d}. Then
+\begin{equation}\label{s3_methods:eq-1d-product}
+  \Ftil_q(z)=\prod_{m=1}^{N-1}\frac{(1-\lambda_m)\,z}{1-\lambda_m z},\qquad
+  \Fhat(s)=\prod_{m=1}^{N-1}\frac{1-\cos\omega_m}{s+1-\cos\omega_m}.
+\end{equation}
+Consequently (i) the continuous-time first-passage time is a sum of $N-1$ independent exponential variables and
+its density $\gd$ is log-concave, hence unimodal, for every $N$; (ii) if $q\,[1+\cos(2\pi/(2N-1))]\le1$, in
+particular if $q\le\tfrac12$, the discrete first-passage time is a sum of $N-1$ independent geometric variables and
+$\pmf$ is log-concave ($\pmf(t)^{2}\ge\pmf(t-1)\pmf(t+1)$), hence unimodal.
+\end{proposition}
+
+\begin{proof}
+Here $\Qm$ is tridiagonal on $\{0,\dots,N-2\}$ with off-diagonal entries $q/2$, and only site $N-2$ is adjacent to
+the target, so $\Ftil_q(z)=z\,\tfrac q2\,[(I-z\Qm)^{-1}]_{0,N-2}$. By Cramer's rule the corner entry of the inverse of a
+tridiagonal matrix is the product of its off-diagonal entries, up to sign, divided by the determinant:
+$[(I-z\Qm)^{-1}]_{0,N-2}=(zq/2)^{N-2}/\det(I-z\Qm)$. The eigenvalues of $\Qm$ are the $\lambda_m$
+(Proposition~\ref{s5_modes:prop-1d}), so $\det(I-z\Qm)=\prod_m(1-\lambda_m z)$ and
+$\Ftil_q(z)=(zq/2)^{N-1}/\prod_m(1-\lambda_m z)$. Since $\Ftil_q(1)=1$, $(q/2)^{N-1}=\prod_m(1-\lambda_m)$, which gives
+the first product; the second follows from \eqref{s2_model:eq-transform}. (Numerically, both products agree with
+direct solves to $6\times10^{-13}$.)
+% src: data/article/s3_methods_validation.json (prop_1d_product)
+A factor $\nu/(s+\nu)$ is the transform of an exponential density, and a factor $(1-\lambda)z/(1-\lambda z)$ with
+$0\le\lambda<1$ is the generating function of a geometric variable on $\{1,2,\dots\}$; the smallest $\lambda_m$ is
+$1-q-q\cos(2\pi/(2N-1))$. Exponential densities and geometric distributions are log-concave, and a density (lattice
+distribution) is log-concave if and only if it is strongly unimodal, that is, if its convolution with every unimodal
+density (lattice distribution) is unimodal \citep{Ibragimov1956,KeilsonGerber1971}. The class of strongly unimodal
+laws is closed under convolution. Induction over the factors therefore shows that $\gd$ in case (i) and $\pmf$ in case
+(ii) are log-concave and unimodal.
+\end{proof}
+
+The product form is the classical passage-time representation for birth-and-death processes
+\citep{KarlinMcGregor1959,Keilson1971}, and in discrete time that of \citet{Fill2009}. It does not cover $q=0.8$ at
+large $N$, where some $\lambda_m$ are negative, nor starts inside the chain, and at $q=1$ the conclusion is false
+(Proposition~\ref{s6b_rigorous:prop-1dfail}). Section~\ref{s6b_rigorous:sec} of the main text extends it.
+
+\begin{observation}[Single maximum for point targets]\label{s3_methods:obs-unimodal}
+In every computation on the clean lattice with a point target and $q\le0.9$, the first-passage PMF or the
+unit-rate density has exactly one local maximum on the range examined:
+\begin{enumerate}
+\item[(a)] 35 full-support runs of route A ($\Sv<10^{-12}$ at the end; $q=0.5$ and $0.8$; \CC, \CtM, \MtC; $N\le101$,
+$35$ and $15$ for $\dd=1,2,3$; 27 of them with $\dd\ge2$) have one local maximum and no local minimum, as do 26 runs
+of the second time-stepping code (20 with $\dd\ge2$);
+% src: data/msc_modes/full_tail.json; data/msc_modes_verify/analysis.json (discrete_unimodal.full_support_runs); data/article/s3_methods_validation.json (stored_runs_summary.full_support_runs)
+\item[(b)] all 151 point-target runs of route A with $q\le0.9$ (112 with $\dd\ge2$) have one local maximum on
+$1\le t<\tcert$ and decrease monotonically from the mode to $\tcert$, beyond which $\pmf$ stays below its maximum
+by Proposition~\ref{s3_methods:prop-certificate}; all 150 point-target runs with $q\le0.9$ of the second code have
+one local maximum and decrease monotonically from the mode to the end of the run (as do its 15 runs of the exit
+geometry);
+% src: data/article/s3_methods_certificate.json (point_target_q_le_0.9: n_single_local_maximum_below_t_cert, n_monotone_from_mode_to_t_cert); data/msc_modes/discrete_modes.jsonl (n_local_maxima, monotone_after_mode); data/article/derived_checks.json (C_second_stepper_runs); data/msc_modes_verify/discrete.jsonl
+\item[(c)] in all 156 two- and three-dimensional cases of route C, $\gd'$ changes sign exactly once, from positive to
+negative, on a grid of four points per octave that starts below $0.22\,\tmodec$ and ends at $15\,q\MF$
+(83 cases) or at 256 times a first estimate of the mode (73 cases), whichever is smaller. The grid always extends
+beyond $53\,\tmodec$, but for the largest three-dimensional lattices that is only $0.03\,q\MF$ (\MtC, $N=1281$) to
+$0.11\,q\MF$ (\CC, $N=4096$);
+% src: data/msc_modes/laplace_modes.jsonl (n_sign_changes_down, n_sign_changes_up, grid_tmin, grid_tmax); code/msc_modes/03_run_laplace.py (find_mode_talbot); data/article/s3_methods_validation.json (stored_runs_summary.continuous_time_sign_scan)
+\item[(d)] for corner-to-corner transport, the pole sum of route P has $\gd'>0$ on $[0.6\,\tmodec,\tmodec)$ and
+$\gd'<0$ on $(\tmodec,15\,q\MF]$ at all 65 sizes ($N\le16\,777\,216$ for $\dd=2$, $N\le4096$ for $\dd=3$).
+% src: data/msc_modes_verify/monotonicity_poles.json; code/msc_modes_verify/v10_tables.py; data/msc_modes_verify/poles.jsonl
+\end{enumerate}
+\end{observation}
+
+Only (a) covers the whole support; the details are in Table~\ref{appC_tables:tab-unimodal}. Most of the observation is
+a theorem: items (c) and (d) follow from Theorem~\ref{s6b_rigorous:thm-unimodal}(i), and items (a) and (b) from
+Theorems~\ref{s6b_rigorous:thm-45}, \ref{s6b_rigorous:thm-finite} and~\ref{s6b_rigorous:thm-1d}(c) for every run except
+the two corner-to-corner runs at $q=0.9$ with $\dd=2$, $N=101$ and $\dd=3$, $N=31$, which lie outside the proved
+ranges. Extended targets are different: for \EXIT{} in one dimension at $N=11$ a parity ripple with four local maxima
+at very short times ($t=5,7,9,11$) appears already at $q=0.8$; the certificate applies there as well and returns the
+global one.
+% src: data/msc_modes/discrete_modes.jsonl (geo = EXIT, d = 1, N = 11, q = 0.8: n_local_maxima = 4, local_maxima_first10); data/article/s3_methods_certificate.json (exit)
+
+\subsection{Numerical inversion of a generating function}\label{s3_methods:ssec-aw}
+
+Inverting the generating function $\Ftil$ numerically is a tempting alternative to time stepping, and it has a
+pitfall of general interest. The rule of \citet{AbateWhitt1992ORL,AbateWhitt1992QS} is the trapezoidal rule on a
+circle of radius $r<1$ with $2t$ nodes and a radius that depends on $t$:
+\begin{equation}\label{s3_methods:eq-aw}
+  \pmf(t)\;\approx\;\frac{1}{2t\,r^{t}}\sum_{k=1}^{2t}(-1)^{k}\,\operatorname{Re}\Ftil\bigl(r\,\eu^{\iu\pi k/t}\bigr),
+  \qquad r=10^{-\gamma/(2t)} .
+\end{equation}
+Inserting $\Ftil(z)=\sum_{m}\pmf(m)z^{m}$ and using that $\sum_{k=1}^{2t}(-1)^{k}\eu^{\iu\pi km/t}$ equals $2t$ if
+$m\equiv t \pmod{2t}$ and $0$ otherwise shows that the right-hand side equals
+$\sum_{j\ge0}\pmf\bigl((2j+1)t\bigr)\,r^{2jt}$ exactly. The error of \eqref{s3_methods:eq-aw} is therefore the aliasing
+sum $\sum_{j\ge1}\pmf((2j+1)t)\,10^{-\gamma j}\le10^{-\gamma}/(1-10^{-\gamma})$, and the prefactor $r^{-t}=10^{\gamma/2}$ that
+multiplies round-off does not grow with $t$.
+
+Two simplifications that look harmless are fatal at large $t$: a radius fixed independently of $t$, and a sum
+truncated after a fixed number $K<t-1$ of nodes. With a fixed radius the bracket has to cancel down to
+$t\,r^{t}\pmf(t)$, with $0.9^{1000}=1.7\times10^{-46}$, from terms of order $\Ftil(0.9)=1.4\times10^{-16}$.
+% src: data/article/s3_methods_validation.json (inversion.summary: r_pow_t_at_1000; generating_function: Ftil_at_0.9)
+Figure~\ref{s3_methods:fig-aw}(b) shows the outcome for $N=35$, $q=0.8$, for the rule with $r=0.9$ and the sum
+truncated after $K=54$ nodes (with the term $\frac12\Ftil(r)$ added). These two values are one example of a fixed radius
+and a fixed truncation, not a tuned choice; the rule with the same radius and all $2t$ nodes, shown as well, separates
+the effect of the radius from that of the truncation. Its relative error is below $4\times10^{-4}$ for
+$150\le t\le400$ ($2\times10^{-4}$ at $t=400$). It passes $1\%$ at $t=417$ and exceeds $100\%$ at every $t$ from $455$
+on that we examined (all integers up to $700$ and 40 larger values); it returns $4.3\times10^{23}$ at $t=1000$, where
+$\pmf=3.59\times10^{-5}$, and $3.6\times10^{93}$ at the modal time $t=2493$, where $\pmf=6.70\times10^{-5}$. With all
+$2t$ nodes but the fixed radius the breakdown comes slightly later (error above $100\%$ from $t=535$ on,
+$3.2\times10^{85}$ at the modal time). The rule \eqref{s3_methods:eq-aw} with $\gamma=10$ has relative error
+$1.3\times10^{-10}$ at the modal time and at most $6.4\times10^{-10}$ for $1000\le t\le6000$; on the rising flank,
+where $\pmf(3t)\gg\pmf(t)$, it is larger ($1.5\times10^{-8}$ at $t=309$), exactly as the aliasing sum predicts.
+% src: data/article/s3_methods_validation.json (inversion.summary, inversion.rows); data/msc_modes/validation.json (abate_whitt_check); data/msc_modes_verify/misc.json (abate_whitt)
+At other sizes, all at $q=0.8$, the truncated fixed-radius rule is off by $1.6\%$ at the modal time for $\dd=2$,
+$N=9$ ($\tmode=136$), by $19\%$ for the chain with $N=21$ ($\tmode=174$), and returns $6.4\times10^{19}$ for $\dd=2$,
+$N=20$ ($\tmode=765$, $\pmf=2.42\times10^{-4}$).
+% src: data/article/s3_methods_inversion_other_sizes.json (fixed_radius_rule_r0.9_K54_at_modal_time); code/article/s3_methods_inversion_other_sizes.py
+For the sizes of this article, inversion of $\Ftil$ is unnecessary: time stepping is simpler and exact, and for larger
+lattices the Laplace transform is inverted instead (route C).

@@ -1,0 +1,348 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {S1}Model: notation, proofs and checks}{1}{section.1}\protected@file@percent }
+\newlabel{sup_model:sec}{{S1}{1}{Model: notation, proofs and checks}{section.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S1.1}The walk}{1}{subsection.1.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {S1}{\ignorespaces Main notation. Sites are zero-based; $s$ without a subscript is the Laplace variable.}}{2}{table.1}\protected@file@percent }
+\newlabel{s2_model:tab-notation}{{S1}{2}{Main notation. Sites are zero-based; $s$ without a subscript is the Laplace variable}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S1.2}Proof of Proposition~\ref {s2_model:prop-structure}}{2}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S1.3}Proof of Proposition~\ref {s2_model:prop-interlacing}}{2}{subsection.1.3}\protected@file@percent }
+\newlabel{s2_model:eq-block}{{S1.1}{2}{Proof of Proposition~\ref {s2_model:prop-interlacing}}{equation.1.1}{}}
+\newlabel{s2_model:eq-schur}{{S1.2}{3}{Proof of Proposition~\ref {s2_model:prop-interlacing}}{equation.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S1.4}Proof of Proposition~\ref {s2_model:prop-pinv} and the zero mode}{3}{subsection.1.4}\protected@file@percent }
+\newlabel{s2_model:eq-gf-limit}{{S1.3}{3}{Proof of Proposition~\ref {s2_model:prop-pinv} and the zero mode}{equation.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S2}Numerical methods and their validation}{4}{section.2}\protected@file@percent }
+\newlabel{sup_methods:sec}{{S2}{4}{Numerical methods and their validation}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S2.1}The routes in detail}{4}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Route A: time stepping.}{4}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Route B: one dimension.}{4}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Route C: Laplace space.}{4}{section*.4}\protected@file@percent }
+\newlabel{s3_methods:lem-resolvent}{{S2.1}{4}{Resolvent of the one-dimensional reflecting chain}{theorem.2.1}{}}
+\newlabel{s3_methods:eq-resolvent}{{S2.1}{4}{Resolvent of the one-dimensional reflecting chain}{equation.2.1}{}}
+\citation{Giuggioli2020}
+\citation{AbateValko2004}
+\citation{Talbot1979,Weideman2006}
+\newlabel{s3_methods:eq-reduced}{{S2.2}{5}{Route C: Laplace space}{equation.2.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Route P.}{5}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Monte Carlo check of the walker rule.}{5}{section*.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {S2}{\ignorespaces Cross-checks of the numerical routes. Deviations are relative unless marked ``abs.''\ (absolute) or given in steps. ``Solve'' is a sparse direct solution of $(I-Q)h=\mathbf  {1}$, which gives $T=h(\mathbf  {o})$; cases are corner-to-corner unless stated.}}{6}{table.2}\protected@file@percent }
+\newlabel{s3_methods:tab-validation}{{S2}{6}{Cross-checks of the numerical routes. Deviations are relative unless marked ``abs.''\ (absolute) or given in steps. ``Solve'' is a sparse direct solution of $(I-\Qm )h=\one $, which gives $\MF =h(\vo )$; cases are corner-to-corner unless stated}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S2.2}Discrete and continuous time; parity}{6}{subsection.2.2}\protected@file@percent }
+\newlabel{sup_methods:ssec-parity}{{S2.2}{6}{Discrete and continuous time; parity}{subsection.2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces Corner-to-corner first passage on the square lattice, $N=35$, $q=0.8$, discrete time. (a)~Exact PMF from time stepping (line) and histogram of $4\times 10^{6}$ simulated walkers in bins of 200 steps (circles; bars are $\pm 2$ standard errors and are smaller than the symbols). Dashed line: mode $t^{*}=2493$; dotted line: mean $T=14\,100.8$. (b)~Relative error of three numerical inversions of the generating function against the exact PMF: the trapezoidal rule on a circle of fixed radius $r=0.9$ truncated after $K=54$ nodes, the same rule with all $2t$ nodes, and the rule \eqref  {s3_methods:eq-aw} with $\gamma =10$. The two fixed-radius curves leave the frame near $t=700$; at $t^{*}$ (dashed) the truncated fixed-radius rule returns $3.6\times 10^{93}$.}}{7}{figure.1}\protected@file@percent }
+\newlabel{s3_methods:fig-aw}{{S1}{7}{Corner-to-corner first passage on the square lattice, $N=35$, $q=0.8$, discrete time. (a)~Exact PMF from time stepping (line) and histogram of $4\times 10^{6}$ simulated walkers in bins of 200 steps (circles; bars are $\pm 2$ standard errors and are smaller than the symbols). Dashed line: mode $\tmode =2493$; dotted line: mean $\MF =14\,100.8$. (b)~Relative error of three numerical inversions of the generating function against the exact PMF: the trapezoidal rule on a circle of fixed radius $r=0.9$ truncated after $K=54$ nodes, the same rule with all $2t$ nodes, and the rule \eqref {s3_methods:eq-aw} with $\gamma =10$. The two fixed-radius curves leave the frame near $t=700$; at $\tmode $ (dashed) the truncated fixed-radius rule returns $3.6\times 10^{93}$}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S2.3}The certificate of the global mode in practice}{7}{subsection.2.3}\protected@file@percent }
+\newlabel{sup_methods:ssec-certificate}{{S2.3}{7}{The certificate of the global mode in practice}{subsection.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces (a)~Parity at $q=1$: exact PMF of the one-dimensional chain (reflecting end to absorbing end, $N=51$) for $700\le t\le 1000$. Values at even $t$ (circles) and odd $t$ (squares) lie on two branches; the two-step average (solid line) follows the continuous-time density at unit rate (dashed). Dotted vertical lines: raw argmax ($t=832$) and maximiser of the two-step average. (b)~Difference, in steps, between the interpolated maximiser of the discrete-time PMF at $q=0.8$ (three-point parabola through the exact values) and $t^{*}_{\mathrm  {c}}/q$, for corner-to-corner transport in $d=1,2,3$ against $N$.}}{8}{figure.2}\protected@file@percent }
+\newlabel{s3_methods:fig-parity}{{S2}{8}{(a)~Parity at $q=1$: exact PMF of the one-dimensional chain (reflecting end to absorbing end, $N=51$) for $700\le t\le 1000$. Values at even $t$ (circles) and odd $t$ (squares) lie on two branches; the two-step average (solid line) follows the continuous-time density at unit rate (dashed). Dotted vertical lines: raw argmax ($t=832$) and maximiser of the two-step average. (b)~Difference, in steps, between the interpolated maximiser of the discrete-time PMF at $q=0.8$ (three-point parabola through the exact values) and $\tmodec /q$, for corner-to-corner transport in $\dd =1,2,3$ against $N$}{figure.2}{}}
+\citation{Ibragimov1956,KeilsonGerber1971}
+\citation{KarlinMcGregor1959,Keilson1971}
+\citation{Fill2009}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S2.4}Unimodality on the chain and the observed single maximum}{9}{subsection.2.4}\protected@file@percent }
+\newlabel{s3_methods:prop-1d-unimodal}{{S2.2}{9}{Unimodality on the chain}{theorem.2.2}{}}
+\newlabel{s3_methods:eq-1d-product}{{S2.3}{9}{Unimodality on the chain}{equation.2.3}{}}
+\newlabel{s3_methods:obs-unimodal}{{S2.3}{9}{Single maximum for point targets}{theorem.2.3}{}}
+\citation{AbateWhitt1992ORL,AbateWhitt1992QS}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S2.5}Numerical inversion of a generating function}{10}{subsection.2.5}\protected@file@percent }
+\newlabel{s3_methods:ssec-aw}{{S2.5}{10}{Numerical inversion of a generating function}{subsection.2.5}{}}
+\newlabel{s3_methods:eq-aw}{{S2.4}{10}{Numerical inversion of a generating function}{equation.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S3}Proofs of the mean first-passage time formulas}{11}{section.3}\protected@file@percent }
+\newlabel{appA_proofs:sec}{{S3}{11}{Proofs of the mean first-passage time formulas}{section.3}{}}
+\newlabel{appA_proofs:eq-half-angle}{{S3.1}{11}{Proofs of the mean first-passage time formulas}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S3.1}Spectrum of the walk and the cosine sum}{11}{subsection.3.1}\protected@file@percent }
+\newlabel{appA_proofs:lem-spectrum}{{S3.1}{11}{Spectrum of the reflecting walk}{theorem.3.1}{}}
+\newlabel{appA_proofs:eq-bdry}{{S3.2}{11}{Spectrum of the walk and the cosine sum}{equation.3.2}{}}
+\newlabel{appA_proofs:eq-Lplus}{{S3.3}{11}{Spectrum of the walk and the cosine sum}{equation.3.3}{}}
+\citation{Giuggioli2020}
+\citation{EssamWu2009}
+\newlabel{appA_proofs:eq-corner-cos}{{S3.4}{12}{Spectrum of the walk and the cosine sum}{equation.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S3.2}Two summation lemmas}{12}{subsection.3.2}\protected@file@percent }
+\newlabel{appA_proofs:lem-ring}{{S3.2}{12}{Green's function of a ring}{theorem.3.2}{}}
+\newlabel{appA_proofs:eq-ring}{{S3.5}{12}{Green's function of a ring}{equation.3.5}{}}
+\newlabel{appA_proofs:eq-ring-half}{{S3.6}{12}{Green's function of a ring}{equation.3.6}{}}
+\newlabel{appA_proofs:lem-1d}{{S3.4}{13}{One-dimensional hitting times}{theorem.3.4}{}}
+\newlabel{appA_proofs:eq-1d-sum}{{S3.7}{13}{One-dimensional hitting times}{equation.3.7}{}}
+\newlabel{appA_proofs:eq-cot}{{S3.8}{13}{One-dimensional hitting times}{equation.3.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S3.3}Proof of Theorem~\ref {s4_mfpt:thm-single}}{13}{subsection.3.3}\protected@file@percent }
+\newlabel{appA_proofs:eq-split}{{S3.9}{13}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.9}{}}
+\newlabel{appA_proofs:eq-Gk}{{S3.10}{13}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.10}{}}
+\newlabel{appA_proofs:eq-Bk}{{S3.11}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.11}{}}
+\newlabel{appA_proofs:eq-Gk-coth}{{S3.12}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.12}{}}
+\newlabel{appA_proofs:eq-csum}{{S3.13}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.13}{}}
+\newlabel{appA_proofs:eq-odd-even}{{S3.14}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.14}{}}
+\newlabel{appA_proofs:eq-Hk}{{S3.15}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.15}{}}
+\newlabel{appA_proofs:eq-csum-odd}{{S3.16}{14}{Proof of Theorem~\ref {s4_mfpt:thm-single}}{equation.3.16}{}}
+\citation{KleinRandic1993}
+\citation{Chandra1989}
+\citation{Tetali1991}
+\citation{Wu2004}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S3.4}Arbitrary start and target, resistance, and three dimensions}{15}{subsection.3.4}\protected@file@percent }
+\newlabel{appA_proofs:eq-prod}{{S3.17}{15}{Arbitrary start and target, resistance, and three dimensions}{equation.3.17}{}}
+\newlabel{appA_proofs:eq-inner-pair}{{S3.18}{15}{Arbitrary start and target, resistance, and three dimensions}{equation.3.18}{}}
+\newlabel{appA_proofs:eq-laplacian}{{S3.19}{15}{Arbitrary start and target, resistance, and three dimensions}{equation.3.19}{}}
+\citation{EssamWu2009}
+\citation{IzmailianHuang2010}
+\newlabel{appA_proofs:eq-Gkj}{{S3.20}{16}{Arbitrary start and target, resistance, and three dimensions}{equation.3.20}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S4}Proof of the large-$N$ expansion}{16}{section.4}\protected@file@percent }
+\newlabel{appB_expansion:sec}{{S4}{16}{Proof of the large-\texorpdfstring {$N$}{N} expansion}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.1}Splitting the single sum}{16}{subsection.4.1}\protected@file@percent }
+\newlabel{appB_expansion:eq-defs}{{S4.1}{16}{Splitting the single sum}{equation.4.1}{}}
+\newlabel{appB_expansion:eq-split}{{S4.2}{16}{Splitting the single sum}{equation.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.2}The algebraic part}{16}{subsection.4.2}\protected@file@percent }
+\newlabel{appB_expansion:lem-alg}{{S4.1}{16}{}{theorem.4.1}{}}
+\newlabel{appB_expansion:eq-alg}{{S4.3}{16}{}{equation.4.3}{}}
+\citation{DLMF}
+\citation{DLMF}
+\citation{DLMF}
+\citation{DLMF}
+\newlabel{appB_expansion:eq-Ir}{{S4.4}{17}{}{equation.4.4}{}}
+\newlabel{appB_expansion:eq-endpoint}{{S4.5}{17}{The algebraic part}{equation.4.5}{}}
+\newlabel{appB_expansion:eq-rho}{{S4.6}{17}{The algebraic part}{equation.4.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.3}The exponentially small part}{18}{subsection.4.3}\protected@file@percent }
+\newlabel{appB_expansion:eq-AE}{{S4.7}{18}{The exponentially small part}{equation.4.7}{}}
+\newlabel{appB_expansion:eq-enm}{{S4.8}{18}{The exponentially small part}{equation.4.8}{}}
+\newlabel{appB_expansion:lem-exp}{{S4.2}{18}{}{theorem.4.2}{}}
+\newlabel{appB_expansion:eq-exp}{{S4.9}{18}{}{equation.4.9}{}}
+\newlabel{appB_expansion:eq-bounds}{{S4.10}{18}{The exponentially small part}{equation.4.10}{}}
+\newlabel{appB_expansion:eq-tail}{{S4.11}{18}{The exponentially small part}{equation.4.11}{}}
+\newlabel{appB_expansion:eq-Gk}{{S4.12}{18}{The exponentially small part}{equation.4.12}{}}
+\newlabel{appB_expansion:eq-cauchy}{{S4.13}{18}{The exponentially small part}{equation.4.13}{}}
+\citation{Zagier2008}
+\citation{Zagier2008}
+\newlabel{appB_expansion:prop-form}{{S4.3}{19}{Form of the expansion}{theorem.4.3}{}}
+\newlabel{appB_expansion:eq-general}{{S4.14}{19}{Form of the expansion}{equation.4.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.4}Lambert series and Eisenstein series}{19}{subsection.4.4}\protected@file@percent }
+\newlabel{appB_expansion:eq-bm}{{S4.15}{19}{Lambert series and Eisenstein series}{equation.4.15}{}}
+\newlabel{appB_expansion:eq-lambert}{{S4.16}{19}{Lambert series and Eisenstein series}{equation.4.16}{}}
+\newlabel{appB_expansion:eq-two-points}{{S4.17}{19}{Lambert series and Eisenstein series}{equation.4.17}{}}
+\citation{DLMF}
+\newlabel{appB_expansion:eq-tau0}{{S4.18}{20}{Lambert series and Eisenstein series}{equation.4.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.5}The constant $C_{2}$}{20}{subsection.4.5}\protected@file@percent }
+\newlabel{appB_expansion:eq-J}{{S4.19}{20}{The constant \texorpdfstring {$C_{2}$}{C2}}{equation.4.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.6}The coefficients $C_{0}$ and $C_{-2}$}{20}{subsection.4.6}\protected@file@percent }
+\newlabel{appB_expansion:eq-m1}{{S4.20}{20}{The coefficients \texorpdfstring {$C_{0}$}{C0} and \texorpdfstring {$C_{-2}$}{C-2}}{equation.4.20}{}}
+\newlabel{appB_expansion:eq-m2}{{S4.21}{20}{The coefficients \texorpdfstring {$C_{0}$}{C0} and \texorpdfstring {$C_{-2}$}{C-2}}{equation.4.21}{}}
+\citation{Wu2004}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S4.7}Higher coefficients and numerical confirmation}{21}{subsection.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Computer algebra.}{21}{section*.7}\protected@file@percent }
+\newlabel{appB_expansion:eq-higher}{{S4.22}{21}{Computer algebra}{equation.4.22}{}}
+\@writefile{toc}{\contentsline {paragraph}{Numerical confirmation.}{21}{section*.8}\protected@file@percent }
+\newlabel{appB_expansion:rem-status}{{S4.4}{21}{What is not proved}{theorem.4.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S5}Mean first-passage times: verification and three dimensions}{21}{section.5}\protected@file@percent }
+\newlabel{sup_mfpt:sec}{{S5}{21}{Mean first-passage times: verification and three dimensions}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S5.1}Exact values and verification of the single sums}{21}{subsection.5.1}\protected@file@percent }
+\newlabel{appA_proofs:ssec-verif}{{S5.1}{21}{Exact values and verification of the single sums}{subsection.5.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S3}{\ignorespaces Exact corner-to-corner mean first-passage times for $d=2$: $qT_{N}$ from exact rational solves of $(I-Q)h=\mathbf  {1}$, and $T_{N}$ in steps at $q=0.8$. Decimals are truncated.}}{21}{table.3}\protected@file@percent }
+\newlabel{s4_mfpt:tab-exact}{{S3}{21}{Exact corner-to-corner mean first-passage times for $\dd =2$: $q\TN $ from exact rational solves of $(I-\Qm )h=\one $, and $\TN $ in steps at $q=0.8$. Decimals are truncated}{table.3}{}}
+\citation{TanTan2020}
+\citation{TanTan2020}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces Double-precision evaluation of $qT_{N}$ ($d=2$, corner to corner) by different routes, as relative difference from form (b) of Theorem~\ref {s4_mfpt:thm-single}: sparse solve of $(I-Q)h=\mathbf  {1}$ at $q=0.8$ (direct factorisation up to $N=300$, conjugate gradients from $N=402$, up to $N=1000$), cosine double sum \eqref  {s4_mfpt:eq-cosine-cc} (up to $N=6000$), and form (a), which is not finite for $N\ge 403$ (vertical line). Diamonds: form (b) in double precision against 40-digit arithmetic. Differences that are exactly zero are drawn at $10^{-17}$. The growth of the first two curves is rounding in the linear solve and in the $O(N^{2})$-term sum, not in form (b).}}{22}{figure.3}\protected@file@percent }
+\newlabel{s4_mfpt:fig-verif}{{S3}{22}{Double-precision evaluation of $q\TN $ ($\dd =2$, corner to corner) by different routes, as relative difference from form (b) of Theorem~\ref {s4_mfpt:thm-single}: sparse solve of $(I-\Qm )h=\one $ at $q=0.8$ (direct factorisation up to $N=300$, conjugate gradients from $N=402$, up to $N=1000$), cosine double sum \eqref {s4_mfpt:eq-cosine-cc} (up to $N=6000$), and form (a), which is not finite for $N\ge 403$ (vertical line). Diamonds: form (b) in double precision against 40-digit arithmetic. Differences that are exactly zero are drawn at $10^{-17}$. The growth of the first two curves is rounding in the linear solve and in the $\Order (N^{2})$-term sum, not in form (b)}{figure.3}{}}
+\citation{Hasimoto1959}
+\citation{YehHummer2004}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces Mean first-passage time $T_{\mathbf  {o}\to \mathbf  {a}}$ (steps) from every start site $\mathbf  {o}=(o_1,o_2)$ to a fixed target $\mathbf  {a}$ (square marker), computed with the single sum \eqref  {s4_mfpt:eq-pair}; $d=2$, $N=35$, $q=0.8$, discrete time, zero-based coordinates. Left: corner target $(34,34)$; the value at $(0,0)$ is $T_{N}=14\,100.81$. Right: interior target $(8,22)$.}}{23}{figure.4}\protected@file@percent }
+\newlabel{s4_mfpt:fig-landscape}{{S4}{23}{Mean first-passage time $\MF _{\vo \to \va }$ (steps) from every start site $\vo =(o_1,o_2)$ to a fixed target $\va $ (square marker), computed with the single sum \eqref {s4_mfpt:eq-pair}; $\dd =2$, $N=35$, $q=0.8$, discrete time, zero-based coordinates. Left: corner target $(34,34)$; the value at $(0,0)$ is $\TN =14\,100.81$. Right: interior target $(8,22)$}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S4}{\ignorespaces Relative error of the expansion \eqref  {s4_mfpt:eq-expansion} truncated after the stated number of terms (two terms: $(8/\pi )N^{2}\ln N+C_{2}N^{2}$; five terms: up to $C_{-4}N^{-4}$), against the exact $qT_{N}$.}}{23}{table.4}\protected@file@percent }
+\newlabel{s4_mfpt:tab-trunc}{{S4}{23}{Relative error of the expansion \eqref {s4_mfpt:eq-expansion} truncated after the stated number of terms (two terms: $(8/\pi )N^{2}\ln N+C_{2}N^{2}$; five terms: up to $C_{-4}N^{-4}$), against the exact $q\TN $}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S5.2}The expansion in numbers}{23}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S5.3}Three dimensions}{23}{subsection.5.3}\protected@file@percent }
+\newlabel{sup_mfpt:ssec-3d}{{S5.3}{23}{Three dimensions}{subsection.5.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces Relative error of the expansion \eqref  {s4_mfpt:eq-expansion} truncated after one to five terms, against exact values of $qT_{N}$ computed with form (b) to 50 digits ($d=2$, corner to corner; $N=2^{j}$, $3^{j}$, $10^{j}$ and a few other sizes up to $N=524\,288$). Curves end where the error reaches the precision of the stored values.}}{24}{figure.5}\protected@file@percent }
+\newlabel{s4_mfpt:fig-asym}{{S5}{24}{Relative error of the expansion \eqref {s4_mfpt:eq-expansion} truncated after one to five terms, against exact values of $q\TN $ computed with form (b) to 50 digits ($\dd =2$, corner to corner; $N=2^{j}$, $3^{j}$, $10^{j}$ and a few other sizes up to $N=524\,288$). Curves end where the error reaches the precision of the stored values}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S6}Exact modes: proofs, further values and fits}{24}{section.6}\protected@file@percent }
+\newlabel{sup_modes:sec}{{S6}{24}{Exact modes: proofs, further values and fits}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S6.1}Proofs for one dimension}{24}{subsection.6.1}\protected@file@percent }
+\newlabel{sup_modes:ssec-1d-proofs}{{S6.1}{24}{Proofs for one dimension}{subsection.6.1}{}}
+\newlabel{s5_modes:obs-1d}{{S6.1}{25}{One dimension}{theorem.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces Mode-to-mean ratio $t^{*}/T$ against lattice size, corner to opposite corner. Lines: exact continuous-time values (independent of $q$). Symbols: exact discrete-time PMF at $q=0.8$. Dashed: closed-form approximation \eqref  {s6_mechanism:eq-L1}.}}{26}{figure.6}\protected@file@percent }
+\newlabel{s5_modes:fig-ratio}{{S6}{26}{Mode-to-mean ratio $\tmode /\MF $ against lattice size, corner to opposite corner. Lines: exact continuous-time values (independent of $q$). Symbols: exact discrete-time PMF at $q=0.8$. Dashed: closed-form approximation \eqref {s6_mechanism:eq-L1}}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S6.2}Two and three dimensions: further values and figures}{26}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S6.3}What scaling fits can and cannot show}{26}{subsection.6.3}\protected@file@percent }
+\newlabel{s5_modes:ssec-fits}{{S6.3}{26}{What scaling fits can and cannot show}{subsection.6.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces Compensated plots, corner to opposite corner. (a) $d=2$: $qT/N^{2}$ against $\ln N$ with the two-term law of Theorem~\ref {s4_mfpt:thm-expansion}. (b) $d=2$: $qt^{*}/N^{2}$ against $\ln \ln N$. (c) $d=3$: $qT/N^{3}$ against $1/N$ with $K_{3}+K_{3}'/N$. (d) $d=3$: $qt^{*}/N^{2}$ against $\ln N$. Filled symbols: exact continuous-time values; open squares: exact discrete-time PMF at $q=0.8$; dashed lines in (b) and (d): the closed-form approximation \eqref  {s6_mechanism:eq-L1}; grey segments: the slopes $4/\pi ^{2}$ and $6/\pi ^{2}$ of the leading laws (Theorem~\ref {s6b_rigorous:thm-laws}).}}{27}{figure.7}\protected@file@percent }
+\newlabel{s5_modes:fig-compensated}{{S7}{27}{Compensated plots, corner to opposite corner. (a) $\dd =2$: $q\MF /N^{2}$ against $\ln N$ with the two-term law of Theorem~\ref {s4_mfpt:thm-expansion}. (b) $\dd =2$: $q\tmode /N^{2}$ against $\ln \ln N$. (c) $\dd =3$: $q\MF /N^{3}$ against $1/N$ with $\Kthree +\Kthreep /N$. (d) $\dd =3$: $q\tmode /N^{2}$ against $\ln N$. Filled symbols: exact continuous-time values; open squares: exact discrete-time PMF at $q=0.8$; dashed lines in (b) and (d): the closed-form approximation \eqref {s6_mechanism:eq-L1}; grey segments: the slopes $4/\pi ^{2}$ and $6/\pi ^{2}$ of the leading laws (Theorem~\ref {s6b_rigorous:thm-laws})}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces Local exponents $\mathrm  {d}\ln (\cdot )/\mathrm  {d}\ln N$ of (a) the mode and (b) the mean, corner to opposite corner, from exact continuous-time values at successive sizes (finite differences, plotted at the geometric mean of the two sizes). The mode laws (Proposition~\ref {s5_modes:prop-1d-limit}, Theorem~\ref {s6b_rigorous:thm-laws}) give the limit $2$ for the mode exponent in every dimension, approached slowly for $d=2,3$ because of the logarithmic factors.}}{27}{figure.8}\protected@file@percent }
+\newlabel{s5_modes:fig-exponents}{{S8}{27}{Local exponents $\dif \ln (\cdot )/\dif \ln N$ of (a) the mode and (b) the mean, corner to opposite corner, from exact continuous-time values at successive sizes (finite differences, plotted at the geometric mean of the two sizes). The mode laws (Proposition~\ref {s5_modes:prop-1d-limit}, Theorem~\ref {s6b_rigorous:thm-laws}) give the limit $2$ for the mode exponent in every dimension, approached slowly for $\dd =2,3$ because of the logarithmic factors}{figure.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S5}{\ignorespaces Least-squares fits of each form to $\ln t^{*}_{\mathrm  {c}}$ (exact continuous-time modes, unit rate) and their extrapolation error, (prediction $-$ exact)/exact, at the largest computed size. Half-widths are $95\%$ least-squares intervals; on exact data they measure misfit, not noise. Last row of each block: closed-form approximation \eqref  {s6_mechanism:eq-L1}, no fitted parameter.}}{28}{table.5}\protected@file@percent }
+\newlabel{s5_modes:tab-fits}{{S5}{28}{Least-squares fits of each form to $\ln \tmodec $ (exact continuous-time modes, unit rate) and their extrapolation error, (prediction $-$ exact)/exact, at the largest computed size. Half-widths are $95\%$ least-squares intervals; on exact data they measure misfit, not noise. Last row of each block: closed-form approximation \eqref {s6_mechanism:eq-L1}, no fitted parameter}{table.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S7}Pole structure and shape: proofs and further results}{28}{section.7}\protected@file@percent }
+\newlabel{sup_mechanism:sec}{{S7}{28}{Pole structure and shape: proofs and further results}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S7.1}Proof of Proposition~\ref {s6_mechanism:prop-factorisation}}{28}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S7.2}The ingredients of the closed form}{28}{subsection.7.2}\protected@file@percent }
+\newlabel{sup_mechanism:ssec-ingredients}{{S7.2}{28}{The ingredients of the closed form}{subsection.7.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces Absolute relative error of the predicted continuous-time mode (unit rate), corner to corner, against the lattice size: (a) $d=2$, 43 sizes, $5\le N\le 16\,777\,216$; (b) $d=3$, 27 sizes, $5\le N\le 4096$. Circles: leading order \eqref  {s6_mechanism:eq-L0}; squares: closed-form approximation \eqref  {s6_mechanism:eq-L1} (for these placements $A=W$); triangles and diamonds: exact two- and three-exponential truncations. Dips of the closed-form curves mark sign changes of the error. The three-exponential curve in (b) levels off near $10^{-10}$, the accuracy to which the reference modes are known for $d=3$.}}{29}{figure.9}\protected@file@percent }
+\newlabel{s6_mechanism:fig-accuracy}{{S9}{29}{Absolute relative error of the predicted continuous-time mode (unit rate), corner to corner, against the lattice size: (a) $\dd =2$, 43 sizes, $5\le N\le 16\,777\,216$; (b) $\dd =3$, 27 sizes, $5\le N\le 4096$. Circles: leading order \eqref {s6_mechanism:eq-L0}; squares: closed-form approximation \eqref {s6_mechanism:eq-L1} (for these placements $A=W$); triangles and diamonds: exact two- and three-exponential truncations. Dips of the closed-form curves mark sign changes of the error. The three-exponential curve in (b) levels off near $10^{-10}$, the accuracy to which the reference modes are known for $\dd =3$}{figure.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S7.3}Shape in discrete time}{29}{subsection.7.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {S6}{\ignorespaces Other placements. (a) Point targets, continuous time at unit rate: corner start and centre target (\textsc  {c2m}) and centre start and corner target (\textsc  {m2c}), odd $N$; the last column is the signed error of \eqref  {s6_mechanism:eq-L1}, which does not apply to \textsc  {m2c}{} ($A=0$, $b_1>0$). (b) Exit from the centre through an absorbing boundary layer (\textsc  {exit}): continuum limit of $t^{*}/T$ and exact lattice value at $q=0.8$ (discrete time).}}{30}{table.6}\protected@file@percent }
+\newlabel{s6_mechanism:tab-geometries}{{S6}{30}{Other placements. (a) Point targets, continuous time at unit rate: corner start and centre target (\CtM ) and centre start and corner target (\MtC ), odd $N$; the last column is the signed error of \eqref {s6_mechanism:eq-L1}, which does not apply to \MtC {} ($A=0$, $b_1>0$). (b) Exit from the centre through an absorbing boundary layer (\EXIT ): continuum limit of $\tmode /\MF $ and exact lattice value at $q=0.8$ (discrete time)}{table.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces Mode-to-mean ratio $t^{*}/T$ against the lattice size for four placements, (a) $d=2$, (b) $d=3$. Lines: continuous time; open symbols: exact discrete-time modes at $q=0.8$ (circles: corner to opposite corner; squares: corner to centre; triangles: centre to corner). Diamonds: exit from the centre through an absorbing boundary layer, discrete time, $q=0.8$; dotted line: its continuum limit, $0.474907$ ($d=2$) and $0.560839$ ($d=3$).}}{30}{figure.10}\protected@file@percent }
+\newlabel{s6_mechanism:fig-geometries}{{S10}{30}{Mode-to-mean ratio $\tmode /\MF $ against the lattice size for four placements, (a) $\dd =2$, (b) $\dd =3$. Lines: continuous time; open symbols: exact discrete-time modes at $q=0.8$ (circles: corner to opposite corner; squares: corner to centre; triangles: centre to corner). Diamonds: exit from the centre through an absorbing boundary layer, discrete time, $q=0.8$; dotted line: its continuum limit, $0.474907$ ($\dd =2$) and $0.560839$ ($\dd =3$)}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S7.4}Other placements and extended targets}{31}{subsection.7.4}\protected@file@percent }
+\newlabel{sup_mechanism:ssec-geometries}{{S7.4}{31}{Other placements and extended targets}{subsection.7.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S8}Proofs of the results on the mode}{31}{section.8}\protected@file@percent }
+\newlabel{appD_rigorous:sec}{{S8}{31}{Proofs of the results on the mode}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.1}Two lemmas used by the certificates}{31}{subsection.8.1}\protected@file@percent }
+\newlabel{appD_rigorous:lem-tail}{{S8.1}{31}{Tail lemma}{theorem.8.1}{}}
+\newlabel{appD_rigorous:lem-encl}{{S8.2}{31}{Rational enclosure of the mean}{theorem.8.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.2}Structure and signs (Section~\ref {s6b_rigorous:ssec-structure})}{32}{subsection.8.2}\protected@file@percent }
+\newlabel{appD_rigorous:eq-signrule}{{S8.1}{32}{Structure and signs (Section~\ref {s6b_rigorous:ssec-structure})}{equation.8.1}{}}
+\newlabel{appD_rigorous:lem-parity}{{S8.3}{32}{}{theorem.8.3}{}}
+\citation{Ibragimov1956}
+\citation{BagnoliBergstrom2005}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.3}Unimodality (Section~\ref {s6b_rigorous:ssec-unimodal})}{33}{subsection.8.3}\protected@file@percent }
+\citation{DavenportPolya1949}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.4}One dimension and the closed form (Sections~\ref {s6b_rigorous:ssec-1d} and~\ref {s6b_rigorous:ssec-cf})}{34}{subsection.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.5}The additions to Section~\ref {s4_mfpt:sec}}{35}{subsection.8.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S8.6}Further remarks on the statements of Section~\ref {s6b_rigorous:sec}}{35}{subsection.8.6}\protected@file@percent }
+\newlabel{appD_rigorous:ssec-remarks}{{S8.6}{35}{Further remarks on the statements of Section~\ref {s6b_rigorous:sec}}{subsection.8.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S9}Inert defects: validation, extended results and proofs}{36}{section.9}\protected@file@percent }
+\newlabel{sup_defects:sec}{{S9}{36}{Inert defects: validation, extended results and proofs}{section.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.1}Model and exact computation}{36}{subsection.9.1}\protected@file@percent }
+\newlabel{sup_defects:ssec-validation}{{S9.1}{36}{Model and exact computation}{subsection.9.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.2}The density sweep in full}{36}{subsection.9.2}\protected@file@percent }
+\newlabel{sup_defects:ssec-sweep}{{S9.2}{36}{The density sweep in full}{subsection.9.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S7}{\ignorespaces Validation of the exact machinery ($q=0.8$). ``Code~A'' and ``code~B'' are the two separately written implementations that produced samples~A and~B of Section~\ref {s7_defects_density:ssec-sweep}.}}{37}{table.7}\protected@file@percent }
+\newlabel{s7_defects_density:tab-validation}{{S7}{37}{Validation of the exact machinery ($q=0.8$). ``Code~A'' and ``code~B'' are the two separately written implementations that produced samples~A and~B of Section~\ref {s7_defects_density:ssec-sweep}}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces Exact first-passage PMFs in discrete time for $N=35$, $q=0.8$, corner to opposite corner (logarithmic time axis). (a)~Clean lattice, one uniform placement with $p=0.20$, and two deterministic geometries of Section~\ref {s8_defects_placement:ssec-capture}: the target enclosed by $10$ blocked sites and the start enclosed by $16$, each with a one-site opening. Circles mark the modes (exact maximisers), triangles the means; the legend gives $t^{*}/T$. (b)~The three configurations with blocked sites (dark; start: dot, bottom left; target: star, top right).}}{37}{figure.11}\protected@file@percent }
+\newlabel{s7_defects_density:fig-pmf}{{S11}{37}{Exact first-passage PMFs in discrete time for $N=35$, $q=0.8$, corner to opposite corner (logarithmic time axis). (a)~Clean lattice, one uniform placement with $p=0.20$, and two deterministic geometries of Section~\ref {s8_defects_placement:ssec-capture}: the target enclosed by $10$ blocked sites and the start enclosed by $16$, each with a one-site opening. Circles mark the modes (exact maximisers), triangles the means; the legend gives $\tmode /\MF $. (b)~The three configurations with blocked sites (dark; start: dot, bottom left; target: star, top right)}{figure.11}{}}
+\citation{Cserti2000}
+\@writefile{lot}{\contentsline {table}{\numberline {S8}{\ignorespaces Density sweep at $N=35$, $q=0.8$: samples~A and~B pooled ($800$ placements per row; $\pm $ is a $95\%$ interval over placements). ``acc.''\ is the fraction of drawn placements in which the target is connected to the start. Time factors are ensemble means divided by the clean values $T=14\,100.8$ and $t^{*}=2493$; $\Theta (p)$ is the homogenised factor \eqref  {s7_defects_density:eq-theta}, estimate $\Theta _{192}$ of Table~\ref {s7_defects_density:tab-homog}. The interval of $\langle t^{*}\rangle /\langle T\rangle $ is a percentile bootstrap. Clean lattice: $t^{*}/T=0.1768$, CV $=0.918$.}}{38}{table.8}\protected@file@percent }
+\newlabel{s7_defects_density:tab-sweep}{{S8}{38}{Density sweep at $N=35$, $q=0.8$: samples~A and~B pooled ($800$ placements per row; $\pm $ is a $95\%$ interval over placements). ``acc.''\ is the fraction of drawn placements in which the target is connected to the start. Time factors are ensemble means divided by the clean values $\MF =14\,100.8$ and $\tmode =2493$; $\Thetap (p)$ is the homogenised factor \eqref {s7_defects_density:eq-theta}, estimate $\Thetap _{192}$ of Table~\ref {s7_defects_density:tab-homog}. The interval of $\langle \tmode \rangle /\langle \MF \rangle $ is a percentile bootstrap. Clean lattice: $\tmode /\MF =0.1768$, CV $=0.918$}{table.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.3}Effective medium}{38}{subsection.9.3}\protected@file@percent }
+\newlabel{sup_defects:ssec-emt}{{S9.3}{38}{Effective medium}{subsection.9.3}{}}
+\citation{WatsonLeath1974}
+\citation{Nieuwenhuizen1986}
+\citation{Ernst1987}
+\citation{Kirkpatrick1973}
+\citation{WatsonLeath1974}
+\@writefile{lot}{\contentsline {table}{\numberline {S9}{\ignorespaces Homogenised transport coefficients of the site-diluted square lattice with uniformly placed blocked sites. Columns~2--6: $192\times 192$ tori, $12$ placements per $p$ ($\pm $: $95\%$ interval; $P_{\infty }$ is the fraction of sites in the largest cluster); column~6 is the estimate $\Theta _{192}$. $\Theta _{160}$: independent estimate from $160\times 160$ tori, $10$ placements. $\Theta _{200}$: $200\times 200$ tori, $40$ placements.}}{40}{table.9}\protected@file@percent }
+\newlabel{s7_defects_density:tab-homog}{{S9}{40}{Homogenised transport coefficients of the site-diluted square lattice with uniformly placed blocked sites. Columns~2--6: $192\times 192$ tori, $12$ placements per $p$ ($\pm $: $95\%$ interval; $\Pinf $ is the fraction of sites in the largest cluster); column~6 is the estimate $\Thetap _{192}$. $\Thetap _{160}$: independent estimate from $160\times 160$ tori, $10$ placements. $\Thetap _{200}$: $200\times 200$ tori, $40$ placements}{table.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.4}Size dependence and the whole distribution}{40}{subsection.9.4}\protected@file@percent }
+\newlabel{sup_defects:ssec-size}{{S9.4}{40}{Size dependence and the whole distribution}{subsection.9.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S10}{\ignorespaces Size dependence under uniform placement ($q=0.8$; $\pm $ is a $95\%$ interval over placements; $\Theta $ is the estimate $\Theta _{200}$ of Table~\ref {s7_defects_density:tab-homog}). $K$: placements with certified modes; ``shift'' is the relative difference between the ratio with defects and the clean ratio at the same $N$, for the mean of per-placement ratios and for the ratio of ensemble means (percentile-bootstrap interval). $K'$: placements of a separate sample for which only the mean was computed. Both samples are from the second code.}}{41}{table.10}\protected@file@percent }
+\newlabel{s7_defects_density:tab-size}{{S10}{41}{Size dependence under uniform placement ($q=0.8$; $\pm $ is a $95\%$ interval over placements; $\Thetap $ is the estimate $\Thetap _{200}$ of Table~\ref {s7_defects_density:tab-homog}). $K$: placements with certified modes; ``shift'' is the relative difference between the ratio with defects and the clean ratio at the same $N$, for the mean of per-placement ratios and for the ratio of ensemble means (percentile-bootstrap interval). $K'$: placements of a separate sample for which only the mean was computed. Both samples are from the second code}{table.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.5}What controls the mean and the mode}{41}{subsection.9.5}\protected@file@percent }
+\newlabel{sup_defects:ssec-mechanism}{{S9.5}{41}{What controls the mean and the mode}{subsection.9.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.6}Single-defect susceptibilities}{41}{subsection.9.6}\protected@file@percent }
+\newlabel{sup_defects:ssec-susc}{{S9.6}{41}{Single-defect susceptibilities}{subsection.9.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces Size dependence of time dilation under uniform placement, $q=0.8$, corner to opposite corner, discrete time; circles $p=0.1$, squares $p=0.2$ (displaced horizontally for clarity); bars are $95\%$ intervals over placements, and the shaded bands the $95\%$ intervals of $\Theta _{200}$. (a)~Ensemble mean of $T$ divided by $\Theta \,T_{\mathrm  {clean}}$ ($200$--$800$ placements per point, sample~B). (b)~Ensemble mean of $t^{*}$ divided by $\Theta \,t^{*}_{\mathrm  {clean}}$: filled symbols sample~B ($60$--$400$ placements), open symbols sample~A ($40$--$200$ placements). (c)~Shift of $t^{*}/T$ relative to the clean lattice of the same $N$ (sample~B): mean of per-placement ratios (filled, solid) and ratio of ensemble means (open, dotted).}}{42}{figure.12}\protected@file@percent }
+\newlabel{s7_defects_density:fig-size}{{S12}{42}{Size dependence of time dilation under uniform placement, $q=0.8$, corner to opposite corner, discrete time; circles $p=0.1$, squares $p=0.2$ (displaced horizontally for clarity); bars are $95\%$ intervals over placements, and the shaded bands the $95\%$ intervals of $\Thetap _{200}$. (a)~Ensemble mean of $\MF $ divided by $\Thetap \,\MF _{\mathrm {clean}}$ ($200$--$800$ placements per point, sample~B). (b)~Ensemble mean of $\tmode $ divided by $\Thetap \,\tmode _{\mathrm {clean}}$: filled symbols sample~B ($60$--$400$ placements), open symbols sample~A ($40$--$200$ placements). (c)~Shift of $\tmode /\MF $ relative to the clean lattice of the same $N$ (sample~B): mean of per-placement ratios (filled, solid) and ratio of ensemble means (open, dotted)}{figure.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces What controls the mean and the mode ($N=35$, $q=0.8$, corner to opposite corner, discrete time). (a)~Exact mean first-passage time against $(4n/q)G_{\mathbf  {a}\mathbf  {a}}$ for the 400 uniform placements of sample~A at $p=0.2$; the line is the diagonal, and the offset from it is the cross term $-(4n/q)G_{\mathbf  {o}\mathbf  {a}}$. (b)~Mode against mean for the same placements, logarithmic axes; solid line: least-squares fit (slope $0.30$); dashed line: slope 1, the behaviour under a pure dilation of time. (c)~Ensemble mean of $G_{\mathbf  {a}\mathbf  {a}}-G_{\mathbf  {o}\mathbf  {a}}$ relative to the clean lattice for the uniform and the corner-thinned placement (400 placements per point), and the homogenised value $\Sigma _{0}/\Sigma (p)$ of Section~\ref {s7_defects_density:ssec-emt}.}}{42}{figure.13}\protected@file@percent }
+\newlabel{s8_defects_placement:fig-mechanism}{{S13}{42}{What controls the mean and the mode ($N=35$, $q=0.8$, corner to opposite corner, discrete time). (a)~Exact mean first-passage time against $(4\nn /q)\Glap _{\va \va }$ for the 400 uniform placements of sample~A at $p=0.2$; the line is the diagonal, and the offset from it is the cross term $-(4\nn /q)\Glap _{\vo \va }$. (b)~Mode against mean for the same placements, logarithmic axes; solid line: least-squares fit (slope $0.30$); dashed line: slope 1, the behaviour under a pure dilation of time. (c)~Ensemble mean of $\Glap _{\va \va }-\Glap _{\vo \va }$ relative to the clean lattice for the uniform and the corner-thinned placement (400 placements per point), and the homogenised value $\condz /\cond (p)$ of Section~\ref {s7_defects_density:ssec-emt}}{figure.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces Single-defect susceptibilities at $N=35$, $q=0.8$ (discrete time): each site is blocked alone and the exact mean and mode are recomputed. (a)~$N^{2}\chi _{T}(\mathbf  {x})$, (b)~$N^{2}\chi _{t^{*}}(\mathbf  {x})$, (c)~their difference. Circle: start; star: target. The colour scale is linear between $-1$ and $1$ and logarithmic beyond. Blue sites shorten the first-passage statistic when blocked.}}{43}{figure.14}\protected@file@percent }
+\newlabel{s8_defects_placement:fig-maps}{{S14}{43}{Single-defect susceptibilities at $N=35$, $q=0.8$ (discrete time): each site is blocked alone and the exact mean and mode are recomputed. (a)~$N^{2}\chiT (\vx )$, (b)~$N^{2}\chim (\vx )$, (c)~their difference. Circle: start; star: target. The colour scale is linear between $-1$ and $1$ and logarithmic beyond. Blue sites shorten the first-passage statistic when blocked}{figure.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S11}{\ignorespaces First-order slopes \eqref  {s8_defects_placement:eq-first-order} at $N=35$ and measured secants $(\langle A\rangle /A_{\mathrm  {clean}}-1)/p$ at $p=25/1225$ (400 placements per sample, $\pm $ 95\% confidence interval). The secants contain the second-order terms, which the estimate omits.}}{43}{table.11}\protected@file@percent }
+\newlabel{s8_defects_placement:tab-slopes}{{S11}{43}{First-order slopes \eqref {s8_defects_placement:eq-first-order} at $N=35$ and measured secants $(\langle A\rangle /A_{\mathrm {clean}}-1)/p$ at $p=25/1225$ (400 placements per sample, $\pm $ 95\% confidence interval). The secants contain the second-order terms, which the estimate omits}{table.11}{}}
+\newlabel{s8_defects_placement:eq-first-order}{{S9.1}{43}{Single-defect susceptibilities}{equation.9.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S12}{\ignorespaces Selected deterministic geometries ($N=35$, $q=0.8$; exact values). A wall is a full column of blocked sites with a gap; a serpentine consists of equally spaced walls with three-site gaps on alternating sides; an enclosure is an L-shaped wall at Chebyshev distance $R$ from a corner with a one-site door, the second site from the lattice edge. CV is the coefficient of variation of the first-passage time.}}{44}{table.12}\protected@file@percent }
+\newlabel{s8_defects_placement:tab-det}{{S12}{44}{Selected deterministic geometries ($N=35$, $q=0.8$; exact values). A wall is a full column of blocked sites with a gap; a serpentine consists of equally spaced walls with three-site gaps on alternating sides; an enclosure is an L-shaped wall at Chebyshev distance $R$ from a corner with a one-site door, the second site from the lattice edge. CV is the coefficient of variation of the first-passage time}{table.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.7}Localised placements, deterministic geometries and periodic arrays}{44}{subsection.9.7}\protected@file@percent }
+\newlabel{s8_defects_placement:ssec-det}{{S9.7}{44}{Localised placements, deterministic geometries and periodic arrays}{subsection.9.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.8}A two-time-scale heuristic}{45}{subsection.9.8}\protected@file@percent }
+\newlabel{sup_defects:ssec-twotime}{{S9.8}{45}{A two-time-scale heuristic}{subsection.9.8}{}}
+\newlabel{s8_defects_placement:eq-two-time-form}{{S9.2}{45}{A two-time-scale heuristic}{equation.9.2}{}}
+\newlabel{s8_defects_placement:eq-two-time}{{S9.3}{45}{A two-time-scale heuristic}{equation.9.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces Two time scales ($N=35$, $q=0.8$, corner to opposite corner, discrete time). (a)~Exact first-passage probability of the clean lattice and its truncations to the two and three slowest terms with non-zero weight (the legend gives the position of each maximum; the truncations are drawn only where they are on scale). (b)~Elasticity of the mode with respect to the mean for the six deterministic obstacles examined: exact values (circles) and the heuristic \eqref  {s8_defects_placement:eq-two-time} with $\tau $ and $c$ frozen, either at the values taken from the spectrum ($\tau =540$, $c=4.15$; triangles) or with $\tau $ set to the relaxation time 621 of the reflecting lattice and $c$ fitted to the clean mode (squares). The second choice is shown for comparison only: that mode has zero weight in the corner-to-corner law. The heuristic fails for the wall near the target, which also lengthens the transit.}}{46}{figure.15}\protected@file@percent }
+\newlabel{s8_defects_placement:fig-two-time}{{S15}{46}{Two time scales ($N=35$, $q=0.8$, corner to opposite corner, discrete time). (a)~Exact first-passage probability of the clean lattice and its truncations to the two and three slowest terms with non-zero weight (the legend gives the position of each maximum; the truncations are drawn only where they are on scale). (b)~Elasticity of the mode with respect to the mean for the six deterministic obstacles examined: exact values (circles) and the heuristic \eqref {s8_defects_placement:eq-two-time} with $\tau $ and $c$ frozen, either at the values taken from the spectrum ($\tau =540$, $c=4.15$; triangles) or with $\tau $ set to the relaxation time 621 of the reflecting lattice and $c$ fitted to the clean mode (squares). The second choice is shown for comparison only: that mode has zero weight in the corner-to-corner law. The heuristic fails for the wall near the target, which also lengthens the transit}{figure.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.9}A one-parameter family of shapes}{46}{subsection.9.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {S9.10}Other defect types}{46}{subsection.9.10}\protected@file@percent }
+\newlabel{sup_defects:ssec-other}{{S9.10}{46}{Other defect types}{subsection.9.10}{}}
+\@writefile{toc}{\contentsline {paragraph}{One dimension: permeable bonds.}{46}{section*.9}\protected@file@percent }
+\citation{LevinPeresWilmer2009}
+\citation{SarvaharmanGiuggioli2023}
+\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces Coefficient of variation against $t^{*}/T$ for all 13\,631 exactly solved configurations of sample~A ($N=35$, $q=0.8$, corner to opposite corner, discrete time; every configuration lies inside the frame): random placements of the density sweep (both placement laws; $p\le 0.2$ and $p\ge 0.25$ in different colours), localised placements, deterministic geometries, the clean lattices with $N=10$--$200$, and the clean one-dimensional chain with $N=100$. Dashed: the quadratic of the text.}}{47}{figure.16}\protected@file@percent }
+\newlabel{s8_defects_placement:fig-shape}{{S16}{47}{Coefficient of variation against $\tmode /\MF $ for all 13\,631 exactly solved configurations of sample~A ($N=35$, $q=0.8$, corner to opposite corner, discrete time; every configuration lies inside the frame): random placements of the density sweep (both placement laws; $p\le 0.2$ and $p\ge 0.25$ in different colours), localised placements, deterministic geometries, the clean lattices with $N=10$--$200$, and the clean one-dimensional chain with $N=100$. Dashed: the quadratic of the text}{figure.16}{}}
+\newlabel{s8_defects_placement:prop-1d-barriers}{{S9.1}{47}{Chain with barriers}{theorem.9.1}{}}
+\newlabel{s8_defects_placement:eq-1d-barriers}{{S9.4}{47}{Chain with barriers}{equation.9.4}{}}
+\citation{SarvaharmanGiuggioli2023}
+\@writefile{toc}{\contentsline {paragraph}{Two dimensions: permeable obstacles.}{48}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Partial traps.}{48}{section*.11}\protected@file@percent }
+\gdef \LT@i {\LT@entry 
+    {4}{39.45833pt}\LT@entry 
+    {4}{68.12498pt}\LT@entry 
+    {4}{74.29164pt}\LT@entry 
+    {4}{34.31944pt}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces Other defect types (discrete time, $q=0.8$; sample~A). (a)~Chain with $N=100$ and one barrier of permeability $\kappa =0.1$ on bond $k$: relative shift of the mean, from \eqref  {s8_defects_placement:eq-1d-barriers}, and of the mode. (b)~$N=35$, corner to opposite corner, permeable obstacles on $10\%$ of the sites: mean and mode relative to the clean lattice against $\kappa $ (100 placements; bars: 95\% confidence intervals). (c)~The same placements with partial traps of killing probability $\Delta $: probability $P_{\mathrm  {hit}}$ of reaching the target, the same under uniform killing at rate $p\Delta $ (dotted), conditional mean relative to the clean mean, and mode divided by the conditional mean.}}{49}{figure.17}\protected@file@percent }
+\newlabel{s8_defects_placement:fig-beyond}{{S17}{49}{Other defect types (discrete time, $q=0.8$; sample~A). (a)~Chain with $N=100$ and one barrier of permeability $\perm =0.1$ on bond $k$: relative shift of the mean, from \eqref {s8_defects_placement:eq-1d-barriers}, and of the mode. (b)~$N=35$, corner to opposite corner, permeable obstacles on $10\%$ of the sites: mean and mode relative to the clean lattice against $\perm $ (100 placements; bars: 95\% confidence intervals). (c)~The same placements with partial traps of killing probability $\trap $: probability $P_{\mathrm {hit}}$ of reaching the target, the same under uniform killing at rate $p\trap $ (dotted), conditional mean relative to the clean mean, and mode divided by the conditional mean}{figure.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {S10}Extended tables}{49}{section.10}\protected@file@percent }
+\newlabel{appC_tables:sec}{{S10}{49}{Extended tables}{section.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S10.1}Exact modes and means}{49}{subsection.10.1}\protected@file@percent }
+\newlabel{appC_tables:ssec-modes}{{S10.1}{49}{Exact modes and means}{subsection.10.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S13}{One dimension, reflecting end to absorbing end, $q=0.8$, discrete time: exact mode $t^{*}$ and mean $T=N(N-1)/q$ (15 of the 33 computed sizes, and three larger sizes).}}{49}{table.13}\protected@file@percent }
+\newlabel{appC_tables:tab-T1}{{S13}{49}{One dimension, reflecting end to absorbing end, $q=0.8$, discrete time: exact mode $\tmode $ and mean $\MF =N(N-1)/q$ (15 of the 33 computed sizes, and three larger sizes)}{table.13}{}}
+\gdef \LT@ii {\LT@entry 
+    {4}{17.87502pt}\LT@entry 
+    {4}{37.29167pt}\LT@entry 
+    {4}{63.04158pt}\LT@entry 
+    {4}{29.69444pt}}
+\gdef \LT@iii {\LT@entry 
+    {4}{17.87502pt}\LT@entry 
+    {4}{32.66667pt}\LT@entry 
+    {4}{63.04158pt}\LT@entry 
+    {4}{29.69444pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {S14}{Two dimensions, \textsc  {cc}, $q=0.8$, discrete time: exact mode and mean (15 of the 31 computed sizes). Means are printed to six significant figures.}}{50}{table.14}\protected@file@percent }
+\newlabel{appC_tables:tab-T2}{{S14}{50}{Two dimensions, \CC , $q=0.8$, discrete time: exact mode and mean (15 of the 31 computed sizes). Means are printed to six significant figures}{table.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S15}{Three dimensions, \textsc  {cc}, $q=0.8$, discrete time: exact mode and mean (all computed sizes). Means are printed to six significant figures.}}{50}{table.15}\protected@file@percent }
+\newlabel{appC_tables:tab-T3}{{S15}{50}{Three dimensions, \CC , $q=0.8$, discrete time: exact mode and mean (all computed sizes). Means are printed to six significant figures}{table.15}{}}
+\gdef \LT@iv {\LT@entry 
+    {4}{76.89302pt}\LT@entry 
+    {1}{111.2751pt}\LT@entry 
+    {4}{31.69444pt}\LT@entry 
+    {4}{31.69444pt}\LT@entry 
+    {1}{34.77443pt}\LT@entry 
+    {4}{45.19998pt}\LT@entry 
+    {4}{43.51393pt}\LT@entry 
+    {4}{43.51393pt}\LT@entry 
+    {4}{35.88893pt}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S10.2}Scaling fits}{51}{subsection.10.2}\protected@file@percent }
+\newlabel{appC_tables:ssec-fits}{{S10.2}{51}{Scaling fits}{subsection.10.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S16}{Least-squares fits of $\ln t^{*}$ against $N$ (\textsc  {cc}). Parameters are given with the half-width of their 95\% least-squares interval in brackets; ``rms'' and ``max'' are the root-mean-square and the largest absolute residual of $\ln t^{*}$, in units of $10^{-2}$; $\Delta \mathrm  {AICc}$ is relative to the best law of the panel. The last columns give the relative error, in per cent, of the fitted law at sizes outside the fitted window ($2^{24}=16\,777\,216$). The closed-form approximation \eqref  {s6_mechanism:eq-L1} and the closed form \eqref  {s6_mechanism:eq-L1-simple}, which have no fitted parameter, are assessed in Table~\ref {s6_mechanism:tab-accuracy}.}}{51}{table.16}\protected@file@percent }
+\newlabel{appC_tables:tab-fits-full}{{S16}{51}{Least-squares fits of $\ln \tmode $ against $N$ (\CC ). Parameters are given with the half-width of their 95\% least-squares interval in brackets; ``rms'' and ``max'' are the root-mean-square and the largest absolute residual of $\ln \tmode $, in units of $10^{-2}$; $\Delta \mathrm {AICc}$ is relative to the best law of the panel. The last columns give the relative error, in per cent, of the fitted law at sizes outside the fitted window ($2^{24}=16\,777\,216$). The closed-form approximation \eqref {s6_mechanism:eq-L1} and the closed form \eqref {s6_mechanism:eq-L1-simple}, which have no fitted parameter, are assessed in Table~\ref {s6_mechanism:tab-accuracy}}{table.16}{}}
+\gdef \LT@v {\LT@entry 
+    {1}{8.7927pt}\LT@entry 
+    {1}{31.64198pt}\LT@entry 
+    {4}{21.87502pt}\LT@entry 
+    {4}{19.81944pt}\LT@entry 
+    {4}{37.29167pt}\LT@entry 
+    {4}{61.18036pt}\LT@entry 
+    {4}{26.50002pt}\LT@entry 
+    {1}{27.7845pt}\LT@entry 
+    {1}{25.98601pt}\LT@entry 
+    {4}{53.7361pt}\LT@entry 
+    {4}{33.69444pt}\LT@entry 
+    {1}{48.07756pt}\LT@entry 
+    {1}{33.295pt}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S10.3}Full-support check and dependence on the activity}{52}{subsection.10.3}\protected@file@percent }
+\newlabel{appC_tables:ssec-shape}{{S10.3}{52}{Full-support check and dependence on the activity}{subsection.10.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S17}{Exact discrete first-passage mass functions iterated until $S(t)<10^{-12}$: number of steps, missing mass $1-\DOTSB \sum@ \slimits@ _{t}f(t)$, mode, number of local maxima and of local minima over the whole support, mean recomputed from the mass function, coefficient of variation, probability of arrival by the mode, and median. Geometry labels as in Section~\ref {s2_model:ssec-geom}.}}{52}{table.17}\protected@file@percent }
+\newlabel{appC_tables:tab-unimodal}{{S17}{52}{Exact discrete first-passage mass functions iterated until $\Sv (t)<10^{-12}$: number of steps, missing mass $1-\sum _{t}\pmf (t)$, mode, number of local maxima and of local minima over the whole support, mean recomputed from the mass function, coefficient of variation, probability of arrival by the mode, and median. Geometry labels as in Section~\ref {s2_model:ssec-geom}}{table.17}{}}
+\gdef \LT@vi {\LT@entry 
+    {1}{8.7927pt}\LT@entry 
+    {4}{21.87502pt}\LT@entry 
+    {4}{19.81944pt}\LT@entry 
+    {1}{60.76648pt}\LT@entry 
+    {1}{41.97108pt}\LT@entry 
+    {1}{76.52782pt}\LT@entry 
+    {4}{40.4861pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {S18}{Dependence on the activity $q$ and parity (\textsc  {cc}, exact discrete mass functions). ``Two-step'' is the first index of the maximising pair of $\tfrac  12[f(t)+f(t+1)]$; $t^{*}_{\mathrm  {c}}$ is the mode of the continuous-time density at unit rate.}}{53}{table.18}\protected@file@percent }
+\newlabel{appC_tables:tab-activity}{{S18}{53}{Dependence on the activity $q$ and parity (\CC , exact discrete mass functions). ``Two-step'' is the first index of the maximising pair of $\tfrac 12[\pmf (t)+\pmf (t+1)]$; $\tmodec $ is the mode of the continuous-time density at unit rate}{table.18}{}}
+\gdef \LT@vii {\LT@entry 
+    {4}{141.02475pt}\LT@entry 
+    {4}{21.87502pt}\LT@entry 
+    {4}{26.50002pt}\LT@entry 
+    {4}{44.4861pt}\LT@entry 
+    {4}{32.66667pt}\LT@entry 
+    {4}{33.69444pt}\LT@entry 
+    {4}{33.69444pt}\LT@entry 
+    {4}{33.69444pt}\LT@entry 
+    {4}{29.06944pt}\LT@entry 
+    {1}{44.60083pt}}
+\bibstyle{plainnat}
+\bibdata{refs}
+\@writefile{toc}{\contentsline {subsection}{\numberline {S10.4}Deterministic geometries}{54}{subsection.10.4}\protected@file@percent }
+\newlabel{appC_tables:ssec-defects}{{S10.4}{54}{Deterministic geometries}{subsection.10.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {S19}{The clean lattice and 28 deterministic placements of blocked sites, $N=35$, $q=0.8$, \textsc  {cc}, discrete time, all values exact: number $M$ of blocked sites, number $n$ of accessible sites, mean, mode, their ratio, their factors relative to the clean lattice ($T_{0}$, $t^{*}_{0}$: first row), coefficient of variation and median in units of the mean. \emph  {Key} (sites $(x_{1},x_{2})$, start $(0,0)$, target $(34,34)$). \texttt  {wall}: every site of the line $x_{1}=17$ (\texttt  {mid}), $5$ (\texttt  {nearstart}) or $29$ (\texttt  {neartarget}) is blocked except a gap of $g$ consecutive sites, centred or at the edge $x_{2}=0$ (\texttt  {startedge}) or $x_{2}=34$ (\texttt  {targetedge}). \texttt  {serpentine\_k}$K$: $K$ equally spaced walls of this kind with three-site gaps at alternating edges. \texttt  {target\_box\_R}$R$\texttt  {\_g}$G$, \texttt  {start\_box}: an L-shaped wall at Chebyshev distance $R$ from the corner, with a door on one arm: for $G=1$ one open site, the second site from the lattice edge (the edge site itself stays blocked); for $G=3$ the three sites nearest the edge. \texttt  {both\_box}: the two together. \texttt  {block}$K$: a solid $K\times K$ block occupying, in both coordinates, the sites $26$--$31$ (\texttt  {near\_target}), $3$--$8$ (\texttt  {near\_start}), or $14$--$19$ ($K=6$) and $11$--$22$ ($K=12$) in the centre. \texttt  {periodic\_a}$A$: the sites whose two coordinates are both congruent to a fixed offset modulo $A$ (offsets $1$, $2$, $1$ for $A=4$, $3$, $2$; for $A=3$ and $A=2$ this is the phase with the smallest factor of the mean).}}{54}{table.19}\protected@file@percent }
+\newlabel{appC_tables:tab-deterministic}{{S19}{54}{The clean lattice and 28 deterministic placements of blocked sites, $N=35$, $q=0.8$, \CC , discrete time, all values exact: number $M$ of blocked sites, number $\nn $ of accessible sites, mean, mode, their ratio, their factors relative to the clean lattice ($\MF _{0}$, $\tmode _{0}$: first row), coefficient of variation and median in units of the mean. \emph {Key} (sites $(x_{1},x_{2})$, start $(0,0)$, target $(34,34)$). \texttt {wall}: every site of the line $x_{1}=17$ (\texttt {mid}), $5$ (\texttt {nearstart}) or $29$ (\texttt {neartarget}) is blocked except a gap of $g$ consecutive sites, centred or at the edge $x_{2}=0$ (\texttt {startedge}) or $x_{2}=34$ (\texttt {targetedge}). \texttt {serpentine\_k}$K$: $K$ equally spaced walls of this kind with three-site gaps at alternating edges. \texttt {target\_box\_R}$R$\texttt {\_g}$G$, \texttt {start\_box}: an L-shaped wall at Chebyshev distance $R$ from the corner, with a door on one arm: for $G=1$ one open site, the second site from the lattice edge (the edge site itself stays blocked); for $G=3$ the three sites nearest the edge. \texttt {both\_box}: the two together. \texttt {block}$K$: a solid $K\times K$ block occupying, in both coordinates, the sites $26$--$31$ (\texttt {near\_target}), $3$--$8$ (\texttt {near\_start}), or $14$--$19$ ($K=6$) and $11$--$22$ ($K=12$) in the centre. \texttt {periodic\_a}$A$: the sites whose two coordinates are both congruent to a fixed offset modulo $A$ (offsets $1$, $2$, $1$ for $A=4$, $3$, $2$; for $A=3$ and $A=2$ this is the phase with the smallest factor of the mean)}{table.19}{}}
+\gdef \@abspage@last{56}

@@ -1,0 +1,42 @@
+[
+ {
+  "check": "Y1 residue-class decomposition into twisted groups; all groups in F1, F2 or the special group",
+  "ok": true,
+  "detail": "E2E N=992: G=62 rho=16.0000 groups n=15/16/17: 1/61/0 | E2E N=993: G=62 rho=16.0161 groups n=15/16/17: 0/62/0 | E2E N=1000: G=62 rho=16.1290 groups n=15/16/17: 0/55/7 | E2E N=1001: G=62 rho=16.1452 groups n=15/16/17: 0/54/8 | E2E N=1007: G=62 rho=16.2419 groups n=15/16/17: 0/48/14 | E2E N=1008: G=63 rho=16.0000 groups n=15/16/17: 1/62/0 | E2E N=1024: G=64 rho=16.0000 groups n=15/16/17: 1/63/0 | E2E N=1601: G=100 rho=16.0100 groups n=15/16/17: 0/100/0 | E2E N=1600: G=100 rho=16.0000 groups n=15/16/17: 1/99/0 | E2E N=4001: G=250 rho=16.0040 groups n=15/16/17: 0/250/0 | E2E N=4096: G=256 rho=16.0000 groups n=15/16/17: 1/255/0 | E2E N=100003: G=6250 rho=16.0005 groups n=15/16/17: 0/6248/2 | E2E N=65536: G=4096 rho=16.0000 groups n=15/16/17: 1/4095/0 | FOLD N=1985: G=62 rho=16.0081 groups n=15/16/17: 0/62/0 | FOLD N=1987: G=62 rho=16.0242 groups n=15/16/17: 0/61/1 | FOLD N=2001: G=62 rho=16.1371 groups n=15/16/17: 0/54/8 | FOLD N=2015: G=62 rho=16.2500 groups n=15/16/17: 0/47/15 | FOLD N=2017: G=63 rho=16.0079 groups n=15/16/17: 0/63/0 | FOLD N=3001: G=93 rho=16.1344 groups n=15/16/17: 0/81/12 | FOLD N=4001: G=125 rho=16.0040 groups n=15/16/17: 0/125/0 | FOLD N=100003: G=3125 rho=16.0005 groups n=15/16/17: 0/3124/1"
+ },
+ {
+  "check": "Y2 product over groups = characteristic polynomial of the path (mp 60 digits, N=992, 1000)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "Y3a Taylor models: |H_j(point) - Taylor polynomial| <= M_j R(t,p) at random real points of 6 boxes",
+  "ok": true,
+  "detail": "max observed error / bound = 3.32e-14"
+ },
+ {
+  "check": "Y3b Cauchy bound: |H_j| <= M_j at random complex points of the unit polydisc",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "Y4 negative controls are NOT certified",
+  "ok": true,
+  "detail": "['NOT CERTIFIED', 'NOT CERTIFIED']"
+ },
+ {
+  "check": "Y5 brute force (mp): 400 random points of F1/F2, H_j > 0 and C_j > 0 for 1 <= j <= 600",
+  "ok": true,
+  "detail": "min C_j/H_j^2 over j <= 600: 2.97e-15"
+ },
+ {
+  "check": "Y6 direct certificates beyond the direct range agree with Theorem 9.11",
+  "ok": true,
+  "detail": "E2E N=1024: LOGCONCAVE (certified) (n0=164191) | E2E N=1500: LOGCONCAVE (certified) (n0=352265) | E2E N=2000: LOGCONCAVE (certified) (n0=625687) | E2E N=4001: LOGCONCAVE (certified) (n0=2504000) | FOLD N=2049: LOGCONCAVE (certified) (n0=164352) | FOLD N=3001: LOGCONCAVE (certified) (n0=352500) | FOLD N=4001: LOGCONCAVE (certified) (n0=626000)"
+ },
+ {
+  "check": "Y7 direct (parameter-point) Arb certificate of every group of specific N: window j<100 and tail lemma at j0=100",
+  "ok": true,
+  "detail": "E2E N=1237: 77/77 groups certified directly | E2E N=5003: 312/312 groups certified directly | E2E N=40009: 2500/2500 groups certified directly | FOLD N=2003: 62/62 groups certified directly | FOLD N=30011: 937/937 groups certified directly"
+ }
+]

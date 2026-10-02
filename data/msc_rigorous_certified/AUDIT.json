@@ -1,0 +1,899 @@
+{
+ "failures": 0,
+ "assertions": 127,
+ "coverage": {
+  "d1_q4-5": {
+   "certified": "2--600, 800, 1000",
+   "packed": "2--600, 800, 1000",
+   "exact": "2--160",
+   "fpcore": "2--200, 250, 300, 350, 400, 450, 500, 550, 600",
+   "not_packed": ""
+  },
+  "d2_q4-5": {
+   "certified": "2--160, 180, 200",
+   "packed": "2--160, 180, 200",
+   "exact": "2--50",
+   "fpcore": "2--60, 70, 80, 90, 100",
+   "not_packed": ""
+  },
+  "d3_q4-5": {
+   "certified": "2--60",
+   "packed": "2--60",
+   "exact": "2--20",
+   "fpcore": "2--24, 28, 32, 36",
+   "not_packed": ""
+  },
+  "d1_q1-2": {
+   "certified": "2--300",
+   "packed": "2--300",
+   "exact": "2--120",
+   "fpcore": "2--120",
+   "not_packed": ""
+  },
+  "d2_q1-2": {
+   "certified": "2--80",
+   "packed": "2--80",
+   "exact": "2--40",
+   "fpcore": "2--40",
+   "not_packed": ""
+  },
+  "d3_q1-2": {
+   "certified": "2--32",
+   "packed": "2--32",
+   "exact": "2--16",
+   "fpcore": "2--16",
+   "not_packed": ""
+  },
+  "d1_q1-1": {
+   "certified": "2--200",
+   "packed": "2--200",
+   "exact": "2--100",
+   "fpcore": "2--100",
+   "not_packed": ""
+  },
+  "d2_q1-1": {
+   "certified": "2--80",
+   "packed": "2--80",
+   "exact": "2--40",
+   "fpcore": "2--40",
+   "not_packed": ""
+  },
+  "d3_q1-1": {
+   "certified": "2--32",
+   "packed": "2--32",
+   "exact": "2--16",
+   "fpcore": "2--16",
+   "not_packed": ""
+  }
+ },
+ "q1": {
+  "d1_q1-1": {
+   "strictly_unimodal": "2",
+   "multimodal": "4--200",
+   "tie_only": "3",
+   "two_maximisers": {
+    "5": [
+     4,
+     6
+    ],
+    "6": [
+     7,
+     9
+    ],
+    "8": [
+     15,
+     17
+    ],
+    "9": [
+     20,
+     22
+    ]
+   },
+   "max_certified_local_maxima": 37127
+  },
+  "d2_q1-1": {
+   "strictly_unimodal": "3--8, 10, 12, 14, 16, 19--20, 22--23, 25, 27--37, 39--50, 52--60, 62--80",
+   "multimodal": "9, 11, 13, 15, 17--18, 21, 24, 26, 38, 51, 61",
+   "tie_only": "2",
+   "two_maximisers": {
+    "2": [
+     2,
+     3
+    ]
+   },
+   "max_certified_local_maxima": 2
+  },
+  "d3_q1-1": {
+   "strictly_unimodal": "2--32",
+   "multimodal": "",
+   "tie_only": "",
+   "two_maximisers": {},
+   "max_certified_local_maxima": 1
+  }
+ },
+ "closed_form_samples": {
+  "d1_q4-5": {
+   "10": [
+    0.22403702630333996,
+    0.22403702630333996
+   ],
+   "20": [
+    0.18386271825166775,
+    0.18386271825166775
+   ],
+   "50": [
+    0.16759403119523986,
+    0.16759403119523986
+   ],
+   "100": [
+    0.16220540091816749,
+    0.16220540091816749
+   ],
+   "600": [
+    0.15824615360222433,
+    0.15824615360222433
+   ],
+   "800": [
+    0.1580483375772199,
+    0.1580483375772199
+   ],
+   "1000": [
+    0.15793529993857824,
+    0.15793529993857824
+   ]
+  },
+  "d2_q4-5": {
+   "10": [
+    0.005977397747997101,
+    0.005977397747997101
+   ],
+   "20": [
+    -0.004006638378808323,
+    -0.004006638378808323
+   ],
+   "50": [
+    -0.008910260479078962,
+    -0.008910260479078962
+   ],
+   "100": [
+    -0.009606059345203682,
+    -0.009606059345203682
+   ],
+   "160": [
+    -0.00968334868154198,
+    -0.00968334868154198
+   ],
+   "180": [
+    -0.00966042730387365,
+    -0.00966042730387365
+   ],
+   "200": [
+    -0.009638089240983175,
+    -0.009638089240983175
+   ]
+  },
+  "d3_q4-5": {
+   "10": [
+    0.0027485048364746805,
+    0.0027485048364746805
+   ],
+   "20": [
+    0.0006399836683819364,
+    0.0006399836683819364
+   ],
+   "50": [
+    0.0001944192832668936,
+    0.0001944192832668936
+   ],
+   "60": [
+    0.00014394515026964152,
+    0.00014394515026964152
+   ]
+  },
+  "d1_q1-2": {
+   "10": [
+    0.2281863043586055,
+    0.2281863043586055
+   ],
+   "20": [
+    0.1829268583953423,
+    0.1829268583953423
+   ],
+   "50": [
+    0.1668790317885067,
+    0.1668790317885067
+   ],
+   "100": [
+    0.16209972987095567,
+    0.16209972987095567
+   ],
+   "300": [
+    0.15900822366379652,
+    0.15900822366379652
+   ]
+  },
+  "d2_q1-2": {
+   "10": [
+    0.006709017673632007,
+    0.006709017673632007
+   ],
+   "20": [
+    -0.004819694184213377,
+    -0.004819694184213377
+   ],
+   "50": [
+    -0.008933843816128835,
+    -0.008933843816128835
+   ],
+   "80": [
+    -0.009539746687193831,
+    -0.009539746687193831
+   ]
+  },
+  "d3_q1-2": {
+   "10": [
+    0.0015618202153664263,
+    0.0015618202153664263
+   ],
+   "20": [
+    0.0003856914234852701,
+    0.0003856914234852701
+   ],
+   "32": [
+    0.00019806230322074012,
+    0.00019806230322074012
+   ]
+  }
+ },
+ "law_1d": {
+  "d1_q4-5": {
+   "delta_lo": "-1097/1000",
+   "delta_hi": "-99/1000",
+   "ratio_const": "4/5",
+   "N_max": 600
+  },
+  "d1_q1-2": {
+   "delta_lo": "-29/25",
+   "delta_hi": "-41/250",
+   "ratio_const": "1/2",
+   "N_max": 300
+  }
+ },
+ "report": [
+  {
+   "assertion": "[d1_q4-5] a certificate exists for every N of the stated set (601 values, 2..600 + extras)",
+   "status": "PASS",
+   "detail": "file has 601 lines"
+  },
+  {
+   "assertion": "[d1_q4-5] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--600, 800, 1000"
+  },
+  {
+   "assertion": "[d1_q4-5] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--160"
+  },
+  {
+   "assertion": "[d1_q4-5] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--200, 250, 300, 350, 400, 450, 500, 550, 600"
+  },
+  {
+   "assertion": "[d1_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.41e-12"
+  },
+  {
+   "assertion": "[d1_q4-5] exceptional N=4: the rounded programs do not certify strict unimodality",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] a certificate exists for every N of the stated set (161 values, 2..160 + extras)",
+   "status": "PASS",
+   "detail": "file has 161 lines"
+  },
+  {
+   "assertion": "[d2_q4-5] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--160, 180, 200"
+  },
+  {
+   "assertion": "[d2_q4-5] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--50"
+  },
+  {
+   "assertion": "[d2_q4-5] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--60, 70, 80, 90, 100"
+  },
+  {
+   "assertion": "[d2_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 2.22e-14"
+  },
+  {
+   "assertion": "[d3_q4-5] a certificate exists for every N of the stated set (59 values, 2..60 + extras)",
+   "status": "PASS",
+   "detail": "file has 59 lines"
+  },
+  {
+   "assertion": "[d3_q4-5] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--60"
+  },
+  {
+   "assertion": "[d3_q4-5] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--20"
+  },
+  {
+   "assertion": "[d3_q4-5] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--24, 28, 32, 36"
+  },
+  {
+   "assertion": "[d3_q4-5] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.76e-12"
+  },
+  {
+   "assertion": "[d1_q1-2] a certificate exists for every N of the stated set (299 values, 2..300 + extras)",
+   "status": "PASS",
+   "detail": "file has 299 lines"
+  },
+  {
+   "assertion": "[d1_q1-2] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--300"
+  },
+  {
+   "assertion": "[d1_q1-2] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--120"
+  },
+  {
+   "assertion": "[d1_q1-2] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--120"
+  },
+  {
+   "assertion": "[d1_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.25e-11"
+  },
+  {
+   "assertion": "[d1_q1-2] exceptional N=3: the rounded programs do not certify strict unimodality",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] exceptional N=4: the rounded programs do not certify strict unimodality",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] a certificate exists for every N of the stated set (79 values, 2..80 + extras)",
+   "status": "PASS",
+   "detail": "file has 79 lines"
+  },
+  {
+   "assertion": "[d2_q1-2] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--80"
+  },
+  {
+   "assertion": "[d2_q1-2] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--40"
+  },
+  {
+   "assertion": "[d2_q1-2] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--40"
+  },
+  {
+   "assertion": "[d2_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 5.91e-11"
+  },
+  {
+   "assertion": "[d3_q1-2] a certificate exists for every N of the stated set (31 values, 2..32 + extras)",
+   "status": "PASS",
+   "detail": "file has 31 lines"
+  },
+  {
+   "assertion": "[d3_q1-2] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--32"
+  },
+  {
+   "assertion": "[d3_q1-2] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--16"
+  },
+  {
+   "assertion": "[d3_q1-2] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--16"
+  },
+  {
+   "assertion": "[d3_q1-2] (b) strictly unimodal with unique certified mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] (c) tail time T equals the mode, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] (c) a ratio gamma < 1 is recorded for every packed-verified N",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.09e-10"
+  },
+  {
+   "assertion": "[d1_q1-1] a certificate exists for every N of the stated set (199 values, 2..200 + extras)",
+   "status": "PASS",
+   "detail": "file has 199 lines"
+  },
+  {
+   "assertion": "[d1_q1-1] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-1] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--200"
+  },
+  {
+   "assertion": "[d1_q1-1] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--100"
+  },
+  {
+   "assertion": "[d1_q1-1] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--100"
+  },
+  {
+   "assertion": "[d2_q1-1] a certificate exists for every N of the stated set (79 values, 2..80 + extras)",
+   "status": "PASS",
+   "detail": "file has 79 lines"
+  },
+  {
+   "assertion": "[d2_q1-1] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-1] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--80"
+  },
+  {
+   "assertion": "[d2_q1-1] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--40"
+  },
+  {
+   "assertion": "[d2_q1-1] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--40"
+  },
+  {
+   "assertion": "[d3_q1-1] a certificate exists for every N of the stated set (31 values, 2..32 + extras)",
+   "status": "PASS",
+   "detail": "file has 31 lines"
+  },
+  {
+   "assertion": "[d3_q1-1] t0 = d(N-1) for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-1] verify_packed.py: no disagreement with the generator",
+   "status": "PASS",
+   "detail": "verified N = 2--32"
+  },
+  {
+   "assertion": "[d3_q1-1] exact programs: no disagreement with the generator, nor with each other",
+   "status": "PASS",
+   "detail": "exact N = 2--16"
+  },
+  {
+   "assertion": "[d3_q1-1] fpcore.py: output identical to the generator's wherever run",
+   "status": "PASS",
+   "detail": "N = 2--16"
+  },
+  {
+   "assertion": "Corollary q-scaling, d = 1: -7/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 1/2 for all 2 <= N <= 300, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Corollary q-scaling, d = 2: -4/5 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 3/10 for all 2 <= N <= 80, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Corollary q-scaling, d = 3: -11/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 2/5 for all 2 <= N <= 32, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "(d) (1,4/5,4): 0 = f(2) < f(3) = f(4) < f(5) > f(6) > ... (checked to t = 40)",
+   "status": "PASS",
+   "detail": "f(3)=f(4)=8/125, f(5)=208/3125"
+  },
+  {
+   "assertion": "(d) (1,1/2,3): 0 = f(1) < f(2) < f(3) = f(4) > f(5) > ... (checked to t = 40)",
+   "status": "PASS",
+   "detail": "f(3)=f(4)=5/64"
+  },
+  {
+   "assertion": "(d) (1,1/2,4): strictly increasing on 2 <= t <= 7, f(7) = f(8), strictly decreasing afterwards (to t = 40)",
+   "status": "PASS",
+   "detail": "f(7)=f(8)=637/16384"
+  },
+  {
+   "assertion": "(d) (1,4/5,4): both exact programs give maximisers [5], tail time 5; the generator's T is 5",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "(d) (1,1/2,3): both exact programs give maximisers [3, 4], tail time 4; the generator's T is 4",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "(d) (1,1/2,4): both exact programs give maximisers [7, 8], tail time 8; the generator's T is 8",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time",
+   "status": "PASS",
+   "detail": "N = [5, 6, 8, 9]: {5: [4, 6], 6: [7, 9], 8: [15, 17], 9: [20, 22]}"
+  },
+  {
+   "assertion": "[d1_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie",
+   "status": "PASS",
+   "detail": "unimodal: 2; multimodal: 4--200; tie only: 3"
+  },
+  {
+   "assertion": "[d1_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {3: [3], 4: [8]}"
+  },
+  {
+   "assertion": "[d2_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time",
+   "status": "PASS",
+   "detail": "N = [2]: {2: [2, 3]}"
+  },
+  {
+   "assertion": "[d2_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie",
+   "status": "PASS",
+   "detail": "unimodal: 3--8, 10, 12, 14, 16, 19--20, 22--23, 25, 27--37, 39--50, 52--60, 62--80; multimodal: 9, 11, 13, 15, 17--18, 21, 24, 26, 38, 51, 61; tie only: 2"
+  },
+  {
+   "assertion": "[d2_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {2: [2]}"
+  },
+  {
+   "assertion": "[d3_q1-1] every N without a certified unique mode is settled exactly: maximum attained twice, 'mode' is the smaller time",
+   "status": "PASS",
+   "detail": "N = []: {}"
+  },
+  {
+   "assertion": "[d3_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / weakly unimodal with an exact tie",
+   "status": "PASS",
+   "detail": "unimodal: 2--32; multimodal: none; tie only: none"
+  },
+  {
+   "assertion": "[d3_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-1] every relation left undecided is settled exactly; the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {}"
+  },
+  {
+   "assertion": "MFPT enclosures: 0 < lower <= upper, relative width < 1e-28, and for d = 1 they contain N(N-1)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] all N in 10..600 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] (c) 791/5000 t* <= t_cf - t* <= 2251/10000 t* for all 10 <= N <= 600  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "range [0.158244, 0.225044]"
+  },
+  {
+   "assertion": "[d1_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] isolated N = 800: relative error of the closed form in [0.158048, 0.158048]",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] isolated N = 1000: relative error of the closed form in [0.157935, 0.157935]",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] all N in 10..160 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] |t* - t_cf| <= 97/10000 t* for all 10 <= N <= 160  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 137: 0.009698"
+  },
+  {
+   "assertion": "[d2_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 180: relative error of the closed form in [-0.009660, -0.009660]",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 200: relative error of the closed form in [-0.009638, -0.009638]",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] all N in 10..60 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] |t* - t_cf| <= 11/4000 t* for all 10 <= N <= 60  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 10: 0.002749"
+  },
+  {
+   "assertion": "[d3_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] all N in 10..300 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] (c) 159/1000 t* <= t_cf - t* <= 1141/5000 t* for all 10 <= N <= 300  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "range [0.159008, 0.228186]"
+  },
+  {
+   "assertion": "[d1_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] all N in 10..80 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] |t* - t_cf| <= 477/50000 t* for all 10 <= N <= 80  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 80: 0.009540"
+  },
+  {
+   "assertion": "[d2_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] all N in 10..32 have a certified unique mode and an MFPT enclosure",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] |t* - t_cf| <= 157/100000 t* for all 10 <= N <= 32  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 10: 0.001562"
+  },
+  {
+   "assertion": "[d3_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Theorem tau: B(tau_-) > 0 and B(tau_+) < 0 at the stored rationals (mpmath.iv, 200 bits)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Theorem tau: the decimal bounds printed for tau* and kappa_1 contain [tau_-, tau_+] and [2 tau_-, 2 tau_+]",
+   "status": "PASS",
+   "detail": "width of the kappa_1 enclosure 6.15e-28"
+  },
+  {
+   "assertion": "[d1_q4-5] -1097/1000 < t* - kappa_1 (N-1/2)^2/q < -99/1000 for all 10 <= N <= 600, and the interval is shorter than 1",
+   "status": "PASS",
+   "detail": "length 0.998"
+  },
+  {
+   "assertion": "[d1_q4-5] t* = floor(kappa_1 (N-1/2)^2/q + (-99/1000)) for all 10 <= N <= 600 (both endpoints of the kappa_1 enclosure)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] |t*/E T - kappa_1| <= 4/5/(N(N-1)) for all 10 <= N <= 600",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] the isolated N = [800, 1000] satisfy the same two-sided bound",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] -29/25 < t* - kappa_1 (N-1/2)^2/q < -41/250 for all 10 <= N <= 300, and the interval is shorter than 1",
+   "status": "PASS",
+   "detail": "length 0.996"
+  },
+  {
+   "assertion": "[d1_q1-2] t* = floor(kappa_1 (N-1/2)^2/q + (-41/250)) for all 10 <= N <= 300 (both endpoints of the kappa_1 enclosure)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] |t*/E T - kappa_1| <= 1/2/(N(N-1)) for all 10 <= N <= 300",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Theorem C2: |C_2 - printed decimal| < 1e-50, and the two closed forms agree  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "C_2 in [[0.1546377878189172624907338308002830491917266198327"
+  },
+  {
+   "assertion": "Theorem rem: 0.3211 < r_N < 0.53213 for all 2 <= N <= 301  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "r_2 = 0.32110964, r_301 = 0.53212908"
+  },
+  {
+   "assertion": "Theorem rem: r_N strictly increasing on 2 <= N <= 301  (mpmath.iv)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Proposition rem (conditional on the single-sum formula): stored bound for 302 <= N <= 1500 is below 0.5321405, which is below C_0 = varpi^4/(9 pi^2); monotone; single sum agrees with the linear system on the overlap",
+   "status": "PASS",
+   "detail": "C_0 >= 0.5321408833"
+  },
+  {
+   "assertion": "Proposition rem: junction r_301 < r_302 (r_301: mpmath.iv from the linear-system enclosure; r_302: stored lower bound from the single sum, the minimum of the conditional range)",
+   "status": "PASS",
+   "detail": "sup r_301 <= 0.532129078392 < 0.532129156439"
+  },
+  {
+   "assertion": "Remark: q = 4/5 is not log-concave: f(3)^2 < f(2) f(4) for N = 3 and f(4)^2 < f(3) f(5) for N = 4 (exact)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Remark lc, N = 3: f(t)^2 - f(t-1) f(t+1) = (q^4/16) det(Q)^(t-2) for 2 <= t <= 40, failures exactly at odd t >= 3 iff q > 3 - sqrt 5 (exact, five values of q)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Remark lc, N = 4, q = 4/5: f(t)^2 < f(t-1) f(t+1) for t = 4 and for no other 2 <= t <= 400 (exact)",
+   "status": "PASS",
+   "detail": ""
+  }
+ ]
+}

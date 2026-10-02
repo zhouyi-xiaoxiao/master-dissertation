@@ -1,0 +1,33 @@
+{
+ "failures": 0,
+ "checks": {
+  "A first passage / supports": {
+   "ok": true,
+   "site_time_pairs": 2406,
+   "cases": 18
+  },
+  "B symmetry reduction (reduced = full)": {
+   "ok": true,
+   "cases": 8
+  },
+  "C division routines": {
+   "ok": true,
+   "tests": 60210
+  },
+  "D fsum against exact rationals": {
+   "ok": true,
+   "tests": 60000,
+   "max_relative_width": 3.0899761910441068e-18
+  },
+  "E soundness of the C data against exact rationals": {
+   "ok": true,
+   "cases": 42,
+   "cases_where_T_exceeds_exact_tail_time": []
+  },
+  "F non-unimodality in 1D for q > (2N-4)/(2N-3): exact f(N-1), f(N), f(N+1)": {
+   "ok": true,
+   "cases": 54,
+   "smallest_G_tested": 0.04
+  }
+ }
+}

@@ -1,0 +1,57 @@
+[
+ {
+  "check": "X1 delta h_q(n) = (q/2)^(n+1) W_n, E2E (exact, N=3..9, 4 activities)",
+  "ok": true,
+  "detail": "1036 identities"
+ },
+ {
+  "check": "X2 K^{n+1}(1,c)-K^n(1,c) = (q/2)^(n+1) W~_n, FOLD (exact, N=5..13 odd, 3 activities)",
+  "ok": true,
+  "detail": "735 identities"
+ },
+ {
+  "check": "X3 spectral formula W_n = sum c_k lam_k^n (Arb ball contains exact value; E2E/FOLD, m in {3,4,7,12,25}, y in {1/2,3/7,thr})",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "X4 Casorati identity and variance identity for Tot_n (Arb vs exact)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "X5 brute-force exact scan n <= 40 m^2 (m=3..14, y in {1/2,1,1/3,thr}, E2E and FOLD): log-concave iff first inequality",
+  "ok": true,
+  "detail": "violations, when present, start at n = m; one equality at threshold"
+ },
+ {
+  "check": "X6 Proposition 9.6: elementary bounds and explicit tail time n_tail(N) (y=1/2, E2E, N=10..400)",
+  "ok": true,
+  "detail": "max certified-n0 / n_tail = 0.098"
+ },
+ {
+  "check": "X7 Proposition 9.1 in action (exact integers): q=4/5, corner pair",
+  "ok": true,
+  "detail": "d=2 N=10: phi log-concave on t<=700: True; sign changes of Delta f: 1; mode 172 | d=3 N=9: phi log-concave on t<=500: True; sign changes of Delta f: 1; mode 332"
+ },
+ {
+  "check": "X8 float illustration: d=5, N=9, q=0.8 corner pair, t<1500: Delta f changes sign once",
+  "ok": true,
+  "detail": "mode at t=1006, f_max=4.989e-06"
+ },
+ {
+  "check": "X9 Proposition 9.12: phi_d is NOT log-concave at q=4/5 for the centre geometry, (N,d) in {(3,2),(5,2),(7,2),(3,3)} (exact)",
+  "ok": true,
+  "detail": "N=3 d=2: Phi(D..D+2)=[32, 128, 1536], first inequality FAILS | N=5 d=2: Phi(D..D+2)=[1536, 20480, 409600], first inequality FAILS | N=7 d=2: Phi(D..D+2)=[81920, 1802240, 45875200], first inequality FAILS | N=3 d=3: Phi(D..D+2)=[384, 6912, 138240], first inequality FAILS"
+ },
+ {
+  "check": "X10 three numbers a1,a2>0>-b: Casorati = (-a1 a2 b)^j h_j(1/a1,1/a2,-1/b); >= 0 for all j iff e_2 >= 0 (exact, 200 random triples, j<=13)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "check": "X11 Lemma 9.3(b): d^(t-1) phi_d(t) = sum_k C(t-1,k) d1^k phi_d1(k+1) d2^(t-1-k) u_d2(t-1-k) (exact, 3 geometries, d=2,3)",
+  "ok": true,
+  "detail": "225 identities"
+ }
+]

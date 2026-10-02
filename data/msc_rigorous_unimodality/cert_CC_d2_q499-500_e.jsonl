@@ -1,0 +1,2 @@
+{"d": 2, "N": 61, "q": "499/500", "start": [0, 0], "target": [60, 60], "D": 2000, "steps": 6368, "T_cone": 6367, "sign_runs": [[0, 1, 119], [1, 120, 6368]], "n_sign_changes_explicit": 0, "unimodal": true, "mode": 6368, "bits_last": 69815, "seconds": 568.08, "geo": "CC"}
+{"d": 2, "N": 62, "q": "499/500", "start": [0, 0], "target": [61, 61], "D": 2000, "steps": 6586, "T_cone": 6585, "sign_runs": [[0, 1, 121], [1, 122, 6586]], "n_sign_changes_explicit": 0, "unimodal": true, "mode": 6586, "bits_last": 72206, "seconds": 394.1, "geo": "CC"}

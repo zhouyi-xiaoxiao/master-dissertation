@@ -1,0 +1,846 @@
+{
+ "summary": {
+  "q": "4/5",
+  "cases": 66,
+  "undecided": 0,
+  "not_unimodal": [
+   [
+    4,
+    2,
+    2
+   ],
+   [
+    5,
+    2,
+    3
+   ],
+   [
+    5,
+    3,
+    2
+   ],
+   [
+    6,
+    2,
+    4
+   ],
+   [
+    6,
+    3,
+    3
+   ],
+   [
+    6,
+    4,
+    2
+   ],
+   [
+    7,
+    3,
+    4
+   ],
+   [
+    7,
+    4,
+    3
+   ],
+   [
+    7,
+    5,
+    2
+   ],
+   [
+    8,
+    3,
+    5
+   ],
+   [
+    8,
+    4,
+    4
+   ],
+   [
+    8,
+    5,
+    3
+   ],
+   [
+    8,
+    6,
+    2
+   ],
+   [
+    9,
+    4,
+    5
+   ],
+   [
+    9,
+    5,
+    4
+   ],
+   [
+    9,
+    6,
+    3
+   ],
+   [
+    9,
+    7,
+    2
+   ],
+   [
+    10,
+    5,
+    5
+   ],
+   [
+    10,
+    6,
+    4
+   ],
+   [
+    10,
+    7,
+    3
+   ],
+   [
+    10,
+    8,
+    2
+   ],
+   [
+    11,
+    6,
+    5
+   ],
+   [
+    11,
+    7,
+    4
+   ],
+   [
+    11,
+    8,
+    3
+   ],
+   [
+    11,
+    9,
+    2
+   ],
+   [
+    12,
+    7,
+    5
+   ],
+   [
+    12,
+    8,
+    4
+   ],
+   [
+    12,
+    9,
+    3
+   ],
+   [
+    12,
+    10,
+    2
+   ]
+  ],
+  "all_not_unimodal_have_x0_ge_2": true,
+  "D_values_not_unimodal": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "every_x0_ge_2_with_D_in_2_3_4_fails": true,
+  "window_disagreements": 0
+ },
+ "records": [
+  {
+   "N": 2,
+   "x0": 1,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 0,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 3,
+   "x0": 1,
+   "D": 2,
+   "unimodal": true,
+   "T_cone": 1,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 3,
+   "x0": 2,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 1,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 4,
+   "x0": 1,
+   "D": 3,
+   "unimodal": true,
+   "T_cone": 4,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 4,
+   "x0": 2,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 4,
+   "x0": 3,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 4,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 5,
+   "x0": 1,
+   "D": 4,
+   "unimodal": true,
+   "T_cone": 7,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 5,
+   "x0": 2,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 5,
+   "x0": 3,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 5,
+   "x0": 4,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 7,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 6,
+   "x0": 1,
+   "D": 5,
+   "unimodal": true,
+   "T_cone": 11,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 6,
+   "x0": 2,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 6,
+   "x0": 3,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 6,
+   "x0": 4,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 6,
+   "x0": 5,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 11,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 1,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 16,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 2,
+   "D": 5,
+   "unimodal": true,
+   "T_cone": 13,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 3,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 4,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 5,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 7,
+   "x0": 6,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 16,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 1,
+   "D": 7,
+   "unimodal": true,
+   "T_cone": 22,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 2,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 19,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 3,
+   "D": 5,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 10,
+    "t_plus_again": 11
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 4,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 5,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 6,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 8,
+   "x0": 7,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 22,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 1,
+   "D": 8,
+   "unimodal": true,
+   "T_cone": 28,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 2,
+   "D": 7,
+   "unimodal": true,
+   "T_cone": 26,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 3,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 17,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 4,
+   "D": 5,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 10,
+    "t_plus_again": 11
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 5,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 6,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 7,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 9,
+   "x0": 8,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 28,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 1,
+   "D": 9,
+   "unimodal": true,
+   "T_cone": 36,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 2,
+   "D": 8,
+   "unimodal": true,
+   "T_cone": 33,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 3,
+   "D": 7,
+   "unimodal": true,
+   "T_cone": 25,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 4,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 14,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 5,
+   "D": 5,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 10,
+    "t_plus_again": 11
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 6,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 7,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 8,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 10,
+   "x0": 9,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 36,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 1,
+   "D": 10,
+   "unimodal": true,
+   "T_cone": 44,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 2,
+   "D": 9,
+   "unimodal": true,
+   "T_cone": 42,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 3,
+   "D": 8,
+   "unimodal": true,
+   "T_cone": 34,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 4,
+   "D": 7,
+   "unimodal": true,
+   "T_cone": 21,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 5,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 24,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 6,
+   "D": 5,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 10,
+    "t_plus_again": 11
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 7,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 8,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 9,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 11,
+   "x0": 10,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 44,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 1,
+   "D": 11,
+   "unimodal": true,
+   "T_cone": 53,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 2,
+   "D": 10,
+   "unimodal": true,
+   "T_cone": 51,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 3,
+   "D": 9,
+   "unimodal": true,
+   "T_cone": 44,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 4,
+   "D": 8,
+   "unimodal": true,
+   "T_cone": 30,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 5,
+   "D": 7,
+   "unimodal": true,
+   "T_cone": 24,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 6,
+   "D": 6,
+   "unimodal": true,
+   "T_cone": 34,
+   "witness": null,
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 7,
+   "D": 5,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 10,
+    "t_plus_again": 11
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 8,
+   "D": 4,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 5,
+    "t_plus_again": 6
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 9,
+   "D": 3,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 4,
+    "t_plus_again": 5
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 10,
+   "D": 2,
+   "unimodal": false,
+   "T_cone": null,
+   "witness": {
+    "t_minus": 3,
+    "t_plus_again": 4
+   },
+   "window_agrees": true
+  },
+  {
+   "N": 12,
+   "x0": 11,
+   "D": 1,
+   "unimodal": true,
+   "T_cone": 53,
+   "witness": null,
+   "window_agrees": true
+  }
+ ]
+}

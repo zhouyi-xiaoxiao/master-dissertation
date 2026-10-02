@@ -1,0 +1,1296 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{catheorem}[theorem]{Computer-assisted Theorem}
+\newtheorem{calemma}[theorem]{Computer-assisted Lemma}
+\newtheorem{caproposition}[theorem]{Computer-assisted Proposition}
+\newtheorem{cacorollary}[theorem]{Computer-assisted Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remarku}{Remark}
+
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Sm}{S^{-}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\T}{^{\mathsf T}}
+\newcommand{\fD}{\mathfrak D}
+
+\title{Unimodality of point-target first-passage laws on the reflecting box:\\
+theorems, counter-examples, certified computations, and what remains open}
+\author{Xiaoxiao Zhouyi\\[2pt]\normalsize Companion note R4}
+\date{1 October 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\sloppy
+\maketitle
+\medskip\noindent{\small\textit{Note.} This document is the companion note R4 of the article ``Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices'' (\texttt{paper.pdf}, Section~7; Supplementary Material, Section~S8), in the repository \texttt{https://\allowbreak github.com/\allowbreak zhouyi-xiaoxiao/\allowbreak master-dissertation}. In the repository, its scripts are in \texttt{code/msc\_rigorous\_unimodality/} and its data in \texttt{data/msc\_rigorous\_unimodality/}; paths written \texttt{scripts/\dots} and \texttt{data/\dots} below refer to these folders; the paths in the \texttt{\%~src} comments of the \LaTeX{} source are relative to the root of the repository, and the run logs they cite are in \texttt{data/msc\_rigorous\_*/logs/}. Other run logs, the code of the internal checks and working notes mentioned below are not part of the repository; \texttt{notes/VERIFICATION.md} summarises how this note was checked.}\par\medskip
+
+
+\noindent
+Status labels: a \emph{Theorem, Lemma, Proposition} or \emph{Corollary} has a complete proof here (standard results are cited with author, title and theorem number). A \emph{Computer-assisted Theorem, Lemma} or \emph{Proposition} is proved by a finite computation together with lemmas proved here that turn the finite computation into a statement about the whole infinite support (and, in Section~\ref{sec:fourfifths}, about all $N$). In Sections~\ref{sec:ca}--\ref{sec:counter} the computation is in exact integer or rational arithmetic; in Section~\ref{sec:fourfifths} it is in certified ball arithmetic (Arb: every number is a ball that contains the true value, and every decision is an inequality between balls), cross-checked against exact integer arithmetic. No floating-point comparison enters any proof. A \emph{Conjecture} is not proved; the evidence is stated. A \emph{Numerical observation} is a reproducible computation with no claim beyond the range computed. Scripts and data are in the directory of this file (\texttt{scripts/}, \texttt{data/}); see Appendix~\ref{app:files}.
+
+\section*{Answer in one page}
+
+\textbf{Question.} Is the first-passage PMF $f(t)$ (discrete time) or density $g(t)$ (continuous time) of the lazy walk on $\{1,\dots,N\}^d$ with reflecting (move-cancelling) walls and one absorbing site unimodal?
+
+\textbf{Answer.} For the three geometries of the article --- corner $\to$ opposite corner, corner $\to$ centre, centre $\to$ corner --- \emph{yes, for every $N$}: in continuous time in every dimension (Theorem~\ref{thm:main}), and in discrete time for every activity $q\le4/5$ --- the value is $q=4/5$ --- in every dimension $d\ge2$, and in $d=1$ for the corner pair and for corner $\to$ centre (Computer-assisted Theorem~\ref{thm:fourfifths}). The bound $4/5$ is sharp for the corner pair: for $d=1$, $N=4$ the PMF is unimodal iff $q\le4/5$. The restriction $d\ge2$ for centre $\to$ corner is necessary: in $d=1$ that PMF is unimodal at $q=4/5$ if and only if $N\notin\{5,7,9,11\}$ (Proposition~\ref{prop:m2c1d}, Computer-assisted Theorem~\ref{thm:thr1d}). In discrete time with $q$ close to $1$ the answer is \emph{no} in general ($d=1$, $d=2$), and for arbitrary start/target pairs in $d\ge2$ the answer is \emph{no} even in continuous time. So the naive statement ``the point-target first-passage law is unimodal'' is false, and the true statement depends on the pair, on the dimension and on $q$.
+
+\begin{enumerate}
+\item \emph{Three geometries, all $N$, all $d$} (Theorem~\ref{thm:main}). Corner $\to$ opposite corner (any $N\ge2$), corner $\to$ centre and centre $\to$ corner (odd $N$): the continuous-time density is unimodal with a unique mode, and the PMF is unimodal for every $q\le q_N=1/(1+\cos(\pi/N))$, in particular for every $q\le1/2$. For the hypercube $N=2$ this is every $q\in(0,1]$.
+\item \emph{The value} (Theorem~\ref{thm:fourfifths}, computer-assisted; Theorems~\ref{thm:direct}, \ref{thm:lc1d}, Lemma~\ref{lem:family}, Proposition~\ref{prop:smallblocks}). For every $q\le4/5$: the corner $\to$ opposite corner PMF is unimodal for \emph{every $N\ge2$ and every $d\ge1$}; the corner $\to$ centre and centre $\to$ corner PMFs are unimodal for \emph{every odd $N\ge3$ and every $d\ge2$}. $4/5$ is sharp in the first statement ($d=1$, $N=4$). Mechanism: the increment $u(t)-u(t-1)$ of the free propagator is log-concave; this is reduced to the one-dimensional walk, where it is proved for all $N$ by splitting the spectrum into ``twisted groups'' of 16--17 eigenvalues from a compact two-parameter family that is certified in ball arithmetic.
+\item \emph{One-dimensional log-concavity} (Theorem~\ref{thm:lc1d}, Corollary~\ref{cor:thr1d}, computer-assisted; Proposition~\ref{prop:ntail}). The end-to-end sequence $K_q^{n+1}(1,N)-K_q^n(1,N)$ is log-concave for every $N\ge9$ when $q\le4/5$; for $4\le N\le501$ it is log-concave \emph{iff} $q\le q_1(N)=1/(1+(2(N-1))^{-1/2})$ (so the PMF is unimodal for $q\le q_1(N)$ in every dimension; $q_1(N)\to1$). Explicit tail: at $q=4/5$ the log-concavity inequalities hold for all $n\ge1+(N^2/8)(10\ln N-8.43)$, every $N\ge10$.
+\item \emph{Criterion for an arbitrary pair}, indeed for any finite Markov chain (Lemma~\ref{lem:lastexit}, Theorem~\ref{thm:criterion}): if the time-derivative $u'$ of the \emph{free} propagator $u(t)=\Prob_{x_0}(X_t=a)$ is positive and log-concave, the first-passage density is unimodal; discrete analogue with $u(t)-u(t-1)$. It rests on the last-exit decomposition $g=u'+r*u'$ with a nonincreasing kernel $r$.
+\item \emph{Location of the mode} for these geometries (Corollary~\ref{cor:mode}): $m_u<t^*\le m(q\alpha_1)\le m(q/M_{\max})$, with $m_u$ the maximiser of $u'$ and $m(\cdot)$ defined by an explicit one-dimensional equation; numerically the upper bound exceeds the mode by 4.7--24.9\,\% for the corner pair in the tabulated cases ($d=2,3$, $8\le N\le64$); for smaller $N$ and in $d=1$ it is cruder (a factor $1.26$--$1.94$ in the cases computed).
+% src: data/msc_rigorous_unimodality/table_mode_bounds.json, data/msc_rigorous_unimodality/table_mode_bounds_small.json
+\item \emph{Laziness monotonicity} (Theorem~\ref{thm:thinning}, Corollary~\ref{cor:interval}). For a fixed pair, the number of sign changes of $t\mapsto f_q(t+1)-f_q(t)$ is nonincreasing as $q$ decreases, and $g'$ has at most as many sign changes as the difference sequence of any discrete PMF. Hence $\{q\in(0,1]:f_q\text{ unimodal}\}$ is empty or an interval $(0,q^*]$, and if it is non-empty the continuous-time density is unimodal.
+\item \emph{Descartes' rule on the residues cannot work} (Theorem~\ref{thm:residues}). If the graph distance between start and target is $D$, the residue sequence of the spectral expansion has at least $D-1$ sign changes; in 1D end-to-end it alternates strictly.
+\item \emph{$d=1$, every start and target}: unimodal in continuous time and for $q\le 1/2$ (Theorem~\ref{thm:1d}). \emph{$d=1$ is not unimodal for $q$ near $1$}: for $N\ge4$ and $q>(2N-4)/(2N-3)$, $f(N-1)>f(N)<f(N+1)$; for $N=4$ the threshold $4/5$ is exact (Proposition~\ref{prop:1dcounter}, hand proof). Centre $\to$ corner in $d=1$, odd $N\ge7$, $M=(N-1)/2$: $f(M)>f(M+1)<f(M+2)$ for every $q>(N-3)/(N-1)$; for $N=3$ the PMF is unimodal iff $q\le4/5$ (Proposition~\ref{prop:m2c1d}). \emph{Exact thresholds in $d=1$} (Computer-assisted Theorem~\ref{thm:thr1d}, exact integer arithmetic): end to end, $q^*(N)=(2N-4)/(2N-3)$ for $N=4$, $N=20$ and every $22\le N\le300$, and $q^*(N)<(2N-4)/(2N-3)$ for $5\le N\le19$ and for $N=21$ (six-digit brackets); centre $\to$ corner, $q^*(5)=(4+\sqrt2)/7$, $q^*(N)=(N-3)/(N-1)$ for $N\in\{7,9,17,21\}$ and every odd $23\le N\le301$, strictly smaller for $N\in\{11,13,15,19\}$.
+% src: data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl, data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl, data/msc_rigorous_unimodality/cert_thr1d_m2cbound.jsonl, data/msc_rigorous_unimodality/cert_thr1d_m2c.json
+\item \emph{Completely monotone cases} (Theorem~\ref{thm:cm}): stationary start, or start adjacent to a corner or centre target ($q\le1/2$ or continuous time). A single start at distance $D\ge2$ is never a nonnegative mixture of geometric (exponential) laws.
+\item \emph{Corner pair, explicit windows valid for every $q\in(0,1]$}: $f$ is strictly decreasing for $t>T_N=O(N^2\log N/q)$, explicit (Theorem~\ref{thm:tail}); the continuous-time density is nondecreasing on $[0,t_N]$, $t_N\ge d(N-2)/(2q)$ (Theorem~\ref{thm:rise}). For $q\le1/2$ and in continuous time these are superseded by item~1.
+\item \emph{Corner-to-corner, finite range, $q$ beyond $4/5$} (Computer-assisted Theorem~\ref{thm:ca}): unimodal for $d=2$, $2\le N\le64$, every $q\in(0,0.998]$; for $d=3$, $2\le N\le30$, every $q\in(0,1]$; for $d=4$, $N\le8$ and $d=5$, $N\le5$, every $q\in(0,1]$.
+\item \emph{Corner-to-corner, $d=2$, $q=1$ is not always unimodal}: exactly for $N\in\{9,11,13,15,17,18,$ $21,24,26,38,51,61\}$ among $2\le N\le64$ the PMF has a one-step dip at its peak; $0.9986\le q^*(9)<0.9987$.
+\item \emph{Corner $\to$ centre and centre $\to$ corner, exact cone certificates} (odd $N$): unimodal for every $q\le4/5$ for $d=2$, $N\le61$ and $d=3$, $N\le27$ (see also item~2 except for $N=3$, $d\in\{2,3\}$ and $N\in\{5,7\}$, $d=2$, where item~2 relies on these certificates). The centre $\to$ corner law is not log-concave (Proposition~\ref{prop:notlc}).
+\item \emph{General pairs in $d\ge2$: unimodality is false}, in continuous time and for every $q$ (Theorem~\ref{thm:counter}); exhaustive exact classification of all pairs for $d=2$, $N\le12$ and $d=3$, $N\le6$ (Computer-assisted Theorem~\ref{thm:pairs}).
+\item \emph{Open} (Section~\ref{sec:open}). (a) Discrete time with $4/5<q<1$ for \emph{all} $N$: for the corner pair it would follow from the conjecture that the one-dimensional sequence of item~3 is log-concave iff $q\le q_1(N)$ for \emph{every} $N$ (Conjecture~\ref{conj:1dlc}; proved for $N\le501$). (b) Log-concavity (monotone hazard rate) of the corner-to-corner first-passage law itself (Conjecture~\ref{conj:main}). (c) The one-dimensional thresholds for all $N$ beyond the certified range (Conjecture~\ref{conj:thr}).
+\end{enumerate}
+
+\section{Setting, notation, two elementary lemmas}\label{sec:setting}
+
+\subsection{The walk}
+Let $d\ge1$, $N\ge2$, $\Lambda=\{1,\dots,N\}^d$, $n=N^d$. (The code uses $0$-based coordinates.) $P$ is the transition matrix of the walk with $q=1$:
+\[
+P(x,x\pm e_i)=\frac1{2d}\ \text{ if }x\pm e_i\in\Lambda,\qquad P(x,x)=\frac{b(x)}{2d},
+\]
+where $b(x)$ is the number of the $2d$ directions that leave $\Lambda$ at $x$. $P$ is symmetric and stochastic. For $q\in(0,1]$, $P_q=(1-q)I+qP$; put $L=I-P$, so $P_q=I-qL$.
+
+Fix a target $a\in\Lambda$ and a start $x_0\ne a$; $\Lambda'=\Lambda\setminus\{a\}$. $A$ is the restriction of $L$ to $\Lambda'\times\Lambda'$ and $Q_q=I-qA$ the restriction of $P_q$. Put $r:=A\one$, i.e.\ $r(x)=P(x,a)$, and $D:=|x_0-a|_1$.
+
+\emph{Discrete time.} $T=\min\{t\ge1:X_t=a\}$, $S_q(t)=\Prob(T>t)=e_{x_0}\T Q_q^t\one$ and
+\begin{equation}\label{eq:pmf}
+f_q(t)=S_q(t-1)-S_q(t)=q\,e_{x_0}\T Q_q^{t-1}r\quad(t\ge1),\qquad f_q(0):=0 .
+\end{equation}
+We write $a_q(t):=f_q(t+1)$, $t\ge0$, and $\Delta a(t):=a(t+1)-a(t)$.
+
+\emph{Continuous time.} The walk with generator $-qL$ (each direction at rate $q/(2d)$; cancelled moves are no-ops) has first-passage density
+\begin{equation}\label{eq:dens}
+g_q(t)=q\,e_{x_0}\T e^{-qtA}r,\qquad g_q(t)=q\,g_1(qt).
+\end{equation}
+$A$ is symmetric positive definite: for $h$ on $\Lambda'$ extended by $\tilde h(a)=0$, $\langle h,Ah\rangle=\langle\tilde h,L\tilde h\rangle=\frac1{2d}\sum_{\{u,v\}}(\tilde h(u)-\tilde h(v))^2$, which vanishes only for $h=0$.
+
+\begin{lemma}[spectrum of the box]\label{lem:spec}
+For $k\in\{0,\dots,N-1\}^d$ let $\Psi_k(x)=\prod_i\psi_{k_i}(x_i)$, $\psi_k(j)=c_k\cos(k\pi(j-\tfrac12)/N)$, $c_0=N^{-1/2}$, $c_k=(2/N)^{1/2}$ $(k\ge1)$. Then $\{\Psi_k\}$ is an orthonormal eigenbasis of $L$, $L\Psi_k=\theta(k)\Psi_k$, $\theta(k)=\frac1d\sum_i(1-\cos(k_i\pi/N))$. The spectrum of $L$ lies in $[0,1+\cos(\pi/N)]\subset[0,2)$; its smallest non-zero eigenvalue is $\beta_1:=\frac1d(1-\cos(\pi/N))\ge 2/(dN^2)$.
+\end{lemma}
+\begin{proof}
+For $d=1$, $(P\psi)(j)=\frac12\psi(j-1)+\frac12\psi(j+1)$ with the conventions $\psi(0):=\psi(1)$, $\psi(N+1):=\psi(N)$ (a cancelled move is a hold). The function $j\mapsto\cos(k\pi(j-\frac12)/N)$ satisfies both conventions, so $P\psi_k=\cos(k\pi/N)\psi_k$ by the addition formula; the $\psi_k$ are the DCT-II vectors, an orthonormal basis of $\R^N$. For general $d$, $P=\frac1d\sum_iP^{(i)}$ with $P^{(i)}$ acting on coordinate $i$. Finally $1-\cos x=2\sin^2(x/2)\ge2x^2/\pi^2$ on $[0,\pi]$.
+\end{proof}
+
+\subsection{Sign changes and unimodality}
+For a real sequence $c$, $\Sm(c)$ is the number of sign changes after deleting zeros; for an infinite sequence it is the supremum over finite truncations. A sequence $(a(t))_{t\ge0}$ is \emph{unimodal} if $a(0)\le\dots\le a(m)\ge a(m+1)\ge\cdots$ for some $m$; a $C^1$ function $g$ on $[0,\infty)$ is unimodal if $g'\ge0$ on $(0,m)$ and $g'\le0$ on $(m,\infty)$ for some $m\ge0$. (Since $f_q(0)=0\le f_q(1)$, unimodality of $(f_q(t))_{t\ge0}$ and of $(a_q(t))_{t\ge0}$ are the same.)
+
+\begin{lemma}\label{lem:unimodal}
+Let $a\ge0$ be summable and not identically zero. Then $a$ is unimodal iff $\Sm(\Delta a)\le1$. The same holds for a nonnegative integrable $C^1$ function with ``$g'$ changes sign at most once''.
+\end{lemma}
+\begin{proof}
+If $a$ is unimodal the nonzero entries of $\Delta a$ are $+\dots+-\dots-$. Conversely, if the last sign of $\Delta a$ were $+$, $a$ would be eventually nondecreasing and positive, contradicting summability; so the nonzero signs are $(+\dots+)(-\dots-)$ with either block possibly empty.
+\end{proof}
+
+\section{Monotonicity in the laziness; continuous time is the weakest case}\label{sec:thinning}
+
+\subsection{Variation-diminishing lemmas (self-contained)}
+
+\begin{lemma}[bidiagonal matrices]\label{lem:bidiag}
+Let $B$ be an $m\times m$ nonnegative upper bidiagonal matrix, $(Bx)_i=\alpha_ix_i+\beta_ix_{i+1}$ $(x_{m+1}:=0)$, or a nonnegative lower bidiagonal one, $(Bx)_i=\alpha_ix_i+\beta_ix_{i-1}$ $(x_0:=0)$. Then for every $x\in\R^m$:
+\begin{enumerate}
+\item $\Sm(Bx)\le\Sm(x)$;
+\item if $\Sm(Bx)=\Sm(x)$ and $Bx\ne0$, the first nonzero entries of $Bx$ and of $x$ have the same sign, and so have the last nonzero entries.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Upper case; put $y=Bx$ and $z=(x_1,y_1,x_2,y_2,\dots,x_m,y_m)$. \emph{Claim:} $\Sm(z)=\Sm(x)$, and the first (last) nonzero entry of $z$ has the sign of the first (last) nonzero entry of $x$. Remove the $y_i$ from $z$ one at a time. If $y_i=0$ nothing changes. If $y_i\neq0$, then, being a nonnegative combination of $x_i$ and $x_{i+1}$, it has the sign of a nonzero one of them; that entry is adjacent to $y_i$ in $z$, so deleting $y_i$ does not change the number of sign changes. Hence $\Sm(z)=\Sm(x)$. If the first nonzero entry of $z$ is some $y_i$, then $x_1=\dots=x_i=0$ and $y_i=\beta_ix_{i+1}$; if the last nonzero entry of $z$ is $y_i$, then $x_{i+1}=\dots=x_m=0$ and $y_i=\alpha_ix_i$. This proves the claim.
+
+Since $y$ is a subsequence of $z$, $\Sm(y)\le\Sm(z)=\Sm(x)$. If the first nonzero entry of $y$ had the sign opposite to the first nonzero entry of $z$, then $z$ would have one sign change before that position and at least $\Sm(y)$ after it, so $\Sm(z)\ge\Sm(y)+1$; this is impossible when $\Sm(y)=\Sm(z)$. The last entries are treated in the same way, and the lower bidiagonal case follows by reversing the order of the indices.
+\end{proof}
+
+\begin{lemma}[products and limits]\label{lem:prod}
+Properties (1), (2) of Lemma~\ref{lem:bidiag} hold for every finite product $M$ of nonnegative bidiagonal matrices and for every entrywise limit $M=\lim_jM_j$ of such products.
+\end{lemma}
+\begin{proof}
+For a product, chain the inequalities; if the two ends are equal and $Mx\neq0$, every intermediate vector is nonzero and every inequality is an equality, so (2) transfers step by step. For a limit put $y_j=M_jx\to y=Mx$. For large $j$ every nonzero entry of $y$ has the same sign in $y_j$, so $\Sm(y)\le\Sm(y_j)\le\Sm(x)$. If $\Sm(y)=\Sm(x)$ and $y\ne0$, then for large $j$, $\Sm(y_j)=\Sm(x)$ and the first nonzero entry of $y_j$ has the sign $\sigma$ of the first nonzero entry of $x$. Let $i_0$ be the first index with $y(i_0)\ne0$. If $\sgn y(i_0)=-\sigma$, then for large $j$ the vector $y_j$ has an entry of sign $\sigma$ before $i_0$, the sign $-\sigma$ at $i_0$, and from $i_0$ on its nonzero entries include those of $y$ with the same signs, so $\Sm(y_j)\ge1+\Sm(y)$: a contradiction. The last entries are symmetric.
+\end{proof}
+
+\begin{remarku}
+Lemmas~\ref{lem:bidiag}--\ref{lem:prod} are the elementary core of the variation-diminishing theorem for totally nonnegative matrices (I.~J.~Schoenberg, \emph{\"Uber variationsvermindernde lineare Transformationen}, Math.\ Z.\ 32 (1930) 321--328; S.~Karlin, \emph{Total Positivity}, Vol.~I, Stanford Univ.\ Press 1968, Ch.~5, Theorem~3.1). Only matrices with an explicit bidiagonal factorisation are needed below, so the general theorem is not used.
+\end{remarku}
+
+\begin{lemma}[binomial matrix]\label{lem:binom}
+For $p\in(0,1]$ and $M\ge1$ let $b_p(t,n)=\binom tn p^n(1-p)^{t-n}$, $0\le t,n<M$. The matrix $(b_p(t,n))$ has properties (1), (2) of Lemma~\ref{lem:bidiag}.
+\end{lemma}
+\begin{proof}
+For $p<1$, $(b_p)=D_1\Pi D_2$ with positive diagonal $D_1=\mathrm{diag}((1-p)^t)$, $D_2=\mathrm{diag}((p/(1-p))^n)$ and $\Pi=(\binom tn)$. Let $H$ have entries $H(t,t-1)=t$ and zeros elsewhere. Then $\exp(H)(t,n)=H^{t-n}(t,n)/(t-n)!=t(t-1)\cdots(n+1)/(t-n)!=\binom tn$, so $\Pi=\exp(H)=\lim_j(I+H/j)^j$, and each $I+H/j$ is lower bidiagonal and nonnegative. Apply Lemma~\ref{lem:prod}.
+\end{proof}
+
+\begin{lemma}[Descartes--Laguerre rule for power series]\label{lem:descartes}
+Let $F(\mu)=\sum_{n\ge0}c_n\mu^n$ converge for all $\mu>0$, with real $c_n$ not all zero and $\Sm(c)=s<\infty$. Then $F$ has at most $s$ zeros in $(0,\infty)$, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+Induction on $s$; $s=0$ is clear. Let the first sign change occur between indices $j<k$. Fix a real $\kappa\in(j,k)$ and put $G(\mu)=\mu^{-\kappa}F(\mu)$; $G$ has the same positive zeros as $F$. The power series $\mu^{\kappa+1}G'(\mu)=\sum_n(n-\kappa)c_n\mu^n$ has coefficients of the sign of $-c_n$ for $n\le j$ and of $c_n$ for $n\ge k$: the sign change between $j$ and $k$ has disappeared and no other has been created. By induction it has at most $s-1$ positive zeros, and by Rolle's theorem $G$ has at most $s$.
+\end{proof}
+(Classical: G.~P\'olya and G.~Szeg\H{o}, \emph{Problems and Theorems in Analysis II}, Part~V, Chapter~1.)
+
+\subsection{The thinning theorem}
+
+\begin{theorem}[laziness monotonicity]\label{thm:thinning}
+Fix $d$, $N$, $a$, $x_0$.
+\begin{enumerate}
+\item[(a)] For $0<q'\le q\le1$ and $p=q'/q$, for all $t\ge0$,
+\begin{equation}\label{eq:thin}
+a_{q'}(t)=p\sum_{n=0}^tb_p(t,n)\,a_q(n),\qquad \Delta a_{q'}(t)=p^2\sum_{n=0}^tb_p(t,n)\,\Delta a_q(n).
+\end{equation}
+Consequently $\Sm(\Delta a_{q'})\le\Sm(\Delta a_q)$.
+\item[(b)] For every $q_0\in(0,1]$, every rate $q>0$ and $s\ge0$, with $\mu=qs/q_0$,
+\begin{equation}\label{eq:unif}
+g_q(s)=\frac q{q_0}\sum_{n\ge0}e^{-\mu}\frac{\mu^n}{n!}a_{q_0}(n),\qquad
+g_q'(s)=\Bigl(\frac q{q_0}\Bigr)^2e^{-\mu}\sum_{n\ge0}\frac{\mu^n}{n!}\Delta a_{q_0}(n).
+\end{equation}
+Consequently $g_q'$ has at most $\Sm(\Delta a_{q_0})$ zeros in $(0,\infty)$, counted with multiplicity.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) $Q_{q'}=(1-p)I+pQ_q$, so $Q_{q'}^t=\sum_nb_p(t,n)Q_q^n$ and, by \eqref{eq:pmf}, $a_{q'}(t)=q'e_{x_0}\T Q_{q'}^tr=p\sum_nb_p(t,n)a_q(n)$. From $b_p(t+1,n)=(1-p)b_p(t,n)+p\,b_p(t,n-1)$,
+\[
+a_{q'}(t+1)-a_{q'}(t)=p\sum_np\,[b_p(t,n-1)-b_p(t,n)]a_q(n)=p^2\sum_nb_p(t,n)[a_q(n+1)-a_q(n)].
+\]
+The matrix is lower triangular, so the first $M$ entries of $\Delta a_{q'}$ are $p^2$ times the leading $M\times M$ block applied to the first $M$ entries of $\Delta a_q$; apply Lemma~\ref{lem:binom} and let $M\to\infty$.
+
+(b) $-qsA=\mu(Q_{q_0}-I)$, so $e^{-qsA}=e^{-\mu}\sum_n\frac{\mu^n}{n!}Q_{q_0}^n$, which with \eqref{eq:dens} gives the first formula. As $a_{q_0}$ is bounded, the series may be differentiated termwise, $\frac{d}{d\mu}[e^{-\mu}\sum_n\frac{\mu^n}{n!}a(n)]=e^{-\mu}\sum_n\frac{\mu^n}{n!}\Delta a(n)$. Apply Lemma~\ref{lem:descartes} to $\sum_n\Delta a_{q_0}(n)\mu^n/n!$.
+\end{proof}
+
+\begin{corollary}\label{cor:interval}
+Let $U=\{q\in(0,1]:(f_q(t))_{t\ge0}\text{ is unimodal}\}$.
+\begin{enumerate}
+\item $U$ is empty or an interval $(0,q^*]$, $q^*\in(0,1]$.
+\item If $U\neq\emptyset$, the continuous-time density $g_q$ is unimodal for every rate $q>0$.
+\item If the continuous-time density is not unimodal, the PMF is not unimodal for any $q\in(0,1]$.
+\item The number of local maxima of $f_q$ is nonincreasing as $q$ decreases.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:unimodal}, $q\in U$ iff $\Sm(\Delta a_q)\le1$; by Theorem~\ref{thm:thinning}(a), $U$ is closed downwards. $q\notin U$ means that $\Delta a_q(t_1),\Delta a_q(t_2),\Delta a_q(t_3)$ have strictly alternating signs for some $t_1<t_2<t_3$; each is a polynomial in $q$, so the complement of $U$ is open. This gives (1); (2) is Theorem~\ref{thm:thinning}(b) with Lemma~\ref{lem:unimodal}; (3) is its contrapositive; (4): the nonzero entries of $\Delta a_q$ end with $-$ (proof of Lemma~\ref{lem:unimodal}). Count the local maxima of $a_q$ as the number of changes $+\to-$ in the sequence of nonzero entries of $\Delta a_q$, plus one if the first nonzero entry is $-$ (a maximum at the left end; this happens only when $x_0\sim a$). This number is $(\Sm(\Delta a_q)+1)/2$ if the first nonzero entry is $+$ and $\Sm(\Delta a_q)/2+1$ if it is $-$; in both cases it equals $\lceil(\Sm(\Delta a_q)+1)/2\rceil$, a nondecreasing function of $\Sm(\Delta a_q)$. Apply Theorem~\ref{thm:thinning}(a).
+\end{proof}
+
+The corollary does \emph{not} say that continuous-time unimodality implies discrete unimodality for small $q$.
+
+\section{Spectral representation; why Descartes' rule on the residues is hopeless}\label{sec:residues}
+
+Let $\alpha_1<\dots<\alpha_m$ be the distinct eigenvalues of $A$ and $E_j$ the spectral projections. (For $d=1$ with an interior target replace $\Lambda'$ by the connected component $\Lambda_0'$ of $x_0$.) Then
+\begin{equation}\label{eq:spectral}
+f_q(t)=q\sum_jC_j(1-q\alpha_j)^{t-1},\qquad g_q(t)=q\sum_jC_je^{-q\alpha_jt},\qquad C_j:=e_{x_0}\T E_jr=\alpha_j\,e_{x_0}\T E_j\one .
+\end{equation}
+
+\begin{lemma}\label{lem:perron}
+On the component $\Lambda_0'$ of $x_0$, $P':=I-A$ is symmetric, nonnegative, irreducible and has a positive diagonal entry; consequently the power $P'^m$, $m:=2(|\Lambda_0'|-1)$, is entrywise positive. The largest eigenvalue $1-\alpha_1$ of $P'$ is simple with a positive eigenvector $\varphi_1$ $(\|\varphi_1\|_2=1)$, $C_1=\alpha_1\varphi_1(x_0)\langle\varphi_1,\one\rangle>0$, and every other eigenvalue $\lambda$ of $Q_q$ satisfies $|\lambda|<1-q\alpha_1$, for every $q\in(0,1]$.
+\end{lemma}
+\begin{proof}
+Every component of $\Lambda'$ contains a site $w$ with $b(w)\ge1$ (for $d\ge2$, $\Lambda'$ is connected and contains a wall site; for $d=1$ each component contains an endpoint), i.e.\ $P'(w,w)=b(w)/(2d)>0$. Let $n':=|\Lambda_0'|$. If $n'=1$, $P'$ is a positive number and there is nothing to prove; let $n'\ge2$, $m=2(n'-1)$.
+
+\emph{Positivity of $B:=P'^m$.} For $x,y\in\Lambda_0'$ there are nearest-neighbour paths in $\Lambda_0'$ from $x$ to $w$ and from $w$ to $y$, each of length at most $n'-1$; inserting holds at $w$ between them gives a walk from $x$ to $y$ of length exactly $m$ all of whose steps have positive weight under $P'$. Hence $B(x,y)>0$.
+
+\emph{Perron's theorem for the symmetric positive matrix $B$} (the symmetric case of Perron's theorem; R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge 2013, Section~8.2; the short proof is included to keep the note self-contained). Let $\rho_B$ be the largest eigenvalue of $B$ and $v$ a unit vector with $\langle v,Bv\rangle=\rho_B$. Then $\rho_B\ge\langle|v|,B|v|\rangle\ge\langle v,Bv\rangle=\rho_B$, so $|v|$ also maximises the Rayleigh quotient and is an eigenvector: $B|v|=\rho_B|v|$; as $B>0$ and $|v|\ne0$ the left side is entrywise positive, so $|v|>0$. Equality $\sum B(x,y)|v(x)||v(y)|=\sum B(x,y)v(x)v(y)$ with all $B(x,y)>0$ forces $v(x)v(y)=|v(x)||v(y)|$ for all $x,y$, i.e.\ $v=\pm|v|$. So every eigenvector of $B$ for $\rho_B$ is strictly of one sign; two orthogonal vectors cannot both be of one strict sign, so the eigenspace is one-dimensional.
+
+\emph{Back to $P'$.} $P'$ is symmetric; let $\rho:=\max|\operatorname{spec}P'|$. Since $m$ is even, the eigenvalues of $B$ are the numbers $\lambda'^m\ge0$, so $\rho_B=\rho^m$, and every eigenvector of $P'$ for an eigenvalue $\lambda'=\pm\rho$ is an eigenvector of $B$ for $\rho_B$. Therefore the eigenvalues of modulus $\rho$ have, together, a one-dimensional eigenspace, spanned by a positive vector $\varphi_1$, and $\langle\varphi_1,P'\varphi_1\rangle>0$ shows that the eigenvalue is $+\rho$. So $\rho=1-\alpha_1$ is a simple eigenvalue of $P'$ with eigenvector $\varphi_1>0$, and every other eigenvalue $\lambda'$ of $P'$ satisfies $|\lambda'|<1-\alpha_1$. $E_1=\varphi_1\varphi_1\T$ and $r=A\one$ give $C_1=e_{x_0}\T E_1r=\alpha_1\varphi_1(x_0)\langle\varphi_1,\one\rangle>0$. Finally $Q_q=(1-q)I+qP'$ has the same eigenvectors, with eigenvalues $1-q+q\lambda'$, and for $\lambda'\ne1-\alpha_1$: $|1-q+q\lambda'|\le(1-q)+q|\lambda'|<(1-q)+q(1-\alpha_1)=1-q\alpha_1$, for every $q\in(0,1]$.
+\end{proof}
+
+\begin{theorem}[vanishing moments; lower bound on the sign changes]\label{thm:residues}
+\begin{enumerate}
+\item $\sum_jC_j\alpha_j^i=0$ for $0\le i\le D-2$, and $(-1)^{D-1}\sum_jC_j\alpha_j^{D-1}=f_1(D)=G(x_0,a)(2d)^{-D}>0$, where $G(x_0,a)$ is the number of shortest lattice paths from $x_0$ to $a$.
+\item $\Sm(C_1,\dots,C_m)\ge D-1$.
+\item For $d=1$, $x_0=1$, $a=N$: $m=N-1=D$, and $\sgn C_j=(-1)^{j-1}$ for all $j$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) $\sum_jC_j\alpha_j^i=e_{x_0}\T A^ir=\sum_{k\le i}\binom ik(-1)^ke_{x_0}\T P'^kr$, and $e_{x_0}\T P'^kr=f_1(k+1)$ is the probability that the $q=1$ walk first hits $a$ at step $k+1$; it vanishes for $k+1<D$ and equals $G(x_0,a)(2d)^{-D}$ for $k+1=D$.
+
+(2) Suppose $\Sm(C)=s\le D-2$. Choose $\xi_1<\dots<\xi_s$, none equal to an $\alpha_j$, separating the maximal blocks of constant sign of the nonzero $C_j$, and $\pi(\alpha)=\pm\prod_l(\alpha-\xi_l)$ with the sign such that $\pi(\alpha_j)C_j\ge0$ for all $j$. Some $C_j\ne0$ and no $\alpha_j$ is a root, so $\sum_jC_j\pi(\alpha_j)>0$; but $\deg\pi\le D-2$, so by (1) the sum is $0$.
+
+(3) In 1D the walk lives on $\{1,\dots,N-1\}$, $A$ is an irreducible Jacobi matrix with $N-1$ simple eigenvalues, $D=N-1=m$, and (2) gives $\Sm(C)\ge m-1$, the maximum for $m$ numbers; $C_1>0$.
+\end{proof}
+
+\textbf{Consequence.} The generalised Descartes rule for exponential sums bounds the number of positive zeros of $g_q'(t)=-q^2\sum_j\alpha_jC_je^{-q\alpha_jt}$ by $\Sm(C)\ge D-1$. It can therefore prove unimodality only for $D\le2$, and in the best understood case (1D end-to-end, where the density \emph{is} unimodal) it returns the worst possible bound $N-2$.
+
+\begin{observation}\label{obs:res}
+% src: data/msc_rigorous_unimodality/residue_signs.json (code/msc_rigorous_unimodality/residue_signs.py)
+(\texttt{scripts/residue\_signs.py}, mpmath, 60 digits.) Corner-to-corner: $\Sm(C)=D-1$ for $d=2$, $N=2,\dots,6$ and $d=3$, $N=2,3$; but $\Sm(C)=17>D-1=11$ for $d=2$, $N=7$ and $12>8$ for $d=3$, $N=4$. In every corner-to-corner case $C_2<0$; for centre $\to$ corner the pattern starts $+++---$ ($C_2>0$).
+\end{observation}
+
+\section{Cases with complete proofs}\label{sec:proved}
+
+\subsection{Completely monotone cases}
+A sequence $\sum_jw_j\lambda_j^{t-1}$ with $w_j\ge0$, $\lambda_j\in[0,1)$ is completely monotone, in particular nonincreasing; likewise $\sum_jw_je^{-\sigma_jt}$.
+
+\begin{theorem}\label{thm:cm}
+Let $N(a)$ be the set of neighbours of $a$.
+\begin{enumerate}
+\item[(a)] Uniform start on $\Lambda'$: $f_q^{\rm unif}(t)=\frac q{n-1}\sum_j\alpha_j\|E_j\one\|^2(1-q\alpha_j)^{t-1}$ is completely monotone for $q\le1/2$; the continuous-time density is completely monotone for every $q$.
+\item[(b)] Uniform start on $N(a)$: $f_q^{N(a)}(t)=\frac{2dq}{|N(a)|}\sum_j\|E_jr\|^2(1-q\alpha_j)^{t-1}$; same conclusions.
+\item[(c)] If a group of symmetries of the box fixes $a$ and acts transitively on $N(a)$ (e.g.\ $a$ a corner, or $N$ odd and $a$ the centre), then $f_q^y=f_q^{N(a)}$ for every $y\in N(a)$. For $d=1$, $f^y$ is completely monotone ($q\le1/2$; in continuous time for every $q$) for every $y\sim a$.
+\item[(d)] For a single start with $D\ge2$ the law is \emph{not} a nonnegative mixture of geometric (exponential) laws, with any nodes whatsoever: there is no positive Borel measure $\mu$ on $[0,1)$ with $f_q(t)=\int\lambda^{t-1}\mu(d\lambda)$ for all $t\ge1$ ($0^0:=1$), and no positive Borel measure $\mu$ on $[0,\infty)$ with $g_q(t)=\int e^{-\sigma t}\mu(d\sigma)$ for all $t>0$. In particular, in the spectral representation \eqref{eq:spectral} some $C_j$ is negative.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) $e_{\rm unif}=\one/(n-1)$ and $r=A\one$, so $e_{\rm unif}\T E_jr=\alpha_j\|E_j\one\|^2/(n-1)\ge0$; the eigenvalues of $A$ lie in $(0,2)$ (Lemma~\ref{lem:spec}; $A$ is a principal submatrix of $L$), so $1-q\alpha_j\in[0,1)$ for $q\le1/2$. (b) The uniform law on $N(a)$ is $\frac{2d}{|N(a)|}r$. (c) A symmetry $\gamma$ fixing $a$ commutes with $Q_q$ and permutes $N(a)$, so $f^{\gamma y}=f^y$; average over the orbit. In $d=1$ the walk from $y=a-1$ cannot reach $a+1$ before $a$, so $f^y(t)=\frac q2Q_q^{t-1}(y,y)$. (d) $D\ge2$ means $r(x_0)=P(x_0,a)=0$, so by \eqref{eq:pmf}, \eqref{eq:dens}: $f_q(1)=q\,r(x_0)=0$ and $g_q(0)=q\,r(x_0)=0$. On the other hand $f_q(D)\ge(q/(2d))^D>0$ (follow a shortest path), and $g_q(t)>0$ for $t>0$ (by \eqref{eq:unif}, $g_q(t)$ is a Poisson mixture of the numbers $a_{q_0}(n)\ge0$, and $a_{q_0}(D-1)=f_{q_0}(D)>0$). If $f_q(t)=\int\lambda^{t-1}\mu(d\lambda)$ with $\mu\ge0$, then $\mu([0,1))=f_q(1)=0$, so $\mu=0$ and $f_q\equiv0$, contradicting $f_q(D)>0$. If $g_q(t)=\int e^{-\sigma t}\mu(d\sigma)$ for $t>0$ with $\mu\ge0$, then by monotone convergence $\mu([0,\infty))=\lim_{t\downarrow0}g_q(t)=g_q(0)=0$, so $\mu=0$ and $g_q\equiv0$, a contradiction. (In words: a nonnegative mixture is nonincreasing, whereas $f_q(1)=0<f_q(D)$ and $g_q(0)=0<g_q(t)$. The argument does not use uniqueness of the representing measure, and it excludes mixtures with arbitrary nodes, not only the spectral ones.) For the last assertion: by Theorem~\ref{thm:residues}(2), $\Sm(C)\ge D-1\ge1$, so the $C_j$ are not all of one sign. (Directly: $\sum_jC_j=e_{x_0}\T r=0$ by Theorem~\ref{thm:residues}(1) with $i=0$, and $C_1>0$ by Lemma~\ref{lem:perron}.)
+\end{proof}
+(Background: J.~Keilson, \emph{Markov Chain Models --- Rarity and Exponentiality}, Springer 1979; D.~Aldous and J.~A.~Fill, \emph{Reversible Markov Chains and Random Walks on Graphs}, Ch.~3. A negative spectral residue would not by itself exclude a nonnegative representation with other nodes; the argument above does not rely on one. Sanity check: \texttt{verify\_thr1d.py} Z9.)
+
+\begin{observation}\label{obs:adjacent}
+% src: data/msc_rigorous_unimodality/pairs_d2_N*.json, data/msc_rigorous_unimodality/pairs_d3_N*.json (code/msc_rigorous_unimodality/cert_pairs.py)
+In the exhaustive floating-point scans ($d=2$, $N\le10$; $d=3$, $N\le5$; continuous time) the density is monotone decreasing exactly for the pairs with $x_0\sim a$, including neighbours not covered by Theorem~\ref{thm:cm}(c).
+\end{observation}
+
+\subsection{One dimension: every start, every target}
+
+\begin{theorem}\label{thm:1d}
+Let $d=1$, $N\ge2$, $x_0\ne a$ arbitrary. (i) For every $q\in(0,1/2]$ the PMF $f_q$ is unimodal. (ii) For every rate $q>0$ the continuous-time density $g_q$ is unimodal.
+\end{theorem}
+\begin{proof}
+By reflection assume $x_0<a$; the walk stays in $\{1,\dots,a-1\}$ until absorption, and $Q=Q_q$ is the Jacobi matrix with $Q(i,i)=\delta_i$, $\delta_1=1-q/2$, $\delta_i=1-q$ $(i\ge2)$, $Q(i,i\pm1)=q/2$.
+
+\emph{Step 1.} Put $u_1=\delta_1$, $u_i=\delta_i-(q/2)^2/u_{i-1}$. By induction $u_i\ge q/2$ when $q\le1/2$: $u_1\ge q/2$, and $u_{i-1}\ge q/2$ implies $u_i\ge1-q-q/2\ge q/2$. Hence $Q=\mathcal L\,\mathcal U$ with $\mathcal L$ unit lower bidiagonal with subdiagonal $(q/2)/u_{i-1}>0$ and $\mathcal U$ upper bidiagonal with diagonal $u_i>0$ and superdiagonal $q/2$. So Lemmas~\ref{lem:bidiag}--\ref{lem:prod} apply to $Q_q$ $(q\le1/2)$ and, since $e^{-sA}=\lim_jQ_{s/j}^{\,j}$, to $e^{-sA}$ for every $s\ge0$.
+
+\emph{Step 2.} Let $\rho_t=Q^te_{x_0}$ and $\Delta_t:=\rho_{t+1}-\rho_t=Q^t\Delta_0$, $\Delta_0=-qAe_{x_0}$, which has a negative entry at $x_0$, the entry $q/2$ at $x_0\pm1$ (when in $\{1,\dots,a-1\}$) and zeros elsewhere. Since $f_q(t+1)=\frac q2\rho_t(a-1)$,
+\begin{equation}\label{eq:last}
+\Delta a_q(t)=\tfrac q2\,\Delta_t(a-1).
+\end{equation}
+$\Delta_t\ne0$ ($Q$ is invertible) and $\sum_x\Delta_t(x)=-f_q(t+1)\le0$; so if $\Sm(\Delta_t)=0$, all nonzero entries of $\Delta_t$ are negative.
+
+\emph{Step 3.} By Step~1, $t\mapsto\Sm(\Delta_t)$ is nonincreasing and, on any stretch of times on which it is constant, the signs of the first and last nonzero entries of $\Delta_t$ are constant. Let $\ell_t$ be the sign of the last nonzero entry of $\Delta_t$; $\Delta_t(a-1)$ is $0$ or has the sign $\ell_t$. If $1<x_0<a-1$: $\Delta_0$ has the pattern $(+,-,+)$; $\ell_t=+$ while $\Sm(\Delta_t)=2$, $\ell_t$ is constant while $\Sm(\Delta_t)=1$, and $\ell_t=-$ once $\Sm(\Delta_t)=0$. If $x_0=1<a-1$: pattern $(-,+)$, $\ell_t=+$ while $\Sm=1$, then $\ell_t=-$. If $x_0=a-1$: pattern $(+,-)$ or $(-)$, $\ell_t=-$ always. In every case $\ell_t$ is $+$ up to some time and $-$ afterwards; by \eqref{eq:last} and Lemma~\ref{lem:unimodal}, (i) follows. (ii) is the same argument with $\rho_s=e^{-qsA}e_{x_0}$, $\Delta_s=\frac{d}{ds}\rho_s=e^{-qsA}\Delta_0$, $g_q'(s)=\frac q2\Delta_s(a-1)$, $\sum_x\Delta_s(x)=-g_q(s)$.
+\end{proof}
+
+\begin{remarku}
+(1) Part (ii) is known: U.~R\"osler, \emph{Unimodality of passage times for one-dimensional strong Markov processes}, Ann.\ Probab.\ 8 (1980) 853--859; J.~Keilson, \emph{On the unimodality of passage time densities in birth--death processes}, Statist.\ Neerlandica 35 (1981) 49--55. For $x_0=1$ and $q\le1/2$, $T$ is a sum of independent geometric variables (J.~A.~Fill, J.\ Theoret.\ Probab.\ 22 (2009) 543--557), so $f$ is log-concave. (2) The proof uses that the heat flow on a path does not increase the number of sign changes; there is no such statement on $\{1,\dots,N\}^d$, $d\ge2$. (3) The hypothesis $q\le1/2$ cannot be dropped (next proposition).
+\end{remarku}
+
+\begin{proposition}\label{prop:1dcounter}
+Let $d=1$, $x_0=1$, $a=N\ge4$, $\eta:=1-q$, $\eta_1:=1-q/2$. Then
+\begin{align*}
+f_q(N-1)&=(q/2)^{N-1},\qquad f_q(N)=(q/2)^{N-1}\,[\eta_1+(N-2)\eta],\\
+f_q(N+1)&=(q/2)^{N-1}\Bigl[\eta_1^2+(N-2)\eta_1\eta+\tbinom{N-1}2\eta^2+(N-2)\tfrac{q^2}4\Bigr].
+\end{align*}
+For every $q\in\bigl(\frac{2N-4}{2N-3},1\bigr]$, $f_q(N-1)>f_q(N)<f_q(N+1)$: the PMF is not unimodal. For $N=4$ the PMF is unimodal iff $q\le4/5$.
+\end{proposition}
+\begin{proof}
+A path first reaching $N$ at time $N-1+j$ consists of $N-1$ right steps and $j$ extra steps. $j=1$: one hold, at site $1$ (probability $\eta_1$) or at one of the sites $2,\dots,N-1$ (probability $\eta$). $j=2$: two holds (total weight $h_2(\eta_1,\eta,\dots,\eta)$, the complete homogeneous polynomial) or one left step from a site $k\in\{2,\dots,N-1\}$ and the extra right step ($N-2$ paths with the extra factor $(q/2)^2$). $f_q(N)<f_q(N-1)$ iff $\eta(2N-3)<1$. With $\eta_1=(1+\eta)/2$ let $\Phi(\eta):=\eta_1^2+(N-2)\eta_1\eta+\binom{N-1}2\eta^2+(N-2)(1-\eta)^2/4-\eta_1-(N-2)\eta$. $\Phi'(\eta)=\eta/2+(N-2)(3\eta/2-1)+(N-1)(N-2)\eta$ is increasing, so on $[0,1/(2N-3)]$, $\Phi'\le[\frac12+(N-2)(\frac72-N)]/(2N-3)<0$, and $\Phi(\eta)\ge\Phi(1/(2N-3))=[N^3-\frac{15}2N^2+\frac{35}2N-13]/(2N-3)^2>0$ for $N\ge4$ (the cubic equals $1$ at $N=4$ and is increasing). For $N=4$, as a function of $q$, $\Phi=\frac{19}4q^2-\frac{15}2q+3>0$ for all $q$, so $f_q$ is not unimodal for $q>4/5$. \emph{Unimodality at $q=4/5$, by hand.} On $\{1,2,3\}$,
+\[5Q_{4/5}=\begin{pmatrix}3&2&0\\2&1&2\\0&2&1\end{pmatrix},\qquad R_t:=(5Q_{4/5})^te_1:\]
+\begin{gather*}R_0=(1,0,0),\quad R_1=(3,2,0),\quad R_2=(13,8,4),\\ R_3=(55,42,20),\quad R_4=(249,192,104),\quad R_5=(1131,898,488).\end{gather*}
+Since $f(t+1)=\frac q2\rho_t(3)=2R_t(3)/5^{t+1}$: $f(1)=f(2)=0$, $f(3)=f(4)=8/125$, $f(5)=208/3125>f(4)$, $f(6)=976/15625<f(5)$. Moreover $R_5\le5R_4=(1245,960,520)$ componentwise, i.e.\ $\rho_5\le\rho_4$; as $Q\ge0$ entrywise this propagates, $\rho_{t+1}\le\rho_t$ for all $t\ge4$ (the cone certificate, Lemma~\ref{lem:cone}, whose two-line proof uses nothing else), so $f(t+2)\le f(t+1)$ for all $t\ge4$. Hence $f_{4/5}$ is unimodal with mode $5$, and Corollary~\ref{cor:interval} extends this to all $q\le4/5$. (Computer-assisted Theorems~\ref{thm:ca}(f) and~\ref{thm:thr1d}(a) reproduce it.)
+\end{proof}
+Example ($N=4$, $q=1$): $f(3)=1/8>f(4)=1/16<f(5)=3/32$.
+
+\begin{observation}\label{obs:1dthr}
+% src: exact values: data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl, data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl
+(Float bisection, valid by Corollary~\ref{cor:interval}; see also the exact Computer-assisted Theorem~\ref{thm:thr1d}(a).) The 1D end-to-end threshold is $q^*(4)=0.8$, $q^*(5)\approx0.8354$, $q^*(6)\approx0.8719$, $q^*(8)\approx0.8987$, $q^*(10)\approx0.9209$, $q^*(16)\approx0.9630$, and $q^*(N)=(2N-4)/(2N-3)$ to nine digits for $N=20,25,30,40$. \emph{The extrapolation ``$q^*(N)=(2N-4)/(2N-3)$ for all $N\ge20$'' that these four values suggest is false: $N=21$ is an exception} (Theorem~\ref{thm:thr1d}(a)).
+\end{observation}
+
+\subsection{The hypercube $N=2$, every dimension}
+
+\begin{proposition}\label{prop:hypercube}
+Let $N=2$, $d\ge1$, $x_0=(1,\dots,1)$, $a=(2,\dots,2)$. The PMF is unimodal for every $q\in(0,2/3]$ and the continuous-time density is unimodal for every rate.
+\end{proposition}
+\begin{proof}
+Let $k(x)$ be the number of coordinates of $x$ equal to $2$. From a site at level $k$ the walk moves to level $k+1$ with probability $(d-k)q/(2d)$, to level $k-1$ with probability $kq/(2d)$, and otherwise stays; so $k(X_t)$ is a birth--death chain on $\{0,\dots,d\}$ started at $0$, and $T$ is its hitting time of $d$. Its restriction $\tilde Q$ to $\{0,\dots,d-1\}$ is a Jacobi matrix with diagonal $1-q/2$ and $\tilde Q(k,k-1)\tilde Q(k-1,k)=k(d-k+1)q^2/(4d^2)\le q^2/4$. The pivots $u_0=1-q/2$, $u_k=1-q/2-\tilde Q(k,k-1)\tilde Q(k-1,k)/u_{k-1}$ satisfy $u_k\ge q/2$ when $q\le2/3$, so $\tilde Q=\mathcal L\,\mathcal U$ and $\tilde Q\T=\mathcal U\T\mathcal L\T$ are products of nonnegative bidiagonal matrices. With $\rho_t=(\tilde Q\T)^te_0$, $f_q(t+1)=\frac q{2d}\rho_t(d-1)$ and $\Delta_0=(\tilde Q\T-I)e_0=(-q/2,+q/2,0,\dots)$; Steps 2--3 of the proof of Theorem~\ref{thm:1d} apply verbatim.
+\end{proof}
+
+(Theorem~\ref{thm:main}(ii) below gives more: for $N=2$ the corner-to-corner PMF is unimodal for every $q\in(0,1]$ and every $d$. Proposition~\ref{prop:hypercube} is kept because its proof --- lumping to a birth--death chain --- is independent.)
+
+\subsection{The three geometries for every $N$ and every $d$: last-exit decomposition and strong unimodality}\label{sec:lastexit}
+
+This subsection proves, for \emph{all} $N$ and \emph{all} $d$, that the corner $\to$ opposite-corner law and (for odd $N$) the corner $\to$ centre and centre $\to$ corner laws are unimodal, in continuous time and in discrete time for $q\le1/2$. Two ingredients are used: a \emph{last-exit decomposition} (Lemma~\ref{lem:lastexit}), which writes the first-passage law as the convolution of the time-derivative of the \emph{free} (unkilled) propagator $u(t)=\Prob_{x_0}(X_t=a)$ with a \emph{nonincreasing} kernel; and the elementary half of Ibragimov's theorem on strong unimodality (Lemma~\ref{lem:ibragimov}): the convolution of a log-concave function with a nonincreasing kernel on $[0,\infty)$ is unimodal. For the three geometries $u=h^d$, where $h$ is an end-to-end propagator of a birth--death chain, hence $N^{-1}$ times the distribution function of a sum of independent exponential (geometric) variables; this makes $u'$ log-concave.
+
+\emph{Notation for this subsection.} $X$ is the \emph{unkilled} walk on $\Lambda$. In discrete time (activity $q$): $u(t):=P_q^t(x_0,a)$ for $t\ge0$, $u(-1):=0$, $\varphi(t):=u(t)-u(t-1)$; $E(k):=\Prob_a(X_1\ne a,\dots,X_k\ne a)$, $E(0)=1$; $\nu(k):=E(k)-E(k+1)$, the probability that the first return to $a$ occurs at time $k+1$. In continuous time (rate $q$): $u(t):=(e^{-qtL})(x_0,a)$,
+\[
+r(\tau):=q\,r\T e^{-q\tau A}\one=q\sum_{y\sim a}P(a,y)\,\Prob_y(T_a>\tau),\qquad \nu(\tau):=-r'(\tau)=q^2\,r\T e^{-q\tau A}r .
+\]
+
+\begin{lemma}[last-exit decomposition]\label{lem:lastexit}
+Let $x_0\ne a$ be arbitrary.
+\begin{enumerate}
+\item[(a)] \emph{Discrete time, any $q\in(0,1]$.} $1=E(0)\ge E(1)\ge\dots\ge0$, and for every $t\ge0$
+\begin{align}
+\Prob_{x_0}(T\le t)&=\sum_{s=0}^tu(s)E(t-s),\qquad f_q(t)=\sum_{k=0}^tE(k)\varphi(t-k),\label{eq:ledisc}\\
+f_q(t+1)-f_q(t)&=\varphi(t+1)-\sum_{k=0}^t\nu(k)\varphi(t-k).\label{eq:lediff}
+\end{align}
+\item[(b)] \emph{Continuous time, any rate $q>0$.} $r$ is $C^\infty$, positive and nonincreasing, $\nu\ge0$, $r(0)=q\,r\T\one$, and for every $t\ge0$
+\begin{align}
+\Prob_{x_0}(T\le t)&=u(t)+\int_0^tu(s)r(t-s)\,ds,\qquad g_q=u'+r*u',\label{eq:lecont}\\
+g_q'(t)&=u''(t)+r(0)u'(t)-\int_0^t\nu(\tau)u'(t-\tau)\,d\tau .\label{eq:lederiv}
+\end{align}
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $E$ is nonincreasing because the events decrease. Under $\Prob_{x_0}$, on $\{T\le t\}$ let $\sigma:=\max\{s\le t:X_s=a\}$. For $0\le s\le t$, $\{\sigma=s\}=\{X_s=a\}\cap\{X_{s+1}\ne a,\dots,X_t\ne a\}$, and the Markov property at time $s$ gives $\Prob_{x_0}(\sigma=s)=u(s)E(t-s)$. The events $\{\sigma=s\}$ partition $\{T\le t\}$ ($s=0$ contributes $u(0)=0$); this is the first identity. Subtracting the identity at $t-1$ from that at $t$,
+$f_q(t)=\sum_{k=0}^tE(k)u(t-k)-\sum_{k=0}^{t-1}E(k)u(t-1-k)=\sum_{k=0}^tE(k)\varphi(t-k)$
+(the term $k=t$ is $E(t)(u(0)-u(-1))=0$). Subtracting once more, $f_q(t+1)-f_q(t)=E(0)\varphi(t+1)+\sum_{k=0}^t(E(k+1)-E(k))\varphi(t-k)$, which is \eqref{eq:lediff}.
+
+(b) Order the sites as $(\Lambda',a)$; then $L=\begin{pmatrix}A&-r\\-r\T&c_a\end{pmatrix}$ with $c_a:=L(a,a)=r\T\one$ (the row sums of $L$ vanish). For $s>0$ let $\hat u(s)=[(s+qL)^{-1}](x_0,a)$, $\hat v(s)=[(s+qL)^{-1}](a,a)$, $\hat g(s)=q\,e_{x_0}\T(s+qA)^{-1}r$ and $\hat r(s)=q\,r\T(s+qA)^{-1}\one$; these are the Laplace transforms of $u$, of $v(t):=(e^{-qtL})(a,a)$, of $g_q$ (by \eqref{eq:dens}) and of $r$. The block-inverse (Schur complement) formula gives, with $\sigma(s):=s+qc_a-q^2r\T(s+qA)^{-1}r$,
+\[
+\hat v(s)=\frac1{\sigma(s)},\qquad \hat u(s)=\frac{\hat g(s)}{\sigma(s)} .
+\]
+Since $r=A\one$, $q(s+qA)^{-1}r=(s+qA)^{-1}\bigl((s+qA)-s\bigr)\one=\one-s(s+qA)^{-1}\one$, hence $q^2r\T(s+qA)^{-1}r=qc_a-s\hat r(s)$ and
+\[
+\sigma(s)=s\,(1+\hat r(s)),\qquad \hat g(s)=s\,\hat u(s)\,(1+\hat r(s)).
+\]
+Because $u(0)=0$, $s\hat u(s)$ is the Laplace transform of $u'$; so $\hat g$ is the transform of $u'+r*u'$, and uniqueness of the Laplace transform (both sides are continuous and bounded) gives $g_q=u'+r*u'$. Integrating over $[0,t]$ gives the first identity of \eqref{eq:lecont}. Differentiating $(r*u')(t)=\int_0^tr(\tau)u'(t-\tau)d\tau$ gives $r(t)u'(0)+\int_0^tr(\tau)u''(t-\tau)d\tau$, and an integration by parts turns the integral into $-r(t)u'(0)+r(0)u'(t)+\int_0^tr'(\tau)u'(t-\tau)d\tau$; this is \eqref{eq:lederiv}. Finally $e^{-q\tau A}=e^{-q\tau}e^{q\tau P'}$ with $P'=I-A\ge0$ entrywise, so $e^{-q\tau A}$ is entrywise nonnegative; hence $r>0$, $\nu=q^2r\T e^{-q\tau A}r\ge0$ (using $A\one=r$ once more), and $r$ is nonincreasing.
+\end{proof}
+
+\begin{remarku}
+(1) The first identity in \eqref{eq:lecont} is the continuous-time form of \eqref{eq:ledisc}: the walker has reached $a$ by time $t$ iff it is at $a$ at time $t$ or it left $a$ for the last time at some $s<t$; $r(t-s)$ is the rate of leaving $a$ times the probability of not returning within $t-s$. (2) Nothing in Lemma~\ref{lem:lastexit} uses the box, the symmetry of $P$, or the corner: it holds for every finite Markov chain and every pair of states (in (b) with $r(\tau):=\sum_yq(a,y)\Prob_y(T_a>\tau)$). (3) \eqref{eq:lediff} is the companion of the renewal equation of Proposition~\ref{prop:risedisc}: there the kernel acts on $f$, here on $\varphi$.
+\end{remarku}
+
+A sequence $(\varphi(t))_{t\in\mathbb Z}$ is called \emph{log-concave} if $\varphi\ge0$, its support $\{t:\varphi(t)>0\}$ is a set of consecutive integers, and $\varphi(t)^2\ge\varphi(t-1)\varphi(t+1)$ for all $t$. For such a sequence
+\begin{equation}\label{eq:lcbasic}
+\varphi(i-1)\,\varphi(j+1)\le\varphi(i)\,\varphi(j)\qquad\text{for all integers }i\le j .
+\end{equation}
+(If the left side is zero there is nothing to prove; otherwise $\varphi>0$ on $\{i-1,\dots,j+1\}$ and $\varphi(l+1)/\varphi(l)$ is nonincreasing there, so $\varphi(j+1)/\varphi(j)\le\varphi(i)/\varphi(i-1)$.)
+
+\begin{lemma}[a log-concave function convolved with a nonincreasing kernel is unimodal]\label{lem:ibragimov}
+\begin{enumerate}
+\item[(a)] \emph{Continuous.} Let $\varphi\in C^1([0,\infty))$ with $\varphi>0$ and $\log\varphi$ concave on $(0,\infty)$, and let $r\in C^1([0,\infty))$ be nonnegative and nonincreasing, $\nu:=-r'$. Put $G:=\varphi+r*\varphi$. Then for $t>0$
+\begin{equation}\label{eq:B}
+G'(t)=\varphi(t)\,B(t),\qquad B(t):=\frac{\varphi'(t)}{\varphi(t)}+r(0)-\int_0^t\nu(\tau)\frac{\varphi(t-\tau)}{\varphi(t)}\,d\tau ,
+\end{equation}
+and $B$ is nonincreasing on $(0,\infty)$. Consequently there is $t^*\in[0,\infty]$ with $G'\ge0$ on $(0,t^*)$ and $G'\le0$ on $(t^*,\infty)$.
+\item[(b)] \emph{Discrete.} Let $\varphi$ be a log-concave sequence with $\varphi(t)=0$ for $t<0$, let $1=\kappa(0)\ge\kappa(1)\ge\dots\ge0$, $\nu(k):=\kappa(k)-\kappa(k+1)$, and $F(t):=\sum_{k=0}^t\kappa(k)\varphi(t-k)$. Then $F(t+1)-F(t)=\varphi(t+1)-\sum_{k=0}^t\nu(k)\varphi(t-k)$. This vanishes when $t+1$ lies to the left of the support of $\varphi$; as long as $\varphi(t+1)>0$,
+\[
+F(t+1)-F(t)=\varphi(t+1)\,\beta(t),\qquad \beta(t):=1-\sum_{k=0}^t\nu(k)\frac{\varphi(t-k)}{\varphi(t+1)},
+\]
+with $\beta$ nonincreasing; and if the support of $\varphi$ ends at $t_1<\infty$, then $F(t+1)-F(t)\le0$ for $t\ge t_1$. Consequently $\Sm(\Delta F)\le1$, with sign pattern $(+\dots+)(-\dots-)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The computation leading to \eqref{eq:lederiv} gives $G'=\varphi'+r(0)\varphi-\nu*\varphi$; divide by $\varphi(t)>0$. Let $0<t_1<t_2$. $\varphi'/\varphi=(\log\varphi)'$ is nonincreasing. For $0\le\tau\le t_1$: $\varphi(t_1-\tau)\varphi(t_2)\le\varphi(t_1)\varphi(t_2-\tau)$ --- trivially if $\varphi(t_1-\tau)=0$, and otherwise because the increment of the concave function $\log\varphi$ over an interval of length $\tau$ is nonincreasing in the position of the interval. Hence
+\[
+\int_0^{t_1}\nu(\tau)\frac{\varphi(t_1-\tau)}{\varphi(t_1)}d\tau\le\int_0^{t_1}\nu(\tau)\frac{\varphi(t_2-\tau)}{\varphi(t_2)}d\tau\le\int_0^{t_2}\nu(\tau)\frac{\varphi(t_2-\tau)}{\varphi(t_2)}d\tau ,
+\]
+so $B(t_2)\le B(t_1)$. Take $t^*:=\sup\{t:B(t)\ge0\}$ ($:=0$ if the set is empty).
+
+(b) The formula for $F(t+1)-F(t)$ is the computation in the proof of Lemma~\ref{lem:lastexit}(a). If $\varphi(t+1)>0$ and $\varphi(t+2)>0$, then for each fixed $k\ge0$, \eqref{eq:lcbasic} with $i=t+1-k\le j=t+1$ gives $\varphi(t-k)\varphi(t+2)\le\varphi(t+1-k)\varphi(t+1)$, i.e.\ $\varphi(t-k)/\varphi(t+1)\le\varphi(t+1-k)/\varphi(t+2)$; the number of terms of the sum grows with $t$; so $\beta(t+1)\le\beta(t)$. To the right of the support, $F(t+1)-F(t)=-\sum_k\nu(k)\varphi(t-k)\le0$. So the nonzero entries of $\Delta F$ are $(+\dots+)(-\dots-)$.
+\end{proof}
+
+\begin{remarku}
+Background: I.~A.~Ibragimov, \emph{On the composition of unimodal distributions}, Teor.\ Veroyatnost.\ i Primenen.\ 1 (1956) 283--288 [Theory Probab.\ Appl.\ 1 (1956) 255--260] (a distribution is strongly unimodal iff it is log-concave); for lattice distributions J.~Keilson and H.~Gerber, \emph{Some results for discrete unimodality}, J.~Amer.\ Statist.\ Assoc.\ 66 (1971) 386--389. Only the direction proved above is used, for a kernel with an atom at $0$ and a nonincreasing density on $(0,\infty)$.
+\end{remarku}
+
+\begin{lemma}[end-to-end propagator of a birth--death chain]\label{lem:bd}
+\begin{enumerate}
+\item[(a)] \emph{Continuous time.} Let $G$ be the generator of a birth--death process on $\{0,\dots,M\}$, $M\ge1$, with birth rates $\lambda_0,\dots,\lambda_{M-1}>0$, death rates $\mu_1,\dots,\mu_M>0$ and stationary distribution $\pi$. Then $-G$ has $M+1$ distinct real eigenvalues $0=\vartheta_0<\vartheta_1<\dots<\vartheta_M$, and
+\[
+p_t(0,M)=\pi_M\,\Prob(\xi_1+\dots+\xi_M\le t),\qquad \xi_k\sim\mathrm{Exp}(\vartheta_k)\ \text{independent}.
+\]
+\item[(b)] \emph{Discrete time.} Let $K$ be the transition matrix of a birth--death chain on $\{0,\dots,M\}$ with $K(i,i+1)=p_i>0$, $K(i,i-1)=q_i>0$ and stationary distribution $\pi$. Its eigenvalues are real and distinct, $1=\lambda_0>\lambda_1>\dots>\lambda_M\ge-1$. If $\lambda_M\ge0$, then
+\[
+K^n(0,M)=\pi_M\,\Prob(G_1+\dots+G_M\le n),\qquad \Prob(G_k=j)=(1-\lambda_k)\lambda_k^{j-1}\ (j\ge1),\ \text{independent}
+\]
+($G_k\equiv1$ if $\lambda_k=0$).
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+$G$ and $K$ are tridiagonal with positive off-diagonal products, hence similar (by $\mathrm{diag}(\pi)^{1/2}$) to symmetric Jacobi matrices with non-zero off-diagonal entries; their eigenvalues are real and simple, and the eigenvalue $0$ (resp.\ $1$) has the constant eigenvector. (a) By Cramer's rule $[(s-G)^{-1}](0,M)=(-1)^M\det(\hat G)/\det(s-G)$, where $\hat G$ is $s-G$ with row $M$ and column $0$ deleted. $\hat G$ is lower triangular with diagonal entries $-\lambda_0,\dots,-\lambda_{M-1}$, so $[(s-G)^{-1}](0,M)=\prod_i\lambda_i\big/\bigl(s\prod_{k=1}^M(s+\vartheta_k)\bigr)$. The spectral decomposition of $e^{tG}$ in $\ell^2(\pi)$ shows that the residue of $[(s-G)^{-1}](0,M)$ at $s=0$ is $\pi_M$; hence $\prod_i\lambda_i=\pi_M\prod_k\vartheta_k$ and $[(s-G)^{-1}](0,M)=\pi_M\,\frac1s\prod_k\frac{\vartheta_k}{s+\vartheta_k}$, the Laplace transform of $\pi_M\Prob(\sum\xi_k\le t)$. (b) In the same way $\sum_nK^n(0,M)z^n=[(I-zK)^{-1}](0,M)=z^M\prod_ip_i\big/\bigl((1-z)\prod_{k=1}^M(1-\lambda_kz)\bigr)$, the residue at $z=1$ gives $\prod_ip_i=\pi_M\prod_k(1-\lambda_k)$, and $(1-\lambda)z/(1-\lambda z)$ is the generating function of the geometric law above when $\lambda\in[0,1)$; the factor $1/(1-z)$ forms partial sums.
+\end{proof}
+
+(For $d=1$ end-to-end, (a) is Lemma~\ref{lem:hypo} below. The statement is classical: S.~Karlin and J.~McGregor, \emph{Coincidence properties of birth and death processes}, Pacific J.\ Math.\ 9 (1959) 1109--1140; J.~Keilson, \emph{Markov Chain Models --- Rarity and Exponentiality}, Springer 1979, \S5.1.)
+
+\begin{lemma}[operations preserving log-concavity]\label{lem:lcops}
+\begin{enumerate}
+\item[(a)] \emph{Exponential and geometric kernels, primitives and partial sums.}
+\begin{enumerate}
+\item[(i)] Let $\varphi$ be continuous on $[0,\infty)$, positive with $\log\varphi$ concave on $(0,\infty)$, and $\vartheta\ge0$. Then $\psi(t):=\int_0^te^{-\vartheta(t-s)}\varphi(s)\,ds$ is $C^1$, positive and log-concave on $(0,\infty)$.
+\item[(ii)] Let $\varphi$ be a log-concave sequence vanishing for $n<n_0$, $\lambda\in[0,1]$, $c>0$. Then $\psi(n):=c\sum_{j\ge1}\lambda^{j-1}\varphi(n-j)$ ($0^0:=1$) is a log-concave sequence.
+\item[(iii)] Consequently the density of a sum of $M\ge1$ independent exponential variables is positive and log-concave on $(0,\infty)$, and so is its distribution function; the probability mass function of a sum of $M$ independent geometric variables as in Lemma~\ref{lem:bd}(b) is a log-concave sequence, and so is its distribution function.
+\end{enumerate}
+\item[(b)] \emph{Binomial convolution (Davenport--P\'olya).} Let $a=(a_k)_{k\ge0}$ and $b=(b_k)_{k\ge0}$ be log-concave sequences (extended by zero to negative indices). Then
+\[
+(a\star b)_n:=\sum_{k=0}^n\binom nka_kb_{n-k}
+\]
+is a log-concave sequence, with support $\operatorname{supp}a+\operatorname{supp}b$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a)(i) $\psi'=\varphi-\vartheta\psi$ and $\psi>0$ on $(0,\infty)$. $\psi(t)/\varphi(t)=\int_0^te^{-\vartheta\tau}\varphi(t-\tau)/\varphi(t)\,d\tau$ is nondecreasing in $t$ (as in the proof of Lemma~\ref{lem:ibragimov}(a)), so $(\log\psi)'=\varphi/\psi-\vartheta$ is nonincreasing.
+(ii) If $\lambda=0$, $\psi$ is a shift of $c\varphi$. Let $\lambda>0$; then $\psi(n)>0$ iff $n\ge n_0+1$, and $\psi(n+1)=\lambda\psi(n)+c\varphi(n)$. For $n\ge n_0+1$ with $\varphi(n)>0$, $\psi(n)/\varphi(n)=c\sum_{j\ge1}\lambda^{j-1}\varphi(n-j)/\varphi(n)$ is nondecreasing in $n$ by \eqref{eq:lcbasic} (with $i=n+1-j$ and $n$ in the r\^ole of $j$); if the support of $\varphi$ ends, $\varphi(n)/\psi(n)$ is $0$ from then on. So $\psi(n+1)/\psi(n)=\lambda+c\varphi(n)/\psi(n)$ is nonincreasing for $n\ge n_0+1$, which is log-concavity.
+(iii) $\vartheta_1e^{-\vartheta_1t}$ is log-linear; convolving successively with $\vartheta_ke^{-\vartheta_kt}$ and finally with $\vartheta=0$ (the primitive) preserves positivity and log-concavity by (i). In the discrete case start from the unit mass at $0$, convolve with the geometric laws ($c=1-\lambda_k$, $\lambda=\lambda_k$) and finally with $\lambda=c=1$ (shifted partial sums), using (ii).
+
+(b) Write $K_n(k):=\binom nkb_{n-k}$, so $(a\star b)_n=\sum_kK_n(k)a_k$, and let $(Sa)_k:=a_{k+1}$. Pascal's rule gives $(a\star b)_{n+1}=(Sa\star b)_n+(a\star Sb)_n$. Put $c:=a\star b$. Then
+\[
+c_{n+1}c_{n-1}-c_n^2=\bigl[(Sa\star b)_nc_{n-1}-(Sa\star b)_{n-1}c_n\bigr]+\bigl[(a\star Sb)_nc_{n-1}-(a\star Sb)_{n-1}c_n\bigr].
+\]
+The first bracket equals $\sum_{k,l}a_{k+1}a_lM(k,l)$ with $M(k,l):=K_n(k)K_{n-1}(l)-K_{n-1}(k)K_n(l)=-M(l,k)$, i.e.\ $\sum_{k<l}(a_{k+1}a_l-a_ka_{l+1})M(k,l)$. For $k<l$: $a_{k+1}a_l-a_ka_{l+1}\ge0$ by \eqref{eq:lcbasic}; and $M(k,l)\le0$, because $\binom nk\binom{n-1}l\le\binom{n-1}k\binom nl$ (for $l\le n-1$ this is $n/(n-k)\le n/(n-l)$; for $l\ge n$ the left side is $0$) and $b_{n-k}b_{n-1-l}\le b_{n-1-k}b_{n-l}$ (by \eqref{eq:lcbasic} with $i=n-l\le j=n-1-k$). So the first bracket is $\le0$, and the second one by symmetry. The statement about supports is clear.
+\end{proof}
+
+(H.~Davenport and G.~P\'olya, \emph{On the product of two power series}, Canad.\ J.\ Math.\ 1 (1949) 1--5, for positive sequences; the proof above allows leading zeros.)
+
+\begin{theorem}[criterion]\label{thm:criterion}
+Let $x_0\ne a$ be arbitrary.
+\begin{enumerate}
+\item[(a)] \emph{Continuous time.} If $u'(t)=\frac{d}{dt}\Prob_{x_0}(X_t=a)>0$ for all $t>0$ and $\log u'$ is concave on $(0,\infty)$, then the first-passage density $g_q$ is unimodal for every rate: $g_q'=u'\cdot B$ with $B$ as in \eqref{eq:B} nonincreasing, and there is a unique $t^*\in[0,\infty)$ with $g_q'>0$ on $(0,t^*)$ and $g_q'<0$ on $(t^*,\infty)$.
+\item[(b)] \emph{Discrete time.} If for some $q\in(0,1]$ the sequence $\varphi(t)=P_q^t(x_0,a)-P_q^{t-1}(x_0,a)$ is log-concave, then the PMF $f_q$ is unimodal.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Lemma~\ref{lem:lastexit}(b) and Lemma~\ref{lem:ibragimov}(a) with $\varphi:=u'$. $g_q'$ is a finite sum of exponentials, not identically zero, so its zeros are isolated; since $B$ is nonincreasing, $g_q'=u'B$ has at most one sign change, from $+$ to $-$, and vanishes at most at one point; $t^*<\infty$ because $g_q$ is integrable. (b) Lemma~\ref{lem:lastexit}(a) and Lemma~\ref{lem:ibragimov}(b) with $\kappa:=E$, then Lemma~\ref{lem:unimodal}.
+\end{proof}
+
+\begin{theorem}[corner $\to$ corner, corner $\to$ centre, centre $\to$ corner: all $N$, all $d$]\label{thm:main}
+Let $d\ge1$, $N\ge2$, and let $(x_0,a)$ be one of
+\begin{itemize}
+\item[(CC)] $x_0=(1,\dots,1)$, $a=(N,\dots,N)$;
+\item[(C2M)] $N$ odd, $c=(N+1)/2$: $x_0=(1,\dots,1)$, $a=(c,\dots,c)$;
+\item[(M2C)] $N$ odd: $x_0=(c,\dots,c)$, $a=(N,\dots,N)$
+\end{itemize}
+(or any image of these under the symmetries of the box). Then:
+\begin{enumerate}
+\item[(i)] for every rate $q>0$ the continuous-time first-passage density $g_q$ is unimodal, with a unique mode;
+\item[(ii)] for every $q\in(0,q_N]$, $q_N:=1/(1+\cos(\pi/N))>1/2$, the PMF $f_q$ is unimodal. In particular this holds for every $q\le1/2$, for all $N$ and $d$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{One-dimensional factor.} Let $K_q:=(1-q)I+qP^{(1)}$ be the one-dimensional lazy walk on $\{1,\dots,N\}$ and $L^{(1)}=I-P^{(1)}$. In case (CC) this is a birth--death chain on $N$ sites, $(1,N)$ are its two ends, and $\pi(N)=1/N$. In cases (C2M), (M2C) put $Y:=|X-c|\in\{0,\dots,M\}$, $M:=(N-1)/2$. The reflection $x\mapsto N+1-x$ commutes with $P^{(1)}$, so $P^{(1)}$ maps functions of $|x-c|$ to functions of $|x-c|$ and $Y$ is again a Markov chain: a birth--death chain with $\tilde K(0,1)=q$, $\tilde K(y,y\pm1)=q/2$ for $0<y<M$, $\tilde K(M,M-1)=q/2$, stationary weight $\tilde\pi(0)=1/N$, and $K_q^n(1,c)=\tilde K^n(M,0)$; $(M,0)$ are the two ends of the folded chain. By symmetry of $K_q$ and the reflection, $K_q^n(c,N)=K_q^n(1,c)$. The same holds in continuous time. The eigenvalues of $K_q$ are $1-q(1-\cos(k\pi/N))$ (Lemma~\ref{lem:spec}), those of the folded chain are among them (an eigenvector of the folded chain lifts to one of $K_q$); all of them are $\ge1-q(1+\cos(\pi/N))\ge0$ when $q\le q_N$.
+
+(i) $L=\frac1d\sum_iL^{(1)}_i$ is a Kronecker sum, so $e^{-qtL}=\bigotimes_ie^{-(q/d)tL^{(1)}}$ and $u(t)=h(t)^d$, where $h$ is the one-dimensional propagator (rate $q/d$) between $x_{0,1}$ and $a_1$. By the previous paragraph and Lemma~\ref{lem:bd}(a), $h=N^{-1}\Gamma$ with $\Gamma$ the distribution function of a sum of $M_1$ independent exponential variables ($M_1=N-1$ in case (CC), $(N-1)/2$ otherwise). By Lemma~\ref{lem:lcops}(a)(iii), $h$ and $h'$ are positive and log-concave on $(0,\infty)$. Hence $u'=d\,h^{d-1}h'$ is positive and $\log u'=\log d+(d-1)\log h+\log h'$ is concave on $(0,\infty)$. Apply Theorem~\ref{thm:criterion}(a).
+
+(ii) $P_q=\frac1d\sum_iK_q^{(i)}$, where $K_q^{(i)}$ is $K_q$ acting on coordinate $i$; these matrices commute. Let $h(n):=K_q^n(x_{0,1},a_1)$ and $(\delta h)(n):=h(n+1)-h(n)$. By the multinomial theorem and the tensor structure, for $t\ge1$,
+\[
+\varphi(t)=[P_q^{t-1}(P_q-I)](x_0,a)=\frac1d\sum_{i=1}^dd^{-(t-1)}\sum_{n_1+\dots+n_d=t-1}\frac{(t-1)!}{\prod_jn_j!}\,(\delta h)(n_i)\prod_{j\ne i}h(n_j),
+\]
+and the $d$ values of $i$ contribute equally, so
+\begin{equation}\label{eq:binconv}
+d^{\,t-1}\varphi(t)=(\delta h\star h\star\dots\star h)_{t-1}\qquad(d-1\text{ factors }h;\ \text{for }d=1,\ \varphi(t)=(\delta h)(t-1)).
+\end{equation}
+For $q\le q_N$, Lemma~\ref{lem:bd}(b) gives $h(n)=N^{-1}\Prob(G_1+\dots+G_{M_1}\le n)$; by Lemma~\ref{lem:lcops}(a)(iii) $h$ is a log-concave sequence and so is $\delta h$ (it is $N^{-1}$ times the shifted mass function of $G_1+\dots+G_{M_1}$). By Lemma~\ref{lem:lcops}(b), applied $d-1$ times, the right side of \eqref{eq:binconv} is a log-concave sequence; multiplying by the geometric sequence $d^{-(t-1)}$ preserves log-concavity, and $\varphi(t)=0$ for $t\le0$. So $\varphi$ is log-concave, and Theorem~\ref{thm:criterion}(b) applies.
+\end{proof}
+
+For $N=2$, $q_2=1$: the corner-to-corner PMF of the hypercube $\{1,2\}^d$ is unimodal for \emph{every} $q\in(0,1]$ and every $d$ (this improves Proposition~\ref{prop:hypercube}). For $N=3$, $q_3=2/3$; $q_N\downarrow1/2$ as $N\to\infty$. The range $q_N<q\le4/5$ is the subject of Section~\ref{sec:fourfifths} (Theorem~\ref{thm:fourfifths}). By Corollary~\ref{cor:interval}, (i) also follows from (ii); the direct proof gives more (Corollary~\ref{cor:mode}). In probabilistic terms $N^du(t)=\Prob(\max(\tau_1,\dots,\tau_d)\le t)$ with $\tau_i$ independent copies of $\xi_1+\dots+\xi_{M_1}$: the free propagator is the distribution function of the maximum of $d$ independent hypoexponential times, and the first-passage density is the density of this maximum, smoothed by the ``escape'' kernel $\delta_0+r$.
+
+\begin{corollary}[where the mode is; continuous time]\label{cor:mode}
+Let $(x_0,a)$ satisfy the hypothesis of Theorem~\ref{thm:criterion}(a) and $D\ge2$. Let $m_u:=\sup\{t:u''\ge0\text{ on }[0,t]\}$ (the maximiser of $u'$), and for $a'>0$ let
+\[
+J_{a'}(t):=u'(t)-a'\int_0^te^{-a'(t-s)}u'(s)\,ds,\qquad m(a'):=\inf\{t\ge m_u:J_{a'}(t)\le0\}\in(m_u,\infty].
+\]
+Then $J_{a'}\le0$ on $[m(a'),\infty)$, $a'\mapsto m(a')$ is nonincreasing, and the mode $t^*$ of $g_q$ satisfies
+\[
+m_u<t^*\le m(q\alpha_1)\le m(a')\qquad\text{for every }0<a'\le q\alpha_1,
+\]
+in particular for $a'=q/M_{\max}$, $M_{\max}:=\max_x\E_x[T]$ at $q=1$ ($=\E_{x_0}[T]$ for the corner pair, Lemma~\ref{lem:coupling}). Moreover $m(a')\le\inf\{t\ge m_u:u'(t)\le a'e^{-a't}u(t)\}$.
+\end{corollary}
+\begin{proof}
+$u'$ is positive and log-concave, hence $u''\ge0$ on $[0,m_u]$ and $u''\le0$ on $[m_u,\infty)$; $u'(0)=0$ because $D\ge2$.
+\emph{Lower bound.} For $0<t\le m_u$ and $0\le\tau\le t$, $u'(t-\tau)\le u'(t)$, so by \eqref{eq:B} $B(t)\ge u''(t)/u'(t)+r(0)-\int_0^t\nu=u''(t)/u'(t)+r(t)>0$. Hence $g_q'>0$ on $(0,m_u]$.
+\emph{Upper bound.} $r(\tau)=\sum_jw_je^{-q\alpha_j\tau}$ with $w_j=q\,r\T E_j\one=(q/\alpha_j)\|E_jr\|^2\ge0$ (as $E_j\one=\alpha_j^{-1}E_jA\one$). By \eqref{eq:lecont} and $u'(0)=0$,
+\[
+g_q'(t)=u''(t)+\sum_jw_je^{-q\alpha_jt}I_{q\alpha_j}(t),\qquad I_b(t):=\int_0^te^{bs}u''(s)\,ds=e^{bt}J_b(t)
+\]
+(integrate by parts). $I_b$ is nondecreasing on $[0,m_u]$, positive at $m_u$, and nonincreasing on $[m_u,\infty)$; so $\{t\ge m_u:I_b(t)\le0\}=[m(b),\infty)$. For $b'\ge b>0$ and $t\ge m_u$: $I_{b'}(t)=\int_0^te^{(b'-b)s}e^{bs}u''(s)ds\le e^{(b'-b)m_u}I_b(t)$, because the weight $e^{(b'-b)s}$ is at most $e^{(b'-b)m_u}$ where $u''\ge0$ and at least that where $u''\le0$. Hence $I_b(t)\le0$ implies $I_{b'}(t)\le0$: $m(\cdot)$ is nonincreasing. For $t\ge m(q\alpha_1)$ every $I_{q\alpha_j}(t)\le0$ ($\alpha_j\ge\alpha_1$) and $u''(t)\le0$, so $g_q'(t)\le0$. $\alpha_1\ge1/M_{\max}$ is the argument of Lemma~\ref{lem:alpha} ($1/\alpha_1=\|A^{-1}\|_2\le\|A^{-1}\|_\infty=\max_x\E_xT$). Finally $e^{-a'(t-s)}\ge e^{-a't}$ gives $J_{a'}(t)\le u'(t)-a'e^{-a't}u(t)$.
+\end{proof}
+
+For the corner pair $m_u$ is the $t_N$ of Theorem~\ref{thm:rise}, and $m(q\alpha_1)<\infty$ because $u'$ decays at rate $q\beta_1>q\alpha_1$ (Lemma~\ref{lem:sym}). A formal leading-order evaluation (replace $h$ by its two slowest modes and the integral in $J$ by $u$) gives $m(q\alpha_1)\approx(q\beta_1)^{-1}\ln(2d\beta_1/\alpha_1)$, which is also the leading term of the two-pole formula of Section~6 of the article; so the corollary is a rigorous upper bound for the mode which, numerically, exceeds the mode by 4.7--24.9\,\% for the corner pair in the cases tabulated below ($d=2,3$, $8\le N\le64$). For smaller boxes and in one dimension it is cruder: $m(\alpha_1)/t^*=1.49$, $1.39$, $1.33$, $1.27$ for $d=2$, $N=3,4,5,7$, and $1.94$, $1.69$, $1.63$, $1.62$ for $d=1$, $N=4,9,15,16$; for corner $\to$ centre $1.61$, $1.31$, $1.20$ ($(d,N)=(1,9),(2,5),(2,9)$), and for centre $\to$ corner it lies between $1.54$ and $2.73$ in the eight cases computed ($d=1,2,3$, $3\le N\le33$) (\texttt{scripts/table\_mode\_bounds\_small.py}; float, illustration only). In every case computed the chain $m_u<t^*\le m(\alpha_1)\le m(1/M_{\max})$ held, as it must. (The asymptotic statement is not proved here.)
+% src: data/msc_rigorous_unimodality/table_mode_bounds.json (tabulated cases), data/msc_rigorous_unimodality/table_mode_bounds_small.json (small boxes, d = 1) Numerical illustration (\texttt{code/msc_rigorous_unimodality/table\_mode\_bounds.py}, float, unit rate):
+% src: data/msc_rigorous_unimodality/table_mode_bounds.json
+\begin{center}\small
+\begin{tabular}{llrrrrrr}\toprule
+geometry&$d$&$N$&$m_u$&mode $t^*$&$m(\alpha_1)$&$m(1/M_{\max})$&$m(\alpha_1)/t^*$\\\midrule
+CC&2&8&37.1&84.5&105.5&108.5&1.248\\
+CC&2&16&149.6&381.0&449.5&459.2&1.180\\
+CC&2&32&599.5&1653.2&1884.7&1917.7&1.140\\
+CC&2&64&2399.2&7022.2&7826.5&7940.6&1.115\\
+CC&3&8&70.2&204.5&224.3&226.0&1.097\\
+CC&3&12&158.4&509.7&542.4&544.9&1.064\\
+CC&3&16&282.0&964.5&1010.7&1014.1&1.048\\
+C2M&2&33&159.6&464.5&519.2&526.9&1.118\\
+M2C&2&33&159.6&417.6&645.9&655.2&1.547\\
+C2M&3&9&22.6&73.6&78.7&79.0&1.070\\
+M2C&3&9&22.6&58.7&91.2&91.7&1.554\\\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[scope and limits of the method]\label{rem:scope}
+\begin{enumerate}
+\item \emph{The hypothesis of Theorem~\ref{thm:criterion} is a property of the free walk only}: no information on the killed spectrum is needed. It fails whenever $u$ overshoots its limit $N^{-d}$ (then $u'$ changes sign), which is what happens for the bimodal pairs of Section~\ref{sec:counter}.
+\item \emph{Positivity of $u'$ cannot be weakened to $u'\ge0$.} For $d=3$, $N=4$, $x_0=(3,3,3)$, $a=(2,2,2)$: $u=p^3$ with $p(t)=\Prob_3(X_t=2)=\frac14+\frac12\bigl[-\cos^2(\tfrac{3\pi}8)e^{-\vartheta_1t}+\tfrac12e^{-\vartheta_2t}-\cos^2(\tfrac\pi8)e^{-\vartheta_3t}\bigr]$, $\vartheta_k=\frac qd(1-\cos(k\pi/4))$, and
+\[
+p'(t)=\tfrac12\bigl(A^{1/2}e^{-\vartheta_1t/2}-B^{1/2}e^{-\vartheta_3t/2}\bigr)^2,\qquad A=\cos^2(\tfrac{3\pi}8)\vartheta_1,\ B=\cos^2(\tfrac\pi8)\vartheta_3
+\]
+(expand the square and use $2(AB)^{1/2}=\vartheta_2/2$ and $\vartheta_1+\vartheta_3=2\vartheta_2$). So $u'=3p^2p'\ge0$ vanishes at exactly one instant, $t_0=\ln(B/A)/(\vartheta_3-\vartheta_1)$, and numerically $\log u'$ is concave on each side of $t_0$; yet this pair is the bimodal pair of the $4\times4\times4$ box (class \textbf{B} in Theorem~\ref{thm:pairs}). A grid test of the hypothesis must therefore also check that $u'$ has no interior local minimum.
+\item \emph{The conclusion cannot be strengthened to log-concavity of the first-passage law}: centre $\to$ corner satisfies the hypothesis but its PMF is not log-concave (Proposition~\ref{prop:notlc}).
+\item \emph{Discrete time needs $q\le q_N$.} For $q>q_N$ the one-dimensional chain has negative eigenvalues and $\delta h$ need not be log-concave: in case (CC), $\delta h(N-2+j)=(q/2)^{N-1}h_j(\lambda_1,\dots,\lambda_{N-1})$ ($h_j$ the complete homogeneous symmetric polynomial, $\lambda_k=1-q+q\cos(k\pi/N)$), and
+\[
+\delta h(N-1)^2-\delta h(N-2)\,\delta h(N)=(q/2)^{2(N-1)}e_2(\lambda)=(q/2)^{2(N-1)}\,\frac{N-2}4\,\bigl(2(N-1)(1-q)^2-q^2\bigr),
+\]
+which is negative iff $q>q_1(N):=1/(1+(2(N-1))^{-1/2})$. So in $d=1$ the hypothesis of Theorem~\ref{thm:criterion}(b) fails for $q>q_1(N)$. That the \emph{conclusion} also fails for $q$ near $1$ is Proposition~\ref{prop:1dcounter} ($d=1$) and Theorem~\ref{thm:ca}(c) ($d=2$). For $q_N<q\le q_1(N)$ the hypothesis holds when $q\le4/5$ (every $N$; Theorem~\ref{thm:lc1d}) and when $N\le501$ (Corollary~\ref{cor:thr1d}); in general this is Conjecture~\ref{conj:1dlc}.
+\item \emph{Cubes.} The proof of Theorem~\ref{thm:main} uses that all coordinates contribute the same factor $h$. For a rectangular box, or a target such as a face centre, $u'=\sum_ih_i'\prod_{j\ne i}h_j$ is the density of the maximum of independent, non-identically distributed log-concave times, which need not be log-concave; Theorem~\ref{thm:criterion} then has to be checked case by case.
+\end{enumerate}
+\end{remark}
+
+\begin{observation}\label{obs:hyp}
+% src: data/msc_rigorous_unimodality/pairs_logconcave_hypothesis.json, data/msc_rigorous_unimodality/verify_lastexit.json (W10), data/msc_rigorous_unimodality/check_lc_threshold.json
+(i) (\texttt{verify\_lastexit.py} W10; grid test with 30-digit arithmetic, not a proof.) The hypothesis of Theorem~\ref{thm:criterion}(a) holds on a grid of 1560 times for 10 of 24 pairs ($d=2$, $N=3$), 7/45 ($N=4$), 24/144 ($N=5$), 36/210 ($N=6$), 80/480 ($N=7$), 91/630 ($N=8$), 49/104 ($d=3$, $N=3$), 30/252 ($d=3$, $N=4$) (targets up to symmetry; lists in \texttt{data/pairs\_logconcave\_hypothesis.json}); typical members are pairs that are far apart. No pair satisfying the hypothesis fails to be unimodal.
+(ii) (\texttt{scripts/check\_lc\_threshold.py}, exact integer arithmetic.) For $d=2$, $2\le N\le20$ and $N=24$, and $d=3$, $2\le N\le10$, the sequence $\varphi$ of the corner pair is log-concave on $0\le t\le5dN^2+40$ for $q=3/5$ and $q=4/5$ (for $q\le4/5$ log-concavity on the whole support is Theorem~\ref{thm:fourfifths}(i)); for $q=9/10$ it fails for $d=2$, $N\in\{4,\dots,8\}$ (first inequality only) and holds in the other cases.
+\end{observation}
+
+\emph{Sanity checks} (\texttt{scripts/verify\_lastexit.py} $\to$ \texttt{data/verify\_lastexit.json}; all pass): W1 Lemma~\ref{lem:lastexit}(a), exact integers (5292 identities for 9 pairs $\times$ 4 activities); W2 Lemma~\ref{lem:lastexit}(b) in the Laplace domain, exact rationals; W3 \eqref{eq:lederiv} by quadrature; W4 Theorem~\ref{thm:main}(i): $u'>0$, $(\log u')''\le0$, $B$ nonincreasing, 20 cases; W5 Lemma~\ref{lem:bd}, discrete exact and continuous to $10^{-40}$, including the folding; W6 Lemma~\ref{lem:lcops}, 600 random exact trials; W7 Lemma~\ref{lem:ibragimov}, 600 random exact trials; W8 Theorem~\ref{thm:main}(ii) on windows, exact, and identity \eqref{eq:binconv}; W9 Remark~\ref{rem:scope}(4), exact; W10 Theorem~\ref{thm:criterion} on all pairs of small boxes.
+
+\section{Corner target, opposite-corner start: what is proved for all $N$}\label{sec:corner}
+
+\emph{Status of this section after Theorem~\ref{thm:main}.} For $q\le1/2$ and in continuous time, unimodality of the corner pair is Theorem~\ref{thm:main}, and the rise on $[0,t_N]$ (Theorem~\ref{thm:rise}) is part of Corollary~\ref{cor:mode} ($t_N=m_u$). (For $q\le4/5$ unimodality in discrete time is Theorem~\ref{thm:fourfifths}.) The results below are still needed for $4/5<q\le1$, where neither theorem applies: the coupling (Lemmas~\ref{lem:coupling}--\ref{lem:alpha}, used in Corollary~\ref{cor:mode} and in the tail bound) and the explicit tail time $T_N(q)$ valid for \emph{every} $q\in(0,1]$ (Theorem~\ref{thm:tail}), which confines any failure of unimodality to a bounded window.
+
+In this section $a=(N,\dots,N)$, $x_0=(1,\dots,1)$, $D=d(N-1)$; $\alpha_1$, $\varphi_1$ are as in Lemma~\ref{lem:perron}, $\beta_1$ as in Lemma~\ref{lem:spec}.
+
+\subsection{A monotone coupling}
+
+\begin{lemma}\label{lem:coupling}
+Let $a=(N,\dots,N)$, $q\in(0,1]$, $S_t(x)=\Prob_x(T_a>t)$. If $x$ and $x-e_i$ lie in $\Lambda$, then $S_t(x-e_i)\ge S_t(x)$ for all $t$. Consequently $S_t(x)\le S_t(x_0)$ and $\E_x[T_a]\le\E_{x_0}[T_a]$ for all $x$. The same holds in continuous time.
+\end{lemma}
+\begin{proof}
+Run two copies $X$ (from $x$) and $X'$ (from $x-e_i$) with the same instruction at every step (``stay'' with probability $1-q$, otherwise ``attempt $\pm e_j$''). Invariant: $X'_s\in\{X_s,X_s-e_i\}$. Let $X'_s=X_s-e_i$. An instruction $\pm e_j$, $j\ne i$, is carried out or cancelled by both. Instruction $+e_i$: $X'$ moves; if $X$ is blocked the two coalesce, otherwise both move. Instruction $-e_i$: $X$ moves; if $X'$ is blocked the two coalesce, otherwise both move. When $X'=a$, $X\in\{a,a+e_i\}\cap\Lambda=\{a\}$, so $T\le T'$ pathwise.
+\end{proof}
+
+\begin{lemma}\label{lem:phimax}
+$\varphi_1(x)\le\varphi_1(x_0)$ for all $x\in\Lambda'$.
+\end{lemma}
+\begin{proof}
+$S_t=Q_q^t\one=\sum_j(1-q\alpha_j)^tE_j\one$, so by Lemma~\ref{lem:perron}, $S_t(x)/(1-q\alpha_1)^t\to\varphi_1(x)\langle\varphi_1,\one\rangle$ with $\langle\varphi_1,\one\rangle>0$; pass to the limit in Lemma~\ref{lem:coupling}.
+\end{proof}
+
+\begin{lemma}\label{lem:c1}
+$C_1=\alpha_1\varphi_1(x_0)\langle\varphi_1,\one\rangle\ge\alpha_1$.
+\end{lemma}
+\begin{proof}
+$\langle\varphi_1,\one\rangle=\sum_x\varphi_1(x)\ge\sum_x\varphi_1(x)^2/\varphi_1(x_0)=1/\varphi_1(x_0)$ by Lemma~\ref{lem:phimax}.
+\end{proof}
+
+\begin{lemma}\label{lem:alpha}
+Let $M:=\E_{x_0}[T_a]$ for $q=1$. Then $1/M\le\alpha_1\le1/(2(n-1))$ and $M\le2d^2(N-1)N^d$.
+\end{lemma}
+\begin{proof}
+Upper bound: the Rayleigh quotient of $\one$ is $\sum_xr(x)/(n-1)=\frac12/(n-1)$. Lower bound: $A^{-1}=\sum_kP'^k\ge0$ entrywise and $A^{-1}\one=(\E_xT)_x$; for a symmetric matrix the spectral radius is at most the maximal absolute row sum, so $1/\alpha_1\le\max_x\E_xT=M$ (Lemma~\ref{lem:coupling}). The $q=1$ chain is the random walk on the network with conductance $1/(2d)$ on each edge and loops $b(x)/(2d)$, of total conductance $n$. By the commute time identity (D.~A.~Levin and Y.~Peres, \emph{Markov Chains and Mixing Times}, 2nd ed., AMS 2017, Proposition~10.7 [1st ed.: Proposition~10.6]) $\E_{x_0}\tau_a+\E_a\tau_{x_0}=n\,R(x_0\leftrightarrow a)$, and by Rayleigh's monotonicity law (ibid., Theorem~9.12) $R(x_0\leftrightarrow a)\le2d\cdot d(N-1)$.
+\end{proof}
+
+\subsection{The symmetric sector}
+
+\begin{lemma}\label{lem:sym}
+Let $d\ge2$ and let $H'$ be the space of functions on $\Lambda'$ invariant under permutations of the coordinates. Then $e_{x_0},\one,r\in H'$, $AH'\subset H'$, and the eigenvalues $\alpha_1'\le\alpha_2'\le\cdots$ of $A|_{H'}$ satisfy
+\[
+\alpha_1'=\alpha_1<\beta_1\le\alpha_2',\qquad\alpha_j'\le2-d\beta_1 .
+\]
+Hence $|1-q\alpha_j'|\le1-q\beta_1$ for $j\ge2$ and every $q\in(0,1]$, and
+\begin{equation}\label{eq:symexp}
+f_q(t)=q\sum_jc_j'(1-q\alpha_j')^{t-1},\qquad c_j'=\alpha_j'\varphi_j'(x_0)\langle\varphi_j',\one\rangle,
+\end{equation}
+with $(\varphi_j')$ an orthonormal eigenbasis of $A|_{H'}$.
+\end{lemma}
+\begin{proof}
+Coordinate permutations fix $x_0$ and $a$ and commute with $P$. The Perron vector is invariant, so $\alpha_1'=\alpha_1$. Extension by zero identifies $H'$ with a hyperplane of the space $H$ of invariant functions on $\Lambda$, with $\langle h,Ah\rangle=\langle\tilde h,L\tilde h\rangle$. By the Courant--Fischer theorem (Horn--Johnson, Theorem~4.2.6),
+\[
+\alpha_2'=\min_{\substack{V\subset H'\\ \dim V=2}}\max_{h\in V}\frac{\langle h,Ah\rangle}{\langle h,h\rangle}\ \ge\ \min_{\substack{V\subset H\\ \dim V=2}}\max_{h\in V}\frac{\langle h,Lh\rangle}{\langle h,h\rangle}=\kappa_1,
+\]
+the second smallest eigenvalue of $L|_H$. The symmetrisations of the $\Psi_k$ over sorted $k$ form an orthogonal eigenbasis of $L|_H$ with eigenvalues $\theta(k)$; the smallest is $0$ and every other is at least $\theta(0,\dots,0,1)=\beta_1$, so $\kappa_1=\beta_1$. $\alpha_1\le1/(2(n-1))<2/(dN^2)\le\beta_1$ because $dN^2<4(N^d-1)$ for $d\ge2$, $N\ge2$. For $\alpha\in[\beta_1,2-d\beta_1]$: $1-q\alpha\le1-q\beta_1$ and $1-q\alpha\ge1-2q+qd\beta_1\ge-(1-q\beta_1)$.
+\end{proof}
+
+\subsection{Explicit eventual monotone decay}
+
+\begin{theorem}[tail]\label{thm:tail}
+Let $d\ge2$, $N\ge2$, $a=(N,\dots,N)$, $x_0=(1,\dots,1)$.
+\begin{enumerate}
+\item[(i)] For every $q\in(0,1]$: $f_q(t+2)<f_q(t+1)$ for every integer
+\[
+t>T_N(q):=\frac{\ln\bigl(4\sqrt{n-1}/\alpha_1^2\bigr)}{\ln\bigl((1-q\alpha_1)/(1-q\beta_1)\bigr)} .
+\]
+\item[(ii)] For every rate $q>0$: $g_q'(s)<0$ for $s>\ln(4\sqrt{n-1}/\alpha_1^2)/(q(\beta_1-\alpha_1))$.
+\item[(iii)] Both thresholds are at most
+\[
+\bar T_N(q):=\frac{\ln4+\frac12\ln(n-1)+2\ln\bigl(2d^2(N-1)N^d\bigr)}{q\,\bigl(\beta_1-\frac1{2(n-1)}\bigr)}=O\bigl(N^2\log N/q\bigr).
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) By \eqref{eq:symexp}, $\Delta a_q(t)=-q^2\sum_j\alpha_j'^2\varphi_j'(x_0)\langle\varphi_j',\one\rangle\lambda_j^t$, $\lambda_j=1-q\alpha_j'$. The term $j=1$ is at least $\alpha_1^2\lambda_1^t$ (Lemma~\ref{lem:c1}). By Lemma~\ref{lem:sym} and the Cauchy--Schwarz inequality,
+\[
+\Bigl|\sum_{j\ge2}\alpha_j'^2\varphi_j'(x_0)\langle\varphi_j',\one\rangle\lambda_j^t\Bigr|\le4(1-q\beta_1)^t\,\|e_{x_0}\|\,\|\one\|=4\sqrt{n-1}\,(1-q\beta_1)^t .
+\]
+So $-\Delta a_q(t)/q^2\ge\alpha_1^2(1-q\alpha_1)^t-4\sqrt{n-1}(1-q\beta_1)^t>0$ iff $t>T_N(q)$. (ii) The same with $e^{-q\alpha s}$ in place of $\lambda^t$. (iii) $\ln\frac{1-q\alpha_1}{1-q\beta_1}=\int_{q\alpha_1}^{q\beta_1}\frac{du}{1-u}\ge q(\beta_1-\alpha_1)$, and Lemma~\ref{lem:alpha}.
+\end{proof}
+
+\begin{remark}\label{rem:eventual}
+For an arbitrary pair, Lemma~\ref{lem:perron} gives $\Delta a_q(t)=-q^2\alpha_1C_1(1-q\alpha_1)^t(1+o(1))$ with $C_1>0$: every PMF and density is eventually strictly decreasing, and a failure of unimodality can only occur in a bounded time window.
+\end{remark}
+
+\subsection{Explicit initial monotone increase (continuous time)}
+
+For an arbitrary pair let $u(t):=\Prob_{x_0}(X_t=a)$ and $v(t):=\Prob_a(X_t=a)$ for the \emph{unkilled} continuous-time walk.
+
+\begin{lemma}[renewal equations]\label{lem:renewal}
+$u=g_q*v$ and, with $\gamma:=-v'\ge0$,
+\begin{equation}\label{eq:volterra}
+g_q'=u''+g_q(0)\,\gamma+\gamma*g_q' ,\qquad g_q(0)=q\,r(x_0).
+\end{equation}
+If $D\ge2$ and $u''\ge0$ on $[0,t_0]$, then $g_q'\ge u''\ge0$ on $[0,t_0]$.
+\end{lemma}
+\begin{proof}
+In block form with respect to $\Lambda=\Lambda'\cup\{a\}$, $L(x,a)=-r(x)$; the Schur complement formula gives $(s+qL)^{-1}(x_0,a)=[e_{x_0}\T(s+qA)^{-1}qr]\,(s+qL)^{-1}(a,a)$, i.e.\ $\hat u=\hat g_q\hat v$, so $u=g_q*v$. $v(t)=\sum_k\Psi_k(a)^2e^{-q\theta(k)t}$ is completely monotone with $v(0)=1$. Differentiating twice gives $g_q=u'+\gamma*g_q$ and \eqref{eq:volterra}. Iterating \eqref{eq:volterra}, $g_q'=\sum_{k<K}\gamma^{*k}*\phi+\gamma^{*K}*g_q'$ with $\phi=u''+g_q(0)\gamma$, and $|\gamma^{*K}*g_q'|(t)\le\sup_{[0,t]}|g_q'|\,(\gamma(0)t)^K/K!\to0$. Hence $g_q'=\sum_{k\ge0}\gamma^{*k}*\phi\ge\phi$ on any interval $[0,t_0]$ on which $\phi\ge0$.
+\end{proof}
+
+\begin{lemma}\label{lem:hypo}
+Let $h(t)$ be the probability that the one-dimensional reflecting walk on $\{1,\dots,N\}$ with jump rate $c/2$ in each direction, started at $1$, is at $N$ at time $t$, and $\vartheta_k=c(1-\cos(k\pi/N))$. Then $h(t)=\frac1N\Prob(E_1+\dots+E_{N-1}\le t)$ with independent $E_k\sim\mathrm{Exp}(\vartheta_k)$. The density $\gamma_N=Nh'$ of $\sum_kE_k$ satisfies $\gamma_N(t)=t^{N-2}e^{-\vartheta_{N-1}t}\psi(t)$ with $\psi>0$ nondecreasing; in particular $h''\ge0$ on $[0,(N-2)/(2c)]$.
+\end{lemma}
+\begin{proof}
+$\hat h(s)=(s+cL^{(1)})^{-1}(1,N)$. The cofactor is $(-1)^{N+1}$ times the minor obtained by deleting row $N$ and column $1$, which is triangular with diagonal entries $-c/2$; so the numerator is $(c/2)^{N-1}$, and the determinant is $s\prod_{k\ge1}(s+\vartheta_k)$. Letting $s\to0$ in $s\hat h(s)\to1/N$ gives $(c/2)^{N-1}=\frac1N\prod_k\vartheta_k$, hence $\hat h(s)=\frac1N\frac1s\prod_k\frac{\vartheta_k}{s+\vartheta_k}$. Write the $\mathrm{Exp}(\vartheta_k)$ density as $e^{-\vartheta_{N-1}t}\phi_k(t)$ with $\phi_k(t)=\vartheta_ke^{(\vartheta_{N-1}-\vartheta_k)t}$ nondecreasing; then $\gamma_N(t)=e^{-\vartheta_{N-1}t}(\phi_1*\dots*\phi_{N-1})(t)$ and the substitution $\tau_k=t\sigma_k$ in the convolution integral over the simplex gives $(\phi_1*\dots*\phi_{N-1})(t)=t^{N-2}\int\prod_k\phi_k(t\sigma_k)\,d\sigma$. So $(\log\gamma_N)'\ge(N-2)/t-\vartheta_{N-1}$ and $\vartheta_{N-1}\le2c$.
+\end{proof}
+
+\begin{theorem}[rise]\label{thm:rise}
+Let $d\ge1$, $N\ge2$ with $d(N-1)\ge2$, $a=(N,\dots,N)$, $x_0=(1,\dots,1)$, and let $h$ be as in Lemma~\ref{lem:hypo} with $c=q/d$. Put
+\[
+m_N:=\sup\{t:h''\ge0\text{ on }[0,t]\},\qquad t_N:=\sup\{t:(d-1)h'^2+hh''\ge0\text{ on }[0,t]\}\ \ge m_N .
+\]
+Then $g_q$ is nondecreasing on $[0,t_N]$, and $t_N\ge m_N\ge d(N-2)/(2q)$.
+\end{theorem}
+\begin{proof}
+$L=\frac1d\sum_iL^{(1)}_i$ is a Kronecker sum, so $e^{-qtL}=\bigotimes_ie^{-(q/d)tL^{(1)}}$ and $u=h^d$, $u''=dh^{d-2}[(d-1)h'^2+hh'']$. Apply Lemmas~\ref{lem:renewal} and~\ref{lem:hypo}.
+\end{proof}
+For a general pair the same proof shows that $g_q$ is nondecreasing as long as $u(t)=\prod_ih_{x_{0,i},a_i}(t)$ is convex.
+
+\begin{proposition}[discrete version, $q\le1/2$]\label{prop:risedisc}
+Let $q\le1/2$, $u(t):=P_q^t(x_0,a)$, and suppose $u(t+2)-2u(t+1)+u(t)\ge0$ for $0\le t\le t_0$. Then $f_q(0)\le f_q(1)\le\dots\le f_q(t_0+2)$.
+\end{proposition}
+\begin{proof}
+$u(t)=\sum_{s=0}^tf_q(s)v(t-s)$ with $v(t)=P_q^t(a,a)=\sum_k\Psi_k(a)^2(1-q\theta(k))^t$ nonincreasing ($q\le1/2$); put $\gamma(j)=v(j)-v(j+1)\ge0$ and $\delta(s)=f_q(s+1)-f_q(s)$. Differencing twice gives $\delta(t+1)=[u(t+2)-2u(t+1)+u(t)]+\sum_{j=0}^t\delta(t-j)\gamma(j)$; with $\delta(0)=f_q(1)\ge0$, induction gives $\delta(t)\ge0$ for $t\le t_0+1$.
+\end{proof}
+
+\noindent\textbf{Numerical illustration} (floating point, unit rate; not used in any proof).
+\begin{center}
+\begin{tabular}{rrrrrrr}
+\toprule
+$d$&$N$&$m_N$&$t_N$&mode of $g$&$T_N$ (Thm~\ref{thm:tail}(ii))&$\bar T_N$\\\midrule
+2&8&22.9&37.1&84.5&428&658\\
+2&16&93.5&149.6&380.9&2109&3246\\
+2&32&375.4&599.5&1653&10017&15499\\
+2&64&1502.9&2399.2&7022&46348&72111\\
+3&8&34.4&70.2&204.4&788&1093\\
+3&16&140.3&282.0&964.4&3933&5313\\
+3&30&494.8&992.6&3808.5&16365&21804\\\bottomrule
+\end{tabular}
+\end{center}
+$m_N/(dN^2)\to0.1835$, $t_N/(dN^2)\approx0.293$ ($d=2$), $0.368$ ($d=3$). So Theorems~\ref{thm:tail} and~\ref{thm:rise} alone show, for all $N$, that the density increases on roughly the first 25--45\,\% of the way to the mode and decreases from about 4--7 modal times on. In continuous time and for $q\le q_N$ the window $(t_N,T_N)$ in between is closed by Theorem~\ref{thm:main} (and narrowed to $(m_u,m(q\alpha_1)]$ by Corollary~\ref{cor:mode}); for $q_N<q\le4/5$ it is closed by Theorem~\ref{thm:fourfifths}; for $4/5<q\le1$ it is where an all-$N$ proof is missing (Section~\ref{sec:opendisc}).
+
+\section{The cone certificate and the ``front property''}\label{sec:cone}
+
+\begin{lemma}[cone certificate]\label{lem:cone}
+For any pair and any $q\in(0,1]$ let $\rho_t:=Q_q^te_{x_0}$. If $\rho_{T+1}\le\rho_T$ componentwise for some $T\ge0$, then $\rho_{t+1}\le\rho_t$ for all $t\ge T$ and $f_q(t+2)\le f_q(t+1)$ for all $t\ge T$. In continuous time: if $\frac{d}{ds}\rho_s\le0$ componentwise at $s_0$, then $g_q$ is nonincreasing on $[s_0,\infty)$.
+\end{lemma}
+\begin{proof}
+$Q_q\ge0$ entrywise, so $\rho_t-\rho_{t+1}=Q_q^{t-T}(\rho_T-\rho_{T+1})\ge0$, and $f_q(t+1)=q\,r\T\rho_t$ with $r\ge0$.
+\end{proof}
+
+In exact arithmetic, for $q=q_n/q_d$, $\rho_t=R_t/\fD^t$ with an integer vector $R_t$ and the integer $\fD=2dq_d/\gcd$; $f_q(t)=F_t/\fD^t$; $\sgn(f_q(j)-f_q(j-1))=\sgn(F_j-\fD F_{j-1})$; the cone at $T$ is $R_{T+1}\le\fD R_T$.
+
+\begin{observation}[front property]\label{obs:front}
+% src: data/msc_rigorous_unimodality/summary_certificates.json
+In all 282 corner-to-corner certificates of Section~\ref{sec:ca} with a unimodal verdict ($d=1,\dots,5$) the cone holds at $T=\text{mode}-1$ (257 cases) or $T=\text{mode}$ (25 cases, 24 of them at $d=2$, $q=1$): at the moment the flux into the target stops increasing, the occupation of every site has stopped increasing. For the centre geometries the cone time is between 1.5 and 6 modal times.
+\end{observation}
+
+\begin{proposition}\label{prop:front}
+Let $a$ be a corner, $x_0$ the opposite corner, $y_1\sim a$, $q\in(0,1)$, $\rho_t=Q_q^te_{x_0}$. Consider
+\begin{itemize}
+\item[(P1$'$)] $\rho_{t+1}(x)\rho_t(x+e_i)\le\rho_{t+1}(x+e_i)\rho_t(x)$ for all $t$ and all $x,x+e_i\in\Lambda'$;
+\item[(P1)] $\rho_{t+1}(x)\rho_t(y_1)\le\rho_{t+1}(y_1)\rho_t(x)$ for all $t$ and $x\in\Lambda'$;
+\item[(F)] for every $t\ge D-1$: $\rho_{t+1}(y_1)\le\rho_t(y_1)$ implies $\rho_{t+1}\le\rho_t$ componentwise;
+\item[(LC)] $f_q(t)^2\ge f_q(t-1)f_q(t+1)$ for all $t\ge1$.
+\end{itemize}
+Then (P1$'$)$\Rightarrow$(P1); (P1)$\Rightarrow$(F); (P1)$\Rightarrow$(LC); (F)$\Rightarrow$ $f_q$ unimodal; (LC)$\Rightarrow$ $f_q$ unimodal with nondecreasing hazard rate $f_q(t)/\Prob(T\ge t)$.
+\end{proposition}
+\begin{proof}
+For $q<1$, $\rho_t(x)>0$ iff $t\ge|x-x_0|_1$. By symmetry $f_q(t+1)=\frac q2\rho_t(y_1)$. (P1$'$)$\Rightarrow$(P1): if $\rho_t(y_1)=0$ the inequality is trivial; otherwise take a coordinatewise increasing path $x=z_0,\dots,z_k$ in $\Lambda'$ ending at a neighbour of $a$; all $\rho_t(z_l)>0$ and (P1$'$) gives $\rho_{t+1}(z_l)/\rho_t(z_l)\le\rho_{t+1}(z_{l+1})/\rho_t(z_{l+1})$. (P1)$\Rightarrow$(F): $\rho_{t+1}(x)\rho_t(y_1)\le\rho_{t+1}(y_1)\rho_t(x)\le\rho_t(y_1)\rho_t(x)$ and $\rho_t(y_1)>0$. (P1)$\Rightarrow$(LC): $\rho_{t+1}(y_1)\rho_{t-1}(y_1)=\sum_zQ_q(y_1,z)\rho_t(z)\rho_{t-1}(y_1)\le\sum_zQ_q(y_1,z)\rho_t(y_1)\rho_{t-1}(z)=\rho_t(y_1)^2$. (F)$\Rightarrow$ unimodal: let $t^*$ be the first $t\ge D-1$ with $\rho_{t+1}(y_1)\le\rho_t(y_1)$; $f_q$ increases up to $t^*+1$ and, by (F) and Lemma~\ref{lem:cone}, is nonincreasing afterwards. (LC): the ratios $f_q(t+1)/f_q(t)$ are nonincreasing on $\{D,D+1,\dots\}$, and $\Prob(T\ge t)/f_q(t)=\sum_{k\ge0}f_q(t+k)/f_q(t)$ is nonincreasing.
+\end{proof}
+
+In $d=1$ (start $1$, target $N$), (P1$'$) is true for $q\le1/2$: for every $\kappa>0$, $z_t:=\rho_{t+1}-\kappa\rho_t$ solves $z_{t+1}=Q_qz_t$ and $z_0=(Q_q-\kappa)e_1$ has at most one sign change, of pattern $(-,+)$; by Lemma~\ref{lem:prod}, $z_t$ never has a positive entry to the left of a negative one. In $d\ge2$ no such principle is available, and (P1$'$), (P1), (F), (LC) are conjectural (Section~\ref{sec:openshape}). (Unimodality itself does not depend on them: Theorems~\ref{thm:main} and~\ref{thm:fourfifths}.)
+
+\section{Computer-assisted theorem: finite $N$, all $q$ at once}\label{sec:ca}
+
+\begin{catheorem}\label{thm:ca}
+% src: data/msc_rigorous_unimodality/summary_certificates.json and data/msc_rigorous_unimodality/cert_CC_*.jsonl, data/msc_rigorous_unimodality/cert_C2M_*.jsonl, data/msc_rigorous_unimodality/cert_M2C_*.jsonl
+``Unimodal'' refers to the PMF on its whole support.
+\begin{enumerate}
+\item[(a)] $d=2$, corner to opposite corner: for every $2\le N\le64$ and every $q\in(0,499/500]$ the PMF is unimodal; for every rate the continuous-time density is unimodal.
+\item[(b)] $d=3$, corner to opposite corner: for every $2\le N\le30$ and every $q\in(0,1]$ the PMF is unimodal; so is the continuous-time density. The same holds for $d=4$, $2\le N\le8$ and $d=5$, $2\le N\le5$.
+\item[(c)] $d=2$, $q=1$: for $2\le N\le64$ the corner-to-corner PMF is unimodal except for
+$N\in\{9,11,13,15,17,18,21,24,26,38,51,61\}$, where $f(t^*-1)>f(t^*)<f(t^*+1)\ge f(t^*+2)\ge\cdots$ with $t^*=109$, $169$, $243$, $331$, $433$, $489$, $679$, $901$, $1067$, $2369$, $4379$, $6355$ respectively, the PMF being nondecreasing before $t^*-1$. For the other 51 values of $N$ the PMF is unimodal for every $q\in(0,1]$.
+\item[(d)] $d=2$, $N=9$: the PMF is unimodal for $q=0.9986$ and not unimodal for $q=0.9987$ and $q=0.999$; hence $0.9986\le q^*(9)<0.9987$.
+\item[(e)] $N$ odd, $c=(N+1)/2$; corner $(1,\dots,1)\to$ centre $(c,\dots,c)$ and centre $\to$ corner $(N,\dots,N)$: the PMF is unimodal for every $q\in(0,4/5]$, and the continuous-time density is unimodal, for $d=2$, odd $3\le N\le61$, and $d=3$, odd $3\le N\le27$.
+\item[(f)] $d=1$, end to end: for $2\le N\le60$ the PMF is unimodal for every $q\in(0,4/5]$.
+\end{enumerate}
+\end{catheorem}
+\begin{proof}
+For each listed case and the single rational $q_0$ ($499/500$ in (a); $1$ in (b), (c); $4993/5000$, $9987/10000$, $999/1000$ in (d); $4/5$ in (e), (f)) the program \texttt{scripts/cert\_unimodal.py} computes in exact integer arithmetic the $F_j$, the $R_t$, the signs of $F_j-\fD F_{j-1}$ for $1\le j\le T+1$ and the first $T$ with $R_{T+1}\le\fD R_T$. In every ``unimodal'' case the signs are $(\ge0)\dots(\ge0)(\le0)\dots(\le0)$; Lemma~\ref{lem:cone} and Lemma~\ref{lem:unimodal} give unimodality at $q_0$, and Corollary~\ref{cor:interval} extends it to all $q\le q_0$ and to continuous time. In every ``not unimodal'' case the signs contain $+,-,+$. Records: \texttt{data/cert\_*.jsonl}, summarised in \texttt{data/summary\_certificates.json}.
+\end{proof}
+
+% src: data/msc_rigorous_unimodality/summary_certificates.json
+\emph{Size.} (a): 63 runs, up to 7035 steps on 4096 sites with 77\,129-bit integers, 88 CPU-minutes. (b), $d=3$: 29 runs, up to 3807 steps on 27\,000 sites with 9825-bit integers, 20 CPU-minutes. \emph{Cross-checks with separately written implementations} (\texttt{scripts/verify\_certificate\_code.py}; same project, same machine): the integer stepper agrees with a from-the-definition implementation in rational arithmetic; a second, dictionary-based implementation of the whole certificate reproduces sign runs, cone time and verdict in 13 cases; the modes agree with the separately written floating-point code of the computations of Sections~5--6 of the article in 29 cases; after the cone time the PMF is nonincreasing for a further $3T$ steps.
+
+\emph{What the theorem adds to Theorems~\ref{thm:main} and~\ref{thm:fourfifths}, and what it does not cover.} By Theorem~\ref{thm:main} the continuous-time statements, and by Theorem~\ref{thm:fourfifths} the range $q\le4/5$, hold for \emph{all} $N$. The cone certificates are the only proof for $4/5<q\le q_0$ in (a)--(d), and there they are limited to $N\le64$ ($d=2$), $N\le30$ ($d=3$), $N\le8$ ($d=4$), $N\le5$ ($d=5$). Parts (e), (f) are used in the proof of Theorem~\ref{thm:fourfifths} only for the small cases in which the increment of the free propagator is not log-concave ($d=1$, $3\le N\le8$; centre geometries with $N=3$, $d\in\{2,3\}$ and $N\in\{5,7\}$, $d=2$). Not covered by anything: $q\in(0.998,1)$ for $d=2$ except as stated in (c), (d); $4/5<q<1$ for the centre geometries in $d\ge2$; even $N$ has no centre site. (One dimension is treated separately and exactly in Section~\ref{sec:thr1d}.)
+
+\begin{observation}[why $q=1$, $d=2$ is marginal]\label{obs:parity}
+% src: data/msc_rigorous_unimodality/cert_CC_d2_q1-1.jsonl
+At $q=1$ the parity of $t+|x|_1$ can change only by a cancelled move at a wall. The parity-odd part of $f$ decays like $\cos(\pi/N)^t$ in $d=2$, and at the modal time its amplitude is of the same order $N^{-6}$ (up to powers of $\log N$) as the second difference of the smooth part of $f$; whether a one-step dip appears depends on the position of the continuous mode relative to the integers. For $q<1$ the parity-odd part decays like $(2q-1+O(N^{-2}))^t$. This is a heuristic explanation, not a proof.
+\end{observation}
+
+\subsection{One dimension: the exact thresholds}\label{sec:thr1d}
+
+In one dimension the threshold $q^*$ of Corollary~\ref{cor:interval} ($f_q$ is unimodal iff $q\le q^*$) can be determined exactly for small and moderate $N$. Two pairs are considered: \emph{end to end}, $x_0=1$, $a=N$ (the corner pair for $d=1$), and, for odd $N$, \emph{centre to corner}, $x_0=c=(N+1)/2$, $a=N$; put $M:=(N-1)/2$. (Corner $\to$ centre in $d=1$ is the end-to-end problem on $\{1,\dots,c\}$, because the walk cannot pass $c$ before hitting it; its threshold is the end-to-end threshold of $(N+1)/2$.) For the end-to-end pair Proposition~\ref{prop:1dcounter} gives $q^*(N)\le(2N-4)/(2N-3)$, $N\ge4$. The analogue for the centre:
+
+\begin{proposition}[centre $\to$ corner in one dimension: the elementary dip]\label{prop:m2c1d}
+% src: data/msc_rigorous_unimodality/verify_thr1d.json (Z1, Z2, Z3, Z6)
+Let $d=1$, $N\ge3$ odd, $M=(N-1)/2$, $x_0=M+1$, $a=N$, $\eta:=1-q$. Then $f_q(t)=0$ for $t<M$ and
+\[
+f_q(M)=(q/2)^M,\qquad f_q(M+1)=(q/2)^M\,M\eta,\qquad f_q(M+2)=(q/2)^M\Bigl[\tbinom{M+1}2\eta^2+M\tfrac{q^2}4\Bigr].
+\]
+Consequently $f_q(M+1)<f_q(M)$ iff $q>1-1/M$, and $f_q(M+2)-f_q(M+1)=(q/2)^M\frac M4\Psi_M(\eta)$ with $\Psi_M(\eta):=(2M+3)\eta^2-6\eta+1$. Hence:
+\begin{enumerate}
+\item[(a)] $N=3$: $f_q$ is unimodal \emph{iff} $q\le4/5$.
+\item[(b)] $N=5$: $f_q(2)>f_q(3)<f_q(4)$, so $f_q$ is not unimodal, for every $q>(4+\sqrt2)/7=0.7734590\ldots$
+\item[(c)] $N\ge7$: $f_q(M)>f_q(M+1)<f_q(M+2)$, so $f_q$ is not unimodal, for every $q\in\bigl(\frac{N-3}{N-1},1\bigr]$.
+\end{enumerate}
+In particular $q^*(5)\le(4+\sqrt2)/7$, $q^*(7)\le2/3$, $q^*(9)\le3/4$, all below $4/5$: at the value $q=4/5$ the centre $\to$ corner PMF in one dimension is \emph{not} unimodal for $N=5,7,9$.
+\end{proposition}
+\begin{proof}
+The $M$ sites $M+1,\dots,2M=N-1$ between start and target are interior sites ($M+1\ge2$), with hold probability $\eta$. A path that first reaches $N$ at time $M+j$ consists of the $M$ forced right steps and $j$ extra steps. $j=0$: one path. $j=1$: one hold, at one of the $M$ sites. $j=2$: two holds (a multiset of two of the $M$ sites: $\binom{M+1}2$ choices, weight $\eta^2$), or one left step from a site $k\in\{M+1,\dots,2M\}$ to $k-1\ge M\ge1$, necessarily followed at once by the step back ($M$ paths, each with the extra factor $(q/2)^2$). This gives the three formulas. $f_q(M+1)<f_q(M)$ iff $M\eta<1$, and
+\[
+\tbinom{M+1}2\eta^2+\tfrac M4(1-\eta)^2-M\eta=\tfrac M4\bigl[2(M+1)\eta^2+(1-\eta)^2-4\eta\bigr]=\tfrac M4\Psi_M(\eta).
+\]
+(a) $M=1$: $M\eta<1$ always, and $\Psi_1(\eta)=(5\eta-1)(\eta-1)>0$ iff $\eta<1/5$; so $f_q(1)>f_q(2)<f_q(3)$ for every $q>4/5$. At $q=4/5$: on $\{1,2\}$, $5Q=\bigl(\begin{smallmatrix}3&2\\2&1\end{smallmatrix}\bigr)$, $R_0=e_2=(0,1)$, $R_1=(2,1)$, $R_2=(8,5)\le5R_1=(10,5)$; so $\rho_2\le\rho_1$, hence $\rho_{t+1}\le\rho_t$ and $f(t+2)\le f(t+1)$ for all $t\ge1$ (Lemma~\ref{lem:cone}), and $f(1)=2/5>f(2)=2/25$ $(=f(3))$: $f_{4/5}$ is nonincreasing on $t\ge1$, hence unimodal; Corollary~\ref{cor:interval} gives all $q\le4/5$.
+
+(b) $M=2$: $\Psi_2(\eta)=7\eta^2-6\eta+1$ has the roots $(3\pm\sqrt2)/7$, so $\Psi_2>0$ for $\eta<(3-\sqrt2)/7=0.2265\ldots$, and there $M\eta<1$.
+
+(c) $M=3$: $\Psi_3(\eta)=(3\eta-1)^2>0$ for $\eta<1/3$. $M\ge4$: $\Psi_M'(\eta)=2(2M+3)\eta-6<0$ for $\eta<3/(2M+3)$, and $1/M\le3/(2M+3)$; so for $0\le\eta<1/M$, $\Psi_M(\eta)>\Psi_M(1/M)=(M-1)(M-3)/M^2>0$. Together with $M\eta<1$ this is the dip, and $1-1/M=(N-3)/(N-1)$.
+\end{proof}
+
+\begin{remarku}[general pairs in one dimension]
+% src: data/msc_rigorous_unimodality/scan_pairs1d_q4-5.json
+The proof of Proposition~\ref{prop:m2c1d} uses only that the sites strictly between start and target are interior sites. In $d=1$ every pair reduces, by reflection, to a start $x_0$ and the target $N$ at the end; if $x_0\ge2$ and $D:=N-x_0\ge2$, the three formulas hold with $M$ replaced by $D$, so $f_q(D)>f_q(D+1)<f_q(D+2)$ for every $q>(4+\sqrt2)/7$ if $D=2$ and every $q>1-1/D$ if $D\ge3$. In particular, for $D\in\{2,3,4\}$ the PMF is not unimodal at $q=4/5$: the hypothesis $q\le1/2$ of Theorem~\ref{thm:1d} cannot be replaced by $q\le4/5$ for general pairs (smallest case $N=4$, $x_0=2$: $f(2)=\frac4{25}>f(3)=\frac8{125}<f(4)=\frac{44}{625}$). An exact scan at $q=4/5$ of all 66 starts with $2\le N\le12$ (\texttt{scripts/scan\_pairs1d.py}; the certificate of Theorem~\ref{thm:thr1d}, cross-checked on exact windows of $30N^2+100$ steps) finds 29 non-unimodal ones, all with $x_0\ge2$ and $D\in\{2,3,4,5\}$; for $D=5$ the failure is a later dip, $f(9)>f(10)<f(11)$ ($x_0\ge3$), and $N=7$, $x_0=2$ is unimodal.
+\end{remarku}
+
+\begin{catheorem}[one-dimensional thresholds; exact arithmetic]\label{thm:thr1d}
+% src: data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl, data/msc_rigorous_unimodality/cert_thr1d_bound.jsonl, data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl, data/msc_rigorous_unimodality/cert_thr1d_m2cbound.jsonl, data/msc_rigorous_unimodality/cert_thr1d_m2c.json, data/msc_rigorous_unimodality/verify_thr1d.json
+Let $d=1$.
+\begin{enumerate}
+\item[(a)] \emph{End to end} ($x_0=1$, $a=N$). $q^*(2)=q^*(3)=1$. For $N=4$, for $N=20$ and for every $22\le N\le300$,
+\[
+q^*(N)=\frac{2N-4}{2N-3}:
+\]
+at this value of $q$ the PMF is unimodal (with the tie $f(N-1)=f(N)$), and it is not unimodal for any larger $q$. For $5\le N\le19$ and for $N=21$ the PMF at $q=(2N-4)/(2N-3)$ is \emph{not} unimodal, so $q^*(N)<(2N-4)/(2N-3)$; more precisely $k_N\cdot10^{-6}\le q^*(N)<(k_N+1)\cdot10^{-6}<(2N-4)/(2N-3)$ with
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrrrr@{}}\toprule
+$N$ & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\\midrule
+$k_N$ & 835384 & 871885 & 882823 & 898653 & 917913 & 920871 & 937309 & 940937\\
+$\lfloor10^6\frac{2N-4}{2N-3}\rfloor$ & 857142 & 888888 & 909090 & 923076 & 933333 & 941176 & 947368 & 952380\\\bottomrule
+\end{tabular}
+
+\smallskip
+\begin{tabular}{@{}lrrrrrrrr@{}}\toprule
+$N$ & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 21\\\midrule
+$k_N$ & 952643 & 956690 & 960857 & 962997 & 965456 & 969511 & 969312 & 974226\\
+$\lfloor10^6\frac{2N-4}{2N-3}\rfloor$ & 956521 & 960000 & 962962 & 965517 & 967741 & 969696 & 971428 & 974358\\\bottomrule
+\end{tabular}
+\end{center}
+For $N=21$, $q=38/39$: $f(142)>f(143)<f(144)$.
+\item[(b)] \emph{Centre to corner} ($N$ odd, $x_0=(N+1)/2$, $a=N$). $q^*(3)=4/5$; $q^*(5)=(4+\sqrt2)/7$; $q^*(N)=(N-3)/(N-1)$ for $N\in\{7,9,17,21\}$ and for every odd $23\le N\le301$. For $N\in\{11,13,15,19\}$ the PMF at $q=(N-3)/(N-1)$ is not unimodal, and
+\[
+q^*(11)\in[0.783458,\,0.783459),\quad q^*(13)\in[0.830332,\,0.830333),\]
+\[q^*(15)\in[0.854370,\,0.854371),\quad q^*(19)\in[0.885540,\,0.885541).
+% src: data/msc_rigorous_unimodality/cert_thr1d_m2c.json (brackets), data/msc_rigorous_unimodality/verify_thr1d.json (Z4b)
+\]
+\item[(c)] \emph{The value in one dimension.} At $q=4/5$ (hence, by Corollary~\ref{cor:interval}, for the statement ``unimodal for all $q\le4/5$''): the end-to-end PMF and the corner $\to$ centre PMF are unimodal for every $N$; the centre $\to$ corner PMF is unimodal \emph{if and only if} $N\notin\{5,7,9,11\}$. Exact witnesses at $q=4/5$: $N=5$: $f(2)=\frac4{25}>f(3)=\frac8{125}<f(4)=\frac{44}{625}$; $N=7$: $f(3)=\frac8{125}>f(4)=\frac{24}{625}<f(5)=\frac{144}{3125}$; $N=9$: $f(4)=\frac{16}{625}>f(5)=\frac{64}{3125}<f(6)=\frac{416}{15625}$; $N=11$: $f(9)=\frac{1216}{78125}>f(10)=\frac{149952}{9765625}<f(11)=\frac{151104}{9765625}$.
+\end{enumerate}
+\end{catheorem}
+\begin{proof}
+\texttt{scripts/cert\_thr1d.py}. For a rational $q=q_n/q_d$ let $g:=\gcd(q_n,2(q_d-q_n),2q_d-q_n,2q_d)$ and $\fD:=2q_d/g$. Then $R_t:=\fD^t\rho_t$ is an integer vector, $R_{t+1}=\mathfrak MR_t$ with the integer Jacobi matrix $\mathfrak M=\fD Q_q$ (off-diagonal $q_n/g$, diagonal $2(q_d-q_n)/g$, first diagonal entry $(2q_d-q_n)/g$), and $F_{t+1}:=\fD^{t+1}f_q(t+1)=(q_n/g)R_t(N-1)$. The program records the exact signs of $F_j-\fD F_{j-1}$ $(=\fD^j(f_q(j)-f_q(j-1)))$ for $j=1,2,\dots$ and stops either at the first $T$ with $R_{T+1}\le\fD R_T$ componentwise --- then Lemma~\ref{lem:cone} gives $f_q(t+2)\le f_q(t+1)$ for all $t\ge T$, and the verdict is ``unimodal'' iff the recorded signs are $(\ge0)\dots(\ge0)(\le0)\dots(\le0)$ (Lemma~\ref{lem:unimodal}) --- or at the first $j$ at which the nonzero signs so far contain $+,-,+$: verdict ``not unimodal'', with the exact witness.
+
+(a) $N=2$: $f_q(t)=\frac q2(1-\frac q2)^{t-1}$. $N=3$, $q=1$: $2Q_1=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$, $R_t=(F_{t+1},F_t)$ (Fibonacci numbers), $f(t+1)=F_t/2^{t+1}$, i.e.\ $f=0,0,\frac14,\frac18,\frac18,\frac3{32},\dots$, and $R_2=(2,1)\le2R_1=(2,2)$: unimodal at $q=1$, hence for all $q$. For $N=4,20,22,\dots,300$ the verdict at $q=(2N-4)/(2N-3)$ (where $\fD=2N-3$, off-diagonal $N-2$, diagonal $1$, first diagonal entry $N-1$) is ``unimodal''; in every one of these cases the cone holds at $T=\text{mode}-1$. By Proposition~\ref{prop:1dcounter} the PMF is not unimodal for $q>(2N-4)/(2N-3)$; so $q^*(N)=(2N-4)/(2N-3)$. For $5\le N\le19$ and $N=21$ the verdict at $q=(2N-4)/(2N-3)$ is ``not unimodal'', the verdict at $q=k_N/10^6$ is ``unimodal'' and at $q=(k_N+1)/10^6$ ``not unimodal'' ($k_N$ found by bisection; only the two final verdicts matter); Corollary~\ref{cor:interval}(1) gives $k_N\cdot10^{-6}\le q^*(N)<(k_N+1)\cdot10^{-6}$.
+
+(b) $N=3$: Proposition~\ref{prop:m2c1d}(a). For $N\in\{7,9,17,21\}$ and odd $23\le N\le301$ the verdict at $q=(N-3)/(N-1)$ is ``unimodal'', and Proposition~\ref{prop:m2c1d}(c) gives non-unimodality above. For $N\in\{11,13,15,19\}$: verdicts ``unimodal'' at the lower and ``not unimodal'' at the upper end of the stated intervals, and the upper ends are smaller than $(N-3)/(N-1)$. $N=5$: for $q=(4+\sqrt2)/7$ one has $q/2=(4+\sqrt2)/14$, $1-q=(6-2\sqrt2)/14$, $1-q/2=(10-\sqrt2)/14$; the same recursion is run in the ring $\mathbb Z[\sqrt2]$ (with $\fD=14$), the sign of $a+b\sqrt2$ being decided exactly from the signs of $a$, $b$ and of $a^2-2b^2$. The cone holds at $T=6$ and the signs of $f(j)-f(j-1)$, $j=1,\dots,7$, are $0,+,-,0,-,-,-$ (so $f(2)>f(3)=f(4)>f(5)>\cdots$): unimodal at $q=(4+\sqrt2)/7$; Proposition~\ref{prop:m2c1d}(b) gives non-unimodality above.
+
+(c) End to end: Theorem~\ref{thm:fourfifths}(i) with $d=1$. Corner $\to$ centre is the end-to-end pair on $\{1,\dots,(N+1)/2\}$. Centre $\to$ corner: for $N\ge25$, Theorem~\ref{thm:fourfifths}(ii) (the sequence $\varphi_1=\delta\tilde h_q$ is log-concave) and Theorem~\ref{thm:criterion}(b); for $N=3$ and odd $13\le N\le23$, part (b) ($q^*\ge4/5$: $q^*(13)\ge0.830332$, $q^*(15)\ge0.854370$, $q^*(17)=7/8$, $q^*(19)\ge0.885540$, $q^*(21)=9/10$, $q^*(23)=10/11$); for $N\in\{5,7,9\}$, Proposition~\ref{prop:m2c1d}; for $N=11$, $q^*(11)<0.783459<4/5$. The witnesses are exact rationals computed from the definition.
+
+Two separately written implementations were used: plain Python integers, and integer polynomials of python-flint (one step is the multiplication of the polynomial $\sum_xR_t(x)z^x$ by $(q_n/g)(1+z^2)+(2(q_d-q_n)/g)z$, plus the wall term); they agree (verdict, cone time, mode, witness) on all $4\le N\le200$ in (a) and all odd $7\le N\le81$ in (b). Records: \texttt{data/cert\_thr1d\_boundf.jsonl}, \texttt{cert\_thr1d\_bound.jsonl}, \texttt{cert\_thr1d\_bisect.jsonl}, \texttt{cert\_thr1d\_m2cbound.jsonl}, \texttt{cert\_thr1d\_m2c.json}.
+\end{proof}
+
+% src: data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl (bits, steps)
+\emph{Size.} (a): $N=300$ needs 29\,945 steps with integers of 276\,116 bits; the flint runs for $4\le N\le300$ took 1.84 hours of wall-clock time in total on a shared, heavily loaded machine (largest single $N$: 205\,s), the Python-integer runs for $4\le N\le200$ 0.44 hours. (b): 0.57 hours (largest single $N$: 167\,s).
+
+\begin{remark}[the exceptional $N$; heuristic]\label{rem:exceptional}
+% src: data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl (witness times), data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl
+(1) For $5\le N\le19$ and $N=21$ the failure at $q=(2N-4)/(2N-3)$ is a parity zig-zag at the top of the PMF: on a block of consecutive times $t_1\le j\le m$ the differences $f(j)-f(j-1)$ alternate $-,+,-,+,\dots,-,+$ (one-step dips $f(t-1)>f(t)<f(t+1)$ at $t=t_1,t_1+2,\dots$); before the block $f$ is nondecreasing, after it strictly decreasing (exact, on a window of $12N^2+200$ steps), and the global maximum lies in $[t_1-1,m]$. There is one dip for $N\in\{5,14,16,17,18,19,21\}$, two for $N\in\{6,9,11,12,13,15\}$ and three for $N\in\{7,8,10\}$; the first dip is at ($N\!:t_1$) $5\!:\,7, 6\!:\,8, 7\!:\,11, 8\!:\,16, 9\!:\,23, 10\!:\,28, 11\!:\,37, 12\!:\,44, 13\!:\,53, 14\!:\,62, 15\!:\,71, 16\!:\,82, 17\!:\,93, 18\!:\,104, 19\!:\,117, 21\!:\,143$ (the mode is near $N^2/3$; \texttt{verify\_thr1d.py} Z12)
+% src: data/msc_rigorous_unimodality/verify_thr1d.json (Z12), data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl (witness t_minus = t_1)
+--- the same phenomenon as for $d=2$, $q=1$ (Theorem~\ref{thm:ca}(c), Observation~\ref{obs:parity}). The parity-odd part of $f_q$ is governed by the most negative eigenvalue of $Q_q$, $\lambda_-=1-q(1+\cos(2\pi/(2N-1)))$, which at $q=(2N-4)/(2N-3)$ is $-(1-2/(2N-3))+O(N^{-2})$; at the modal time $t\approx N^2/3$ its relative size is of order $e^{-N/3}$ times an algebraic factor, to be compared with the relative second difference $\approx N^{-4}$ of the smooth part at its maximum. The two cross around $N\approx20$, and whether a dip appears near the crossing depends on the position of the continuous mode relative to the integers --- which is why $N=20$ is not exceptional while $N=21$ is. For larger $N$ the parity-odd part is exponentially negligible at the mode. \emph{This explains why the exceptional set should be finite, but it is not a proof}: a proof would also have to control the early times $t-(N-1)\ll N$, where at $q=(2N-4)/(2N-3)$ the PMF is a near-staircase ($f(N-1+2k+1)/f(N-1+2k)=1+O(1/N)$ for fixed $k$, with exact equality at $k=0$). See Conjecture~\ref{conj:thr}.
+
+(2) $q^*$ is not monotone in $N$: $q^*(19)<0.969313<0.969511\le q^*(18)$ (end to end).
+
+(3) The two centre geometries differ in $d=1$: corner $\to$ centre has $q^*\ge4/5$ for every $N$, centre $\to$ corner has $q^*(7)=2/3$.
+\end{remark}
+
+\emph{Sanity checks} (\texttt{scripts/verify\_thr1d.py} $\to$ \texttt{data/verify\_thr1d.json}; code written from the definition, separately from \texttt{cert\_thr1d.py}; all pass): Z1 (the three formulas of Proposition~\ref{prop:m2c1d} and the identity with $\Psi_M$, exact, $M\le10$, 7 activities), Z2 (the dip for 40 rational $q$ above the threshold, $M\le30$, and $\Psi_M(1/M)=(M-1)(M-3)/M^2$), Z3 (the hand computations for $N=4$ end to end and $N=3$ centre $\to$ corner), Z4 (for every bracket of (a) and (b): the exact differences on a window of $12N^2+200$ steps have the pattern $+\,-$ at the lower end and contain $+\,-\,+$ at the upper end and at the bound; unimodal pattern at the bound for $N=4,20,22,23,30,40,55$, and $+\,-\,+$ just above it), Z5 (the witnesses of (a), (c) as exact rationals; for $N=21$ the relative dip is $3.5\cdot10^{-6}$ and the relative rise $2.5\cdot10^{-5}$), Z6 ($q^*(5)=(4+\sqrt2)/7$: 80-digit evaluation, $|f(3)-f(4)|<10^{-70}$, symbolic verification of the tie, dip at $q+10^{-9}$), Z7 (both certificate engines against definition-level windows of $30N^2+100$ steps in 60 random cases with $N\le14$ and arbitrary start), Z8 (audit of the records: completeness of the ranges, the exceptional sets, agreement of the two engines, cone at mode${}-1$), Z12 (the shape of the failure in Remark~\ref{rem:exceptional}(1), exact), Z9 (Theorem~\ref{thm:cm}(d)), Z10 (Lemma~\ref{lem:perron}: $P'^{2(n'-1)}>0$ for 79 components, exact), Z11 (the count in Corollary~\ref{cor:interval}(4)).
+
+\section{General start/target pairs: unimodality is false in $d\ge2$}\label{sec:counter}
+
+\begin{theorem}[explicit counter-examples]\label{thm:counter}
+% src: data/msc_rigorous_unimodality/exact_examples.json, data/msc_rigorous_unimodality/continuous_counterexamples.json
+\begin{enumerate}
+\item[(a)] $d=3$, $N=3$, $x_0=(3,2,2)$ (centre of a face), $a=(1,2,2)$ (centre of the opposite face). With unit rate,
+\[
+g_1(\tfrac{21}{10})=0.0135725889\ldots>g_1(3)=0.0135186607\ldots<g_1(13)=0.0171550593\ldots,
+\]
+and at $q=1/2$: $f(2)=\frac1{144}>f(6)=\frac{6577}{995328}<f(25)=0.0086991405\ldots$
+\item[(b)] $d=2$, $N=8$, $x_0=(6,6)$, $a=(3,4)$: $g_1(\frac{21}2)>g_1(\frac{49}2)<g_1(\frac{59}2)$ $(0.0061735\ldots,\ 0.0059260\ldots,\ 0.0059296\ldots)$, and at $q=1/2$: $f(19)>f(46)<f(63)$.
+\end{enumerate}
+In both cases neither the continuous-time density (any rate) nor the PMF (any $q\in(0,1]$) is unimodal.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:unif} with $q_0=1$, $e^tg_1(t)=\sum_n\frac{t^n}{n!}a_1(n)$ with exact rationals $a_1(n)\in[0,1]$. For rational $t$ and $M+2>t$, $P_M(t)=\sum_{n\le M}\frac{t^n}{n!}a_1(n)$ is an exact rational and $0\le e^tg_1(t)-P_M(t)\le\frac{t^{M+1}}{(M+1)!}(1-\frac t{M+2})^{-1}$; for rational $\delta\ge0$, $\sum_{k\le K}\frac{\delta^k}{k!}\le e^\delta\le\sum_{k\le K}\frac{\delta^k}{k!}+\frac{\delta^{K+1}}{(K+1)!}(1-\frac\delta{K+2})^{-1}$. With these enclosures the stated inequalities reduce to comparisons of exact rationals, verified by \texttt{scripts/cert\_continuous.py} ($M=119$, resp.\ $167$; relative widths below $10^{-66}$). The discrete values are exact rationals (\texttt{data/exact\_examples.json}). The last statement is Corollary~\ref{cor:interval}(3).
+\end{proof}
+
+\begin{catheorem}[exhaustive classification for small boxes]\label{thm:pairs}
+% src: data/msc_rigorous_unimodality/pairs_d2_N*.json, data/msc_rigorous_unimodality/pairs_d3_N*.json
+For $d=2$, $2\le N\le12$ and $d=3$, $2\le N\le6$, consider all ordered pairs $(x_0,a)$ with the target reduced by the symmetries of the box. Each pair is of exactly one of the types
+\begin{itemize}
+\item[\textbf{U}] the PMF is unimodal for $q=1/2$ (hence for all $q\le1/2$ and in continuous time);
+\item[\textbf{A}] the PMF is not unimodal at $q=1/2$ but is unimodal at $q=2^{-k}$ for some $2\le k\le6$ (hence the continuous-time density is unimodal);
+\item[\textbf{B}] the continuous-time density is not unimodal (hence the PMF is not unimodal for any $q$),
+\end{itemize}
+with the following counts.
+\begin{center}
+\begin{tabular}{rrrrrr@{\qquad}rrrrrr}
+\toprule
+$d$&$N$&pairs&U&A&B&$d$&$N$&pairs&U&A&B\\\midrule
+2&2&3&3&0&0&2&10&1485&1481&3&1\\
+2&3&24&24&0&0&2&11&2520&2506&4&10\\
+2&4&45&43&2&0&2&12&3003&2994&1&8\\
+2&5&144&142&2&0&3&2&7&7&0&0\\
+2&6&210&209&1&0&3&3&104&103&0&1\\
+2&7&480&479&1&0&3&4&252&251&0&1\\
+2&8&630&628&1&1&3&5&1240&1222&4&14\\
+2&9&1200&1194&2&4&3&6&2150&2134&2&14\\\bottomrule
+\end{tabular}
+\end{center}
+In particular, in $d=2$ the continuous-time density is unimodal for every pair when $N\le7$.
+\end{catheorem}
+\begin{proof}
+\texttt{scripts/cert\_pairs.py}: exact cone certificate (Lemma~\ref{lem:cone}) at $q=1/2$; for the pairs with a pattern $+,-,+$, exact cone certificates at $q=1/4,\dots,1/64$; for those still multimodal at $q=1/64$, the exact three-point certificate of Theorem~\ref{thm:counter} at times located in floating point and rounded to multiples of $1/8$. No pair was left undecided. Corollary~\ref{cor:interval} gives the implications in brackets.
+\end{proof}
+
+In every one of the 54 pairs of type \textbf{B} there is a coordinate in which start and target lie strictly on opposite sides of the mid-plane of the box, and $2\le D\le8$; $g'$ has exactly three sign changes (float).
+
+\begin{remark}[mechanism; heuristic]\label{rem:mechanism}
+For a start close to the target the density has an early peak of direct arrivals. If the pair straddles the centre, the unkilled propagator $u(t)$ overshoots the uniform value $N^{-d}$, then undershoots it (the slowest mode $\sum_i\cos(\pi(x_i-\frac12)/N)$ has opposite signs at $x_0$ and $a$) and returns to it from below after reflection at the walls; the first-passage density inherits the undershoot and the recovery. In the corner-to-corner geometry there is no direct peak.
+\end{remark}
+
+\begin{proposition}[unimodal but not strongly unimodal]\label{prop:notlc}
+% src: data/msc_rigorous_unimodality/exact_examples.json; code/msc_rigorous_unimodality/recheck_headline.py (exact)
+For $d=2$, $N=3$, $x_0=(2,2)$, $a=(3,3)$, $q=1/2$: $f(4)=\frac{67}{2048}$, $f(5)=\frac{481}{16384}$, $f(6)=\frac{3457}{131072}$, so $f(5)^2=231361/2^{28}<f(4)f(6)=231619/2^{28}$. The PMF is unimodal (Computer-assisted Theorem~\ref{thm:pairs}) but not log-concave.
+\end{proposition}
+
+\begin{observation}\label{obs:lc}
+% src: data/msc_rigorous_unimodality/conjectures_C2M_d*_q1-2.jsonl, data/msc_rigorous_unimodality/conjectures_M2C_d*_q1-2.jsonl
+(Exact arithmetic, windows of six cone times, $q=1/2$.) For centre $\to$ corner log-concavity and hazard monotonicity fail, after the mode, for every odd $N\le31$ ($d=2$) and $N\le11$ ($d=3$). For corner $\to$ centre both hold on the same windows. A type-\textbf{A} example: $(2,4)\to(2,2)$ in the $4\times4$ box at $q=1/2$, $f(4)=\frac9{512}>f(5)=\frac{287}{16384}<f(8)=\frac{73899}{4194304}$.
+\end{observation}
+
+\section{Discrete time up to the value: $q\le4/5$, every $N$, every $d$}\label{sec:fourfifths}
+
+Theorem~\ref{thm:main} covers $q\le q_N$, and $q_N\downarrow1/2$. The numerical study of the article uses $q=4/5$. This section closes the gap up to $q=4/5$ for \emph{all} $N$ at once:
+\begin{quote}
+for every $q\in(0,4/5]$ the corner-to-corner PMF is unimodal for all $N\ge2$ and all $d\ge1$, and the corner $\to$ centre and centre $\to$ corner PMFs are unimodal for all odd $N\ge3$ and all $d\ge2$ (Theorem~\ref{thm:fourfifths});
+\end{quote}
+and $4/5$ cannot be replaced by a larger number in the first statement ($d=1$, $N=4$, Proposition~\ref{prop:1dcounter}).
+
+\emph{Plan of the proof.}
+\begin{enumerate}
+\item By Theorem~\ref{thm:criterion}(b) it suffices that the increment $\varphi=\Delta u$ of the \emph{free} propagator is log-concave. By \eqref{eq:binconv} $\varphi$ is a binomial convolution of one-dimensional sequences, and binomial convolution preserves log-concavity. So one-dimensional log-concavity suffices (Proposition~\ref{prop:reduction}), and dimensions can be combined in blocks (Lemma~\ref{lem:blocks}).
+\item The one-dimensional sequence is, up to a geometric factor, $W_n=\bigl((yI+\mathrm{Adj}\,P_m)^n\bigr)(1,m)=h_{n-m+1}(\lambda_1,\dots,\lambda_m)$, $\lambda_k=y+2\cos(k\pi/N)$, $y=2(1-q)/q$ (Lemma~\ref{lem:dict}): a finite exponential sum with coefficients of alternating signs. Its log-concavity for $n\ge n_0$ follows from the two leading terms (tail Lemma~\ref{lem:tail1d}; explicit $n_0=O(N^2\log N)$ in Proposition~\ref{prop:ntail}), and for $n<n_0$ it is a finite computation --- done for $N\le1001$ (Computer-assisted Theorem~\ref{thm:direct}).
+\item For $N>1001$ the spectrum is split into residue classes $k\bmod G$. Each class is a ``twisted group'' of 16 or 17 points $y+2\cos((l+\beta)\delta)$ from a \emph{compact two-parameter family}; the $h$-sequence of the whole spectrum is the ordinary convolution of the $h$-sequences of the groups (Lemma~\ref{lem:classes}), ordinary convolution preserves log-concavity (Lemma~\ref{lem:conv}), and every member of the family is log-concave (Computer-assisted Lemma~\ref{lem:family}; Taylor models with Cauchy bounds in ball arithmetic). This gives all $N$ (Theorem~\ref{thm:lc1d}).
+\item For the few small $N$ where the one-dimensional sequence is \emph{not} log-concave at $q=4/5$, the blocks $d=2,3$ (or $3,4,5$; or $4,\dots,7$) are (Computer-assisted Proposition~\ref{prop:smallblocks}).
+\end{enumerate}
+``Computer-assisted'' in this section means: certified ball arithmetic (Arb, through python-flint~0.9; every decision is a comparison of balls that is true for all points of the balls), cross-checked against exact integer arithmetic where stated.
+
+\subsection{Reduction to one dimension; convolutions; blocks}\label{sec:blocks}
+
+\emph{Notation.} $K_q=(1-q)I+qP^{(1)}$ is the one-dimensional lazy walk on $\{1,\dots,N\}$. $h_q(n):=K_q^n(1,N)$, $\delta h_q(n):=h_q(n+1)-h_q(n)$ (end to end); for odd $N$, $c=(N+1)/2$: $\tilde h_q(n):=K_q^n(1,c)$, $\delta\tilde h_q(n):=\tilde h_q(n+1)-\tilde h_q(n)$ (end to centre). For a dimension $d$ and one of the three geometries, $u_d(t):=P_q^t(x_0,a)$ is the free propagator and $\varphi_d(t):=u_d(t)-u_d(t-1)$ ($t\ge1$; $\varphi_d(t):=0$ for $t\le0$), as in Section~\ref{sec:lastexit}. ``Log-concave sequence'' has the meaning of Section~\ref{sec:lastexit} (nonnegative, support a set of consecutive integers, $\varphi(t)^2\ge\varphi(t-1)\varphi(t+1)$); \eqref{eq:lcbasic} holds for such sequences.
+
+\begin{proposition}[reduction to one dimension]\label{prop:reduction}
+Let $N$ and $q\in(0,1]$ be such that the one-dimensional sequence $\delta h_q$ is log-concave [resp., for odd $N$, the sequence $\delta\tilde h_q$]. Then for every $d\ge1$ the sequence $\varphi_d$ of the corner $\to$ opposite corner pair [resp.\ of the corner $\to$ centre and centre $\to$ corner pairs] of $\{1,\dots,N\}^d$ is log-concave, and the first-passage PMF $f_q$ is unimodal. Moreover, if $\delta h_q$ [$\delta\tilde h_q$] is log-concave, so is $\delta h_{q'}$ [$\delta\tilde h_{q'}$] for every $q'<q$.
+\end{proposition}
+\begin{proof}
+$h_q(n)=\sum_{i<n}\delta h_q(i)$ is log-concave by Lemma~\ref{lem:lcops}(a)(ii) ($\lambda=c=1$). Identity \eqref{eq:binconv} holds for every $q$, so by Lemma~\ref{lem:lcops}(b) $\varphi_d$ is log-concave, and Theorem~\ref{thm:criterion}(b) applies. For the last statement, $K_{q'}=(1-p)I+pK_q$ with $p=q'/q$, hence, exactly as in the proof of Theorem~\ref{thm:thinning}(a), $\delta h_{q'}(n)=p\sum_i\binom ni(1-p)^{n-i}p^i\,\delta h_q(i)$, a binomial convolution of the log-concave sequences $(p^i\delta h_q(i))_i$ and $((1-p)^k)_k$; apply Lemma~\ref{lem:lcops}(b).
+\end{proof}
+
+\begin{lemma}[ordinary convolution preserves log-concavity]\label{lem:conv}
+Let $a=(a_j)_{j\ge0}$ and $b=(b_j)_{j\ge0}$ be log-concave sequences (extended by zero to negative indices). Then $c_n:=\sum_{k=0}^na_kb_{n-k}$ is a log-concave sequence. If $a_j>0$ and $b_j>0$ for all $j\ge0$, then $c_j>0$ for all $j\ge0$.
+\end{lemma}
+\begin{proof}
+For $n\ge1$ consider the $2\times\infty$ matrix with rows $(a_{n-k})_{k\ge0}$, $(a_{n+1-k})_{k\ge0}$ and the $\infty\times2$ matrix with columns $(b_k)_{k\ge0}$, $(b_{k-1})_{k\ge0}$ (only finitely many non-zero products occur). Their product is $\bigl(\begin{smallmatrix}c_n&c_{n-1}\\c_{n+1}&c_n\end{smallmatrix}\bigr)$, and the Cauchy--Binet formula gives
+\[
+c_n^2-c_{n-1}c_{n+1}=\sum_{0\le k<l}\bigl(a_{n-k}a_{n+1-l}-a_{n-l}a_{n+1-k}\bigr)\bigl(b_kb_{l-1}-b_{k-1}b_l\bigr).
+\]
+For $k<l$ both factors are $\ge0$ by \eqref{eq:lcbasic}: $a_{n-l}a_{n+1-k}\le a_{n+1-l}a_{n-k}$ (take $i=n+1-l\le j=n-k$) and $b_{k-1}b_l\le b_kb_{l-1}$ (take $i=k\le j=l-1$). The support of $c$ is the sum of the supports.
+\end{proof}
+(Classical: the convolution of two $PF_2$ sequences is $PF_2$; S.~Karlin, \emph{Total Positivity}, Vol.~I, Stanford Univ.\ Press 1968, Ch.~8. Sanity check: \texttt{verify\_lastexit.py} W6.)
+
+\begin{lemma}[blocks]\label{lem:blocks}
+Fix $N$, $q$ and one of the geometries \textup{(CC)}, \textup{(C2M)/(M2C)}.
+\begin{enumerate}
+\item[(a)] If $\varphi_d$ is log-concave, so is $u_d$.
+\item[(b)] If $\varphi_{d_1}$ and $u_{d_2}$ are log-concave, then $\varphi_{d_1+d_2}$ is log-concave.
+\item[(c)] If $\varphi_d$ is log-concave for the activity $q$, it is log-concave for every activity $q'<q$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $u_d(t)=\sum_{s\le t}\varphi_d(s)$; Lemma~\ref{lem:lcops}(a)(ii) with $\lambda=c=1$.
+(b) By \eqref{eq:binconv}, $d^{\,t-1}\varphi_d(t)=(\delta h\star h^{\star(d-1)})_{t-1}$ for every $d$ ($h=h_q$ or $\tilde h_q$), and in the same way $d^{\,t}u_d(t)=(h^{\star d})_t$. The binomial convolution $\star$ is associative and commutative (it is the product of exponential generating functions), so with $d=d_1+d_2$
+\[
+d^{\,t-1}\varphi_d(t)=\sum_{k=0}^{t-1}\binom{t-1}k\;d_1^{\,k}\varphi_{d_1}(k+1)\;\cdot\;d_2^{\,t-1-k}u_{d_2}(t-1-k).
+\]
+The sequences $(d_1^k\varphi_{d_1}(k+1))_k$ and $(d_2^ku_{d_2}(k))_k$ are log-concave; apply Lemma~\ref{lem:lcops}(b).
+(c) $P_{q'}=(1-p)I+pP_q$ gives $u_{d,q'}(t)=\sum_nb_p(t,n)u_{d,q}(n)$ and, with Pascal's rule as in the proof of Theorem~\ref{thm:thinning}(a), $\varphi_{d,q'}(t+1)=p\sum_n\binom tn(1-p)^{t-n}p^n\varphi_{d,q}(n+1)$; apply Lemma~\ref{lem:lcops}(b).
+\end{proof}
+
+\subsection{The one-dimensional sequences: dictionary, tail lemma, direct certificates}\label{sec:onedim}
+
+For $m\ge1$ and $y\ge0$ let $\mathrm{Adj}(P_m)$ be the adjacency matrix of the path with vertices $1,\dots,m$, and
+\begin{gather*}
+J:=yI+\mathrm{Adj}(P_m),\qquad\tilde J:=yI+\mathrm{Adj}(P_m)-e_me_m\T,\\
+W_n:=(J^n)(1,m),\qquad\tilde W_n:=(\tilde J^n)(1,m)\qquad(n\ge0).
+\end{gather*}
+$h_j(x_1,\dots,x_m)$ denotes the complete homogeneous symmetric polynomial of degree $j$ ($h_0=1$, $h_j=0$ for $j<0$), i.e.\ $\sum_jh_jz^j=\prod_k(1-x_kz)^{-1}$.
+
+\begin{lemma}[dictionary]\label{lem:dict}
+Let $q\in(0,1]$ and $y:=2(1-q)/q$.
+\begin{enumerate}
+\item[(a)] \emph{End to end.} Let $N\ge2$, $m=N-1$, $\lambda_k:=y+2\cos(k\pi/N)$ $(k=1,\dots,m)$. Then for all $n\ge0$
+\begin{gather*}
+\delta h_q(n)=(q/2)^{n+1}W_n,\\
+W_n=h_{n-m+1}(\lambda_1,\dots,\lambda_m)=\sum_{k=1}^mc_k\lambda_k^n,\qquad c_k=(-1)^{k-1}\tfrac2N\sin^2\tfrac{k\pi}N .
+\end{gather*}
+$W_n=0$ for $n<m-1$, $W_{m-1}=1$, and $W_n>0$ for all $n\ge m-1$ if $y>0$.
+\item[(b)] \emph{End to centre.} Let $N=2M+1$, $m=M$, $\tilde\lambda_k:=y+2\cos(2k\pi/N)$ $(k=1,\dots,M)$. Then for all $n\ge0$
+\begin{gather*}
+\delta\tilde h_q(n)=(q/2)^{n+1}\tilde W_n,\\
+\tilde W_n=h_{n-M+1}(\tilde\lambda_1,\dots,\tilde\lambda_M)=\sum_{k=1}^M\tilde c_k\tilde\lambda_k^n,\qquad\tilde c_k=(-1)^{k-1}\tfrac4N\sin\tfrac{2k\pi}N\sin\tfrac{k\pi}N .
+\end{gather*}
+\item[(c)] \emph{First inequality.} $W_m^2-W_{m-1}W_{m+1}=e_2(\lambda)=(m-1)(my^2/2-1)$ and $\tilde W_M^2-\tilde W_{M-1}\tilde W_{M+1}=e_2(\tilde\lambda)=\tfrac12(M-1)(My^2-2y-2)$. So the first inequality holds iff $q\le q_1(N):=1/(1+(2(N-1))^{-1/2})$ in case (a), and iff $q\le\tilde q_1(N):=1/(1+\xi_M)$, $\xi_M:=(1+(1+2M)^{1/2})/(2M)$, in case (b). At $q=4/5$ ($y=1/2$) these read $N\ge9$ and $N\ge25$, with equality exactly for $N=9$ resp.\ $N=25$.
+\end{enumerate}
+Consequently $\delta h_q$ $[\delta\tilde h_q]$ is a log-concave sequence iff $W_n>0$ for all $n\ge m-1$ and $W_n^2\ge W_{n-1}W_{n+1}$ for all $n\ge m$ $[$same with $\tilde W]$.
+\end{lemma}
+\begin{proof}
+(a) By the computation in the proof of Lemma~\ref{lem:bd}(b) ($K_q$ is a birth--death chain on $N=m+1$ sites with $\prod_ip_i=(q/2)^m$, whose eigenvalues other than $1$ are $\mu_k=1-q+q\cos(k\pi/N)=(q/2)\lambda_k$, Lemma~\ref{lem:spec}), $\sum_nh_q(n)z^n=(q/2)^mz^m/\bigl((1-z)\prod_k(1-\mu_kz)\bigr)$. Since $h_q(0)=0$, multiplying by $(1-z)/z$ gives $\sum_n\delta h_q(n)z^n=(q/2)^mz^{m-1}\prod_k(1-\mu_kz)^{-1}$, i.e.\ $\delta h_q(n)=(q/2)^mh_{n-m+1}(\mu)=(q/2)^{n+1}h_{n-m+1}(\lambda)$. On the other hand $J$ is a Jacobi matrix with unit off-diagonal entries; its eigenvectors are $\psi_k(x)=(2/(m+1))^{1/2}\sin(k\pi x/(m+1))$ with eigenvalues $\lambda_k$, and by Cramer's rule (as in Lemma~\ref{lem:bd}) $[(I-zJ)^{-1}](1,m)=z^{m-1}/\det(I-zJ)=z^{m-1}\prod_k(1-\lambda_kz)^{-1}$. So $W_n=h_{n-m+1}(\lambda)$. The spectral decomposition gives $W_n=\sum_k\psi_k(1)\psi_k(m)\lambda_k^n$, and $\psi_k(m)=(-1)^{k-1}\psi_k(1)$ because $\sin(k\pi m/(m+1))=\sin(k\pi-k\pi/(m+1))$. Finally $J$ is entrywise nonnegative, and for $y>0$, $n\ge m-1$ the walk $1\to2\to\dots\to m$ followed by $n-m+1$ holds has positive weight.
+
+(b) By the proof of Theorem~\ref{thm:main}, $\tilde h_q(n)=\tilde K^n(M,0)$ for the folded birth--death chain $\tilde K$ on $\{0,\dots,M\}$; the product of its transition probabilities along $M\to M-1\to\dots\to0$ is $(q/2)^M$, and its eigenvalues other than $1$ are those eigenvalues of $K_q$ whose eigenvector is symmetric under $j\mapsto N+1-j$, i.e.\ $\tilde\mu_k=1-q+q\cos(2k\pi/N)=(q/2)\tilde\lambda_k$, $k=1,\dots,M$ (Lemma~\ref{lem:spec}: $\psi_k$ is symmetric iff $k$ is even). As in (a), $\delta\tilde h_q(n)=(q/2)^{n+1}h_{n-M+1}(\tilde\lambda)$. The vectors $\tilde\psi_k(x)=(2/\sqrt N)\sin(x\phi_k)$, $\phi_k=2k\pi/N$, satisfy $\tilde\psi_k(0)=0$ and $\tilde\psi_k(M+1)=-\tilde\psi_k(M)$ (because $\sin((M+1)\phi)+\sin(M\phi)=2\sin((M+\frac12)\phi)\cos(\phi/2)$ and $(M+\frac12)\phi_k=k\pi$), hence $\tilde J\tilde\psi_k=(y+2\cos\phi_k)\tilde\psi_k$; they are orthonormal ($\sum_{x=1}^M\sin^2(x\phi_k)=M/2+1/4=N/4$). So $\tilde J$ has the eigenvalues $\tilde\lambda_k$, $\tilde W_n=h_{n-M+1}(\tilde\lambda)$ by Cramer's rule, and $\tilde\psi_k(1)\tilde\psi_k(M)=(4/N)\sin\phi_k\sin(M\phi_k)$ with $\sin(M\phi_k)=\sin(k\pi-\phi_k/2)=(-1)^{k-1}\sin(\phi_k/2)$.
+
+(c) $h_1^2-h_0h_2=e_2=(e_1^2-p_2)/2$ ($p_2$ the second power sum). In case (a) $e_1=my$ and $p_2=my^2+2(m-1)$ ($\sum_{k=1}^{N-1}\cos(k\pi/N)=0$, $\sum_{k=1}^{N-1}\cos^2(k\pi/N)=(N-2)/2$). In case (b) $e_1=My-1$ and $p_2=My^2-2y+2M-1$ ($\sum_{k=1}^M\cos(2k\pi/N)=-\frac12$, $\sum_k\cos^2(2k\pi/N)=\frac M2-\frac14$).
+\end{proof}
+
+\begin{lemma}[tail lemma]\label{lem:tail1d}
+Let $a(n)=\sum_{i=1}^rC_i\nu_i^n$ $(n\ge0)$ with real $C_i$, $\nu_i$. Then for $n\ge1$
+\begin{equation}\label{eq:casorati}
+a(n)^2-a(n-1)a(n+1)=-\sum_{i<j}C_iC_j(\nu_i\nu_j)^{n-1}(\nu_i-\nu_j)^2 .
+\end{equation}
+Suppose $\nu_1>\nu_2>0$, $|\nu_i|<\nu_2$ for $i\ge3$, and $C_1>0>C_2$. Put $p_i(n):=|C_i||\nu_i|^{n-1}$,
+\begin{gather*}
+L_n:=p_1(n)p_2(n)(\nu_1-\nu_2)^2,\\
+\mathrm{Tot}_n:=\sum_{i<j}p_i(n)p_j(n)(\nu_i-\nu_j)^2=\Bigl(\sum_ip_i\Bigr)\Bigl(\sum_ip_i\nu_i^2\Bigr)-\Bigl(\sum_ip_i\nu_i\Bigr)^2 .
+\end{gather*}
+\begin{enumerate}
+\item[(i)] If $2L_{n_0}>\mathrm{Tot}_{n_0}$ for some $n_0\ge1$, then $a(n)^2>a(n-1)a(n+1)$ for every $n\ge n_0$.
+\item[(ii)] If $C_1\nu_1^{n_0}>\sum_{i\ge2}|C_i||\nu_i|^{n_0}$, then $a(n)>0$ for every $n\ge n_0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\eqref{eq:casorati}: $a(n)^2-a(n-1)a(n+1)=\sum_{i,j}C_iC_j(\nu_i\nu_j)^{n-1}(\nu_i\nu_j-\nu_j^2)$; symmetrising in $(i,j)$ replaces $\nu_i\nu_j-\nu_j^2$ by $-\frac12(\nu_i-\nu_j)^2$. The second expression for $\mathrm{Tot}_n$ is the same symmetrisation read backwards. (i) The term $(1,2)$ of \eqref{eq:casorati} equals $+L_n$, and the others are bounded in absolute value by the corresponding terms of $\mathrm{Tot}_n-L_n$. For $(i,j)\ne(1,2)$ one has $|\nu_i\nu_j|\le\nu_1\nu_2$, so each ratio $p_i(n)p_j(n)/(p_1(n)p_2(n))$ is nonincreasing in $n$; hence $(\mathrm{Tot}_n-L_n)/L_n$ is nonincreasing, and $a(n)^2-a(n-1)a(n+1)\ge L_n-(\mathrm{Tot}_n-L_n)>0$ for $n\ge n_0$. (ii) $a(n)\ge\nu_1^n\bigl(C_1-\sum_{i\ge2}|C_i|(|\nu_i|/\nu_1)^n\bigr)$ and the bracket is nondecreasing in $n$.
+\end{proof}
+
+\begin{proposition}[explicit tail time at $q=4/5$; every $N$]\label{prop:ntail}
+Let $y=1/2$, $N\ge10$, $m=N-1$. Then $W_n^2>W_{n-1}W_{n+1}$ for every
+\[
+n\ge n_{\rm tail}(N):=1+\frac{N^2}8\,(10\ln N-8.43).
+\]
+So for each $N$ the log-concavity of $\delta h_{4/5}$ is a statement about the finitely many $n$ with $N-1\le n<n_{\rm tail}(N)$.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:tail1d} with $\nu_k=\lambda_k=\frac12+2\cos(k\theta)$, $\theta=\pi/N$, $C_k=c_k$. Put $\Lambda_3:=\max_{k\ge3}|\lambda_k|=\max(\lambda_3,-\lambda_m)$. Every $(i,j)\ne(1,2)$ has $|\lambda_i\lambda_j|\le\lambda_1\Lambda_3$, $|\lambda_i-\lambda_j|\le4$, and $\sum_k|c_k|=\frac2N\sum_k\sin^2(k\pi/N)=1$, so $\mathrm{Tot}_n-L_n\le8(\lambda_1\Lambda_3)^{n-1}$; thus $2L_n>\mathrm{Tot}_n$ as soon as
+\[
+(\lambda_2/\Lambda_3)^{n-1}>\frac8{|c_1c_2|(\lambda_1-\lambda_2)^2}.
+\]
+With $\sin x\ge2x/\pi$ on $[0,\pi/2]$ (all arguments below are $\le\pi/2$ because $N\ge10$): $|c_1|=\frac2N\sin^2\theta\ge8/N^3$, $|c_2|=\frac2N\sin^22\theta\ge32/N^3$, $\lambda_1-\lambda_2=4\sin(3\theta/2)\sin(\theta/2)\ge12/N^2$, so the right side is at most $N^{10}/4608$. For the left side: $\lambda_2-\lambda_3=4\sin(5\theta/2)\sin(\theta/2)\ge20/N^2$ and $\lambda_2\le5/2$ give, when $\lambda_3>0$, $\ln(\lambda_2/\lambda_3)\ge(\lambda_2-\lambda_3)/\lambda_2\ge8/N^2$; and $-\lambda_m=2\cos\theta-\frac12<\frac32$, $\lambda_2\ge\frac12+2\cos(\pi/5)>2.118$ give $\ln(\lambda_2/(-\lambda_m))>0.34\ge8/N^2$. Hence $\ln(\lambda_2/\Lambda_3)\ge8/N^2$ (and $\lambda_1>\lambda_2>\Lambda_3$, $c_1>0>c_2$, so the hypotheses of Lemma~\ref{lem:tail1d} hold), and the condition is implied by $(n-1)\cdot8/N^2>10\ln N-\ln4608$; $\ln4608=8.4355\ldots$
+\end{proof}
+(The certified tail times of Theorem~\ref{thm:direct} are about ten times smaller: $n_0\approx0.157N^2$.)
+
+\begin{catheorem}[direct certificates]\label{thm:direct}
+% src: data/msc_rigorous_unimodality/cert_lc1d_*.jsonl, data/msc_rigorous_unimodality/summary_lc1d.json
+\begin{enumerate}
+\item[(a)] $y=1/2$ $(q=4/5)$, end to end: for every $10\le N\le1001$, $W_n^2>W_{n-1}W_{n+1}$ for all $n\ge N-1$.
+\item[(b)] $y=1/2$, end to centre: for every odd $27\le N\le2001$, $\tilde W_n>0$ for all $n\ge M-1$ and $\tilde W_n^2>\tilde W_{n-1}\tilde W_{n+1}$ for all $n\ge M$.
+\item[(c)] \emph{At the threshold}, $y=(2/(N-1))^{1/2}$ $(q=q_1(N))$, end to end: for every $4\le N\le501$, $W_n^2\ge W_{n-1}W_{n+1}$ for all $n\ge N-1$, with equality only for $n=N-1$.
+\item[(d)] \emph{At the threshold}, $y=(1+(1+2M)^{1/2})/M$ $(q=\tilde q_1(N))$, end to centre: for every odd $7\le N\le1001$, $\tilde W_n>0$ for $n\ge M-1$ and $\tilde W_n^2\ge\tilde W_{n-1}\tilde W_{n+1}$ for all $n\ge M$, with equality only for $n=M$.
+\end{enumerate}
+In particular ($N=9$ is the case $m=8$, $y=\frac12$ of \textup{(c)}; $N=25$ is the case $M=12$, $y=\frac12$ of \textup{(d)}): $\delta h_{4/5}$ is log-concave for $9\le N\le1001$ and $\delta\tilde h_{4/5}$ for odd $25\le N\le2001$.
+\end{catheorem}
+\begin{proof}
+\texttt{scripts/cert\_lc1d.py}. For each $m$: (T) the hypotheses of Lemma~\ref{lem:tail1d} are verified in ball arithmetic and an $n_0$ with $2L_{n_0}>\mathrm{Tot}_{n_0}$ and $c_1\lambda_1^{n_0}>\sum_{k\ge2}|c_k||\lambda_k|^{n_0}$ is found (so the inequalities hold for $n\ge n_0$). (W) For $m\le n<n_0$ the three numbers $W_{n-1},W_n,W_{n+1}$, normalised by $\lambda_1^n$, are evaluated from the spectral sum of Lemma~\ref{lem:dict} with a working precision of $1.7m+320$ bits at the start (the sum has a cancellation of about $1.3m$ bits at $n=m$), and the balls of $W_n$ and of $W_n^2-W_{n-1}W_{n+1}$ are required to be strictly positive. To save time the precision is lowered and modes $k$ whose term has become negligible are dropped at checkpoints; a dropped mode is bounded for all later $n$ by its absolute value at the time of dropping ($|\lambda_k/\lambda_1|\le1$), and the sum of these bounds is added to every later value as an error ball; so the enclosures remain rigorous. (X) For $n\le3m+60$ the numbers $W_n$ are \emph{also} computed exactly --- integers for $y=\frac12$ (powers of $I+2\,\mathrm{Adj}$), elements of $\mathbb Z[\sqrt{2m}]$ resp.\ $\mathbb Z[\sqrt{1+2M}]$ at the thresholds --- and it is checked that the exact value lies in the ball and that the exact sign of $W_n^2-W_{n-1}W_{n+1}$ is $+$ (resp.\ $0$ at $n=m$ in the threshold cases, which is how the equality statement is proved). In case (a) positivity of $W_n$ is Lemma~\ref{lem:dict}(a). Records: \texttt{data/cert\_lc1d\_*.jsonl}, summary \texttt{data/summary\_lc1d.json}.
+\end{proof}
+
+% src: data/msc_rigorous_unimodality/summary_lc1d.json, data/msc_rigorous_unimodality/cert_lc1d_*.jsonl
+\emph{Size.} (a) 992 values of $N$, $5.2\cdot10^7$ certified inequalities, $n_0/N^2\in[0.140,0.157]$, smallest relative margin $(W_n^2-W_{n-1}W_{n+1})/W_n^2=2.2\cdot10^{-10}$ (at $N=1001$, $n=n_0-1$); 26 CPU-minutes. (b) 988 values, $5.2\cdot10^7$ inequalities, 26 minutes. (c), (d) 498 values each, $5.3\cdot10^6$ inequalities each.
+
+\begin{cacorollary}[thresholds for $N\le501$]\label{cor:thr1d}
+% src: data/msc_rigorous_unimodality/cert_lc1d_E2E_thr.jsonl, data/msc_rigorous_unimodality/cert_lc1d_FOLD_thr.jsonl
+For every $4\le N\le501$ the sequence $\delta h_q$ is log-concave \emph{iff} $q\le q_1(N)$; for every odd $7\le N\le1001$, $\delta\tilde h_q$ is log-concave iff $q\le\tilde q_1(N)$. Hence, for these $N$ and \emph{every} $d\ge1$, the corner-to-corner PMF is unimodal for all $q\le q_1(N)$ and the corner $\to$ centre and centre $\to$ corner PMFs for all $q\le\tilde q_1(N)$.
+\end{cacorollary}
+\begin{proof}
+``If'': Theorem~\ref{thm:direct}(c),(d) and the monotonicity in $q$ of Proposition~\ref{prop:reduction}. ``Only if'': Lemma~\ref{lem:dict}(c). The rest is Proposition~\ref{prop:reduction}.
+\end{proof}
+($q_1(N)\to1$: $q_1(101)=0.934$, $q_1(501)=0.969$. Conjecture~\ref{conj:1dlc} states that ``iff'' holds for all $N$.)
+
+\subsection{Twisted groups: the one-dimensional statement for every $N$}\label{sec:twisted}
+
+Throughout this subsection $y=1/2$. For an integer $n\ge1$ and real $\beta$, $\delta$ put
+\[
+A_n(\beta,\delta):=\bigl(y+2\cos((l+\beta)\delta)\bigr)_{l=0,\dots,n-1},\qquad H_j(\beta,\delta):=h_j(A_n(\beta,\delta)),\qquad C_j:=H_j^2-H_{j-1}H_{j+1}.
+\]
+
+\begin{lemma}[residue classes]\label{lem:classes}
+\begin{enumerate}
+\item[(a)] Let $N\ge992$, $G:=\lfloor N/16\rfloor$, $\rho:=N/G$, $\delta:=\pi/\rho$. Then $G\ge62$, $16\le\rho<16+16/G\le16+16/62$, and the family $(y+2\cos(k\pi/N))_{k=1}^{N-1}$ is the disjoint union over $g=0,\dots,G-1$ of the families $A_{n_g}(\beta_g,\delta)$, where $\beta_g=g/G$ for $g\ge1$, $\beta_0=1$, and $n_g=\lceil\rho-\beta_g\rceil\in\{15,16,17\}$. Moreover $n_g=17$ iff $\beta_g<\rho-16$ (then $\beta_g<16/62$), and $n_g=15$ iff $g=0$ and $\rho=16$; in that case the group is $(y+2\cos(l\pi/16))_{l=1}^{15}$, the spectrum $\lambda_1,\dots,\lambda_{15}$ of Lemma~\ref{lem:dict}(a) for $N=16$.
+\item[(b)] Let $N=2M+1\ge1985$ be odd, $G:=\lfloor N/32\rfloor$, $\rho:=N/(2G)$, $\delta:=\pi/\rho$. Then $G\ge62$, $16<\rho<16+16/G$, and $(y+2\cos(2k\pi/N))_{k=1}^M$ is the disjoint union over $g=0,\dots,G-1$ of $A_{n_g}(\beta_g,\delta)$ with the same $\beta_g$, $n_g=\lceil\rho-\beta_g\rceil\in\{16,17\}$, and $n_g=17$ iff $\beta_g<\rho-16$.
+\item[(c)] In both cases $\sum_jh_j(\lambda)z^j=\prod_g\sum_jh_j(A_{n_g}(\beta_g,\delta))z^j$: the sequence $(h_j(\lambda))_j$ is the ordinary convolution of the $G$ sequences $(h_j(A_{n_g}(\beta_g,\delta)))_j$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Split $\{1,\dots,N-1\}$ by the residue $g$ of $k$ modulo $G$. For $g\ge1$ the class is $\{g+Gl:l\ge0,\ g+Gl\le N-1\}$ and $(g+Gl)\pi/N=(l+g/G)\delta$; the number of elements is $\lfloor(N-1-g)/G\rfloor+1=\lceil(N-g)/G\rceil=\lceil\rho-\beta_g\rceil$. For $g=0$ the class is $\{G(l+1):l\ge0,\ G(l+1)\le N-1\}$, the angles are $(l+1)\delta$ and the number of elements is $\lfloor(N-1)/G\rfloor=\lceil\rho-1\rceil$. $16G\le N<16(G+1)$ gives the bounds on $\rho$, and $\rho-\beta_g\in[15,16+16/62)$, with value $15$ only if $\beta_g=1$ and $\rho=16$. (b) The same with $2k\pi/N=(l+g/G)\cdot(2G\pi/N)$; $k\le M$ is equivalent to the angle being $<\pi$, i.e.\ to $l+\beta_g<\rho$; $32G\le N<32(G+1)$ and $N$ odd give $16<\rho<16+16/G$. (c) $\prod_k(1-\lambda_kz)^{-1}$ factorises over the classes.
+\end{proof}
+
+\begin{calemma}[every twisted group is log-concave]\label{lem:family}
+% src: data/msc_rigorous_unimodality/cert_family_F1.jsonl, data/msc_rigorous_unimodality/cert_family_F2.jsonl
+Let $y=1/2$ and $\delta\in[0.19322,\,0.19635]$ (this interval contains $[\pi/(16+16/62),\,\pi/16]$).
+\begin{enumerate}
+\item[\textup{(F1)}] For $n=16$ and every $\beta\in[0,1]$: $H_j(\beta,\delta)>0$ and $C_j(\beta,\delta)>0$ for all $j\ge1$.
+\item[\textup{(F2)}] For $n=17$ and every $\beta\in[0,0.2585]$ (note $16/62<0.2585$): $H_j(\beta,\delta)>0$ and $C_j(\beta,\delta)>0$ for all $j\ge1$.
+\end{enumerate}
+\end{calemma}
+(In (F2) the 17th point may lie beyond the end of the cosine arc: $(16+\beta)\delta>\pi$ on part of the rectangle. This is harmless --- the statement and its proof only need the nodes $\lambda_l$ to be distinct, which is certified --- and Lemma~\ref{lem:classes} uses (F2) only for $\beta<\rho-16$, where $(16+\beta)\delta<\pi$.)
+\begin{proof}
+\texttt{scripts/cert\_family.py}. The parameter rectangle is covered by boxes $B=\{|\beta-\beta_c|\le w_1,\ |\delta-\delta_c|\le w_2\}$ with $w_1=1/20$, $w_2=313/400000$ (20 boxes for (F1), 6 for (F2), the latter covering $\beta\in[0,0.3]$). In the stated ranges all angles $((k+l)/2+\beta)\delta$ ($0\le k<l\le n-1$) lie in $(0,\pi)$, so $\lambda_k-\lambda_l=4\sin(((k+l)/2+\beta)\delta)\sin((l-k)\delta/2)>0$: the $\lambda_l=y+2\cos((l+\beta)\delta)$ are distinct and decreasing in $l$, and $H_j=\sum_kc_k\lambda_k^{j+n-1}$ with $c_k=\prod_{l\ne k}(\lambda_k-\lambda_l)^{-1}$, $\sgn c_k=(-1)^k$ (partial fractions).
+
+\emph{(T) Tail, uniformly on a box.} $B$ is covered by $10\times4$ sub-boxes. On each sub-box, with $\beta$, $\delta$ entered as balls, the program certifies: all the above differences are $>0$; $\lambda_1>0$; $\lambda_1>|\lambda_k|$ for $k\ge2$; and, for an index $j_0\in\{30,40,50,60\}$ chosen per box,
+\[
+|c_0c_1|(\lambda_0-\lambda_1)^2>\sum_{(k,l)\ne(0,1)}|c_kc_l|\Bigl(\frac{|\lambda_k\lambda_l|}{\lambda_0\lambda_1}\Bigr)^{j_0+n-2}(\lambda_k-\lambda_l)^2,\qquad|c_0|>\sum_{k\ge1}|c_k|\Bigl(\frac{|\lambda_k|}{\lambda_0}\Bigr)^{j_0+n-1},
+\]
+with the ratios replaced by certified upper bounds. By Lemma~\ref{lem:tail1d} (with $a(\cdot)=H_{\cdot-n+1}$), $C_j>0$ and $H_j>0$ for all $j\ge j_0$ and all parameters in $B$.
+
+\emph{(W) Window $1\le j<j_0$: Taylor models.} Write $\beta=\beta_c+r_1u$, $\delta=\delta_c+r_2v$ with $r_1=1/2$, $r_2=313/40000$; $B$ is $\{|u|\le t,\ |v|\le t\}$, $t=1/10$. $H_j$ and $C_j$ are entire functions of $(u,v)\in\mathbb C^2$. For complex $|u|,|v|\le1$ the angle $(l+\beta)\delta$ lies in the disc of radius $\varepsilon_l:=r_1\delta_c+(l+\beta_c)r_2+r_1r_2$ about $a_l:=(l+\beta_c)\delta_c$, and from $\cos(a+\eta)=\cos a\cos\eta-\sin a\sin\eta$, $|\cos\eta-1|\le\cosh|\eta|-1$, $|\sin\eta|\le\sinh|\eta|$:
+\[
+|\lambda_l|\le\mu_l:=|y+2\cos a_l|+2|\cos a_l|(\cosh\varepsilon_l-1)+2|\sin a_l|\sinh\varepsilon_l .
+\]
+$h_j$ has nonnegative coefficients, so $|H_j|\le M_j:=h_j(\mu_0,\dots,\mu_{n-1})$ and $|C_j|\le M_j^2+M_{j-1}M_{j+1}$ on the closed unit polydisc. By Cauchy's estimates every Taylor coefficient of $H_j$ (of $C_j$) in $(u,v)$ is bounded by $M_j$ (by $M_j^2+M_{j-1}M_{j+1}$); so for real $|u|,|v|\le t$ the Taylor polynomial of total degree $p$ differs from the function by at most the bound times
+\[
+R(t,p):=\sum_{k>p}(k+1)t^k=\frac{(p+2)t^{p+1}-(p+1)t^{p+2}}{(1-t)^2}\qquad(=1.8\cdot10^{-14}\text{ for }t=1/10,\ p=14).
+\]
+The Taylor polynomials of total degree $p=14$ are computed by truncated power-series arithmetic with ball coefficients (320 bits) from the exact centre: first those of $\lambda_l$ (from the series of $\cos$, $\sin$ in $\eta=r_1\delta_cu+(l+\beta_c)r_2v+r_1r_2uv$), then those of $H_0,\dots,H_{j_0}$ by the recursion ``multiply the generating function by $(1-\lambda_lz)^{-1}$'', then that of $C_j$ as the truncated product. A polynomial $\sum c_{ab}u^av^b$ is bounded below on $B$ by $c_{00}-\sum_{(a,b)\ne(0,0)}|c_{ab}|t^{a+b}$. The certificate is that for every box and every $1\le j<j_0$ the lower bounds
+\begin{gather*}
+c_{00}(H_j)-\sum\nolimits'|c_{ab}(H_j)|t^{a+b}-M_jR(t,p)>0,\\
+c_{00}(C_j)-\sum\nolimits'|c_{ab}(C_j)|t^{a+b}-(M_j^2+M_{j-1}M_{j+1})R(t,p)>0
+\end{gather*}
+hold as inequalities between balls. They do: over all boxes the lower bound of $C_j$ divided by $H_j(\text{centre})^2$ is at least $1.2\cdot10^{-4}$ (the true margin $C_j/H_j^2$ at the centres is at least $6.3\cdot10^{-4}$ for $j<j_0$), $M_j/H_j(\text{centre})\le2.5\cdot10^4$, and the lower bound of $H_j$ is at least $0.69\,H_j(\text{centre})$. Records: \texttt{data/cert\_family\_F1.jsonl}, \texttt{data/cert\_family\_F2.jsonl}; total running time 19 seconds.
+\end{proof}
+
+\emph{Cross-check (not part of the proof).} A second implementation, written separately within the same project and run on the same machine (code not released: own truncated series arithmetic of total degree 12; Lagrange remainder enclosed over the whole box by evaluating the order-13 coefficients with interval base points, instead of Cauchy estimates; own tail criterion on $12\times5$ sub-boxes; 256-bit balls), also certifies all 26 boxes.
+% src: data/checks/r4_family_second_implementation.json (n_boxes_certified, taylor_total_degree, lagrange_remainder_order, tail_sub_boxes, ball_precision_bits)
+
+\emph{Why $16$.} The first inequality $C_1=e_2(A_n(\beta,\delta))\ge0$ fails for some $\beta$ when $\pi/\delta\le14$ (float scan, \texttt{explore19\_twisted\_groups.py}), and holds with a comfortable margin for $\pi/\delta\ge16$; larger groups have a longer window. As for the full path (Conjecture~\ref{conj:1dlc}), in all cases computed a twisted group is log-concave as soon as $e_2\ge0$.
+
+\begin{catheorem}[one-dimensional log-concavity at $q\le4/5$, every $N$]\label{thm:lc1d}
+% src: data/msc_rigorous_unimodality/summary_lc1d.json, data/msc_rigorous_unimodality/cert_family_F1.jsonl, data/msc_rigorous_unimodality/cert_family_F2.jsonl
+Let $q\in(0,4/5]$.
+\begin{enumerate}
+\item[(a)] $\delta h_q$ is a log-concave sequence for every $N\ge9$.
+\item[(b)] $\delta\tilde h_q$ is a log-concave sequence for every odd $N\ge25$.
+\end{enumerate}
+At $q=4/5$ these ranges are exact: $\delta h_{4/5}$ is not log-concave for $3\le N\le8$, and $\delta\tilde h_{4/5}$ is not log-concave for odd $3\le N\le23$.
+\end{catheorem}
+\begin{proof}
+By the last statement of Proposition~\ref{prop:reduction} it suffices to take $q=4/5$, $y=1/2$. By Lemma~\ref{lem:dict} we must show that $(h_j(\lambda))_{j\ge0}$ [resp.\ $(h_j(\tilde\lambda))_{j\ge0}$] is positive and log-concave. For $9\le N\le1001$ [odd $25\le N\le2001$] this is Theorem~\ref{thm:direct}. For $N\ge992$ [odd $N\ge1985$], Lemma~\ref{lem:classes} writes the sequence as the convolution of $G$ sequences $(h_j(A_{n_g}(\beta_g,\delta)))_j$ with $\delta=\pi/\rho\in[\pi/(16+16/62),\pi/16]\subset[0.19322,0.19635]$: for $n_g=16$ it is positive and log-concave by Lemma~\ref{lem:family}~(F1) ($\beta_g\in(0,1]$), for $n_g=17$ by (F2) ($\beta_g<16/62$), and for $n_g=15$ it is the sequence $(h_j(\lambda_1,\dots,\lambda_{15}))_j$ of $N=16$, positive and log-concave by Theorem~\ref{thm:direct}(a). Lemma~\ref{lem:conv}, applied $G-1$ times, gives the claim. The last sentence is Lemma~\ref{lem:dict}(c) ($e_2<0$ for $2\le m\le7$, resp.\ $2\le M\le11$); for $N=3$ in (b), $\tilde W_n=(y-1)^n=(-\frac12)^n$ is not of one sign.
+\end{proof}
+
+\emph{Remark (what the theorem says about walks).} $(q/2)^{-(n+1)}\delta h_q(n)=W_n$ is the number of walks of length $n$ from one end to the other of a path with $N-1$ vertices, where a hold at a vertex has weight $y=2(1-q)/q$. So (a) says: \emph{for holding weight $y\ge1/2$ and at least $8$ vertices, the weighted number of end-to-end walks of length $n$ is a log-concave function of $n$.} For $y\ge2\cos(\pi/N)$ this is classical ($J$ is then totally nonnegative and $W_n$ is a P\'olya frequency sequence); for $y<2\cos(\pi/N)$ the matrix has negative eigenvalues and the statement is a collective property of the spectrum.
+
+\subsection{Small boxes: blocks of dimensions}\label{sec:small}
+
+For the finitely many $N$ not covered by Theorem~\ref{thm:lc1d} the one-dimensional factor is not log-concave at $q=4/5$, but its binomial convolutions are.
+
+\begin{caproposition}[blocks]\label{prop:smallblocks}
+% src: data/msc_rigorous_unimodality/cert_blocks.jsonl
+Let $q=4/5$. The sequence $\varphi_d$ is log-concave in the following cases:
+\begin{itemize}
+\item corner $\to$ opposite corner: $3\le N\le8$, $d\in\{2,3\}$;
+\item corner $\to$ centre (equivalently centre $\to$ corner): odd $9\le N\le23$, $d\in\{2,3\}$; $N\in\{5,7\}$, $d\in\{3,4,5\}$; $N=3$, $d\in\{4,5,6,7\}$.
+\end{itemize}
+It is \emph{not} log-concave for the centre geometries with $(N,d)\in\{(3,2),(5,2),(7,2),(3,3)\}$ (yet the PMF is unimodal there: Theorem~\ref{thm:ca}(e)).
+\end{caproposition}
+\begin{proof}
+\texttt{scripts/cert\_blocks.py}. By Lemma~\ref{lem:spec}, $\varphi_d(t+1)=\sum_KC_K\nu_K^t$ over multisets $K=\{k_1\le\dots\le k_d\}$ of one-dimensional mode indices, with $\nu_K=1-q+\frac qd\sum_i\cos(k_i\pi/N)$ and $C_K=\mathrm{mult}(K)\prod_iw_{k_i}\,(\nu_K-1)$, $w_k=\psi_k(x_{0,1})\psi_k(a_1)$ ($=(-1)^kc_k^2\cos^2(k\pi/2N)$ for the corner pair; $=(-1)^{k/2}c_k^2\cos(k\pi/2N)$ for even $k$ and $0$ for odd $k$ for the centre pair). The two leading modes are $K_1=\{0,\dots,0,k^*\}$ and $K_2=\{0,\dots,0,k^*,k^*\}$ ($k^*=1$ resp.\ $2$) with $C_{K_1}>0>C_{K_2}$; the program certifies $\nu_{K_1}>\nu_{K_2}>|\nu_K|$ for all other $K$, finds $t_0$ as in Lemma~\ref{lem:tail1d}, and certifies positivity and the log-concavity inequalities on the window $D-1\le t<t_0$ both in ball arithmetic and in exact integer arithmetic (the exact value of $\varphi_d(t)\,(10d)^t$ from the walk on the box). 38 cases, $t_0\le231$, smallest relative margin $6.5\cdot10^{-5}$. The failures are exact integer computations (\texttt{verify\_lc1d.py} X9): the first inequality $\varphi(D+1)^2\ge\varphi(D)\varphi(D+2)$ fails. Records: \texttt{data/cert\_blocks.jsonl}.
+\end{proof}
+
+\subsection{The result}\label{sec:result}
+
+\begin{catheorem}[the value]\label{thm:fourfifths}
+% src: data/msc_rigorous_unimodality/summary_lc1d.json, data/msc_rigorous_unimodality/cert_family_F*.jsonl, data/msc_rigorous_unimodality/cert_blocks.jsonl, data/msc_rigorous_unimodality/summary_certificates.json
+Let $q\in(0,4/5]$.
+\begin{enumerate}
+\item[(i)] \emph{Corner $\to$ opposite corner.} The sequence $\varphi_d$ is log-concave for all $N\ge9$, $d\ge1$, and for all $2\le N\le8$, $d\ge2$. The first-passage PMF $f_q$ is unimodal for \textbf{every $N\ge2$ and every $d\ge1$}.
+\item[(ii)] \emph{Corner $\to$ centre and centre $\to$ corner} ($N$ odd). The sequence $\varphi_d$ is log-concave for all $N\ge25$, $d\ge1$; for $9\le N\le23$, $d\ge2$; for $N\in\{5,7\}$, $d\ge3$; and for $N=3$, $d\ge4$. The first-passage PMF $f_q$ of both pairs is unimodal for \textbf{every odd $N\ge3$ and every $d\ge2$}.
+\item[(iii)] \emph{Sharpness.} For $d=1$, $N=4$ the corner-to-corner PMF is not unimodal for any $q>4/5$ (Proposition~\ref{prop:1dcounter}). So $(0,4/5]$ is exactly the set of activities for which the corner-to-corner PMF is unimodal for all $N\ge2$ and all $d\ge1$.
+\end{enumerate}
+\end{catheorem}
+\begin{proof}
+(i) $N\ge9$: Theorem~\ref{thm:lc1d}(a) and Proposition~\ref{prop:reduction}. $N=2$: $q_2=1$, Theorem~\ref{thm:main} (the one-dimensional eigenvalue $1-q$ is $\ge0$, so $\delta h_q$ is log-concave and Proposition~\ref{prop:reduction} applies). $3\le N\le8$, $d\ge2$: at $q=4/5$, $\varphi_2$ and $\varphi_3$ are log-concave (Proposition~\ref{prop:smallblocks}), so $u_2$ is (Lemma~\ref{lem:blocks}(a)), and by Lemma~\ref{lem:blocks}(b) and induction $\varphi_{2+2k}$ and $\varphi_{3+2k}$ are log-concave for all $k\ge0$; Lemma~\ref{lem:blocks}(c) extends this to $q\le4/5$, and Theorem~\ref{thm:criterion}(b) gives unimodality. $3\le N\le8$, $d=1$: Theorem~\ref{thm:ca}(f) and Corollary~\ref{cor:interval}.
+
+(ii) $N\ge25$: Theorem~\ref{thm:lc1d}(b) and Proposition~\ref{prop:reduction}. $9\le N\le23$: as in (i) from $\varphi_2$, $\varphi_3$. $N\in\{5,7\}$: $\varphi_3,\varphi_4,\varphi_5$ are log-concave, hence $u_3$ is, hence $\varphi_{d+3}$ is whenever $\varphi_d$ is: all $d\ge3$. $N=3$: $\varphi_4,\dots,\varphi_7$ and $u_4$ are log-concave, hence all $\varphi_d$, $d\ge4$. The remaining cases $N=3$, $d\in\{2,3\}$ and $N\in\{5,7\}$, $d=2$ are in Theorem~\ref{thm:ca}(e) ($q\le4/5$). In all log-concave cases Lemma~\ref{lem:blocks}(c) and Theorem~\ref{thm:criterion}(b) give unimodality for $q\le4/5$.
+
+(iii) Proposition~\ref{prop:1dcounter} and (i).
+\end{proof}
+
+\emph{Remarks.} (1) \emph{What is computer-assisted.} Theorem~\ref{thm:fourfifths} rests on: the finite certificates of Theorem~\ref{thm:direct}(a),(b) ($N\le1001$, resp.\ $2001$); Lemma~\ref{lem:family} (26 boxes); Proposition~\ref{prop:smallblocks} (38 small cases); and, for the listed small cases only, the exact cone certificates of Theorem~\ref{thm:ca}(e),(f). Everything else --- the last-exit decomposition, the reduction to one dimension, the convolution lemmas, the tail lemma, the splitting into residue classes --- is proved in the text.
+(2) \emph{One dimension, centre geometries.} For $d=1$, corner $\to$ centre on $\{1,\dots,N\}$ \emph{is} the end-to-end problem on $\{1,\dots,c\}$ (the walk cannot pass $c$ before hitting it), so it is unimodal for $q\le4/5$ by (i). Centre $\to$ corner in $d=1$ is unimodal for $q\le4/5$ when $N\ge25$ (Theorem~\ref{thm:lc1d}(b), Proposition~\ref{prop:reduction}), when $N=3$ (Proposition~\ref{prop:m2c1d}(a)) and when $13\le N\le23$ (Theorem~\ref{thm:thr1d}(b)), and for $q\le1/2$ for every $N$ (Theorem~\ref{thm:1d}). It is \emph{not} unimodal at $q=4/5$ for $N\in\{5,7,9,11\}$ (Proposition~\ref{prop:m2c1d}, Theorem~\ref{thm:thr1d}(c)). So the hypothesis $d\ge2$ in (ii) cannot be dropped, and in $d=1$ the statement ``unimodal for all $q\le4/5$'' holds for centre $\to$ corner exactly when $N\notin\{5,7,9,11\}$.
+(3) \emph{Even $N$} has no centre site; the article uses odd $N$ for the centre geometries.
+(4) \emph{Beyond $4/5$.} In $d\ge2$ the PMF stays unimodal well beyond $q=4/5$ (Theorem~\ref{thm:ca}, Corollary~\ref{cor:thr1d}); in $d=1$ the thresholds are known exactly on a finite range (Theorem~\ref{thm:thr1d}); see Section~\ref{sec:opendisc} for what is open.
+(5) \emph{Log-concavity of $\varphi$ is sufficient, not necessary}: the four exceptional centre cases of Proposition~\ref{prop:smallblocks} are unimodal without it.
+
+\emph{Sanity checks.} \texttt{scripts/verify\_lc1d.py} $\to$ \texttt{data/verify\_lc1d.json}: X1--X2 (Lemma~\ref{lem:dict}, exact: 1771 identities between the one-dimensional chain and the Jacobi-matrix recursion), X3 (spectral formulas: exact values lie in the Arb balls), X4 (identity \eqref{eq:casorati} and the variance form of $\mathrm{Tot}_n$), X5 (brute-force exact scan $n\le40m^2$, $m=3,\dots,14$, four values of $y$, both families: log-concave iff the first inequality holds; exactly one equality at the threshold), X6 (the elementary bounds and the tail time of Proposition~\ref{prop:ntail} for $N=10,\dots,400$), X7 (Proposition~\ref{prop:reduction} in action, exact, $d=2,3$), X8 ($d=5$, $N=9$, float), X9 (the four exceptional cases of Proposition~\ref{prop:smallblocks}, exact), X10 (the three-number identity of Section~\ref{sec:opendisc}, exact), X11 (the block identity in the proof of Lemma~\ref{lem:blocks}(b), exact). \texttt{scripts/verify\_family.py} $\to$ \texttt{data/verify\_family.json}: Y1 (Lemma~\ref{lem:classes} for 21 values of $N$ up to $100003$, exact: the classes partition the index set, the group sizes are $\lceil\rho-\beta\rceil$, all parameters lie in the certified regions), Y2 (product identity, 60 digits), Y3 (Taylor models: at random real points the error is below the remainder bound --- observed error/bound $\le3.3\cdot10^{-14}$; at random complex points $|H_j|\le M_j$), Y4 (negative controls: the procedure refuses two groups with $e_2<0$), Y5 (separate brute-force evaluation at 400 random parameter points, $j\le600$), Y6 (direct certificates of the type of Theorem~\ref{thm:direct} for $N=1024,1500,2000,4001$ and odd $N=2049,3001,4001$, beyond the range used in the proof: all certified, in agreement with Theorem~\ref{thm:lc1d}), Y7 (for $N=1237,5003,40009$ and odd $N=2003,30011$ \emph{every} residue-class group --- 3888 groups --- is certified directly at its own parameter point, without Taylor models: window $j<100$ and the tail criterion at $j_0=100$). \texttt{scripts/summarize\_lc1d.py} checks that all ranges are complete.
+
+\section{What remains open: precise conjectures and the exact gap}\label{sec:open}
+
+After Theorems~\ref{thm:main} and~\ref{thm:fourfifths} the unimodality question for the three geometries is settled in continuous time and in discrete time for $q\le4/5$, for all $N$ (and all $d\ge2$; all $d\ge1$ for the corner pair; in $d=1$ the centre $\to$ corner pair fails at $q=4/5$ exactly for $N\in\{5,7,9,11\}$, Theorem~\ref{thm:thr1d}(c)). What remains open: the stronger shape properties --- log-concavity, monotone hazard rate, the front property --- of the corner-to-corner law (Section~\ref{sec:openshape}), and discrete time with $4/5<q<1$ beyond the certified finite ranges (Section~\ref{sec:opendisc}).
+
+\subsection{Log-concavity and the front property; thresholds; general pairs}\label{sec:openshape}
+
+\begin{conjecture}[corner-to-corner, all $N$]\label{conj:main}
+% src: data/msc_rigorous_unimodality/conjectures_CC_d*_q1-*.jsonl
+Let $d\ge2$, $N\ge2$, $a=(N,\dots,N)$, $x_0=(1,\dots,1)$. In continuous time, and in discrete time for $q\le1/2$, property (P1$'$) of Proposition~\ref{prop:front} holds: for all $t$, $\rho_{t+1}(x)/\rho_t(x)$ (resp.\ $\partial_t\log\rho_t(x)$) is coordinatewise nondecreasing in $x$. Consequently (Proposition~\ref{prop:front}) the first-passage law is log-concave --- hence has a nondecreasing hazard rate --- and the cone of Lemma~\ref{lem:cone} holds from the mode on.
+\end{conjecture}
+Unimodality itself is not part of the conjecture (Theorems~\ref{thm:main}, \ref{thm:fourfifths}). The conjecture is strictly stronger: the centre $\to$ corner law is unimodal but not log-concave (Proposition~\ref{prop:notlc}), so log-concavity of the first-passage law cannot follow from the last-exit argument alone. (Do not confuse the log-concavity of the first-passage PMF $f$, conjectured here, with that of the increment $\varphi$ of the free propagator, proved in Sections~\ref{sec:lastexit} and~\ref{sec:fourfifths}.)
+
+\emph{Evidence} (exact integer arithmetic on finite windows, \texttt{scripts/check\_conjectures.py}): (P1$'$), log-concavity and monotone hazard hold on $0\le t\le6\cdot\text{mode}$ for $d=2$, $N=2,\dots,14,16,18,20$ and $d=3$, $N=2,\dots,8$ at $q=1/2$, and for $d=2$, $N\le8$ at $q=1/8$; in floating point for $d=2$, $N\le24$ and $d=3$, $N\le10$.
+
+\emph{The obstruction.} In $d=1$, (P1$'$) is what the variation-diminishing property of the heat flow on a path gives (Theorem~\ref{thm:1d}, Proposition~\ref{prop:front}). In $d\ge2$ the natural sufficient condition --- stochastic monotonicity of the time-reversed chain with rates $\rho_t(y)/\rho_t(x)$, implied by log-supermodularity of $\rho_t$ --- fails near the target, because the killed site is the top of the lattice: $\rho(a)\rho(a-e_i-e_j)=0<\rho(a-e_i)\rho(a-e_j)$.
+
+\begin{conjecture}[thresholds]\label{conj:thr}
+% src: data/msc_rigorous_unimodality/cert_CC_d2_N9_bracket.jsonl, data/msc_rigorous_unimodality/cert_CC_d2_N9_bracket_hi.jsonl, data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl, data/msc_rigorous_unimodality/cert_thr1d_m2cbound.jsonl
+\begin{enumerate}
+\item[(i)] For $d=2$ corner-to-corner, $\inf_Nq^*(N)=q^*(9)\in[0.9986,0.9987)$, and $q^*(N)=1$ for infinitely many $N$ and $<1$ for infinitely many $N$.
+\item[(ii)] For $d\ge3$ corner-to-corner, $q^*(N)=1$ for all $N$.
+\item[(iii)] For $d=1$ end to end, $q^*(N)=(2N-4)/(2N-3)$ for all $N\ge22$.
+\item[(iv)] For $d=1$ centre $\to$ corner, $q^*(N)=(N-3)/(N-1)$ for all odd $N\ge21$.
+\end{enumerate}
+\end{conjecture}
+\emph{Remark.} The natural extension of (iii) to $N\ge20$ is false: $N=21$ is an exception ($q^*(21)\in[0.974226,0.974227)$, while $38/39=0.974359\ldots$; exact witness $f(142)>f(143)<f(144)$ at $q=38/39$; Theorem~\ref{thm:thr1d}(a)).
+% src: data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl (N = 21 bracket), data/msc_rigorous_unimodality/verify_thr1d.json (Z5, exact witness)
+The true statement on the range that has been certified is Theorem~\ref{thm:thr1d}.
+
+\emph{Status.} Proved, for the corner pair: $q^*(N)\ge4/5$ for all $N$ and $d$, with equality for $d=1$, $N=4$ (Theorem~\ref{thm:fourfifths}); $q^*(N)\ge q_1(N)$ for $N\le501$ and all $d$ (Corollary~\ref{cor:thr1d}); $q^*(2)=1$ in every dimension; the finite ranges of Theorem~\ref{thm:ca}. In $d=1$: the inequalities $q^*(N)\le(2N-4)/(2N-3)$ ($N\ge4$, Proposition~\ref{prop:1dcounter}) and $q^*(N)\le(N-3)/(N-1)$ (centre $\to$ corner, odd $N\ge7$, Proposition~\ref{prop:m2c1d}) hold for \emph{all} $N$; equality --- clauses (iii), (iv) --- is proved for $N=20$, $22\le N\le300$ resp.\ odd $21\le N\le301$ (and $N=4$; resp.\ $N=7,9,17$), and is known to \emph{fail} for $5\le N\le19$, $N=21$ resp.\ $N=11,13,15,19$ (Theorem~\ref{thm:thr1d}). For $N>300$ resp.\ $301$ clauses (iii), (iv) are open: what is missing is a proof, for all large $N$, that the PMF at $q=(2N-4)/(2N-3)$ (resp.\ $(N-3)/(N-1)$), which has an exact tie at the first two points of its support, has no second dip. Remark~\ref{rem:exceptional} explains heuristically why none is expected at the mode; the log-concavity method of Section~\ref{sec:fourfifths} cannot give it, because at these values of $q$ the increment of the free propagator is not log-concave ($(2N-4)/(2N-3)>q_1(N)$ for $N\ge4$).
+
+\begin{conjecture}[general pairs]\label{conj:general}
+In continuous time, for every $d$, $N$ and pair, $g'$ has at most three sign changes (the density has at most two local maxima). If $x_0\sim a$ the density is decreasing.
+\end{conjecture}
+\emph{Evidence.} The exhaustive scans of Theorem~\ref{thm:pairs} and Observation~\ref{obs:adjacent}. A separately written check within the same project, on the same machine (not released): for 268 adjacent pairs at $q=1/32$ the PMF is nonincreasing, and no pair of the scans has more than three sign changes.
+
+\subsection{Discrete time with $4/5<q<1$}\label{sec:opendisc}
+
+What is known. By Corollary~\ref{cor:interval} the set of $q$ for which $f_q$ is unimodal is an interval $(0,q^*]$. By Theorem~\ref{thm:fourfifths}, $q^*\ge4/5$ for the three geometries (all $N$; $d\ge2$, and $d\ge1$ for the corner pair). $q^*<1$ does occur ($d=1$, $N\ge4$: Proposition~\ref{prop:1dcounter}, with the exact values of Theorem~\ref{thm:thr1d}; $d=2$, $N=9,11,\dots$: Theorem~\ref{thm:ca}(c)), so some restriction on $q$ is necessary, and $q^*=4/5$ exactly for $d=1$, $N=4$. Beyond $4/5$: $q^*\ge0.998$ ($d=2$, $N\le64$), $q^*=1$ ($d=3$, $N\le30$; $d=4$, $N\le8$; $d=5$, $N\le5$) by Theorem~\ref{thm:ca}, and $q^*\ge q_1(N)$ resp.\ $\tilde q_1(N)$ for $N\le501$ resp.\ odd $N\le1001$ in every dimension by Corollary~\ref{cor:thr1d}.
+
+\begin{conjecture}[one-dimensional log-concavity up to the first inequality]\label{conj:1dlc}
+% src: data/msc_rigorous_unimodality/cert_lc1d_E2E_thr.jsonl, data/msc_rigorous_unimodality/cert_lc1d_FOLD_thr.jsonl, data/msc_rigorous_unimodality/verify_lc1d.json (X5)
+\begin{enumerate}
+\item[(a)] For every $N\ge3$ the sequence $\delta h_q$ (end to end) is log-concave if and only if $q\le q_1(N)=1/(1+(2(N-1))^{-1/2})$ (equivalently $2(N-1)(1-q)^2\ge q^2$).
+\item[(b)] For every odd $N\ge5$ the sequence $\delta\tilde h_q$ (end to centre) is log-concave if and only if $q\le\tilde q_1(N)$.
+\end{enumerate}
+\end{conjecture}
+
+\emph{Status.} ``Only if'' is proved (Lemma~\ref{lem:dict}(c)). ``If'' is proved for $N\le501$ in (a) and odd $N\le1001$ in (b) (Corollary~\ref{cor:thr1d}), and for every $N$ when $q\le4/5$ (Theorem~\ref{thm:lc1d}). Open: $N>501$ (resp.\ $1001$) and $4/5<q\le q_1(N)$ (resp.\ $\tilde q_1(N)$). By Proposition~\ref{prop:reduction} the conjecture would give unimodality of the corner-to-corner PMF for all $q\le q_1(N)$ in every dimension, with $q_1(N)\to1$.
+
+\emph{Why the method of Section~\ref{sec:twisted} does not prove it.} For a fixed $y$ the splitting into twisted groups works for all large $N$ at once, with groups of a fixed size ($16$ for $y=\frac12$). At the threshold $y=(2/(N-1))^{1/2}$ the whole spectrum is exactly critical ($e_2=0$), so no proper sub-group can be log-concave with room to spare, and the group size needed for a fixed $y$ grows like $y^{-2}$. A proof for all $N$ at the threshold needs a different idea.
+
+\emph{Equivalent forms and evidence.} With $m=N-1$: $W_n$ counts walks of length $n$ from one end to the other of the path with $m$ vertices, with holding weight $y$. Log-concavity of $s_j:=h_j(\lambda)$ means that all two-row Schur functions $s_{(b,a)}(\lambda)=h_ah_b-h_{a-1}h_{b+1}$ ($b\ge a\ge1$; Jacobi--Trudi) are nonnegative, and the conjecture says that this is so as soon as $s_{(1,1)}=e_2\ge0$. For arbitrary real $\lambda$ with $e_2\ge0$ this is false (\texttt{scripts/explore14\_hj\_lc.py}, \texttt{explore17\_general\_pairs.py}); it is true for three real numbers of which one is negative (then $h_j(a_1,a_2,-b)^2-h_{j-1}h_{j+1}=(-a_1a_2b)^jh_j(1/a_1,1/a_2,-1/b)$, an alternating sum with decreasing terms when $1/b\ge1/a_1+1/a_2$), and in all cases computed for the spectrum of a path and for twisted groups. For $m\le8$ and $j\le9$ the polynomial $s_j^2-s_{j-1}s_{j+1}$, written in the variable $Y=y^2-2/m$, has nonnegative coefficients (\texttt{explore15\_delta\_poly.py}). In the formal scaling limit $m\to\infty$ with $\theta=y(m/2)^{1/2}$ fixed, $s_j$ becomes the coefficient of $z^j$ in $\exp(\theta z+z^2/2)$, and these coefficients are log-concave when $\theta\ge1$ (E.~A.~Bender and E.~R.~Canfield, \emph{Log-concavity and related properties of the cycle index polynomials}, J.~Combin.\ Theory Ser.~A 74 (1996) 57--70: the coefficients of $\exp(\sum_jw_jz^j/j)$ are log-concave when $1,w_1,w_2,\dots$ is; here $w=(\theta,1,0,\dots)$) and fail the first inequality when $\theta<1$. The limit is a heuristic, not a proof; for finite $m$ the hypothesis of that theorem fails ($w_j=\operatorname{tr}J^j$ and $w_3^2<w_2w_4$).
+
+\begin{observation}[in $d\ge2$ the range is larger still]\label{obs:larger}
+% src: data/msc_rigorous_unimodality/check_lc_threshold.json
+For $d=2$, $2\le N\le20$ and $N=24$, and $d=3$, $2\le N\le10$, the sequence $\varphi$ of the corner pair is log-concave on $0\le t\le5dN^2+40$ also for $q=9/10$, except for $d=2$, $N\in\{4,\dots,8\}$ where the first inequality fails (\texttt{scripts/check\_lc\_threshold.py}, exact). So the binomial convolution \eqref{eq:binconv} smooths, and in $d\ge2$ log-concavity of $\varphi$ extends beyond $q_1(N)$.
+\end{observation}
+
+\emph{The exact gap in discrete time.} By \eqref{eq:lediff}, $f_q(t+1)-f_q(t)=\varphi(t+1)-\sum_{k\le t}\nu(k)\varphi(t-k)$ with $\nu$ the first-return law of the target and $\varphi$ the increment of the free propagator. What is missing for $4/5<q<1$ is a proof, for all $N$, that this expression changes sign once; log-concavity of $\varphi$ suffices, and for the corner pair it suffices to prove Conjecture~\ref{conj:1dlc}(a). Any proof must use $q<1$ quantitatively, because the statement is false for $q=1$ ($d=1,2$). For every $q\le1$ Theorem~\ref{thm:tail} confines a possible failure to $t\le T_N(q)$.
+
+\emph{Not attempted here.} Asymptotics (location of the mode, shape of the law) are not treated in this note; Corollary~\ref{cor:mode} provides rigorous two-sided bounds for the mode that an asymptotic analysis can start from ($m_u$ and $m(q/M_{\max})$ are defined by the one-dimensional propagator and the mean first-passage time only).
+
+\appendix
+\section{Files and reproduction}\label{app:files}
+Interpreter: Python~3 with numpy, scipy, mpmath and python-flint 0.9.0 for Arb (\texttt{requirements.txt}). In the repository \texttt{scripts/} is \texttt{code/msc\_rigorous\_unimodality/} and \texttt{data/} is \texttt{data/msc\_rigorous\_unimodality/}.
+
+{\small\begin{tabular}{@{}p{0.40\textwidth}p{0.54\textwidth}@{}}
+\toprule
+\texttt{scripts/unilib.py}&exact integer stepper\\
+\texttt{scripts/cert\_unimodal.py}&exact cone certificate $\to$ \texttt{data/cert\_*.jsonl}\\
+\texttt{scripts/cert\_continuous.py}&exact three-point certificates (continuous time)\\
+\texttt{scripts/cert\_pairs.py}&exhaustive classification $\to$ \texttt{data/pairs\_d*\_N*.json}\\
+\texttt{scripts/summarize\_certs.py}&$\to$ \texttt{data/summary\_certificates.json}\\
+\texttt{scripts/verify\_lemmas.py}&sanity checks V1--V13 of every lemma\\
+\texttt{scripts/verify\_certificate\_code.py}&cross-checks A--D of the certificate code (separately written implementations)\\
+\texttt{scripts/check\_conjectures.py}&exact evidence for Conjecture~\ref{conj:main}\\
+\texttt{scripts/verify\_lastexit.py}&sanity checks W1--W10 of Section~\ref{sec:lastexit} $\to$ \texttt{data/verify\_lastexit.json}, \texttt{data/pairs\_logconcave\_hypothesis.json}\\
+\texttt{scripts/table\_mode\_bounds.py}&table of Corollary~\ref{cor:mode} $\to$ \texttt{data/table\_mode\_bounds.json}\\
+\texttt{scripts/check\_lc\_threshold.py}&exact window checks behind Observations~\ref{obs:hyp}(ii), \ref{obs:larger} $\to$ \texttt{data/check\_lc\_threshold.json}\\
+\texttt{scripts/cert\_lc1d.py}&Theorem~\ref{thm:direct}: Arb certificate of the one-dimensional log-concavity (tail lemma, window, exact cross-check) $\to$ \texttt{data/cert\_lc1d\_*.jsonl}\\
+\texttt{scripts/cert\_family.py}&Lemma~\ref{lem:family}: Taylor-model certificate for the twisted groups $\to$ \texttt{data/cert\_family\_F1.jsonl}, \texttt{\_F2.jsonl}\\
+\texttt{scripts/cert\_blocks.py}&Proposition~\ref{prop:smallblocks} (Arb and exact integers) $\to$ \texttt{data/cert\_blocks.jsonl}\\
+\texttt{scripts/summarize\_lc1d.py}&completeness of all ranges of Section~\ref{sec:fourfifths} $\to$ \texttt{data/summary\_lc1d.json}\\
+\texttt{scripts/verify\_lc1d.py}, \texttt{verify\_family.py}&sanity checks X1--X11, Y1--Y7 of Section~\ref{sec:fourfifths}\\
+\texttt{scripts/recheck\_headline.py}&from-scratch exact re-check of headline claims of Sections~\ref{sec:proved}, \ref{sec:ca}, \ref{sec:counter}\\
+\texttt{scripts/cert\_thr1d.py}&Theorem~\ref{thm:thr1d}: exact one-dimensional cone certificates (two engines; $\mathbb Z[\sqrt2]$ for $q^*(5)$) $\to$ \texttt{data/cert\_thr1d\_*.jsonl}, \texttt{cert\_thr1d\_m2c.json}\\
+\texttt{scripts/scan\_pairs1d.py}&remark after Proposition~\ref{prop:m2c1d}: all starts, $d=1$, $N\le12$, $q=4/5$ $\to$ \texttt{data/scan\_pairs1d\_q4-5.json}\\
+\texttt{scripts/verify\_thr1d.py}&sanity checks Z1--Z11 of Section~\ref{sec:thr1d} $\to$ \texttt{data/verify\_thr1d.json}\\
+\texttt{scripts/table\_mode\_bounds\_small.py}&Corollary~\ref{cor:mode} for small boxes and $d=1$ (float) $\to$ \texttt{data/table\_mode\_bounds\_small.json}\\
+\texttt{scripts/exact\_examples.py}&exact rationals quoted in the text\\
+\texttt{scripts/residue\_signs.py}, \texttt{table\_windows.py}&Observation~\ref{obs:res}; table of Section~\ref{sec:corner}\\
+\bottomrule
+\end{tabular}}
+
+\medskip
+Sanity checks of the lemmas (\texttt{verify\_lemmas.py}; all pass): V1 identity \eqref{eq:thin} in exact arithmetic; V2 Lemmas~\ref{lem:bidiag}, \ref{lem:binom}, \ref{lem:descartes} on random inputs; V3 \eqref{eq:unif} against the spectral formula; V4 Theorem~\ref{thm:residues}; V5 Lemma~\ref{lem:coupling} (exact, including $q=1$); V6 Lemmas~\ref{lem:phimax}--\ref{lem:sym}; V7 Theorem~\ref{thm:tail}; V8 Lemmas~\ref{lem:renewal}, \ref{lem:hypo} and Theorem~\ref{thm:rise}; V9 Theorem~\ref{thm:cm}; V10 Theorem~\ref{thm:1d} and Proposition~\ref{prop:1dcounter}; V11 Lemma~\ref{lem:cone}; V12 Conjecture~\ref{conj:main} on windows; V13 Proposition~\ref{prop:hypercube}. The checks W1--W10 of Section~\ref{sec:lastexit} are in \texttt{verify\_lastexit.py}; the checks X1--X11 and Y1--Y7 of Section~\ref{sec:fourfifths} are in \texttt{verify\_lc1d.py} and \texttt{verify\_family.py} (all pass).
+
+\medskip
+Commands for Section~\ref{sec:fourfifths} (about 1.2 CPU-hours in total): \texttt{cert\_lc1d.py E2E 1/2 9 1000}; \texttt{cert\_lc1d.py FOLD 1/2 13 1000}; \texttt{cert\_lc1d.py E2E thr 3 500}; \texttt{cert\_lc1d.py FOLD thr 3 500}; \texttt{cert\_family.py F1}; \texttt{cert\_family.py F2}; \texttt{cert\_blocks.py}; \texttt{summarize\_lc1d.py}; \texttt{verify\_lc1d.py}; \texttt{verify\_family.py}.
+
+\medskip
+Commands for Section~\ref{sec:thr1d} (about 2.9 hours of wall-clock time in total, run in several background chunks): \texttt{cert\_thr1d.py boundf 4 300}; \texttt{cert\_thr1d.py bound 4 200}; \texttt{cert\_thr1d.py bisect 5 6 \dots\ 19 21}; \texttt{cert\_thr1d.py m2c}; \texttt{cert\_thr1d.py m2cbound 7 301}; \texttt{verify\_thr1d.py}.
+
+\section{Citations}\label{app:citations}
+
+Theorem numbers: Levin--Peres--Wilmer, 2nd ed., Proposition~10.7 (commute time identity) and Theorem~9.12 (Rayleigh's monotonicity law) were checked against the authors' online copy of the second edition. The Horn--Johnson numbers were not checked against the printed edition; Lemma~\ref{lem:perron} does not depend on them (it has a self-contained proof), and the remaining use (the Courant--Fischer min--max theorem, cited by name) is a textbook fact for symmetric matrices.
+
+\end{document}

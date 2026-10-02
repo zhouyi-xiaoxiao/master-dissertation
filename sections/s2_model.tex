@@ -1,0 +1,191 @@
+% s2_model.tex -- Model, definitions and exact structure (main text; proofs in Supplementary Section S1).
+% Numerical checks of every statement of this section: code/article/s2_model_checks.py
+%   -> data/article/s2_model_checks.json  (none of them is used as a proof).
+\section{Model, definitions and exact structure}\label{s2_model:sec}
+
+This section fixes the model and collects the exact facts on which all later computations rest. The statements are
+elementary and largely standard; their proofs, a table of notation (Table~\ref{s2_model:tab-notation}) and numerical
+checks are in Supplementary Section~\ref{sup_model:sec}.
+
+\subsection{The walk}\label{s2_model:ssec-walk}
+
+Let $N\ge2$, $\dd\ge1$, $\Om=\{0,\dots,N-1\}^{\dd}$ and $\nn=N^{\dd}$; $\ve_1,\dots,\ve_{\dd}$ are the lattice unit
+vectors. The definitions and the exact results hold in every dimension; the computations of this article are for
+$\dd\le3$, apart from a few finite ranges in dimensions $4$ and $5$ in Section~\ref{s6b_rigorous:sec}. In each time step the walker attempts a move with probability $q\in(0,1]$ (the \emph{activity}) and rests
+otherwise. An attempted move goes to one of the $2\dd$ nearest neighbours, chosen uniformly, and is \emph{cancelled}
+if it would leave $\Om$: the walker then stays where it is. With $X_t$ the position after $t$ steps, the transition
+matrix is
+\begin{equation}\label{s2_model:eq-P}
+  \Pm(\vx,\vx\pm\ve_i)=\frac{q}{2\dd}\quad\text{if }\vx\pm\ve_i\in\Om,\qquad
+  \Pm(\vx,\vx)=1-q+\frac{q}{2\dd}\,\eta(\vx),
+\end{equation}
+with all other entries zero, where $\eta(\vx)$ is the number of the $2\dd$ directions that lead out of $\Om$. $\Pm$ is
+symmetric, hence doubly stochastic with uniform stationary distribution, and irreducible; $\Pm_1$ denotes the matrix
+with $q=1$. The cancelled-move rule places mirrors half a lattice spacing outside the outermost sites; the
+bounce-back rule, which puts a walker that tries to leave on the interior neighbour, gives a non-symmetric matrix
+to which none of the formulas below applies.
+
+\subsection{First-passage quantities and the mode}\label{s2_model:ssec-fp}
+
+Fix a start $\vo$ and a target $\va\neq\vo$, and let $\FPT=\min\{t\ge0:X_t=\va\}$. Let $\Qm$ be $\Pm$ with the row and
+column of $\va$ removed and $r=(I-\Qm)\one$ the vector of one-step absorption probabilities. By irreducibility the
+spectral radius of $\Qm$ is below one. With $\ve_{\vx}$ the coordinate vector of site $\vx$, the survival probability
+is $\Sv(t)=\Prob_{\vo}(\FPT>t)=\ve_{\vo}^{\T}\Qm^{t}\one$, the first-passage probability mass function (PMF) is
+\begin{equation}\label{s2_model:eq-pmf}
+  \pmf(t)=\Prob_{\vo}(\FPT=t)=\Sv(t-1)-\Sv(t)=\ve_{\vo}^{\T}\Qm^{\,t-1}r,\qquad t\ge1,
+\end{equation}
+and the mean first-passage time is
+\begin{equation}\label{s2_model:eq-T}
+  \MF=\E_{\vo}[\FPT]=\sum_{t\ge0}\Sv(t)=\ve_{\vo}^{\T}(I-\Qm)^{-1}\one .
+\end{equation}
+We write $\MF_{\vo\to\va}$ when the pair matters. For a target set (used only for the exit geometry of
+Section~\ref{s2_model:ssec-geom}) the rows and columns of all target sites are removed, and everything below holds
+unchanged.
+
+\begin{definition}[Mode]\label{s2_model:def-mode}
+The mode, or most probable first-passage time, is the smallest maximiser of the exact PMF,
+\[
+  \tmode=\min\Bigl\{t\ge1:\ \pmf(t)=\max_{\tau\ge1}\pmf(\tau)\Bigr\},
+\]
+and $\ratio=\tmode/\MF$ is the mode-to-mean ratio.
+\end{definition}
+
+The definition involves no smoothing, fit or acceptance window, and it does not assume that $\pmf$ has a single
+local maximum; when that holds is the subject of Section~\ref{s6b_rigorous:ssec-unimodal}.
+
+\emph{Continuous time.} The companion walk performs the jumps of $\Pm_1$ at the events of a Poisson process of rate
+$q$; its generator is $\Pm-I$ and its first-passage density is $\gd_q(t)=\ve_{\vo}^{\T}\eu^{-(I-\Qm)t}r$. We write
+$\gd=\gd_1$ for the unit-rate density and $\tmodec$ for its smallest maximiser on $[0,\infty)$.
+
+\subsection{Activity, the two time conventions and the spectral form}\label{s2_model:ssec-structure}
+
+Let $\Qm_1$ and $r_1$ be $\Qm$ and $r$ at $q=1$. For each distinct eigenvalue $\nu$ of the symmetric matrix
+$I-\Qm_1$, which lies in $(0,2)$, let $\Pi_\nu$ be the orthogonal projection onto the eigenspace and
+$b_\nu=\ve_{\vo}^{\T}\Pi_\nu r_1$; list the eigenvalues with $b_\nu\neq0$ as $\nu_0<\nu_1<\dots<\nu_J$ and write
+$b_j=b_{\nu_j}$. Let $\Ftil_q(z)=\sum_{t\ge1}\pmf(t)z^{t}$ and $\Fhat(s)=\int_0^\infty\eu^{-st}\gd(t)\,\dif t$.
+
+\begin{proposition}[Exact structure]\label{s2_model:prop-structure}
+For every $N\ge2$, $\dd\ge1$, $q\in(0,1]$ and $\vo\neq\va$:
+\begin{enumerate}
+\item[(a)] $I-\Pm=q\,(I-\Pm_1)$, $I-\Qm=q\,(I-\Qm_1)$ and $r=q\,r_1$. Hence
+\begin{equation}\label{s2_model:eq-qscaling}
+  q\,\MF\ \text{does not depend on } q .
+\end{equation}
+\item[(b)] For every $z\neq0$ at which $I-z\Qm$ is invertible, in particular for $0<|z|\le1$,
+\begin{equation}\label{s2_model:eq-transform}
+  \Ftil_q(z)=\Fhat\Bigl(\frac{1-z}{qz}\Bigr).
+\end{equation}
+\item[(c)] The PMF and the unit-rate density are finite sums with the same rates and residues,
+\begin{equation}\label{s2_model:eq-spectral}
+  \gd(t)=\sum_{j=0}^{J}b_j\,\eu^{-\nu_j t},\qquad
+  \pmf(t)=\sum_{j=0}^{J}q\,b_j\,(1-q\nu_j)^{t-1},\qquad
+  \Fhat(s)=\sum_{j=0}^{J}\frac{b_j}{s+\nu_j},
+\end{equation}
+with $\sum_j b_j/\nu_j=1$, $\sum_j b_j/\nu_j^{2}=q\MF$ and $\Sv(t)=\sum_j(b_j/\nu_j)(1-q\nu_j)^{t}$.
+\item[(d)] $\gd_q(t)=q\,\gd(qt)$: the continuous-time walk at activity $q$ has mode exactly $\tmodec/q$ and mean
+exactly $\MF$. If $q\le\tfrac12$, all $1-q\nu_j>0$ and no term of $\pmf$ alternates in sign; in general
+$1-q\nu_j>1-2q$.
+\end{enumerate}
+\end{proposition}
+
+The discrete-time and continuous-time problems are therefore one problem: inverting the generating function and
+inverting the Laplace transform recover the same rates $\nu_j$ and residues $b_j$. The products $q\MF$ and $q$ times
+the continuous-time mode at activity $q$ do not depend on $q$; the discrete mode $\tmode$ is not exactly
+$\tmodec/q$, but at $q=0.8$ the two differ by at most $3.05$ steps in the 54 cases compared
+(Supplementary Section~\ref{sup_methods:ssec-parity}).
+% src: data/msc_modes/fit_results.json (discrete_vs_continuous_offsets, max_abs_offset_steps)
+
+\subsection{Renewal ratio and the two spectra}\label{s2_model:ssec-spectra}
+
+Two spectra enter the problem. The first belongs to the reflecting lattice \emph{without} a target: the unit-rate
+propagator has the Laplace transform \citep{Giuggioli2020}
+\begin{equation}\label{s2_model:eq-prop}
+  \Phat(\vx,s\mid\vy)=\bigl[(sI+I-\Pm_1)^{-1}\bigr]_{\vx\vy}=\sum_{\vk}\frac{\phi_{\vk}(\vx)\,\phi_{\vk}(\vy)}{s+\mu_{\vk}},
+  \qquad \phi_{\vk}(\vx)=\prod_{i=1}^{\dd}\psi_{k_i}(x_i),
+\end{equation}
+with $\psi_{k}(m)=\sqrt{\alk{k}/N}\,\cos\thk{k}{m}$, $\vk\in\{0,\dots,N-1\}^{\dd}$, and the \emph{reflecting rates}
+$\mu_{\vk}=\frac{2}{\dd}\sum_i\sk{k_i}^{2}$ (Lemma~\ref{appA_proofs:lem-spectrum}); here $\thk{k}{m}=\pi k(2m+1)/(2N)$,
+$\sk{k}=\sin(\pi k/2N)$, $\alk{0}=1$ and $\alk{k}=2$ for $k\ge1$. The smallest non-zero rate is
+\begin{equation}\label{s2_model:eq-mu1}
+  \muone=\frac{2}{\dd}\,\sin^{2}\frac{\pi}{2N}=\frac{\pi^{2}}{2\dd N^{2}}\bigl[1+\Order(N^{-2})\bigr].
+\end{equation}
+The second spectrum, $\{\nu_j\}$, belongs to the walk \emph{with} the target; for $\dd\ge2$ it is not known in closed
+form. The two are linked by the renewal ratio \citep{MontrollWeiss1965,Redner2001}
+\begin{equation}\label{s2_model:eq-renewal}
+  \Fhat(s)=\frac{\Phat(\va,s\mid\vo)}{\Phat(\va,s\mid\va)} ,
+\end{equation}
+and the same ratio of discrete-time propagators equals $\Ftil_q(z)$.
+
+\begin{proposition}[Interlacing of the two spectra]\label{s2_model:prop-interlacing}
+Fix the target $\va$. Let $0=\mu_{(0)}<\mu_{(1)}<\dots<\mu_{(m)}$ be the distinct reflecting rates whose eigenspaces
+have non-zero weight $w_i=\sum_{\vk:\,\mu_{\vk}=\mu_{(i)}}\phi_{\vk}(\va)^{2}$ at the target.
+\begin{enumerate}
+\item[(i)] $\Phat(\va,s\mid\va)$ has exactly $m$ zeros in the complex plane. They are real and simple,
+$s=-\nu_{(i)}$, and
+\begin{equation}\label{s2_model:eq-interlace}
+  0<\nu_{(0)}<\mu_{(1)}<\nu_{(1)}<\mu_{(2)}<\dots<\nu_{(m-1)}<\mu_{(m)} .
+\end{equation}
+\item[(ii)] The $\nu_{(i)}$ are exactly the eigenvalues $\nu$ of $I-\Qm_1$ with $\Pi_\nu r_1\neq0$, and every pole of
+$\Fhat$ is a zero of $\Phat(\va,s\mid\va)$.
+\item[(iii)] If the sites other than $\va$ form a connected set (always for $\dd\ge2$), then for every start
+$\nu_0=\nu_{(0)}$ is the smallest eigenvalue of $I-\Qm_1$, it is simple, $b_0>0$, and
+\begin{equation}\label{s2_model:eq-qsd}
+  \frac{1}{\nu_{0}}=\frac{\sum_{\vx\neq\va}v(\vx)\,q\MF_{\vx\to\va}}{\sum_{\vx\neq\va}v(\vx)},
+\end{equation}
+where $v>0$ is the corresponding eigenvector (the quasi-stationary distribution).
+\end{enumerate}
+\end{proposition}
+
+The interlacing of relaxation and first-passage time scales holds for reversible Markov dynamics in general
+\citep{HartichGodec2018,HartichGodec2019}, and \eqref{s2_model:eq-qsd} expresses the classical fact that from the
+quasi-stationary distribution the first-passage time is exponential with rate $\nu_0$ \citep{AldousFill};
+Proposition~\ref{s2_model:prop-interlacing} collects these facts for the present walk.
+
+Two consequences are used throughout. First, the long-time decay of the survival probability is set by $\nu_0<\mu_{(1)}$
+(for a corner target $\mu_{(1)}=\muone$), not by the reflecting gap, and \eqref{s2_model:eq-qsd} makes $1/\nu_0$ an average of mean first-passage times: for
+corner-to-corner transport $\nu_0\,q\MF$ falls from $1.164$ ($N=5$) to $1.021$ ($N=16\,777\,216$) in two dimensions
+and from $1.076$ ($N=5$) to $1.0001$ ($N=4096$) in three, in agreement with the exponential approximation of hitting
+times in reversible chains \citep{AldousBrown1992,AldousFill}.
+% src: data/msc_modes/fit_results.json (pole_structure: nu0_tau)
+Second, the separation of the two spectra is measured by
+\[
+  X=\muone\,q\MF ,
+\]
+the mean first-passage time in units of the relaxation time of the box: $X=22.706$ for $\dd=2$, $N=35$ and
+$X=277.739$ for $\dd=3$, $N=40$.
+% src: data/msc_modes/summary_tables.md (Tables M2, M3); data/article/s2_model_checks.json (two_spectra: X)
+For $\dd\ge2$ the target is a weak sink on the diffusive time scale ($X\gg1$), and the closed form of
+Section~\ref{s6_mechanism:sec} expresses $\tmode/\MF$ through $X$ and $\dd$ alone.
+
+\subsection{Mean first-passage time and effective resistance}\label{s2_model:ssec-pinv}
+
+\begin{proposition}[Mean hitting time and pseudo-inverse]\label{s2_model:prop-pinv}
+Let $\Pm$ be a symmetric, irreducible stochastic matrix on $\nn$ states, $\Lm=I-\Pm$ and $\Lp$ its Moore--Penrose
+pseudo-inverse. For a target state $\va$, $\E_{\vx}[\FPT]$ is the unique function $h$ with $h(\va)=0$ and
+$(\Lm h)(\vx)=1$ for $\vx\neq\va$, and
+\begin{equation}\label{s2_model:eq-pinv}
+  \MF_{\vx\to\va}=\nn\,\bigl(\Lp_{\va\va}-\Lp_{\vx\va}\bigr).
+\end{equation}
+\end{proposition}
+
+This is the standard fundamental-matrix, or pseudo-Green-function, expression for hitting times
+\citep{AldousFill,Condamin2005,Condamin2007PRE}. Since $I-\Pm=\frac{q}{2\dd}\,\mathcal L$, where $\mathcal L$ is the
+Laplacian of the grid graph with unit conductance on every nearest-neighbour bond, $\Glap=\mathcal L^{+}$ gives
+\begin{equation}\label{s2_model:eq-resistance}
+  \MF_{\vx\to\va}=\frac{2\dd\,\nn}{q}\,\bigl(\Glap_{\va\va}-\Glap_{\vx\va}\bigr),\qquad
+  \MF_{\vx\to\va}+\MF_{\va\to\vx}=\frac{2\dd\,\nn}{q}\,\Reff(\vx,\va),
+\end{equation}
+where $\Reff$ is the effective resistance between the two nodes \citep{KleinRandic1993}; the second relation is the
+commute-time identity \citep{Chandra1989,Tetali1991,LevinPeresWilmer2009}. The same argument applies on any connected
+set of sites and is used for lattices with blocked sites in Section~\ref{s7_defects:sec}. Equivalently,
+$\MF=\Ftil'(1)=\lim_{z\to1^{-}}(1-\Ftil(z))/(1-z)$; the pole of the propagator at $z=1$ (the zero mode) cancels in the
+renewal ratio (Supplementary Section~\ref{sup_model:sec}).
+
+\subsection{Geometries}\label{s2_model:ssec-geom}
+
+Four placements of start and target are used. \CC{} (corner to corner): $\vo=(0,\dots,0)$ and
+$\va=(N-1,\dots,N-1)$; this is the default, and for $\dd=1$ it is the passage from the reflecting end of a chain to
+its other end. \CtM{}: corner start, target at the centre $\bigl(\tfrac{N-1}{2},\dots,\tfrac{N-1}{2}\bigr)$. \MtC{}:
+centre start, corner target. \EXIT{}: centre start, with every site of the boundary layer absorbing. The last three
+require odd $N$. Unless stated otherwise, discrete-time values are for $q=0.8$ and continuous-time values for unit
+rate; times are in steps.

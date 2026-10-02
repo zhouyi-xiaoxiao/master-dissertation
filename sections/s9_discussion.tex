@@ -1,0 +1,193 @@
+% s9_discussion.tex -- Discussion and conclusions.
+% This section introduces NO new numbers.  Every number below is quoted from an earlier section and carries the
+% same "% src:" comment (paths relative to the root of the repository).
+\section{Discussion and conclusions}\label{s9_discussion:sec}
+
+\subsection{What is established, and with what status}\label{s9_discussion:ssec-status}
+
+The results of this article do not all have the same standing; Table~\ref{s9_discussion:tab-status} sorts them.
+``Exact numerics'' are computations that are exact in the sense of Section~\ref{s3_methods:sec} (up to double-precision
+round-off for time stepping, to a measured accuracy for Laplace inversion) and cross-checked by separately written routes and
+implementations; they hold at the sizes run and are not theorems. The proofs of
+Section~\ref{s6b_rigorous:sec} were checked within this project (Section~\ref{s6b_rigorous:ssec-status}), not by external
+referees.
+
+{\small
+\begin{longtable}{@{}p{2.4cm}p{10.6cm}p{2.1cm}@{}}
+\caption{Status of the main statements. Discrete-time values are for $q=0.8$; defect results are for $\dd=2$
+with a corner start and the opposite corner as target.}
+\label{s9_discussion:tab-status}\\
+\toprule
+Status & Statements & Where \tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Status & Statements & Where \tabularnewline
+\midrule
+\endhead
+Proved &
+Exact structure, interlacing, pseudo-inverse formula; cosine sum in any dimension; single sums for $\dd=2$ and every
+$N\ge2$; $q\TN=2N^{2}\Reff_N$; double sum for $\dd=3$; the large-$N$ expansion; certificate of the global mode; the limit
+$\tmode/\MF\to2\xi^{*}$ on the chain in continuous time and for $q\le\tfrac12$; factorisation of the renewal ratio;
+unimodality of the three point-target placements in continuous time and for $q\le1/(1+\cos\frac\pi N)$; signs of the
+residues (their non-alternation for $\dd\ge2$, $N\ge3$ provisional, \lateproof); bounds on the slowest pole; failure of unimodality near $q=1$ on the chain; resistance identity and dipole
+response with blocked sites.
+& \raggedright Secs.~\ref{s2_model:sec}--\ref{s7_defects:sec} \tabularnewline
+\addlinespace
+\raggedright Proved with computer assistance &
+Unimodality for $q\le\frac45$ from corner to corner (for the centre placements when $\dd\ge2$; a threshold attained on
+the chain with $N=4$), and on finite ranges beyond: up to $q=1$ for $\dd=3$ ($N\le30$), $\dd=4$ ($N\le8$) and $\dd=5$
+($N\le5$), and $q\le\frac{499}{500}$ for $\dd=2$ ($N\le64$). In one
+dimension $\tmode/\MF\to0.33328426549\ldots$ for every $q$, with windows of width about one step for $q\le\frac45$. For
+corner-to-corner transport in $\dd=2,3$: the scaled error of the closed form \eqref{s6_mechanism:eq-L1-simple} bounded
+for every $N\ge12$ ($\dd=2$) and $N\ge10$ ($\dd=3$), and the leading laws with explicit remainders, in continuous time
+and, in discrete time, for $q\le0.99$ once $N\ge N_0$ and, provisionally (\lateproof), for every $q<1$ once
+$N\ge\max(N_0,N_1(q))$; exact modes on finite ranges, the closed form within $0.971\%$ ($\dd=2$) and $0.275\%$ ($\dd=3$)
+there for $q\in\{\frac45,\frac12\}$ and $N\ge10$, and within $0.3\%$ in three dimensions for $q\in\{\frac45,\frac12\}$
+and every $N\ge10$. Means: a remainder for every $N$ ($\dd=2$); $\Kthree$,
+$\Kthreep$ and the next constant ($\dd=3$).
+% src: data/msc_rigorous_1d/03_constants.json; data/msc_rigorous_certified/closedform_summary_c128.json; data/article/s6b_rigorous_checks.json
+& \raggedright Secs.~\ref{s4_mfpt:sec}, \ref{s6b_rigorous:sec} \tabularnewline
+\addlinespace
+\raggedright Exact numerics at the stated sizes &
+Distributions and modes in discrete time up to $N=1000$, $401$, $100$ ($\dd=1,2,3$), each mode a certified global
+maximiser (in exact arithmetic or with an a-priori bound on round-off), and in continuous time up to $N=1.7\times10^{7}$ ($\dd=2$) and $N=4096$ ($\dd=3$); for $\dd=2$, $\tmode/\MF$
+falling from $0.27$ ($N=5$) to $0.056$ ($N=1.7\times10^{7}$), for $\dd=3$ from $0.153$ ($N=5$) to $0.0118$ ($N=100$) and
+$4.1\times10^{-4}$ ($N=4096$, continuous time); the
+expression of $\Kthreep$ through $\xiH$ and $\varkappa$; all defect statistics, up to placement sampling error: under
+uniform placement $\tmode/\MF$ within $3.3\%$ of its clean value $0.1768$ up to $p=0.14$, and at $p=0.2$ the mean of
+the per-placement ratios $8.9\%$ above it (the ratio of ensemble means $4.7\%$); forty blocked sites near the target give
+$0.075$, near the start $0.233$; the coefficient of variation is nearly a function of $\tmode/\MF$ (an empirical
+regularity).
+% src: data/msc_modes/discrete_modes.jsonl; data/msc_modes/laplace_modes.jsonl; data/article/s3_methods_certificate.json; data/msc_modes/tables.md (T2, T3); data/msc_modes/summary_tables.md (M2); data/article/s6b_rigorous_checks.json (d3_constants); data/article/s7_defects_density_pooled.json (statements.uniform_ratio_excess_pct_by_p, uniform_rom_excess_pct_by_p); data/msc_defects/summary_structured_local.csv; data/article/s8_defects_placement_checks.json (shape_family.sample_A)
+& \raggedright Secs.~\ref{s3_methods:sec}--\ref{s7_defects:sec} \tabularnewline
+\addlinespace
+\raggedright Formal asymptotics &
+Closed-form approximation \eqref{s6_mechanism:eq-L1} for placements other than corner to corner (corner to centre:
+within $0.964\%$ for $\dd=2$ and $0.206\%$ for $\dd=3$ at the computed sizes); dilute law \eqref{s7_defects_density:eq-dilute};
+first-order susceptibility estimate.
+% src: data/article/closed_form_checks.json (2d_C2M, 3d_C2M)
+& \raggedright Secs.~\ref{s6_mechanism:sec}, \ref{s7_defects:sec} \tabularnewline
+\addlinespace
+Heuristic &
+Two-time-scale account of the sub-linear response of the mode to a change of capture time.
+& Sec.~\ref{s7_defects:sec} \tabularnewline
+\addlinespace
+Conjecture &
+Time dilation by $\Thetap(p)$ exact as $N\to\infty$; the closed form within $1\%$ in two dimensions for every $N\ge10$;
+the mode laws at $q=1$; unimodality for $\frac45<q<1$ and every $N$; log-concavity for $\dd\ge2$.
+& \raggedright Secs.~\ref{s6b_rigorous:sec}, \ref{s7_defects:sec} \tabularnewline
+\addlinespace
+Refuted &
+Alternating residues for opposite corners in $\dd\ge2$; unimodality of every point-target law; the closed form in one
+dimension (on the certified ranges with $N\ge10$ at $q=\frac45$ it overestimates the mode by at least $15.77\%$ and at
+most $22.51\%$).
+% src: data/msc_rigorous_certified/closedform_summary_c128.json (d1_q4-5); data/msc_rigorous_1d/39_hand_constants.json
+& Sec.~\ref{s6b_rigorous:sec} \tabularnewline
+\bottomrule
+\end{longtable}}
+
+\subsection{The physical picture}\label{s9_discussion:ssec-picture}
+
+Two times govern the problem. The mean is a capture time: a walker that has spread over the box finds the target at a
+rate fixed by the number of sites times the capture resistance of the target, \eqref{s2_model:eq-resistance}, which gives
+$N^{2}$, $N^{2}\ln N$ and $N^{3}$ for $\dd=1,2,3$. The mode is a relaxation time: the first-passage density peaks when the
+transient of arrival across the box, which decays at a rate $\mu\propto N^{-2}$ in every dimension, has fallen to the level
+of the slow capture decay, and this costs only the logarithmic factor $\ln(AX)$ of \eqref{s6_mechanism:eq-L1}, where
+$X=\mu\,q\MF$ measures how weak a sink the target is. For corner-to-corner transport in two and three dimensions this
+picture is a theorem (Section~\ref{s6b_rigorous:ssec-cf}); in one dimension $X$ stays bounded and the two times are of the
+same order. Hence the dimension dependence of Table~\ref{s5_modes:tab-laws}: $\tmode/\MF$ tends to a constant for $\dd=1$,
+falls slowly for $\dd=2$ and quickly for $\dd=3$, and the separation between mean and mode grows with dimension. For a
+point target in $\dd\ge2$ the law is close to an exponential preceded by a short dead time, and the mode marks the end of
+that dead time: it is not a typical time. The appropriate typical value is the median, about $0.7\,\MF$, and statements
+about waiting times must be made with the survival function $\Sv(t)$, not with $\tmode/\MF$.
+% src: data/msc_modes/medians.json
+
+The same two times organise the defect results. Uniformly placed blocked sites slow capture and relaxation by nearly the
+same factor $\Thetap(p)$, so that $\tmode/\MF$ stays near its clean value at low density; the rise at $p=0.2$ shrinks with $N$
+but is not shown to vanish. Blocked sites around the target raise the capture resistance, hence the mean, far more than
+the mode; blocked sites around the start or between start and target delay the transit, hence the mode, and leave the
+mean almost unchanged.
+
+\subsection{Relation to the literature}\label{s9_discussion:ssec-literature}
+
+By the commute-time identity the two-dimensional results on the mean are statements about the resistor grid, and in that
+form they were already published \citep{CondaminBenichou2006,Wu2004,Giuggioli2020,EssamWu2009,IzmailianHuang2010,TanTan2020};
+we add a self-contained proof in the random-walk setting for both parities of $N$ and record the overflow-free form
+\eqref{s4_mfpt:eq-single-S}, an elementary rearrangement. The shape of the law
+agrees with the picture of geometry-controlled kinetics in confined domains
+\citep{Benichou2010,Meyer2011,BenichouVoituriez2014,Mattos2012,GodecMetzler2016,Grebenkov2018} and with the exponential
+approximation of hitting times for reversible chains \citep{AldousBrown1992}; we add exact lattice distributions and modes
+and their explicit dependence on $N$ and $\dd$; the most probable time of direct trajectories and the relation of the
+median to the mean are given by \citet{GodecMetzler2016} and \citet{Grebenkov2018}. Apart from their classical
+ingredients (the interlacing of relaxation and first-passage spectra \citep{HartichGodec2018,HartichGodec2019}, the
+mixture and exponential laws from the uniform and the quasi-stationary start \citep{AldousFill}, unimodality on the chain
+in continuous time \citep{Keilson1971}), we have not found in print the theorems of Section~\ref{s6b_rigorous:sec} on
+the mode of a lattice first-passage time, the explicit closed-form approximation \eqref{s6_mechanism:eq-L1}, whose ingredients are the
+lattice counterpart of known small-target asymptotics \citep{WardKeller1993,IsaacsonNewby2013}, or the expressions
+\eqref{s4_mfpt:eq-coeffs} through the lemniscate constant, which specialise the general expressions of
+\citet{IzmailianHuang2010}. Our search was targeted, not exhaustive, and we claim no priority. The dilute law for blocked
+sites is in the literature \citep{WatsonLeath1974,Nieuwenhuizen1986,Ernst1987}, and our measured conductivities agree with
+its published second-order form. That the placement of a defect decides whether the mean or only the mode and the tail
+respond was shown by \citet{SarvaharmanGiuggioli2023} for a single barrier on a chain (their Eq.~(12) is our
+Proposition~\ref{s8_defects_placement:prop-1d-barriers} for one barrier); Section~\ref{s7_defects:sec} adds the exact
+two-dimensional ensembles of blocked sites.
+
+\subsection{Limitations}\label{s9_discussion:ssec-limitations}
+
+\begin{enumerate}
+\item Unimodality is proved for the three point-target placements studied here in continuous time, and in discrete
+time for $q\le\frac45$ from corner to corner (for the centre placements when $\dd\ge2$), and on finite ranges beyond;
+two computed runs at $q=0.9$ lie outside the proved ranges of unimodality, and the 16 computed corner-to-corner runs at
+$q=0.3$ and $0.9$ lie outside the certified ranges of the mode and rest on the a-priori round-off bound of
+Section~\ref{s3_methods:sec}. The
+continuous-time modes at sizes beyond time stepping are global maximisers by Theorem~\ref{s6b_rigorous:thm-unimodal}, but
+their location rests on numerical Laplace inversion, to the accuracy of Table~\ref{s3_methods:tab-validation}, not on a
+certificate.
+\item The closed form is proved only for corner-to-corner transport in $\dd=2,3$, with a window a few units wide in
+$X\muone(\tmodec-q\tcf)$. In two dimensions its $1\%$ accuracy is proved only on finite ranges and for very large $N$, and
+the asymptote $N^{2}\ln\ln N$, although proved, is not reached by the data.
+\item The computer-assisted proofs rest on their trusted bases (Python integers; Arb ball arithmetic through
+python-flint together with the transcription of the formulas into the scripts; beyond the Python-integer ranges, a C
+program run twice, which is the only witness for 2242 of its 3824 certificates). No program was verified in a proof
+assistant, the certificate of Theorem~\ref{s6b_rigorous:thm-disc}(c) has not been re-run by separately written code, and
+all proofs were checked within this project, not by external referees; the statements marked \lateproof{} are
+provisional until examined by a reader outside the project.
+% src: proofs/R0_rigorous_results/R0_rigorous_results.tex (Section 9: trusted bases; separately written re-checks)
+\item The expression of $\Kthreep$ through $\xiH$ and $\varkappa$ is identified numerically and is unproved.
+\item Only four placements were studied (corner to corner, corner to centre, centre to corner, and exit through an
+absorbing boundary layer); \eqref{s6_mechanism:eq-L1} does not apply to the third.
+\item Inert defects were studied only for $\dd=2$, a corner target and $q=0.8$, up to $N=280$ for means and $N=200$ for
+modes; barriers on the chain only at $N=100$. A corner target has two neighbours, which makes the mean unusually
+sensitive to its surroundings. Placements are conditioned on start and target being connected; for $p\ge0.3$ at $N=35$
+the results describe a selected, near-critical ensemble, not bulk properties.
+% src: data/msc_defects_verify/v07_summary.csv, v07b_summary.csv; data/msc_defects/summary_sweep_N35.csv (acceptance)
+\item Time dilation by $\Thetap(p)$ is accurate at $p=0.1$ and a $1$--$3\%$ approximation at $p=0.2$ at the sizes computed;
+its exactness as $N\to\infty$ is a conjecture. The model is a lattice walk with a single walker.
+\end{enumerate}
+
+\subsection{Open problems}\label{s9_discussion:ssec-open}
+
+(a) Unimodality for $\frac45<q<1$ and every $N$, and log-concavity of the law for $\dd\ge2$. (b) Sharp constants for the
+closed form: $N$-dependent window constants sharp enough to close the gap $302\le N<1\,761\,450$ of
+Conjecture~\ref{s6b_rigorous:conj-cf}(a), the value of the limit of $X\muone(\tmodec-q\tcf)$, and the discrete walk close
+to $q=1$. (c) The mode for a general start and target, including placements for
+which the slowest target-visible mode does not have a positive amplitude $A$. (d) A proof of the expression of $\Kthreep$
+through $\xiH$ and $\varkappa$, and whether the series \eqref{s4_mfpt:eq-expansion} diverges. (e) Defects in three
+dimensions and around interior targets, and the large-$N$ behaviour under uniform placement
+(Conjecture~\ref{s7_defects_density:conj-homog}).
+
+\subsection{Conclusions}\label{s9_discussion:ssec-conclusions}
+
+For a lazy walk in a reflecting box with one absorbing site the mean first-passage time is given by exact finite sums
+and is equivalent, in two dimensions, to a resistance that was already in the literature. The most probable
+first-passage time obeys a different law: it follows the relaxation time of the box, not the capture time, and it
+separates from the mean more strongly as the dimension increases. For corner-to-corner transport this is proved, partly
+with computer assistance: the law is unimodal in continuous time and, in discrete time, for $q\le\frac45$, while
+unimodality fails near $q=1$ on the chain and, at $q=1$, at some sizes in two dimensions; in two and three dimensions
+its mode follows a parameter-free closed form with a bounded scaled error, and the leading laws $N^{2}\ln\ln N$ and
+$N^{2}\ln N$ hold with explicit remainders, in continuous time and, in discrete time, for $q\le0.99$ and, provisionally,
+for every $q<1$ once $N$ is large enough; in one dimension $\tmode/\MF$ tends to $0.33328$ for every activity.
+% src: data/msc_rigorous_1d/03_constants.json (c_mid_80_digits)
+In the square-lattice setting studied here (corner target, mainly $N=35$), the direction
+in which inert defects move the ratio of the two times is set by where they sit, not by how many there are.

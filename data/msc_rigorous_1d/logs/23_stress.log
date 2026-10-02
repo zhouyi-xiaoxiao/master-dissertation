@@ -1,0 +1,7 @@
+(A) {'cases': 450, 'fine_q_scan_cases_N_3_to_12': 4000, 'violations': [], 'cases_with_several_near_maximisers': 6, 'min of t*-(tau-E) (must be > 0)': 0.0024885550080337446, 'max of t*-(tau+1+E) (must be < 0)': -0.003054853837388917}
+(B) {'cases': 60, 'violations': []}
+(C) {'cases': 25, 'violations': [], 'L4_dev_at_N6000': [-1.5308901517831237]}
+(D) {'cases': 5, 'violations': [], 'rows': [{'N': 601, 'modes': [119982], 'minus_tau1': [0.5322518333996413], 'ok': True}, {'N': 777, 'modes': [200696], 'minus_tau1': [0.9454512091469951], 'ok': True}, {'N': 1000, 'modes': [332619], 'minus_tau1': [1.528084474208299], 'ok': True}, {'N': 1500, 'modes': [748891], 'minus_tau1': [1.0926400350872427], 'ok': True}, {'N': 2200, 'modes': [1611631], 'minus_tau1': [0.9000020639505237], 'ok': True}]}
+(E) {'cases': 12, 'violations': [], 'all_hyp': True}
+(F) {'cases': 285, 'violations': [], 'not_unimodal(float)': [], 'min of t*-(tau-E) (must be > 0)': 0.0019733934518337366, 'max of t*-(tau+1+E) (must be < 0)': -0.0035281665735379386}
+ALL OK: True

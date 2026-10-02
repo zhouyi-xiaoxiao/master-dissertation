@@ -1,0 +1,105 @@
+19:29:10 20.43 38.00 58.47 START msc_rigorous_1d 01_sanity_exact
+19:29:13 END msc_rigorous_1d 01_sanity_exact exit=0 wall=3s
+19:29:13 19.83 37.58 58.20 START msc_rigorous_1d 09_sec3_sec4_sanity
+19:29:29 END msc_rigorous_1d 09_sec3_sec4_sanity exit=0 wall=16s
+19:29:29 17.52 36.20 57.35 START msc_rigorous_1d 11_expansion_sanity
+19:29:31 END msc_rigorous_1d 11_expansion_sanity exit=0 wall=2s
+19:29:31 17.52 36.20 57.35 START msc_rigorous_1d 20_validate_theorems
+19:29:59 END msc_rigorous_1d 20_validate_theorems exit=0 wall=28s
+19:29:59 15.01 33.82 55.75 START msc_rigorous_1d 21_q1_sanity
+19:30:01 END msc_rigorous_1d 21_q1_sanity exit=0 wall=2s
+19:30:01 15.01 33.82 55.75 START msc_rigorous_1d 22_crosscheck_t5
+19:30:02 END msc_rigorous_1d 22_crosscheck_t5 exit=0 wall=1s
+19:30:02 15.01 33.51 55.51 START msc_rigorous_1d 23_stress
+19:30:41 END msc_rigorous_1d 23_stress exit=0 wall=39s
+19:30:41 19.98 32.48 54.24 START msc_rigorous_1d 27_start_sanity
+19:30:48 END msc_rigorous_1d 27_start_sanity exit=0 wall=7s
+19:30:48 20.81 32.25 53.90 START msc_rigorous_1d 29_start_stress
+19:31:33 END msc_rigorous_1d 29_start_stress exit=0 wall=45s
+19:31:33 34.95 34.78 53.74 START msc_rigorous_1d 30_tp2_pattern
+19:32:16 END msc_rigorous_1d 30_tp2_pattern exit=0 wall=43s
+19:32:16 55.53 39.72 54.65 START msc_rigorous_1d 33_tp2_sanity
+19:32:39 END msc_rigorous_1d 33_tp2_sanity exit=0 wall=23s
+19:32:39 59.11 41.98 55.05 START msc_rigorous_1d 34_tp2_second_impl
+19:32:46 END msc_rigorous_1d 34_tp2_second_impl exit=0 wall=7s
+19:32:46 56.62 41.75 54.89 START msc_rigorous_1d 36_start_failure
+19:35:04 END msc_rigorous_1d 36_start_failure exit=0 wall=138s
+19:35:04 88.65 53.40 57.11 START msc_rigorous_1d 38_qN_strict
+19:35:09 END msc_rigorous_1d 38_qN_strict exit=0 wall=5s
+19:35:09 86.03 53.44 57.11 START msc_rigorous_1d 39_hand_constants
+19:35:10 END msc_rigorous_1d 39_hand_constants exit=0 wall=1s
+19:35:10 86.03 53.44 57.11 START msc_rigorous_1d 40_examples
+19:35:22 END msc_rigorous_1d 40_examples exit=0 wall=12s
+19:35:22 83.58 54.52 57.43 START msc_rigorous_spectral run_all
+19:36:30 END msc_rigorous_spectral run_all exit=0 wall=68s
+19:36:30 94.26 63.59 60.63 START msc_rigorous_spectral a01_recheck_separate_code
+19:36:36 END msc_rigorous_spectral a01_recheck_separate_code exit=0 wall=6s
+19:36:36 91.44 63.52 60.62 START msc_rigorous_asymptotics 02_check_structure
+19:36:37 END msc_rigorous_asymptotics 02_check_structure exit=0 wall=1s
+19:36:37 91.44 63.52 60.62 START msc_rigorous_asymptotics 12_identity_check
+19:36:40 END msc_rigorous_asymptotics 12_identity_check exit=0 wall=3s
+19:36:40 91.16 63.92 60.78 START msc_rigorous_asymptotics 40_check_thmA
+19:36:44 END msc_rigorous_asymptotics 40_check_thmA exit=0 wall=4s
+19:36:44 92.59 64.67 61.07 START msc_rigorous_asymptotics 41_windows_exact
+19:36:46 END msc_rigorous_asymptotics 41_windows_exact exit=0 wall=2s
+19:36:46 92.59 64.67 61.07 START msc_rigorous_asymptotics 51_validate_enclosures
+19:36:47 END msc_rigorous_asymptotics 51_validate_enclosures exit=0 wall=1s
+19:36:47 94.54 65.54 61.39 START msc_rigorous_asymptotics 53_check_decomposition
+19:36:48 END msc_rigorous_asymptotics 53_check_decomposition exit=0 wall=1s
+19:36:48 94.54 65.54 61.39 START msc_rigorous_asymptotics 54_bruteforce_theorem51
+19:36:51 END msc_rigorous_asymptotics 54_bruteforce_theorem51 exit=0 wall=3s
+19:36:51 94.54 65.54 61.39 START msc_rigorous_asymptotics 60_check_asymptotics
+19:36:52 END msc_rigorous_asymptotics 60_check_asymptotics exit=0 wall=1s
+19:36:52 93.14 65.73 61.48 START msc_rigorous_asymptotics 70_check_discrete
+19:36:56 END msc_rigorous_asymptotics 70_check_discrete exit=0 wall=4s
+19:36:56 93.14 65.73 61.48 START msc_rigorous_asymptotics 71_check_discrete_unimodal
+19:36:56 END msc_rigorous_asymptotics 71_check_discrete_unimodal exit=0 wall=0s
+19:36:56 93.14 65.73 61.48 START msc_rigorous_asymptotics 73_validate_discrete
+19:37:00 END msc_rigorous_asymptotics 73_validate_discrete exit=0 wall=4s
+19:37:00 90.64 65.67 61.49 START msc_rigorous_asymptotics 74_observe_q_large
+19:37:01 END msc_rigorous_asymptotics 74_observe_q_large exit=0 wall=1s
+19:37:01 90.64 65.67 61.49 START msc_rigorous_asymptotics 75_check_q_large
+19:37:06 END msc_rigorous_asymptotics 75_check_q_large exit=0 wall=5s
+19:37:06 88.83 65.71 61.53 START msc_rigorous_asymptotics 77_validate_q_large
+19:37:09 END msc_rigorous_asymptotics 77_validate_q_large exit=0 wall=3s
+19:37:09 86.44 65.59 61.51 START msc_rigorous_asymptotics 79_validate_allq
+19:40:12 END msc_rigorous_asymptotics 79_validate_allq exit=0 wall=183s
+19:40:12 65.02 64.97 61.94 START msc_rigorous_asymptotics 81_check_text_constants
+19:40:12 END msc_rigorous_asymptotics 81_check_text_constants exit=0 wall=0s
+19:40:12 65.02 64.97 61.94 START msc_rigorous_asymptotics 82_q1_parity_example
+19:40:12 END msc_rigorous_asymptotics 82_q1_parity_example exit=0 wall=0s
+19:40:12 63.58 64.67 61.85 START msc_rigorous_unimodality verify_thr1d
+19:41:32 END msc_rigorous_unimodality verify_thr1d exit=0 wall=80s
+19:41:32 42.25 56.71 59.01 START msc_rigorous_unimodality verify_lemmas
+19:46:22 END msc_rigorous_unimodality verify_lemmas exit=0 wall=290s
+19:46:22 187.03 133.16 92.95 START msc_rigorous_unimodality verify_lastexit
+19:48:04 END msc_rigorous_unimodality verify_lastexit exit=0 wall=102s
+19:48:04 222.68 160.73 108.35 START msc_rigorous_unimodality verify_lc1d
+19:48:57 END msc_rigorous_unimodality verify_lc1d exit=0 wall=53s
+19:48:57 242.22 176.41 117.45 START msc_rigorous_unimodality verify_family
+19:49:14 END msc_rigorous_unimodality verify_family exit=0 wall=17s
+19:49:14 246.77 180.69 120.00 START msc_rigorous_unimodality summarize_lc1d
+19:49:15 END msc_rigorous_unimodality summarize_lc1d exit=0 wall=1s
+19:49:15 246.77 180.69 120.00 START msc_rigorous_unimodality recheck_headline
+19:49:15 END msc_rigorous_unimodality recheck_headline exit=0 wall=0s
+19:49:15 246.77 180.69 120.00 START msc_rigorous_unimodality scan_pairs1d
+19:49:17 END msc_rigorous_unimodality scan_pairs1d exit=0 wall=2s
+19:49:17 246.77 180.69 120.00 START msc_rigorous_unimodality table_mode_bounds_small
+19:49:19 END msc_rigorous_unimodality table_mode_bounds_small exit=0 wall=2s
+19:49:19 246.79 181.79 120.75 START msc_rigorous_unimodality verify_certificate_code
+19:49:23 END msc_rigorous_unimodality verify_certificate_code exit=0 wall=3s
+19:49:23 245.69 182.64 121.41 START msc_rigorous_certified check_lemmas
+19:49:24 END msc_rigorous_certified check_lemmas exit=0 wall=1s
+19:49:24 245.69 182.64 121.41 START msc_rigorous_certified check_packed
+19:49:28 END msc_rigorous_certified check_packed exit=0 wall=4s
+19:49:28 244.35 183.41 122.04 START msc_rigorous_certified check_logconcave
+19:49:58 END msc_rigorous_certified check_logconcave exit=0 wall=30s
+19:49:59 224.55 184.42 124.53 START msc_rigorous_certified check_remarks
+19:49:59 END msc_rigorous_certified check_remarks exit=0 wall=1s
+19:49:59 224.55 184.42 124.53 START msc_rigorous_certified check_ext_lemmas
+19:50:03 END msc_rigorous_certified check_ext_lemmas exit=0 wall=4s
+19:50:03 221.95 184.55 124.92 START msc_rigorous_certified audit
+19:50:04 END msc_rigorous_certified audit exit=0 wall=1s
+19:50:04 221.95 184.55 124.92 START msc_rigorous_certified audit_ext
+19:50:06 END msc_rigorous_certified audit_ext exit=0 wall=2s
+19:50:06 ALL DONE

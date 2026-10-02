@@ -1,0 +1,283 @@
+% s4_mfpt.tex -- Section 4: Exact mean first-passage times (main text).
+% Proofs in Supplementary Sections S3 (appA_proofs), S4 (appB_expansion) and S8 (appD_rigorous); verification in S3.
+% Paths in "% src:" comments are relative to the root of the repository (see README.md).
+% Figures and tables are produced by code/article/s4_mfpt_figures.py and checked by
+% code/article/s4_mfpt_checks.py (-> data/article/s4_mfpt_checks.json).
+% Comparison with the published resistance formulas of Tan and Tan (2020):
+%   code/article/s4_mfpt_literature_check.py -> data/article/s4_mfpt_literature_check.json
+\section{Exact mean first-passage times}\label{s4_mfpt:sec}
+
+By \eqref{s2_model:eq-qscaling} the product $q\MF$ does not depend on $q$, so all results are stated for $q\MF$. The
+proofs are in Supplementary Sections~\ref{appA_proofs:sec} and~\ref{appB_expansion:sec} (Section~\ref{appD_rigorous:sec}
+for the two computer-assisted additions), together with the numerical verification; only their idea is given here.
+The two-dimensional formulas are known in substance; Section~\ref{s4_mfpt:ssec-lit} says which formula is in which
+paper.
+
+\subsection{A cosine sum in any dimension and single sums in two dimensions}\label{s4_mfpt:ssec-cosine}
+
+\begin{theorem}[Cosine sum]\label{s4_mfpt:thm-cosine}
+For the walk of Section~\ref{s2_model:sec} on $\Om=\{0,\dots,N-1\}^{\dd}$, any start $\vo$ and
+target $\va$, and every $q\in(0,1]$,
+\begin{equation}\label{s4_mfpt:eq-cosine}
+  q\,\MF_{\vo\to\va}=\frac{\dd}{2}\sum_{\vk\neq\mathbf 0}
+  \Bigl(\prod_{i=1}^{\dd}\alk{k_i}\Bigr)\,
+  \frac{\prod_{i}\cos^{2}\thk{k_i}{a_i}-\prod_{i}\cos\thk{k_i}{o_i}\cos\thk{k_i}{a_i}}
+       {\sum_{i=1}^{\dd}\sk{k_i}^{2}},
+\end{equation}
+where $\vk$ runs over $\{0,\dots,N-1\}^{\dd}$, $\thk{k}{m}=\pi k(2m+1)/(2N)$, $\sk{k}=\sin(\pi k/2N)$, $\alk{0}=1$ and
+$\alk{k}=2$ for $k\ge1$. For the corner start $\vo=(0,\dots,0)$ and the opposite corner $\va=(N-1,\dots,N-1)$,
+\begin{equation}\label{s4_mfpt:eq-cosine-cc}
+  q\,\TNd{\dd}=\dd\sum_{\substack{\vk\in\{0,\dots,N-1\}^{\dd}\\ k_1+\dots+k_{\dd}\ \mathrm{odd}}}
+  \frac{\prod_i \alk{k_i}\,\ck{k_i}^{2}}{\sum_i \sk{k_i}^{2}},\qquad \ck{k}=\cos\frac{\pi k}{2N}.
+\end{equation}
+In one dimension $\TNd{1}=N(N-1)/q$, and more generally $q\,\MF_{m\to m'}=\hone(m,m')$ with
+\begin{equation}\label{s4_mfpt:eq-1d}
+  \hone(m,m')=\begin{cases}(m'-m)(m'+m+1), & m\le m',\\ (m-m')(2N-1-m-m'), & m\ge m'.\end{cases}
+\end{equation}
+\end{theorem}
+
+The proof inserts the spectral form of the pseudo-inverse of Proposition~\ref{s2_model:prop-pinv}; for opposite
+corners $\cos\thk{k}{N-1}=(-1)^{k}\ck{k}$, so only the modes with $k_1+\dots+k_{\dd}$ odd survive. For $\dd=2$ one of
+the two indices can be summed in closed form.
+
+\begin{theorem}[Single sums for opposite corners, $\dd=2$]\label{s4_mfpt:thm-single}
+Let $\sigk{k}=2-\cos(\pi k/N)=1+2\sk{k}^{2}$ and $\phk{k}=\arcosh\sigk{k}=2\arsinh\sk{k}$.
+For every $N\ge2$ and $q\in(0,1]$:
+\begin{enumerate}
+\item[(a)]
+\begin{equation}\label{s4_mfpt:eq-single-a}
+\begin{aligned}
+  q\,\TN&=2N(N-1)+4N\sum_{k=1}^{N-1}\frac{\ck{k}^{2}\,\Bk{k}}{\sinh\phk{k}\,\sinh N\phk{k}},\\
+  \Bk{k}&=\cosh N\phk{k}+\cosh (N-1)\phk{k}-(-1)^{k}\,[1+\cosh\phk{k}];
+\end{aligned}
+\end{equation}
+\item[(b)] (overflow-free form, all terms positive)
+\begin{equation}\label{s4_mfpt:eq-single-S}
+  q\,\TN=4N\sum_{k=1}^{N-1}\cos^{2}\!\frac{\pi k}{2N}\;\frac{\sqrt{1+\sk{k}^{2}}}{\sk{k}}\;g_k,\qquad
+  g_k=\begin{cases}\coth\bigl(N\arsinh \sk{k}\bigr), & k\ \text{odd},\\[2pt]
+                   \tanh\bigl(N\arsinh \sk{k}\bigr), & k\ \text{even};\end{cases}
+\end{equation}
+\item[(c)] (half-range sums) with
+\begin{equation}\label{s4_mfpt:eq-half-def}
+  S_{\mathrm{odd}}=\sum_{\substack{1\le k\le N-1\\ k\ \mathrm{odd}}}\ck{k}^{2}\coth\frac{\phk{k}}{2}\coth\frac{N\phk{k}}{2},
+  \qquad
+  S_{\mathrm{even}}=\sum_{\substack{2\le k\le N-1\\ k\ \mathrm{even}}}\ck{k}^{2}\coth\frac{\phk{k}}{2}\tanh\frac{N\phk{k}}{2},
+\end{equation}
+one has
+\begin{equation}\label{s4_mfpt:eq-half}
+  q\,\TN=8N\,S_{\mathrm{odd}}-2N^{2}=2N^{2}+8N\,S_{\mathrm{even}},\qquad S_{\mathrm{odd}}-S_{\mathrm{even}}=\frac N2 .
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\emph{Idea of the proof.} In \eqref{s4_mfpt:eq-cosine-cc} the row $k=0$ is a one-dimensional hitting time and
+contributes $2N(N-1)$. For $k\ge1$ the sum over the second index is the Green's function of a ring of $2N$ sites,
+which is elementary (Lemma~\ref{appA_proofs:lem-ring}); this gives (a), and half-angle identities turn (a) into (b) and
+(c). Exact rational solves of $(I-\Qm)h=\one$ for $N=2,\dots,40$ (84 cases) agree with all forms, evaluated with
+60 digits, to a relative deviation of at most $6.6\times10^{-60}$ (Supplementary Section~\ref{appA_proofs:ssec-verif}).
+% src: data/msc_proof/verify_summary.json (partA); data/msc_proof/verify_exact.csv
+In double precision form (a) returns NaN for every $N\ge403$, because $\cosh N\phk{k}$ overflows, whereas form (b)
+contains only $\tanh$ and $\coth$ and agrees with 40-digit values to $1.4\times10^{-16}$ or better at the five sizes tested between $N=10$ and
+$N=6000$.
+% src: data/msc_proof/verify_summary.json (partB); data/article/s4_mfpt_checks.json (float64: first_N_form_a_not_finite); data/msc_proof_verify/v5_extra.json (float64_formS_vs_mp)
+
+\begin{theorem}[Single sum for an arbitrary start and target, $\dd=2$]\label{s4_mfpt:thm-pair}
+For all $\vo=(o_1,o_2)$ and $\va=(a_1,a_2)$ in $\{0,\dots,N-1\}^{2}$,
+\begin{equation}\label{s4_mfpt:eq-pair}
+  q\,\MF_{\vo\to\va}=2\,\hone(o_2,a_2)+4N\sum_{k=1}^{N-1}
+  \Bigl[\mathcal C_k(a_1,a_1)\,\Psi_k(a_2,a_2)-\mathcal C_k(o_1,a_1)\,\Psi_k(o_2,a_2)\Bigr],
+\end{equation}
+with $\mathcal C_k(m,m')=\cos\thk{k}{m}\cos\thk{k}{m'}$, $\hone$ as in \eqref{s4_mfpt:eq-1d}, and
+\begin{equation}\label{s4_mfpt:eq-Psi}
+  \Psi_k(m,m')=\frac{\cosh\bigl((N-|m-m'|)\phk{k}\bigr)+\cosh\bigl((N-1-m-m')\phk{k}\bigr)}
+                    {\sinh\phk{k}\,\sinh N\phk{k}} .
+\end{equation}
+\end{theorem}
+
+Against exact rational solves, \eqref{s4_mfpt:eq-pair} holds to $8.0\times10^{-40}$ (40-digit arithmetic) for all
+924 ordered pairs with $N\le5$ at two values of $q$ and for 72 random pairs with $6\le N\le30$.
+% src: data/msc_proof/general_pairs_summary.json; data/msc_proof/general_pairs.csv
+
+\begin{corollary}[Effective resistance]\label{s4_mfpt:cor-resistance}
+Let $\Reff(\vx,\vy)$ be the effective resistance between two nodes of the $N\times N$ grid graph with unit
+resistors on its edges, and $\Reff_N$ its value for opposite corners. Then
+\begin{equation}\label{s4_mfpt:eq-resistance}
+  \MF_{\vo\to\va}+\MF_{\va\to\vo}=\frac{4N^{2}}{q}\,\Reff(\vo,\va),\qquad q\,\TN=2N^{2}\Reff_N ,
+\end{equation}
+so that $\Reff_N=1+\frac4N S_{\mathrm{even}}=\frac4N S_{\mathrm{odd}}-1$.
+\end{corollary}
+
+\subsection{Relation to the literature}\label{s4_mfpt:ssec-lit}
+
+Through \eqref{s4_mfpt:eq-resistance} the mean first-passage time between two sites is a resistance of the $N\times N$
+resistor grid with free boundaries, which is a solved problem. The cosine double sum, \eqref{s4_mfpt:eq-cosine} with
+$\dd=2$, was given by \citet{CondaminBenichou2006} for the same walk with the same boundary rule; in resistance form it
+is Eq.~(37) of \citet{Wu2004}, and it is the two-dimensional case of the nested sums of \citet{Giuggioli2020}. The
+half-sum $S_{\mathrm{even}}$ is the formula of \citet{EssamWu2009} for the corner-to-corner resistance, stated there for
+even sizes. Form (a) of Theorem~\ref{s4_mfpt:thm-single}, for both parities of $N$, is Eq.~(64) of \citet{TanTan2020}
+for the regular rectangle, evaluated for unit resistors, and their Eq.~(57), a single sum for the resistance between
+two arbitrary nodes, coincides with the commute time obtained from Theorem~\ref{s4_mfpt:thm-pair}: evaluated as
+printed, Eq.~(64) agrees with form (a) to $2.6\times10^{-38}$ in every term for twelve sizes between $N=2$ and
+$N=101$, and Eq.~(57) agrees with Theorem~\ref{s4_mfpt:thm-pair} to $3.2\times10^{-40}$ for 964 pairs.
+% src: data/article/s4_mfpt_literature_check.json (summary; eq64_vs_form_a; eq57_vs_thm_pair_commute_time); code/article/s4_mfpt_literature_check.py; Tan and Tan (2020), Eqs. (19)-(22), (57), (64)
+Single-sum resistance formulas for other networks are related work, not sources of the present formulas
+\citep{IzmailianKennaWu2014,Tan2015,Essam2015}. The single sums are therefore in print, in resistance form; form (b)
+and the odd half-sum of (c) are elementary rearrangements of them, which we have not seen printed in this form and
+for which we claim no novelty. What is added is a self-contained elementary proof in the random-walk setting for both
+parities of $N$; we also record form (b), an elementary rearrangement, because it is the one to use in floating-point
+arithmetic. The relation
+\eqref{s4_mfpt:eq-resistance} between the lazy reflecting walk and the resistor grid is the classical commute-time
+identity \citep{Chandra1989,Tetali1991}.
+
+\subsection{Large-\texorpdfstring{$N$}{N} expansion in two dimensions}\label{s4_mfpt:ssec-expansion}
+
+\begin{theorem}[Large-$N$ expansion, $\dd=2$]\label{s4_mfpt:thm-expansion}
+Let $\lemn=\Gamma(1/4)^{2}/(2\sqrt{2\pi})=2.6220575542\ldots$ be the lemniscate constant, $\gammaE$ Euler's constant and
+$\Xilem=\lemn^{4}/\pi^{2}$ $(=4.7892679494\ldots)$. For every fixed integer $M\ge1$, as $N\to\infty$,
+\begin{equation}\label{s4_mfpt:eq-expansion}
+  q\,\TN=\frac8\pi N^{2}\ln N+C_{2}N^{2}+\sum_{m=1}^{M}C_{2-2m}\,N^{2-2m}+\Order\bigl(N^{-2M}\bigr),
+\end{equation}
+with constants $C_{2-2m}$ given for every $m\ge0$ by the finite expressions \eqref{appB_expansion:eq-general} of
+Proposition~\ref{appB_expansion:prop-form}; in particular
+\begin{equation}\label{s4_mfpt:eq-coeffs}
+\begin{aligned}
+C_{2}&=\frac8\pi\Bigl[\gammaE+\ln\frac{4\sqrt2}{\lemn}-\frac12-\frac\pi4\Bigr]=0.154\,637\,787\,818\,917\ldots,\\
+C_{0}&=\frac{\Xilem}{9}=0.532\,140\,883\,276\,956\ldots,\qquad
+C_{-2}=-\frac{\pi\,\Xilem\,(25\,\Xilem+648)}{10800}=-1.069\,558\,947\,686\,132\ldots .
+\end{aligned}
+\end{equation}
+Only even powers of $N$ occur; there is no $N\ln N$ term and no term linear in $N$.
+\end{theorem}
+% src: data/msc_proof/asymptotic_series.json; data/msc_proof/asymptotics_summary.json;
+% src: data/article/s4_mfpt_checks.json (coefficients)
+
+\emph{Idea of the proof} (Supplementary Section~\ref{appB_expansion:sec}). In form (b) write $g_k=1+(g_k-1)$. With
+$g_k=1$ the sum is a Riemann sum of a function with a simple pole at the origin, and the Euler--Maclaurin formula
+gives $(8/\pi)N^{2}\ln N$, a constant times $N^{2}$ and even powers of $N$. The corrections $g_k-1$ are exponentially
+small unless $k=\Order(\ln N)$; expanding there produces Lambert series at the point $-\eu^{-\pi}$, which are values
+of Eisenstein series at the lemniscatic point. This is where $\lemn$ comes from.
+
+Two terms of \eqref{s4_mfpt:eq-expansion} are accurate to $4.7\times10^{-5}$ at $N=35$ and to $3.0\times10^{-8}$ at
+$N=1000$, and five terms reach $1.2\times10^{-16}$ at $N=100$. Closed forms of $C_{-4}$, $C_{-6}$ and $C_{-8}$, obtained by
+computer algebra, agree with a Richardson extrapolation of exact values to within $3\times10^{-33}$, $8\times10^{-25}$ and
+$2\times10^{-16}$, and a blind linear solve for the coefficients of twelve even powers from 70-digit exact values
+recovers $C_{2},\dots,C_{-8}$ to between 67 and 25 digits (Table~\ref{s4_mfpt:tab-coeff}).
+% src: data/msc_proof/asymptotic_truncation_errors.csv; data/msc_proof/asymptotic_series.json; data/msc_proof_verify/v3_asymptotics.json (blind_even_power_fit)
+\citet{EssamWu2009} obtained $\Reff_N=\frac4\pi\ln N+0.077318\ldots+0.266070\ldots N^{-2}-0.534779\ldots N^{-4}+\cdots$, with
+the last two constants given numerically; $C_{2}/2$, $C_{0}/2$ and $C_{-2}/2$ agree with every digit they print, and
+Eqs.~(42)--(43) of \citet{IzmailianHuang2010}, evaluated at aspect ratio one, reproduce $C_{2}/2$ and $C_{0}/2$ to 50
+digits. The closed forms \eqref{s4_mfpt:eq-coeffs} are therefore a specialisation of known results; to our knowledge
+they have not been printed in terms of $\lemn$.
+% src: data/msc_proof/asymptotics_summary.json (essam_wu); data/msc_proof_verify/v3_asymptotics.json (literature)
+
+Theorem~\ref{s4_mfpt:thm-expansion} controls the remainder only asymptotically. A bound valid for every $N$ is
+computer-assisted (the status words are defined in Section~\ref{s6b_rigorous:ssec-status}).
+
+\begin{catheorem}{Explicit remainder for every $N$}\label{s4_mfpt:thm-remainder}
+\combined{} Let $r_N=q\TN-\frac8\pi N^{2}\ln N-C_{2}N^{2}$. For every $N\ge2$, $-11.2\le r_N\le11.25$. For
+$2\le N\le1500$, $r_N$ is strictly increasing (the step from $N=301$ to $N=302$ marked \lateproof);
+$0.3211<r_N<0.53213$ for $N\le301$ and $r_N<0.5321405<C_{0}$ for
+$301<N\le1500$.
+\textup{(Source: \Sref{R2}{Thm 9.1}, \Sref{R5}{Thm 26, Prop 27}, bases T3 and T1.)}
+\end{catheorem}
+% src: data/article/s6b_rigorous_checks.json (section4_combined_bounds: d2_remainder_interval, from data/msc_rigorous_spectral/06_certified_constants.json, 09_certified_part3.json); data/msc_rigorous_certified/mfpt2d_remainder.json; data/msc_rigorous_certified/remark_checks.json (remainder_junction)
+
+\paragraph{The target on the diffusive scale.}
+Section~\ref{s6_mechanism:sec} uses $X=\muone\,q\MF$, here with $\muone=\sin^{2}(\pi/2N)$. By
+Theorem~\ref{s4_mfpt:thm-expansion},
+\begin{equation}\label{s4_mfpt:eq-X2d}
+  X=\muone\,q\TN=2\pi\ln N+\frac{\pi^{2}}{4}\,C_{2}+\Order\bigl(N^{-2}\ln N\bigr)=2\pi\ln N+0.381553\ldots+\Order\bigl(N^{-2}\ln N\bigr),
+\end{equation}
+and for every $N\ge2$ the error is at most $(33.0+5.2\ln N)/N^{2}$ in modulus (computer-assisted; \Sref{R2}{Cors 11.1,
+11.2}).
+% src: data/article/closed_form_checks.json (X_const_2d = 0.38155344780807887); data/msc_modes_verify/extra.json (X2D_constant_closed_form); data/article/s6b_rigorous_checks.json (section4_combined_bounds: d2_X_bound_constant_term, d2_X_bound_lnN_coefficient, from data/msc_rigorous_spectral/09_certified_part3.json)
+
+\subsection{Three dimensions}\label{s4_mfpt:ssec-3d}
+
+\begin{proposition}[Double sum for opposite corners, $\dd=3$]\label{s4_mfpt:prop-3d}
+Let $\varphi_{kj}=2\arsinh\sqrt{\sk{k}^{2}+\sk{j}^{2}}$. For every $N\ge2$ and $q\in(0,1]$,
+\begin{equation}\label{s4_mfpt:eq-3d}
+  q\,\TNd{3}=3N\Bigl[\;\sum_{\substack{0\le k,j\le N-1\\ (k,j)\ne(0,0)}}\alk{k}\alk{j}\,\ck{k}^{2}\ck{j}^{2}\,
+  \coth\frac{\varphi_{kj}}{2}\;g_{kj}\;-\;N(N-1)\Bigr],
+\end{equation}
+where $g_{kj}=\coth(N\varphi_{kj}/2)$ if $k+j$ is odd and $g_{kj}=\tanh(N\varphi_{kj}/2)$ if $k+j$ is even.
+\end{proposition}
+
+It gives, for example, $q\TNd{3}/N^{3}=4.281589$, $4.316573$ and $4.319511$ at $N=100$, $1000$ and $4096$.
+% src: data/article/closed_form_checks.json (d3_qT_over_N3_simplified); data/article/s4_mfpt_checks.json (three_dimensions.large_N)
+
+\begin{catheorem}{Leading constants, $\dd=3$}\label{s4_mfpt:thm-3d}
+Let $\Ginf(\vx)$ be the Green's function of the unit-rate walk on $\mathbb Z^{3}$, the expected time spent at $\vx$ by a
+walk started at the origin ($\Ginf(0,0,0)=1.5163860592$ is Watson's integral; \citealp{Watson1939}). For every $N\ge2$,
+\begin{equation*}
+  q\,\TNd{3}=\Kthree N^{3}+\Kthreep N^{2}+R(N),\qquad -99.8\le R(N)\le99.8,
+\end{equation*}
+where
+\begin{align*}
+  \Kthree&=\Ginf(0,0,0)+3\,\Ginf(1,0,0)+3\,\Ginf(1,1,0)+\Ginf(1,1,1),\\
+  4.320460169373&<\Kthree<4.320460169375,\\
+  \Kthreep&=c_{\tau3}+c_{m\tau3}=-3.887254142500\ldots,
+\end{align*}
+with the lattice series
+\begin{align*}
+  c_{\tau3}&=2+\frac{12}{\pi}\bigl(\gammaE-\ln\pi-2\ln2\bigr)+3E_\infty,\qquad
+  c_{m\tau3}=1-\frac6\pi\sum_{\vk\in\mathbb Z^{2}\setminus0}\frac{(-1)^{k_1+k_2}}{|\vk|\sinh(\pi|\vk|)},\\
+  E_\infty&=\frac4\pi\sum_{\vk\in\mathbb Z^{2}\setminus0}F_*(|\vk|)+\frac{16}\pi\sum_{j\ge1}\int_0^\infty
+  F_*\bigl(\sqrt{j^{2}+v^{2}}\bigr)\,\dif v,\qquad F_*(x)=\frac{1}{x(\eu^{2\pi x}-1)} .
+\end{align*}
+Moreover $R(N)\to\Kthree''=1.4584812\ldots$ as $N\to\infty$.
+\textup{(Source: \Sref{R2}{Thm 10.1}, base T3.)}
+\end{catheorem}
+% src: data/msc_rigorous_spectral/06_certified_constants.json (C_3, c_tau_3D, E_inf); data/msc_rigorous_spectral/16_certified_d3_remainder.json (pi^2 c_mtau3/6, C_3''); data/article/s6b_rigorous_checks.json (d3_constants: K3prime_series; section4_combined_bounds: d3_remainder_interval); data/msc_modes_verify/constants.json (G3_000)
+
+The identity for $\Kthree$ reflects an image argument: the reflecting box with a corner target is equivalent to a
+periodic box of side $2N$ whose target is a block of $2\times2\times2$ sites. The second constant has a further form that
+is identified only numerically (Supplementary Section~\ref{sup_mfpt:ssec-3d}):
+
+\begin{observation}[The two parts of $\Kthreep$]\label{s4_mfpt:obs-3d}
+With $\xiH=-\int_{0}^{\infty}\bigl[\theta_{3}(\eu^{-\pi u})^{3}-1-u^{-3/2}\bigr]\dif u=2.8372974795$ and
+$\varkappa=-\int_{0}^{\infty}\bigl[\theta_{4}(\eu^{-t})^{3}-1\bigr]\dif t=2.5193561521$, the constants of
+Theorem~\ref{s4_mfpt:thm-3d} satisfy $c_{\tau3}=-\frac6\pi\,\xiH$ and $c_{m\tau3}=\frac6{\pi^{2}}\,\varkappa$ to within
+$3.7\times10^{-14}$ and $2.8\times10^{-14}$, the precision to which $\xiH$ and $\varkappa$ were evaluated. These
+identities are not proved.
+\end{observation}
+% src: data/msc_modes_verify/extra.json (hasimoto_xi (= \xiH), alternating_sum_b (= \varkappa)); data/article/s6b_rigorous_checks.json (d3_constants: abs_diff_c_tau3, abs_diff_c_mtau3); definitions of xi and b: code/msc_modes_verify/v07_extra.py
+
+With $\muone=\tfrac23\sin^{2}(\pi/2N)$,
+\begin{equation}\label{s4_mfpt:eq-X3d}
+  X=\muone\,q\,\TNd{3}\approx\frac{\pi^{2}}{6}\bigl(\Kthree N+\Kthreep\bigr)=7.107\,N-6.39 ,
+\end{equation}
+which exceeds the exact $X$ by $0.058$ at $N=100$ and by $0.006$ at $N=1000$; for every $N\ge2$ the difference
+$X-\frac{\pi^{2}}{6}(\Kthree N+\Kthreep)$ lies between $-5.85/N-159.0/N^{2}$ and $169.62/N^{2}$ (computer-assisted;
+\Sref{R2}{Cors 11.1, 11.2}).
+% src: data/article/s6b_rigorous_checks.json (section4_combined_bounds: d3_X_lower_1_over_N2, d3_X_upper_1_over_N2, from data/msc_rigorous_spectral/16_certified_d3_remainder.json)
+% src: data/article/s4_mfpt_checks.json (three_dimensions: pi2_K3_over_6 = 7.10687, pi2_K3prime_over_6 = -6.39428, X_minus_linear_law)
+In terms of the number of sites $\nn=N^{\dd}$, the laws $\nn\ln\nn$ for $\dd=2$ and $\nn$ for $\dd=3$ have the form found
+by \citet{Montroll1969} for a single trap on a periodic lattice.
+
+\begin{table}[htb]
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Coefficients of the expansion \eqref{s4_mfpt:eq-expansion}, with $\Xilem=\lemn^{4}/\pi^{2}$ (digits
+truncated). $C_{2}$, $C_{0}$ and $C_{-2}$ are derived by hand (Supplementary Section~\ref{appB_expansion:sec}); the closed
+forms marked $\dagger$ were obtained by computer algebra from the general coefficient formula and are confirmed
+numerically, not derived by hand. Last two columns: absolute difference between the closed form and (i) a Richardson
+extrapolation of exact 50-digit values of $q\TN$ up to $N=524\,288$, (ii) the solution of an independent linear system
+for the coefficients of twelve even powers, $N^{2},\dots,N^{-20}$, from 70-digit values at $N=2^{j}$, $6\le j\le17$,
+which uses no closed form.}
+\label{s4_mfpt:tab-coeff}
+% src: data/msc_proof/asymptotic_series.json (closed forms, values, abs_diff = column (i));
+% src: data/msc_proof_verify/v3_asymptotics.json (blind_even_power_fit, "2^j (top 12)" = column (ii));
+% src: data/article/s4_mfpt_checks.json (coefficients: re-evaluation of the closed forms)
+\begin{tabular}{@{}llrll@{}}
+\toprule
+ & closed form & value & (i) & (ii)\\
+\midrule
+$C_{2}$ & $\frac8\pi\bigl[\gammaE+\ln(4\sqrt2/\lemn)-\frac12-\frac\pi4\bigr]$ & $0.154\,637\,787\,818\ldots$ & --- & $3\times10^{-67}$\\[2pt]
+$C_{0}$ & $\Xilem/9$ & $0.532\,140\,883\,276\ldots$ & $6\times10^{-46}$ & $2\times10^{-57}$\\[2pt]
+$C_{-2}$ & $-\pi\Xilem(25\Xilem+648)/10800$ & $-1.069\,558\,947\,686\ldots$ & $1\times10^{-41}$ & $2\times10^{-48}$\\[2pt]
+$C_{-4}$\,$\dagger$ & $\pi^{2}\Xilem^{2}(1225\Xilem+12879)/1905120$ & $2.227\,516\,311\,176\ldots$ & $3\times10^{-33}$ & $7\times10^{-40}$\\[2pt]
+$C_{-6}$\,$\dagger$ & $-\pi^{3}\Xilem^{2}(79625\Xilem^{2}+1215000\Xilem+960498)/435456000$ & $-14.055\,169\,191\,762\ldots$ & $8\times10^{-25}$ & $4\times10^{-32}$\\[2pt]
+$C_{-8}$\,$\dagger$ & $\pi^{4}\Xilem^{3}(7703465\Xilem^{2}+92129400\Xilem+118943883)/63228211200$ & $124.706\,087\,396\,014\ldots$ & $2\times10^{-16}$ & $8\times10^{-25}$\\
+\bottomrule
+\end{tabular}
+\end{table}

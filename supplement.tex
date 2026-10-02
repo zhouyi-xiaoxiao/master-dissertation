@@ -1,0 +1,83 @@
+% supplement.tex -- Supplementary Material of the article (main.tex).  Same macros; sections S1, S2, ...;
+% equations, figures, tables and theorem-like statements carry an S prefix.  References to the main text are
+% resolved through xr-hyper from xref/main.aux (see main.tex for the build sequence).
+% Rule:   every number carries a comment  % src: <path of the result file or script it comes from>;
+%         paths are relative to the root of the repository (see README.md).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[section]{placeins}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[round]{natbib}
+\usepackage{xr-hyper}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\externaldocument{xref/main}[paper.pdf]
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+
+\graphicspath{{figures/}}
+\input{macros}
+
+% S prefix for sections, equations, figures and tables (theorem-like statements follow the section number)
+\renewcommand{\thesection}{S\arabic{section}}
+\numberwithin{equation}{section}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+% wider number boxes in the table of contents (two-digit section numbers S10, S10.1, ...)
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\l@section}{\setlength\@tempdima{1.5em}}{\setlength\@tempdima{2.4em}}{}{}
+\renewcommand*\l@subsection{\@dottedtocline{2}{2.4em}{3.1em}}
+\makeatother
+
+\hypersetup{
+  pdftitle={Supplementary Material: Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices},
+  pdfauthor={Xiaoxiao Zhouyi}
+}
+
+\title{Supplementary Material for\\[4pt]
+\large Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices:
+exact results, modal scaling and inert defects}
+\author{Xiaoxiao Zhouyi\\[2pt]
+{\normalsize School of Engineering Mathematics and Technology, University of Bristol, UK}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent Equations, theorems, figures and tables without the prefix S refer to the main text. The companion notes
+R0--R5 cited as \Sref{R2}{Thm 9.1} and the like are in the folder \texttt{proofs/} of the repository
+\url{https://github.com/zhouyi-xiaoxiao/master-dissertation}, which also contains all code and data.
+
+{\small\setcounter{tocdepth}{1}\tableofcontents}
+
+\input{sections/sup_model}
+\input{sections/sup_methods}
+\input{sections/appA_proofs}
+\input{sections/appB_expansion}
+\input{sections/sup_mfpt}
+\input{sections/sup_modes}
+\input{sections/sup_mechanism}
+\input{sections/appD_rigorous}
+\input{sections/sup_defects}
+\input{sections/appC_tables}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

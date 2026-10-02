@@ -1,0 +1,1 @@
+{"d": 2, "N": 9, "q": "4993/5000", "start": [0, 0], "target": [8, 8], "D": 20000, "steps": 110, "T_cone": 109, "sign_runs": [[0, 1, 15], [1, 16, 110]], "n_sign_changes_explicit": 0, "unimodal": true, "mode": 110, "bits_last": 1563, "seconds": 0.01, "geo": "CC"}

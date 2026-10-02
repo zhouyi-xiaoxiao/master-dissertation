@@ -1,0 +1,167 @@
+% sup_mfpt.tex -- Supplementary Section S5: verification of the mean first-passage time formulas, the expansion in
+% numbers, and three dimensions.  Figures: code/article/s4_mfpt_figures.py; checks: code/article/s4_mfpt_checks.py
+% (-> data/article/s4_mfpt_checks.json).
+\section{Mean first-passage times: verification and three dimensions}\label{sup_mfpt:sec}
+
+\subsection{Exact values and verification of the single sums}\label{appA_proofs:ssec-verif}
+
+\begin{table}[htb]
+\centering\small
+\caption{Exact corner-to-corner mean first-passage times for $\dd=2$: $q\TN$ from exact rational solves of
+$(I-\Qm)h=\one$, and $\TN$ in steps at $q=0.8$. Decimals are truncated.}\label{s4_mfpt:tab-exact}
+% src: data/msc_proof/verify_exact.csv (rows q = 1; exact_num/exact_den, exact_float);
+% src: data/msc_proof_verify/v1_exact.json (second solver, same fractions);
+% src: data/article/s4_mfpt_checks.json (exact_corner: zero-based re-computation, column T at q = 0.8)
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$N$ & $q\,\TN$ (exact) & decimal value & $\TN$ at $q=0.8$\\
+\midrule
+2  & $8$ & $8$ & $10$\\
+3  & $27$ & $27$ & $33.75$\\
+4  & $416/7$ & $59.428571\ldots$ & $74.285714\ldots$\\
+5  & $1175/11$ & $106.818181\ldots$ & $133.522727\ldots$\\
+6  & $9368/55$ & $170.327272\ldots$ & $212.909090\ldots$\\
+7  & $312865/1247$ & $250.894145\ldots$ & $313.617682\ldots$\\
+8  & $125807488/360161$ & $349.309025\ldots$ & $436.636282\ldots$\\
+9  & $35727723/76627$ & $466.255014\ldots$ & $582.818768\ldots$\\
+10 & $85570839000/142065451$ & $602.333912\ldots$ & $752.917391\ldots$\\
+11 & $577168419861/761351911$ & $758.083629\ldots$ & $947.604536\ldots$\\
+12 & $52566792400224/56281934513$ & $933.990504\ldots$ & $1167.488130\ldots$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{s4_mfpt:tab-exact} lists exact values. Exact rational solves of $(I-\Qm)h=\one$ for $N=2,\dots,40$ (84
+cases: $q=1$ for every $N$, and $q=4/5$, $3/10$, $1/7$ for $N\le16$) agree with the double sum and with (a), (b) and
+both sums of (c) of Theorem~\ref{s4_mfpt:thm-single}, evaluated with 60 digits, to a relative deviation of at most
+$6.6\times10^{-60}$; for $N\le16$, $q\TN$ is the same rational number at all four values of $q$.
+% src: data/msc_proof/verify_summary.json (partA); data/msc_proof/verify_exact.csv
+A second, separately written solver gives the same fractions and the same agreement for $N=2,\dots,32$ and
+$N=35,38,41,44$ ($3.3\times10^{-50}$ with 50 digits for $N\le22$, $8.4\times10^{-60}$ with 60 digits beyond).
+% src: data/msc_proof_verify/v1_exact.json; data/msc_proof_verify/v1b_exact_large.json
+As an external anchor, Example~4 of \citet{Wu2004}, evaluated for unit resistors, gives $\Reff=13/7$ between
+opposite corners of the $4\times4$ grid, and $2N^{2}\Reff=416/7$ (Corollary~\ref{s4_mfpt:cor-resistance}).
+% src: data/article/s4_mfpt_checks.json (exact_corner.wu2004_example4_R_4x4, exact_corner.two_N2_R_at_N4)
+The zero-based formulas exactly as printed in the main text were checked once more against exact solves for
+$N=2,\dots,12$ ($4.5\times10^{-51}$).
+% src: data/article/s4_mfpt_checks.json (exact_corner.worst_rel_dev_any_form)
+
+\emph{Floating point.} Evaluated in double precision, form (a) returns NaN for every $N\ge403$: $\cosh N\phk{k}$
+overflows once $N\phk{k}$ exceeds $709.78$, and $\phk{N-1}\to\arcosh3=1.7627$. At $N=402$ it is still correct to
+$5.7\times10^{-13}$.
+% src: data/msc_proof/verify_float.csv; data/msc_proof/verify_summary.json (partB);
+% src: data/article/s4_mfpt_checks.json (float64: ln_DBL_MAX, arcosh3, first_N_form_a_not_finite, form_a_rel_err_at_N402)
+Form (b) contains only $\tanh$ and $\coth$ and has no such limit: in double precision it agrees with 40-digit values
+to $1.4\times10^{-16}$ or better at the five sizes tested between $N=10$ and $N=6000$ (Fig.~\ref{s4_mfpt:fig-verif}).
+% src: data/msc_proof_verify/v5_extra.json (float64_formS_vs_mp); data/article/s4_mfpt_checks.json (float64)
+For small $k/N$, $\phk{k}=\pi k/N+\Order\bigl((k/N)^{3}\bigr)$.
+% src: data/article/s4_mfpt_checks.json (phi_small_k)
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.74\textwidth]{s4_mfpt_verification.pdf}
+\caption{Double-precision evaluation of $q\TN$ ($\dd=2$, corner to corner) by different routes, as relative
+difference from form (b) of Theorem~\ref{s4_mfpt:thm-single}: sparse solve of $(I-\Qm)h=\one$ at $q=0.8$
+(direct factorisation up to $N=300$, conjugate gradients from $N=402$, up to $N=1000$), cosine double
+sum \eqref{s4_mfpt:eq-cosine-cc} (up to $N=6000$), and form (a), which is not finite for $N\ge403$
+(vertical line). Diamonds: form (b) in double precision against 40-digit arithmetic. Differences that are
+exactly zero are drawn at $10^{-17}$. The growth of the first two curves is rounding in the linear solve and
+in the $\Order(N^{2})$-term sum, not in form (b).}
+% src: data/msc_proof/verify_float.csv; data/msc_proof_verify/v5_extra.json;
+% src: figure generated by code/article/s4_mfpt_figures.py
+\label{s4_mfpt:fig-verif}
+\end{figure}
+
+\emph{Arbitrary pairs.} A second implementation confirms \eqref{s4_mfpt:eq-pair} to $1.7\times10^{-40}$ on 1956
+cases (the 1848 ordered pairs with $N\le5$ at two values of $q$ and 108 random pairs with $6\le N\le17$).
+% src: data/msc_proof_verify/v1_exact.json (pairs_exhaustive, pairs_random)
+In double precision, with the hyperbolic ratios written through decaying exponentials, the formula reproduces a sparse
+direct solve for every start site at $N=35$, $q=0.8$, to $7.9\times10^{-14}$ for the two targets of
+Fig.~\ref{s4_mfpt:fig-landscape} and to $8.6\times10^{-14}$ in the second implementation (three targets).
+% src: data/article/s4_mfpt_landscape_check.json; data/msc_proof/landscape_check.json;
+% src: data/msc_proof_verify/v5_extra.json (thm3_float64_all_starts_N35_q0.8_worst_rel)
+Numerically, $q\TN=2N^{2}\Reff_N$ holds to $1.2\times10^{-14}$ for $N=2,\dots,20$ when $\Reff_N$ is computed from the
+pseudo-inverse of the grid Laplacian, and Eq.~(57) of \citet{TanTan2020} agrees with the pseudo-inverse of the grid
+Laplacian to $4.3\times10^{-15}$ for all 4536 ordered pairs with $N\le7$. The one-directional time of
+Theorem~\ref{s4_mfpt:thm-pair} needs, besides the resistance, the potential of a single node; \citet{TanTan2020} give a
+single sum for the node potentials as well, which we have not compared.
+% src: data/msc_proof_verify/v2_identities.json (corollary5); data/article/s4_mfpt_literature_check.json (eq57_vs_laplacian_pinv)
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.86\textwidth]{s4_mfpt_landscape.pdf}
+\caption{Mean first-passage time $\MF_{\vo\to\va}$ (steps) from every start site $\vo=(o_1,o_2)$ to a fixed
+target $\va$ (square marker), computed with the single sum \eqref{s4_mfpt:eq-pair}; $\dd=2$, $N=35$, $q=0.8$,
+discrete time, zero-based coordinates. Left: corner target $(34,34)$; the value at $(0,0)$ is
+$\TN=14\,100.81$. Right: interior target $(8,22)$.}
+% src: data/article/s4_mfpt_landscape_check.json (T_from_corner_00 = 14100.80804991771);
+% src: figure generated by code/article/s4_mfpt_figures.py
+\label{s4_mfpt:fig-landscape}
+\end{figure}
+
+\subsection{The expansion in numbers}
+
+\begin{table}[htb]
+\centering\small
+\caption{Relative error of the expansion \eqref{s4_mfpt:eq-expansion} truncated after the stated number of
+terms (two terms: $(8/\pi)N^{2}\ln N+C_{2}N^{2}$; five terms: up to $C_{-4}N^{-4}$), against the exact $q\TN$.}
+\label{s4_mfpt:tab-trunc}
+% src: data/msc_proof/asymptotic_truncation_errors.csv (columns 1-5 terms);
+% src: data/msc_proof_verify/v3_asymptotics.json (truncation_table: same values);
+% src: data/article/s4_mfpt_checks.json (truncation: re-computation with separately written code)
+\begin{tabular}{@{}rccccc@{}}
+\toprule
+$N$ & 1 term & 2 terms & 3 terms & 4 terms & 5 terms\\
+\midrule
+10   & $2.7\times10^{-2}$ & $8.7\times10^{-4}$ & $1.7\times10^{-5}$  & $3.5\times10^{-7}$  & $2.2\times10^{-8}$ \\
+35   & $1.7\times10^{-2}$ & $4.7\times10^{-5}$ & $7.7\times10^{-8}$  & $1.3\times10^{-10}$ & $6.7\times10^{-13}$\\
+100  & $1.3\times10^{-2}$ & $4.5\times10^{-6}$ & $9.0\times10^{-10}$ & $1.9\times10^{-13}$ & $1.2\times10^{-16}$\\
+1000 & $8.7\times10^{-3}$ & $3.0\times10^{-8}$ & $6.0\times10^{-14}$ & $1.3\times10^{-19}$ & $7.9\times10^{-25}$\\
+4001 & $7.3\times10^{-3}$ & $1.6\times10^{-9}$ & $2.0\times10^{-16}$ & $2.6\times10^{-23}$ & $1.0\times10^{-29}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{s4_mfpt:tab-trunc} and Fig.~\ref{s4_mfpt:fig-asym} give the truncation errors. When terms in $N\ln N$ and in
+odd powers of $N$ are admitted in the blind solve of Table~\ref{s4_mfpt:tab-coeff}, column (ii), the coefficients
+found for $N\ln N$ and $N$ are below $10^{-28}$, and a free leading coefficient returns $8/\pi$ to $3\times10^{-58}$; for
+the odd sizes $N=3^{j}$, $3\le j\le10$, the two forbidden coefficients are below $2\times10^{-15}$.
+% src: data/msc_proof_verify/v3_asymptotics.json (forbidden_terms_2^j, forbidden_terms_3^j, leading_coefficient_minus_8/pi)
+The coefficients grow quickly (the same solve gives $C_{-10}\approx-1685.5$), which suggests that the series is
+asymptotic rather than convergent; we have not proved this.
+% src: data/msc_proof_verify/v3_asymptotics.json (blind_even_power_fit, power -10)
+By Theorem~\ref{s4_mfpt:thm-expansion}, $r_N=C_{0}+C_{-2}N^{-2}+\Order(N^{-4})$ with $C_{-2}<0$, so the remainder of
+Theorem~\ref{s4_mfpt:thm-remainder} approaches $C_{0}$ from below, as the certified finite range shows; the limit
+$r_N\to C_{0}$ is also proved, by a different route that evaluates $C_0$ as a series, in \Sref{R2}{Thm 9.8}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.78\textwidth]{s4_mfpt_asymptotics.pdf}
+\caption{Relative error of the expansion \eqref{s4_mfpt:eq-expansion} truncated after one to five terms,
+against exact values of $q\TN$ computed with form (b) to 50 digits ($\dd=2$, corner to corner; $N=2^{j}$, $3^{j}$,
+$10^{j}$ and a few other sizes up to $N=524\,288$). Curves end where the error reaches the precision of the stored
+values.}
+% src: data/msc_proof/asymptotics.csv (exact values); data/article/s4_mfpt_truncation_errors.csv (plotted data);
+% src: figure generated by code/article/s4_mfpt_figures.py
+\label{s4_mfpt:fig-asym}
+\end{figure}
+
+\subsection{Three dimensions}\label{sup_mfpt:ssec-3d}
+
+In double precision \eqref{s4_mfpt:eq-3d} agrees with sparse solves of $(I-\Qm)h=\one$ to $5.4\times10^{-13}$ or better
+at the sizes tested ($N=3$, $5$, $8$, $12$).
+% src: data/article/closed_form_checks.json (d3_corner: N = 3, 5, 8, 12, worst 5.409e-13); data/article/s4_mfpt_checks.json (three_dimensions.double_sum_vs_direct: N = 2, 3, 5, 8, 12, <= 4.0e-13)
+Richardson extrapolation of the exact values gives $4.3204601701$ and $-3.887257$ for the first two constants of
+Theorem~\ref{s4_mfpt:thm-3d}, and the remainder $q\TNd{3}-\Kthree N^{3}-\Kthreep N^{2}$ equals $1.44$, $1.457$ and
+$1.458$ at $N=10$, $35$ and $100$, in agreement with the limit $\Kthree''$; beyond $N\approx400$ a ten-digit value of
+$\Kthree$ does not resolve the remainder.
+% src: data/msc_modes_verify/extra.json (C3_numeric_richardson, C3prime_numeric_richardson); data/article/s4_mfpt_checks.json (three_dimensions.large_N.remainder_after_two_terms)
+In Theorem~\ref{s4_mfpt:thm-3d}, $\Ginf$ is $2\dd=6$ times the Green's function of the unit-conductance lattice
+Laplacian, the normalisation of $\Glap$ elsewhere in this article. The identity for $\Kthree$ is elementary
+(Section~\ref{appD_rigorous:sec}); the enclosure, the bounds on $R(N)$ and the values of $\Kthreep$ and $\Kthree''$ rest
+on ball arithmetic. In Observation~\ref{s4_mfpt:obs-3d}, $\theta_{3}(x)=\sum_{n\in\mathbb Z}x^{n^{2}}$ and
+$\theta_{4}(x)=\sum_{n\in\mathbb Z}(-1)^{n}x^{n^{2}}$ are theta functions of the nome $x$, and the observation gives
+$\Kthreep=-\frac6\pi\,\xiH+\frac6{\pi^{2}}\,\varkappa$ to the precision stated. The constant $\xiH$ is not ours: it is the
+lattice constant of the periodic simple-cubic lattice that appears in the periodic fundamental solution of
+\citet{Hasimoto1959} and, with the value $2.837297$, in the finite-size correction of diffusion coefficients in
+periodic boxes \citep{YehHummer2004}; the integral above is the representation we used to evaluate it.

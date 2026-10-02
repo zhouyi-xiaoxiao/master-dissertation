@@ -1,0 +1,285 @@
+% s7_defects.tex -- Section 8: inert defects (main text; details in Supplementary Section S9).
+% Paths in "% src:" comments are relative to the root of the repository (see README.md).
+% Numbers that are not quoted verbatim from a research file are recomputed by
+%   code/article/s7_defects_density_pooled.py   -> data/article/s7_defects_density_pooled.{json,csv},
+%                                                      data/article/s7_defects_density_tables.txt (table rows)
+%   code/article/s8_defects_placement_checks.py -> data/article/s8_defects_placement_checks.json
+% Figures: code/article/s7_defects_density_figures.py (sweep), code/article/s7s8_defects_figures.py (placements).
+% Convention: "\pm" is a 95 % interval (1.96 s.d./sqrt(K)) over placements unless "s.d." or "s.e." is written.
+\section{Inert defects}\label{s7_defects:sec}
+
+Throughout this section $\dd=2$, the start is the corner $\vo=(0,0)$, the target the opposite corner
+$\va=(N-1,N-1)$, $q=0.8$, and $N=35$ unless stated; the clean values are $\MF=14\,100.8$ steps, $\tmode=2493$ steps and
+$\tmode/\MF=0.1768$. Times are in steps. Extended tables, the validation of the codes and the proofs are in
+Supplementary Section~\ref{sup_defects:sec}.
+% src: data/msc_defects/structured_deterministic.csv (row clean); data/msc_defects_verify/v06_det.csv
+
+\subsection{Blocked sites and exact computation}\label{s7_defects_density:ssec-model}
+
+Let $\Bset\subset\Om$ be the set of blocked sites, with $\vo,\va\notin\Bset$, $M=|\Bset|$ and $p=M/N^{2}$. An attempted move
+that would leave $\Om$ \emph{or land on a blocked site} is cancelled. The walker can visit only the open cluster $\Cset$,
+the connected component of $\Om\setminus\Bset$ that contains $\vo$; we take $\Cset$ as the state space, write $\nn=|\Cset|$
+and require $\va\in\Cset$. Open sites enclosed by blocked ones (pockets) are simply not in $\Cset$.
+
+\begin{proposition}[Mean first-passage time on the open cluster]\label{s7_defects_density:prop-resistance}
+The walk in which every move onto a blocked site or off the lattice is cancelled has a symmetric, irreducible
+transition matrix on $\Cset$, and
+\begin{equation}\label{s7_defects_density:eq-resistance}
+  \MF_{\vo\to\va}=\frac{2\dd\,\nn}{q}\,\bigl(\Glap_{\va\va}-\Glap_{\vo\va}\bigr),
+\end{equation}
+where $\Glap$ is the Moore--Penrose pseudo-inverse of the graph Laplacian of $\Cset$ with unit conductances.
+\end{proposition}
+
+\begin{proof}
+Two neighbouring sites of $\Cset$ exchange probability $q/(2\dd)$ per step in both directions, and every cancelled
+attempt is added to the diagonal, so $I-\Pm=\frac{q}{2\dd}\Lgr_{\Cset}$ with $\Lgr_{\Cset}$ the Laplacian of $\Cset$;
+Proposition~\ref{s2_model:prop-pinv} applies on $\Cset$.
+\end{proof}
+
+Blocking sites lowers the number $\nn$ of sites to be searched and, as a rule, raises the resistance factor
+$\Glap_{\va\va}-\Glap_{\vo\va}$; the product need not increase. Every configuration is solved exactly: the mean by a
+sparse solve, the PMF by eigendecomposition of the symmetric matrix $\Qm$ or by time stepping, and the mode by exhaustive
+search together with the certificate of Proposition~\ref{s3_methods:prop-certificate}, which uses only the symmetry of
+$\Qm$ and applies unchanged on $\Cset$; here it is evaluated in double precision, without the a-priori round-off bound
+of Section~\ref{s3_methods:sec} (Supplementary Section~\ref{sup_defects:ssec-validation}). Two implementations, written separately and sharing no code, agree with each
+other and with a direct simulation of the walker rule (Table~\ref{s7_defects_density:tab-validation}); they produced two
+independent samples of placements, \emph{sample~A} and \emph{sample~B}.
+
+\subsection{Uniform and corner-thinned placement}\label{s7_defects_density:ssec-sweep}
+
+We solved $400$ placements at each of $13$ densities, $p=0.02$ to $0.35$, under two placement laws, in each of the two
+samples ($20\,800$ configurations in all): \emph{uniform} (every site except $\vo$ and $\va$ equally likely) and
+\emph{corner-thinned}, in which $M=\mathrm{round}(pN^{2})$ sites are sampled without replacement with weight $1$ except in
+the $4\times4$ block of sites at each of the two corners, where the weight is $\exp[-(4-\rho)/2]$ with $\rho$ the
+Euclidean distance to that corner ($\eu^{-3/2}$ at the two neighbours of the corner, rising to $\eu^{0.12}\approx1.13$ at the far
+corner of the block, where $\rho=3\sqrt2$; the corner itself is never blocked). It is a simple placement law correlated with the positions of start and target: it
+thins the defects next to them and leaves the bulk uniform. Placements are redrawn until $\va\in\Cset$. The two samples agree: over the $26$ cells the
+largest standardised difference between them is $1.9$ for the mean, $2.1$ for the mode and $1.9$ for the ratio.
+% src: data/msc_defects_verify/v03_summary.csv (z_mfpt, z_mode, z_ratio); data/article/s7_defects_density_pooled.csv (z_ratio_A_vs_B); code/msc_defects/ensemble.py (generate_defects_smart: corner-thinned weights)
+Figure~\ref{s7_defects_density:fig-sweep} shows the pooled results; Table~\ref{s7_defects_density:tab-sweep} gives them in
+full. Two estimators of the ratio must be kept apart, the mean of the per-placement ratios, $\langle\tmode/\MF\rangle$, and
+the ratio of ensemble means, $\langle\tmode\rangle/\langle\MF\rangle$; between placements $\MF$ fluctuates more than $\tmode$
+(relative standard deviations $26\%$ and $10\%$ at $p=0.2$ under uniform placement), and the first estimator lies above
+the second in every cell.
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_relsd_mfpt_and_mode_by_p, mean_of_ratios_above_ratio_of_means_in_all_cells)
+
+\emph{Uniform placement.} Up to $p=0.14$ the ratio is unchanged to within a few per cent, with a sign that depends on the
+estimator: $\langle\tmode\rangle/\langle\MF\rangle$ lies between $0.8\%$ below and $0.3\%$ above the clean value, whereas
+$\langle\tmode/\MF\rangle$ exceeds it by at most $2.4\%$ for $p\le0.12$ and by $3.2\%$ at $p=0.14$; between $27\%$ and $37\%$ of the
+individual placements with $p\le0.2$ have a ratio \emph{below} the clean one. From $p=0.16$ both estimators rise, to
+$0.1926\pm0.0022$ ($+8.9\%$) and $0.1851$ ($+4.7\%$) at $p=0.2$. At $p=0.2$ the mean and the mode are multiplied by
+$1.825\pm0.033$ and $1.911\pm0.013$, while the coefficient of variation hardly moves ($0.918\to0.910$): the distribution is
+delayed, not reshaped.
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_rom_excess_pct_by_p, uniform_ratio_excess_pct_by_p, uniform_frac_below_clean_range_p_le_0.20); data/article/s7_defects_density_pooled.csv (mfpt_fac_P, mode_fac_P, cv_P at p = 0.20)
+
+\emph{Corner-thinned placement.} Here $\langle\tmode/\MF\rangle$ increases monotonically with $p$: $0.1794\pm0.0003$,
+$0.1904\pm0.0010$, $0.2066\pm0.0020$ and $0.2550\pm0.0050$ at $p=0.02$, $0.10$, $0.20$ and $0.35$. A least-squares line through
+the per-placement ratios for $p\le0.2$ has slope $+0.159\pm0.007$ per unit $p$, against $+0.081\pm0.009$ under uniform
+placement. At $p=0.2$ the mean and the mode are multiplied by $1.606\pm0.023$ and $1.829\pm0.011$. Section~\ref{s8_defects_placement:ssec-capture} explains the difference: thinning the defects next to the target, where the mean is most
+sensitive, slows the mean less than the mode.
+% src: data/article/s7_defects_density_pooled.json (sweep; statements.corner_thinned_pooled_ratio_monotone_in_p; ols_trend_ratio_vs_p.corner_thinned_pmax0.20_P, uniform_pmax0.20_P); data/article/s7_defects_density_pooled.csv (mfpt_fac_P, mode_fac_P at p = 0.20)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s7_defects_density_sweep.pdf}
+% src: code/article/s7_defects_density_figures.py; data data/article/s7_defects_density_pooled.csv, data/msc_defects/homogenization.json
+\caption{Density sweep, $N=35$, $q=0.8$, corner to opposite corner, discrete time. (a)~Mean and (b)~mode divided by
+their clean values, and (c)~$\tmode/\MF$, against the blocked fraction $p$, for uniform placement (circles) and
+corner-thinned placement (squares). Filled symbols: sample~A; open symbols: sample~B ($400$ placements each; bars are
+$95\%$ intervals over placements; the samples are displaced horizontally for clarity). In (a) and (b) the solid curve
+is the homogenised factor $\Thetap_{192}(p)$ measured on tori (Table~\ref{s7_defects_density:tab-homog}) and the dashed
+curve the dilute law \eqref{s7_defects_density:eq-dilute} in the form $1/[1-(\pi-1)p]$. In (c) the symbols are means of
+per-placement ratios and the lines the pooled ratio of ensemble means; the horizontal line is the clean value $0.1768$.}
+\label{s7_defects_density:fig-sweep}
+\end{figure}
+
+\subsection{Effective medium and time dilation}\label{s7_defects_density:ssec-emt}
+
+The walk with cancelled moves on a site-diluted lattice is the ``blind ant'' of the percolation literature
+\citep{HavlinBenAvraham1987}. Its stationary distribution is uniform on the accessible cluster, and the Einstein relation
+ties the long-distance diffusivity $\Deff$ to the conductivity $\cond$ of the network of unit resistors on the open
+bonds: $\cond/\condz=\Pinf\,\Deff/\Dzero$, where $\Pinf$ is the fraction of sites in the accessible cluster
+\citep{HavlinBenAvraham1987,StaufferAharony1994}. We define the time-dilation factor
+\begin{equation}\label{s7_defects_density:eq-theta}
+  \Thetap(p)=\frac{\Dzero}{\Deff(p)}=\Pinf(p)\,\frac{\condz}{\cond(p)} .
+\end{equation}
+The hypothesis to be tested is that, on scales large compared with the percolation correlation length, uniformly random
+defects multiply every time scale by $\Thetap(p)$ and leave the shape of the first-passage law, hence $\ratio$, unchanged.
+For the mean this is the coarse-grained form of \eqref{s7_defects_density:eq-resistance}. $\Thetap$ diverges at the blocked
+fraction $p_{\mathrm c}=1-0.5927=0.4073$ \citep{NewmanZiff2000}.
+% src: Newman and Ziff (2000): site-percolation threshold of the square lattice 0.59274621(13)
+
+At small $p$ the conductivity follows from the response of a single blocked site. Let $\pk$ be the potential kernel of
+the planar simple random walk \citep{Spitzer1976}, with $\pk(\mathbf 0)=0$, $\pk(\pm\ve_i)=1$ and $\pk(\pm2\ve_i)=4-8/\pi$.
+% src: Spitzer1976 (potential kernel; values recomputed by quadrature in data/article/s7_defects_density_dipole_check.json: a10 = 1.0000000000000002, a20 = 1.4535209105296745 = 4 - 8/pi)
+
+\begin{proposition}[Dipole response of one blocked site]\label{s7_defects_density:prop-dilute}
+On the infinite square lattice with unit conductances, remove the site $\mathbf 0$ together with its four bonds and
+impose the potential $-E x_1$ at infinity. Then:
+(a) the potential is unique, $U(\vx)=-Ex_1-\frac{\pi E}{8}\,[\pk(\vx+\ve_1)-\pk(\vx-\ve_1)]$, and at the two neighbours
+$\pm\ve_1$ of the removed site it is $\mp\pi E/2$ (instead of $\mp E$);
+(b) the removed site lowers the dissipated power by $\pi E^{2}$, in the sense that $\sum_{b}U^{0}_{b}U_{b}=\pi E^{2}$ over
+the four removed bonds, and in every finite network of unit resistors with prescribed boundary potentials removing a
+set of bonds lowers the dissipated power by exactly $\sum_{b\ \mathrm{removed}}U^{0}_{b}U_{b}$.
+\end{proposition}
+
+\begin{heuristic}[Dilute law]\label{s7_defects_density:res-dilute}
+For uniformly placed blocked sites on the square lattice, as $p\to0$,
+\begin{equation}\label{s7_defects_density:eq-dilute}
+  \frac{\cond}{\condz}=1-\pi p+\Order(p^{2}),\qquad
+  \frac{\Deff}{\Dzero}=1-(\pi-1)\,p+\Order(p^{2}),\qquad
+  \Thetap(p)=1+(\pi-1)\,p+\Order(p^{2}).
+\end{equation}
+\end{heuristic}
+
+The derivation treats each blocked site as isolated in the unperturbed field (Proposition~\ref{s7_defects_density:prop-dilute}
+and $\Pinf=1-p+\Order(p^{4})$); the step from one defect to a density of defects is not proved here, hence the label. The
+law is not new: \citet{WatsonLeath1974} gave $\cond/\condz=1-\pi p+\tfrac12\pi p^{2}$ from an effective-medium theory, and
+\citet{Nieuwenhuizen1986} calculated the diffusion coefficient and conductivity of exactly this walk to order $p^{2}$, with
+the coefficients printed in \citet{Ernst1987}:
+\begin{equation}\label{s7_defects_density:eq-second-order}
+  \frac{\cond}{\condz}=1-\pi p+1.2858\,p^{2}+\cdots,\qquad
+  \frac{\Deff}{\Dzero}=1-(\pi-1)\,p-0.8558\,p^{2}+\cdots .
+\end{equation}
+Our own evaluation of the pair term on tori gives $1.28588$ and $-0.85571$, within $10^{-4}$ of the printed values, and
+the conductivities measured on $192\times192$ tori agree with \eqref{s7_defects_density:eq-second-order} to $6.2\times10^{-4}$ for
+$p\le0.18$; the estimates $\Thetap_{192}$ of the time-dilation factor are $1.045$, $1.289$, $1.877$ and $3.739$ at $p=0.02$, $0.1$,
+$0.2$ and $0.3$ (Supplementary Table~\ref{s7_defects_density:tab-homog}).
+% src: data/article/s7_defects_density_second_order.json (a2_extrapolated_linear_in_Nt^-2_last3, D2_coefficient_from_extrapolated_a2, extrapolated_minus_published); data/article/derived_checks.json (E_dilute_laws: max_abs_sigma_minus_exact_second_order_p_le_0.18); data/msc_defects/homogenization.json (finite_p); coefficients 1.2858 and -0.8558: Ernst, Nieuwenhuizen and van Velthoven (1987), Eqs (4.2), (4.3)
+
+\emph{Test at $N=35$.} Under uniform placement and $p\le0.2$ the pooled factor of the mean is within $2.8\%$ of
+$\Thetap_{192}(p)$ and that of the mode within $1.82\%$, with no fitted parameter (Fig.~\ref{s7_defects_density:fig-sweep}(a,b));
+these are ensemble-mean estimates, whose $95\%$ intervals reach $\pm1.8\%$ for the mean and $\pm0.72\%$ for the mode
+(relative to $\Thetap_{192}$), so that the deviations of the mean are of the size of their sampling uncertainty.
+For $p\ge0.25$ the mean falls below $\Thetap$ ($3.08$ against $3.74$ at $p=0.3$) while the mode still follows it ($3.66$);
+those densities describe a selected ensemble on a lattice not much larger than the correlation length. The simplest
+mean-field description of defects, a reduced activity $q_{\mathrm{eff}}(p)$, cannot capture the changes of $\ratio$ found
+below: a change of activity only rescales time, and by \eqref{s2_model:eq-qscaling} and
+Proposition~\ref{s2_model:prop-structure}(d) it leaves $\ratio$ unchanged up to a few steps
+(Section~\ref{s6_mechanism:sec}).
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_max_abs_mfpt_fac_over_theta_pct_p_le_0.20_pooled, uniform_max_abs_mode_fac_over_theta_pct_p_le_0.20_pooled); data/article/s7_defects_density_pooled.csv (uniform, p <= 0.20: mfpt_fac_ci_P / theta_L192 up to 1.77 %, mode_fac_ci_P / theta_L192 up to 0.719 %)
+
+\emph{Larger lattices.} For uniform placement at $p=0.1$ and $0.2$ we computed modes up to $N=200$, certified by
+Proposition~\ref{s3_methods:prop-certificate} in double precision, and means up to $N=280$, with the most precise estimates $\Thetap_{200}(0.1)=1.2877$ and $\Thetap_{200}(0.2)=1.8783$. The mode factor equals
+$\Thetap$ to within $1.11\%$ at $p=0.1$ and $1.6\%$ at $p=0.2$ for every $N$ from $15$ to $200$; the factor of the mean divided by
+$\Thetap$, averaged over $N=35$--$280$, is $1.004\pm0.005$ and $0.987\pm0.007$. The shift of $\langle\tmode/\MF\rangle$ relative
+to the clean lattice of the same size is between $+0.6\%$ and $+1.2\%$ for $N\ge50$ at $p=0.1$; at $p=0.2$ it falls from
+$+9.4\pm1.8\%$ at $N=35$ (in the $400$ placements of this size study; the $800$ pooled placements of Section~\ref{s7_defects_density:ssec-sweep} give $+8.9\%$) to $+4.5\pm1.4\%$ at $N=100$ and $+3.9\pm2.7\%$ at $N=200$: it halves but is not shown to vanish
+(Supplementary Table~\ref{s7_defects_density:tab-size}). A slow approach is to be expected, because in
+\eqref{s7_defects_density:eq-resistance} the constant that accompanies $\ln N$ in $\Glap_{\va\va}$ is set by the immediate
+surroundings of the target.
+% src: data/article/s7_defects_density_pooled.json (size_dependence.summary); data/msc_defects_verify/v07_summary.csv, v07b_summary.csv, v04b_theta.json
+
+\begin{conjecture}[Homogenisation]\label{s7_defects_density:conj-homog}
+Fix $p<p_{\mathrm c}$ and place $\mathrm{round}(pN^{2})$ blocked sites uniformly, conditioned on $\va\in\Cset$. As
+$N\to\infty$, $\langle\MF\rangle/(\Thetap(p)\,\MF_{\mathrm{clean}})\to1$ and
+$\langle\tmode\rangle/(\Thetap(p)\,\tmode_{\mathrm{clean}})\to1$, so that $\langle\tmode\rangle/\langle\MF\rangle$ divided by the
+clean ratio at the same $N$ tends to one.
+\end{conjecture}
+
+\subsection{Placement decides the direction}\label{s8_defects_placement:ssec-capture}
+
+By \eqref{s7_defects_density:eq-resistance}, $\MF=(4\nn/q)(\Glap_{\va\va}-\Glap_{\vo\va})$. The rows of $\Glap$ sum to zero, so
+$(4\nn/q)\,\Glap_{\va\va}$ is the mean first-passage time from a uniformly distributed start, and the actual start enters
+only through the cross term $\Glap_{\vo\va}$ ($-0.221$ against $\Glap_{\va\va}=2.082$ on the clean lattice). We call
+$\Glap_{\va\va}$ the \emph{capture resistance} of the target. It controls the mean: over the 400 uniform placements at
+$p=0.1$ and at $p=0.2$ the rank correlation between $\MF$ and $\Glap_{\va\va}$ is $0.9995$ and $0.9986$ (sample~A; $0.9995$ and
+$0.9982$ in sample~B), whereas that between $\MF$ and the number of blocked sites near the start is below $0.08$ in
+absolute value; and at $p=0.2$ the uniform and the corner-thinned placements leave the same accessible volume
+($\nn/N^{2}=0.797$) but raise $\Glap_{\va\va}-\Glap_{\vo\va}$ by the factors $2.310$ and $2.022$.
+% src: data/msc_defects/structured_deterministic.csv (row clean: G_tt, G_st); data/msc_defects/summary_correlations.csv (G_tt, blk_s_r3, blk_s_r6); data/msc_defects_verify/v09_mechanism.json (G_aa, blk_s6); data/msc_defects/summary_sweep_N35.csv (n_factor, Gdiff_factor)
+The mode responds to a different part of the lattice. Blocking a single site shortens the mean for $67.6\%$ of the sites
+(the lost volume), and the positive responses are concentrated around the target, where $64\%$ of $\sum_{\vx}\chiT(\vx)$ comes
+from sites within distance 3; the response of the mode is spread over the whole region between start and target
+($19\%$ within distance 3 of the target), and only $5.4\%$ of the sites lower it
+(Fig.~\ref{s8_defects_placement:fig-maps}).
+% src: data/msc_defects/summary_first_order.json; data/msc_defects_verify/v05_sens_N35.json; data/article/s8_defects_placement_checks.json (susceptibility_N35)
+
+\begin{table}[tbp]
+\centering
+\caption{Localised random placements of $M$ blocked sites ($N=35$, $q=0.8$, 200 placements per row and sample,
+mean $\pm$ 95\% confidence interval). Factors are relative to the clean lattice, for which $\tmode/\MF=0.1768$.}
+\label{s8_defects_placement:tab-local}
+\small
+\begin{tabular}{lrcccc}
+\toprule
+ & & \multicolumn{3}{c}{sample A} & sample B\\
+\cmidrule(lr){3-5}\cmidrule(lr){6-6}
+region & $M$ & $\MF$ factor & $\tmode$ factor & $\tmode/\MF$ & $\tmode/\MF$\\
+\midrule
+anywhere    & 40 & $1.086\pm0.017$   & $1.080\pm0.005$ & $0.1771\pm0.0016$ & $0.1780\pm0.0016$\\
+centre      & 40 & $1.0086\pm0.0008$ & $1.150\pm0.003$ & $0.2015\pm0.0004$ & $0.2014\pm0.0004$\\
+near start  & 10 & $0.9933\pm0.0001$ & $1.012\pm0.001$ & $0.1801\pm0.0001$ & $0.1802\pm0.0002$\\
+near start  & 40 & $0.999\pm0.003$   & $1.320\pm0.027$ & $0.2329\pm0.0040$ & $0.2368\pm0.0048$\\
+near target & 10 & $1.239\pm0.029$   & $1.056\pm0.006$ & $0.1530\pm0.0020$ & $0.1530\pm0.0019$\\
+near target & 20 & $1.659\pm0.057$   & $1.134\pm0.009$ & $0.1249\pm0.0024$ & $0.1276\pm0.0025$\\
+near target & 30 & $2.281\pm0.083$   & $1.230\pm0.011$ & $0.0994\pm0.0023$ & $0.0991\pm0.0024$\\
+near target & 40 & $3.367\pm0.127$   & $1.357\pm0.015$ & $0.0752\pm0.0022$ & $0.0741\pm0.0021$\\
+\bottomrule
+\end{tabular}
+% src: data/msc_defects/summary_structured_local.csv (sample A); data/msc_defects_verify/v06_local.csv via data/article/s8_defects_placement_checks.json (local_sample_B)
+\end{table}
+
+To separate placement from density we block $M$ sites drawn uniformly inside one region: within Euclidean distance 12 of
+the target (122 candidate sites), within distance 12 of the start (122 sites), within $6.2$ of the centre (121 sites), or
+anywhere (Table~\ref{s8_defects_placement:tab-local}, Fig.~\ref{s8_defects_placement:fig-structured}). Forty blocked sites,
+$3.3\%$ of the lattice, multiply the mean by $3.37\pm0.13$ and the mode by $1.36$ near the target, so that the ratio falls to
+$0.0752\pm0.0022$, less than half its clean value; near the start they leave the mean unchanged ($\times0.999\pm0.003$),
+delay the mode by a third and raise the ratio to $0.2329\pm0.0040$. Deterministic obstacles behave in the same way: serpentine
+corridors push the law towards the one-dimensional shape ($\tmode/\MF=0.316$--$0.339$), walls between start and target
+raise the ratio to between $0.244$ and $0.328$, whereas a wall next to the target lowers it to $0.135$; enclosing the
+target makes the law more nearly exponential (ratio $0.0925$ for ten blocked sites), and a solid $12\times12$ block in the centre
+\emph{lowers} the mean by $4.6\%$ and delays the mode by $23\%$. Hence $\tmode/\MF$ is not a function of the defect density:
+it decreases when the defects surround the target, increases when they lie around the start or between start and target,
+and, when they are spread uniformly, stays within a few per cent of its clean value at low density ($p\le0.14$;
+Section~\ref{s7_defects_density:ssec-sweep}) but rises by
+$4.7\%$ to $8.9\%$, depending on the estimator, at $p=0.2$.
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_ratio_excess_pct_by_p, uniform_rom_excess_pct_by_p: p = 0.14 and 0.20)
+% src: data/msc_defects/summary_structured_local.csv (mfpt_factor, mode_factor, ratio); data/msc_defects/structured_deterministic.csv via data/article/s8_defects_placement_checks.json (deterministic, deterministic.block12_centre)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s8_defects_placement_structured.pdf}
+\caption{Placement decides the direction ($N=35$, $q=0.8$, corner to opposite corner, discrete time).
+(a)~Mode factor against mean factor for the 28 deterministic geometries of
+Table~\ref{appC_tables:tab-deterministic}, logarithmic axes; on the solid line $\tmode/\MF$ keeps its clean value,
+on the dashed lines it is doubled or halved. (b)~Mean (solid lines) and mode (dashed lines) relative to the clean
+lattice for $M$ blocked sites drawn inside a region. (c)~The resulting ratio; the grey line is the clean value.
+In (b) and (c) the points are means over the 200 placements of sample~A and the bars 95\% confidence intervals.}
+% src: data/msc_defects/structured_deterministic.csv, summary_structured_local.csv (figure: code/article/s7s8_defects_figures.py, fig_structured)
+\label{s8_defects_placement:fig-structured}
+\end{figure}
+
+\emph{Two time scales.} Beyond the transit time the PMF is dominated by its two slowest terms, with time constants
+$\Tcap=-1/\ln(1-q\nu_0)$ (the capture time) and $\tau_1=-1/\ln(1-q\nu_1)$; with $1/\tau=1/\tau_1-1/\Tcap$ and
+$c=-b_1/b_0$, the maximiser of the two-term sum is $\tmode\approx\tau\ln[c(1+\Tcap/\tau)]$. A pure dilation multiplies $\Tcap$
+and $\tau$ by the same factor and leaves $\tmode/\MF$ unchanged, whereas a perturbation that raises only the capture time
+moves the mode sub-linearly: on the clean lattice the exponent $\partial\ln\tmode/\partial\ln\Tcap$ is $0.21$ with $\tau$
+and $c$ held fixed, and $0.17$ with $\tau_1$ and $c$ held fixed ($\tau$ then follows $\Tcap$). The exact
+elasticities $\ln(\tmode\ \text{factor})/\ln(\MF\ \text{factor})$ of obstacles that enclose the target are somewhat larger,
+$0.234$ to $0.310$, and the regression of $\ln\tmode$ on $\ln\MF$ across the uniform placements at $p=0.2$ has slope $0.30$. This
+heuristic accounts for the sign and the approximate size of the effect and has no controlled error; it fails for a wall
+near the target, which also lengthens the transit (Supplementary Section~\ref{sup_defects:ssec-twotime}).
+% src: data/article/s8_defects_placement_checks.json (two_time.elasticity_formula, two_time.elasticity_formula_tau1_c_fixed, two_time.cross_placement_slope_p02); data/msc_defects_verify/v09b_twotime.csv (elasticity_exact); data/msc_defects_verify/v09_mechanism.json (p0.20.loglog_slope_mode_on_mfpt)
+
+\emph{A one-parameter family of shapes.} Over all $13\,631$ exactly solved configurations of sample~A the coefficient of
+variation is nearly a function of $\ratio$ alone (Pearson correlation $-0.981$; a quadratic fits with a root-mean-square
+residual of $0.0045$); sample~B gives $-0.983$. We record this as an empirical regularity, without a theory: size, density
+and placement appear to act mainly by moving the law along one line between a transit-limited shape and a
+capture-limited, nearly exponential one.
+% src: data/article/s8_defects_placement_checks.json (shape_family.sample_A); data/msc_defects_verify/v09_mechanism.json (family_main_implementation, family_recheck)
+
+\emph{Other defect types.} On a chain, a barrier crossed with reduced probability costs more the nearer it is to the target
+(Proposition~\ref{s8_defects_placement:prop-1d-barriers}; for a single barrier this is Eq.~(12) of
+\citet{SarvaharmanGiuggioli2023}, who also showed that a barrier behind the start changes the mode and the tail but not
+the mean, their `disorder indifference'), and uniformly random barriers are again a dilation of time. On the
+square lattice, permeable obstacles at $p=0.1$ leave the ratio within $3.2\%$ of its clean value, but the limit of vanishing
+permeability is singular, because a site that can be entered at all carries its full share of the stationary distribution.
+Partial traps, which remove the walker with probability $\trap$ per step, remove the long trajectories and act in the
+opposite sense to obstacles: the ratio of mode to conditional mean rises from $0.178$ to $0.638$ as $\trap$ grows from $10^{-5}$
+to $10^{-2}$ at $p=0.1$ (Supplementary Section~\ref{sup_defects:ssec-other}).
+% src: data/msc_defects/summary_beyond.json (2d_permeable, 2d_traps); data/msc_defects_verify/v08_beyond.json (perm, traps); data/article/s8_defects_placement_checks.json (permeable)
+
+Within this model, and at the sizes computed, the mean and the mode respond to different parts of the lattice: the mean
+to the capture resistance of the target, which is set by its immediate surroundings, and the mode to the transit between
+start and target. We make no claim beyond the lattices, sizes and defect models examined here.

@@ -1,0 +1,91 @@
+\subsection{Results on the extended ranges}
+
+\begin{table}[ht]\centering\small
+\input{tab_ext_ranges.tex}
+\caption{Ranges of $N$ covered by the certificates of the C engine (\texttt{certs/c128\_*.jsonl}). ``New'': the number of values of $N$ not covered by Table~\ref{tab:ranges}. Columns 6 and 7: the new values of $N$ whose certificates were re-derived by the programs of Section~\ref{sec:lemmas} (identical $t_0$, $t^*$, $T$ and verdicts, intersecting enclosures). Time: total wall-clock time in seconds of the C engine and of the Python post-processing, on a heavily loaded machine.}\label{tab:rangesX}
+\end{table}
+
+For $d\in\{1,2,3\}$ and $q\in\{4/5,1/2,1\}$ let $\mathcal N_{\rm C}(d,q)\supset\mathcal N(d,q)$ be the set of $N$ in the third column of Table~\ref{tab:rangesX}:
+\begin{itemize}
+\item[$q=4/5$:] $d=1$: $2\le N\le\XNmaxOneF$\XAlsoOneF;\quad $d=2$: $2\le N\le\XNmaxTwoF$\XAlsoTwoF;\quad $d=3$: $2\le N\le\XNmaxThreeF$\XAlsoThreeF.
+\item[$q=1/2$:] $d=1$: $2\le N\le\XNmaxOneH$\XAlsoOneH;\quad $d=2$: $2\le N\le\XNmaxTwoH$\XAlsoTwoH;\quad $d=3$: $2\le N\le\XNmaxThreeH$\XAlsoThreeH.
+\item[$q=1$:] $d=1$: $2\le N\le\XNmaxOneU$\XAlsoOneU;\quad $d=2$: $2\le N\le\XNmaxTwoU$\XAlsoTwoU;\quad $d=3$: $2\le N\le\XNmaxThreeU$\XAlsoThreeU.
+\end{itemize}
+
+\begin{theorem}[modes and unimodality on the extended ranges; computer-assisted, trusted base (T5)]\label{thm:modesX}
+Let $d\in\{1,2,3\}$, $q\in\{4/5,\,1/2\}$ and $N\in\mathcal N_{\rm C}(d,q)$, and suppose that $(d,q,N)$ is not one of the three exceptional triples of Theorem~\ref{thm:modes}.
+\begin{itemize}
+\item[(a)] $f$ is strictly unimodal in the sense of Definition~\ref{def:unimodal}: $f(t)=0$ for $t<d(N-1)$, $f(t)<f(t+1)$ for $d(N-1)-1\le t<t^*$ and $f(t)>f(t+1)$ for all $t\ge t^*$, where $t^*=t^*(d,N,q)$ is the integer in the field \texttt{mode} of line $N$ of \texttt{certs/c128\_d$d$\_q4-5.jsonl} (resp.\ \texttt{\dots\_q1-2.jsonl}). Table~\ref{tab:mX} lists a selection, Appendix~\ref{sec:allmodes} all new values for $d=2,3$, and Theorem~\ref{thm:1dlawX} a formula for $d=1$.
+\item[(b)] $v_{t^*+1}<v_{t^*}$ on $\Omega'$ (the tail time is $T=t^*$), and $f(t^*+s)\le\gamma^sf(t^*)$ for all $s\ge0$ with a number $\gamma=\gamma(d,N,q)<1$ such that $1-\gamma\ge$ the field \texttt{one\_minus\_gamma\_lower}; over the ranges, $1-\gamma\ge\XGamOneF$, $\XGamTwoF$, $\XGamThreeF$ for $d=1,2,3$ at $q=4/5$, and $1-\gamma\ge\XGamOneH$, $\XGamTwoH$, $\XGamThreeH$ at $q=1/2$.
+\end{itemize}
+For the three exceptional triples the C certificate reports exactly one undecided relation, in agreement with the exact ties of Theorem~\ref{thm:modes}(d). No further exceptional case occurs in $\mathcal N_{\rm C}(d,q)$.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key modes: min_one_minus_gamma, not_certified_N, non_unimodal_N); fields mode, T_tail, one_minus_gamma_lower, undecided_adjacent_pairs of data/msc_rigorous_certified/c128_d*_q4-5.jsonl and data/msc_rigorous_certified/c128_d*_q1-2.jsonl
+\end{theorem}
+\begin{proof}
+For each $(d,q,N)$ the certificate was produced by \texttt{fp128} and \texttt{c128\_post.py}. By Proposition~\ref{prop:soundC} its data satisfy the hypotheses of Proposition~\ref{prop:sound}, whose parts (i)--(iii) give (a) and (b) from the recorded verdicts (mode certified, strictly unimodal, no undecided relation, $T=t^*$); the first passage time $d(N-1)$ is Lemma~\ref{lem:support}. The script \texttt{scripts/c128/audit\_ext.py} re-checks every assertion against the certificate files (\texttt{certs/AUDIT\_EXT.json}).
+\end{proof}
+
+\begin{theorem}[modes and multimodality for $q=1$ on the extended ranges; computer-assisted, trusted base (T5)]\label{thm:modesUX}
+Let $q=1$, $d\in\{1,2,3\}$ and $N\in\mathcal N_{\rm C}(d,1)$. The smallest maximiser of $f$ is the integer in the field \texttt{mode} of \texttt{certs/c128\_d$d$\_q1-1.jsonl}, and:
+\input{text_ext_q1.tex}
+\end{theorem}
+\begin{proof}
+Propositions~\ref{prop:soundC} and \ref{prop:sound}(i)--(iv). Ties are not decided by the C engine; the cases with a tie are those of Theorem~\ref{thm:modesU}, settled there in exact arithmetic. The four two-dimensional boxes with two strict local maxima that are not in Theorem~\ref{thm:modesU}, $N=86,92,136,149$, were re-derived with Python integers only (\texttt{verify\_packed.py}, Table~\ref{tab:rangesX}), so these four statements do not depend on (T5).
+% src: data/msc_rigorous_certified/xcheck_packed_d2_q1-1.jsonl (N = 86, 92, 136, 149); data/msc_rigorous_certified/packedexact_d*_q1-1.jsonl
+\end{proof}
+
+\begin{table}[ht]\centering\footnotesize
+\input{tab_ext_modes.tex}
+\caption{Selected certified modes of the extended ranges (conventions of Tables~\ref{tab:m1}--\ref{tab:m3}; the rows $N=600$, $160$, $60$ repeat the last rows of those tables).}\label{tab:mX}
+\end{table}
+
+\begin{remark}[margins, and agreement with the floating-point values]
+In the C certificates with a unique maximiser the gap between the lower bound for $2^P\sigma_{t^*}$ and the upper bounds at $t^*\pm1$ exceeds the width of the enclosure by a factor of at least \XMinMargin; the width $F^+_{t^*}-F^-_{t^*}$ never exceeds $\XMaxWidth$ units of $2^{-112}$. The longest run has $T=\XMaxT$ time steps and the largest reduced lattice $\XMaxSites$ sites; the floating phase never lasts more than $\XMaxTsw$ steps. The certified modes coincide with all \XFloatStudyAgree\ corner-to-corner values of the computations of Sections~5--6 of the article for $q\in\{4/5,1/2,1\}$ that fall in the sets $\mathcal N_{\rm C}$ (\XFloatStudyDisagree\ disagreements), including its largest cases $d=1$, $N=1000$; $d=2$, $N=401$; $d=3$, $N=100$.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (keys modes, comparison_with_float_study_modes); computations of Sections~5--6 of the article: data/msc_modes/discrete_modes.jsonl
+\end{remark}
+
+\begin{corollary}[the mode scales like $1/q$ up to one time step; extended]\label{cor:qscalingX}
+With $\Delta_N=\tfrac45\,t^*(\tfrac45)-\tfrac12\,t^*(\tfrac12)$ as in Corollary~\ref{cor:qscaling}:
+$\XQsLoOne\le\Delta_N\le\XQsHiOne$ for $d=1$, $2\le N\le\XQsNOne$; $\ \XQsLoTwo\le\Delta_N\le\XQsHiTwo$ for $d=2$, $2\le N\le\XQsNTwo$; $\ \XQsLoThree\le\Delta_N\le\XQsHiThree$ for $d=3$, $2\le N\le\XQsNThree$; all six bounds are attained.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key q_scaling)
+\end{corollary}
+\begin{proof}
+Exact arithmetic on the integers of Theorem~\ref{thm:modesX} (\texttt{summarise\_ext.py}, re-checked by \texttt{audit\_ext.py}).
+\end{proof}
+
+\begin{theorem}[accuracy of the closed form on the extended ranges; computer-assisted, trusted bases (T3), (T5)]\label{thm:cfX}
+Let $t^*$ be the certified mode of Theorem~\ref{thm:modesX} and $t_{\rm cf}$ as in Definition~\ref{def:cf}.
+\begin{itemize}
+\item[(a)] $d=2$: for $q=4/5$ and all $10\le N\le\XEpsNTwoF$\XAlsoTwoF: $\ |t^*-t_{\rm cf}|\le\XEpsTwoF\;t^*$ (worst case $N=\XEpsAtTwoF$); for $q=1/2$ and all $10\le N\le\XEpsNTwoH$\XAlsoTwoH: $\ |t^*-t_{\rm cf}|\le\XEpsTwoH\;t^*$ (worst case $N=\XEpsAtTwoH$).
+\item[(b)] $d=3$: for $q=4/5$ and all $10\le N\le\XEpsNThreeF$\XAlsoThreeF: $\ |t^*-t_{\rm cf}|\le\XEpsThreeF\;t^*$; for $q=1/2$ and all $10\le N\le\XEpsNThreeH$\XAlsoThreeH: $\ |t^*-t_{\rm cf}|\le\XEpsThreeH\;t^*$ (worst case $N=\XEpsAtThreeF$, resp.\ $N=\XEpsAtThreeH$).
+\item[(c)] $d=1$: for $q=4/5$ and all $10\le N\le\XEpsNOneF$\XAlsoOneF: $\ \XEpsLoOneF\;t^*\le t_{\rm cf}-t^*\le\XEpsOneF\;t^*$; for $q=1/2$ and all $10\le N\le\XEpsNOneH$\XAlsoOneH: $\ \XEpsLoOneH\;t^*\le t_{\rm cf}-t^*\le\XEpsOneH\;t^*$.
+\end{itemize}
+Bounds on sub-ranges are given in Table~\ref{tab:cfX}; the enclosure of the relative error for every single $N$ is in \texttt{certs/closedform\_c128\_d$d$\_q$q$.jsonl}.
+% src: data/msc_rigorous_certified/closedform_summary_c128.json; data/msc_rigorous_certified/closedform_c128_d*_q*.jsonl; re-checked with mpmath.iv in code/msc_rigorous_certified_c128/audit_ext.py
+\end{theorem}
+\begin{proof}
+As for Theorem~\ref{thm:cf} (\texttt{scripts/closed\_form.py c128}: Arb at 256 bits from the rational enclosures of $\tau_N$ of Lemma~\ref{lem:mfpt}, which were computed for every $N$ of the sets $\mathcal N_{\rm C}(d,4/5)$; all have relative width below $10^{-28}$). Every bound of the statement and every row of Table~\ref{tab:cfX} was re-evaluated with \texttt{mpmath.iv} for every $N$ of its range by \texttt{audit\_ext.py}.
+\end{proof}
+
+\begin{table}[p]\centering\footnotesize
+\input{tab_ext_cf.tex}
+\caption{Certified bounds for the relative error of the closed form on sub-ranges of the extended ranges (conventions of Table~\ref{tab:cf}).}\label{tab:cfX}
+\end{table}
+
+\begin{remark}\label{rem:cfX}
+The extension confirms the picture of Remark~\ref{rem:cfshape} with certified numbers (all taken from Table~\ref{tab:cfX}). In two dimensions the relative error is negative for every $N\ge14$ of the ranges (both values of $q$); its modulus has a flat maximum, $\XEpsTwoF$ at $N=\XEpsAtTwoF$ for $q=4/5$, and decreases slowly afterwards, apart from fluctuations of order $1/t^*$ caused by the integer rounding of the mode (rows $160\le N\le\XEpsNTwoF$ and $200\le N\le\XEpsNTwoF$ and the isolated values of $N$ in the table). In three dimensions the error is positive for every $N\ge3$ of the ranges at $q=4/5$ and for every $N\ne3$ at $q=1/2$; it falls to $3.17888\times10^{-5}$ (rounded) at $N=160$ ($q=4/5$), though not monotonically, for the same reason. In one dimension $t_{\rm cf}/t^*-1$ lies in $[0.157704,0.157705]$ at $N=2000$; the value suggested by the continuum limit ($X_N\to\pi^2/2$ and $t^*/\mathbb E\,T\to\kappa_1$, neither of which is proved in this note) is $\ln(\pi^2)/\bigl((\pi^2/2+1)\kappa_1\bigr)-1=0.157475\ldots$ The closed form is not an approximation of the one-dimensional mode.
+% src: data/msc_rigorous_certified/remark_checks.json (keys closed_form_shape, remark_cfX_continuum_value); data/msc_rigorous_certified/closedform_c128_d1_q4-5.jsonl (N = 2000), data/msc_rigorous_certified/closedform_c128_d3_q4-5.jsonl (N = 160)
+\end{remark}
+
+\begin{theorem}[the one-dimensional mode on the extended range; computer-assisted, trusted bases (T3), (T5)]\label{thm:1dlawX}
+Let $d=1$, $\kappa_1$ as in Theorem~\ref{thm:tau} and $y_N(q)=\kappa_1(N-\frac12)^2/q$.
+\begin{itemize}
+\item[(a)] For $q=4/5$ and every $10\le N\le\XNmaxOneF$\XAlsoOneF: $\ \XDeltaLoF<t^*-y_N<\XDeltaHiF$, hence $t^*=\lfloor y_N\XDeltaHiF\rfloor$.
+\item[(b)] For $q=1/2$ and every $10\le N\le\XNmaxOneH$\XAlsoOneH: $\ \XDeltaLoH<t^*-y_N<\XDeltaHiH$, hence $t^*=\lfloor y_N\XDeltaHiH\rfloor$.
+\item[(c)] On the contiguous ranges, $\bigl|t^*/\mathbb E\,T-\kappa_1\bigr|\le c/(N(N-1))$ with $c=\XRatioConstF$ for $q=4/5$ and $c=\XRatioConstH$ for $q=1/2$.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key law_1d), from data/msc_rigorous_certified/closedform_c128_d1_q*.jsonl and data/msc_rigorous_certified/constants.json
+\end{itemize}
+\end{theorem}
+\begin{proof}
+Exact rational arithmetic on the integers of Theorem~\ref{thm:modesX} and the rational enclosure of $\kappa_1$ (\texttt{closed\_form.py c128}, \texttt{summarise\_ext.py}; re-checked for every $N$, with both endpoints of the enclosure of $\kappa_1$, by \texttt{audit\_ext.py}).
+\end{proof}

@@ -1,0 +1,228 @@
+% macros.tex -- notation and theorem environments of the article and its Supplementary Material.
+% Loaded by main.tex and supplement.tex after the packages.  One symbol per quantity; symbols that are used in
+% a single section of the Supplementary Material only are defined at the top of that section.
+%
+% =====================================================================================
+% NOTATION TABLE (single source of truth)
+% -------------------------------------------------------------------------------------
+% CONVENTIONS
+%   * Sites are ZERO-BASED: \Om = {0,...,N-1}^d.  Corner start \vo = (0,...,0), opposite
+%     corner target \va = (N-1,...,N-1) in the corner-to-corner (CC) geometry.
+%     (Every formula of the article is stated zero-based and was checked numerically in that
+%     form: code/article/closed_form_checks.py, appA_proofs_check.py.)
+%   * Time is measured in steps of the discrete-time walk.  "Unit rate" means the
+%     continuous-time walk with total jump rate 1 (equivalently q = 1 in q*t).
+%   * s WITHOUT subscript is always the Laplace variable; s_k WITH an integer subscript
+%     is always sin(pi k / 2N).  The start site is \vo (never "s").
+%   * ln is the natural logarithm.
+%
+% MODEL
+%   \dd            d            dimension (1, 2, 3)
+%   N              N            number of sites per side
+%   \Om            \Omega       lattice {0,...,N-1}^d
+%   \nn            n            number of accessible sites (N^d on the clean lattice; |\Cset| with defects)
+%   q              q            activity: probability of attempting a move in one step, 0 < q <= 1
+%   \vo, \va, \vx  o, a, x      start site, target site, generic site (bold); components o_i, a_i, x_i
+%   \Pm            P            transition matrix of the reflecting (cancelled-move) walk; \Pm_1 its q = 1 version
+%   \Qm            Q            P with the row and column of the target removed (killed chain)
+%   \Lm            L            I - P;   \Lp = L^+  its Moore-Penrose pseudo-inverse
+%   \Glap          G            pseudo-inverse of the unit-conductance graph Laplacian (I - P = (q/2d) * Laplacian)
+%   \Reff          R            effective resistance (unit resistors);  R_N: opposite corners of the N x N grid
+%
+% FIRST-PASSAGE QUANTITIES
+%   \FPT           \mathcal{T}  random first-passage (hitting) time of the target
+%   \Sv(t)         S(t)         survival probability  P(\FPT > t)
+%   \pmf(t)        f(t)         first-passage probability mass function  P(\FPT = t) = S(t-1) - S(t)
+%   \gd(t)         g(t)         first-passage density of the continuous-time walk (unit rate unless stated)
+%   \MF            T            mean first-passage time (MFPT), in steps;  T_{\vo\to\va} when the pair matters
+%   \TN            T_N          corner-to-corner MFPT for d = 2;   \TNd{d}  T_N^{(d)} in dimension d
+%   \tmode         t^*          mode (most probable first-passage time): smallest argmax_t f(t)
+%   \tmodec        t^*_c        mode of the continuous-time density at unit rate (at activity q the mode is t^*_c / q)
+%   \tcert         t_cert       time beyond which the PMF is certified to stay below its maximum (Prop. s3_methods:prop-certificate)
+%   X_t                         position of the walker after t steps;  h: vector of the mean first-passage times over the start sites
+%   \ratio         \varrho      mode-to-mean ratio  t^*/T
+%   \Ftil(z)       \widetilde F(z)   probability generating function  sum_t f(t) z^t
+%   \Fhat(s)       \widehat F(s)     Laplace transform of g;   \Ptil, \Phat: propagator transforms
+%   \hone(m,m')    h_1(m,m')    hitting time from m to m' of the one-dimensional chain with q = 1
+%
+% SPECTRAL NOTATION
+%   \angk{k}       \vartheta_k     = pi k / N
+%   \thk{k}{m}     \vartheta_k(m)  = pi k (2m+1) / (2N) = \vartheta_k (m + 1/2)   (zero-based site m)
+%   \psi_k(m), \phi_{\mathbf k}(\mathbf x)   one-dimensional cosine eigenvector; product eigenvector of the lattice
+%   \ck{k}         c_k          = cos(pi k / 2N)
+%   \sk{k}         s_k          = sin(pi k / 2N)
+%   \alk{k}        \alpha_k     = 1 (k = 0), 2 (k >= 1)
+%   \sigk{k}       \sigma_k     = 2 - cos(\vartheta_k) = 1 + 2 s_k^2
+%   \phk{k}        \varphi_k    = arcosh(\sigma_k) = 2 arsinh(s_k)
+%   \Bk{k}         \mathcal{B}_k   bracket of form (a) of the single-sum formula
+%   \mu_{\mathbf k}             relaxation rates of the reflecting lattice at unit rate, (2/d) sum_i s_{k_i}^2
+%   \muone         \mu_1        slowest non-zero one, (2/d) sin^2(pi/2N) ~ pi^2/(2 d N^2)
+%   \nu_j, b_j                  decay rates and residues of the first-passage density, g(t) = sum_j b_j exp(-\nu_j t)
+%   X, W, A                     X = \mu T (target seen on the diffusive scale), weight and amplitude of the
+%                               slowest visible mode (Sec. 6); for CC: W = A = 2d cos^2(pi/2N)
+%
+% CONSTANTS
+%   \gammaE        \gamma_E     Euler's constant
+%   \lemn          \varpi       lemniscate constant Gamma(1/4)^2 / (2 sqrt(2 pi)) = 2.6220575542...
+%   \Xilem         \Xi          \varpi^4 / \pi^2 = 4.7892679494...
+%   C_2, C_0, C_{-2}, ...       coefficients of the large-N expansion of q T_N (d = 2)
+%   \Kthree, \Kthreep  K_3, K_3'   q T_N^{(3)} = K_3 N^3 + K_3' N^2 + ...
+%   \Ginf          \mathcal{G}_\infty   Green's function of the unit-rate walk on Z^3 (= 6 x the lattice Green's function
+%                               of the unit-conductance Laplacian);  \xiH  \xi_H  Hasimoto's constant;  \varkappa (Obs. 4.7)
+%   \theta_3(x), \theta_4(x)    Jacobi theta functions with nome argument x:  sum_n x^{n^2},  sum_n (-1)^n x^{n^2}
+%   \ell = N - 1/2              half-width of the chain in the continuum limit (Sec. 5.1 only)
+%
+% DEFECTS (Secs. 7-8)
+%   \Bset          \mathcal{B}  set of blocked (inert) sites;   p = |B|/N^2 defect fraction;  M = |B|
+%   \Cset          \mathcal{C}  open cluster containing the start (state space of the walk), n = |C|
+%   \Thetap        \Theta(p)    time-dilation factor D_0 / D_eff(p);  \Theta_{192}, \Theta_{160}, \Theta_{200}: its three
+%                               estimates on tori of that side (Sec. 7.5)
+%   \Deff, \Dzero  D_eff, D_0   effective and clean diffusivity
+%   \cond, \condz  \Sigma, \Sigma_0   conductivity of the diluted / clean resistor lattice
+%   \Pinf          P_\infty     fraction of sites in the accessible cluster
+%   \chi_A(\vx)                 single-defect susceptibility of statistic A (A = T or t^*)
+%   \perm          \kappa       permeability of an obstacle bond (0 inert, 1 clean)
+%   \trap          \Delta       killing probability per step on a partial-trap site
+%   \Lgr           \mathcal{L}  unit-conductance graph Laplacian (of the lattice, of Z^2 or of the open cluster)
+%   \pk            \mathcal{K}  potential kernel of the planar simple random walk
+%   \Pow           \mathcal{W}  dissipated power of a resistor network
+%   \Env           \mathcal{E}  envelope of the PMF used to certify the global mode (Sec. 3.4)
+%   \Tcap          T_cap        time constant of the slowest geometric term of the PMF ("capture time", Sec. 8)
+%   \chiT, \chim   \chi_T, \chi_{t^*}   single-defect susceptibilities of the mean and of the mode
+%
+% GEOMETRY LABELS (text):  \CC  corner -> opposite corner;  \CtM  corner -> centre target;
+%                          \MtC centre -> corner target;    \EXIT centre start, whole boundary layer absorbing
+% =====================================================================================
+
+% ---- operators
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\eu}{\mathrm{e}}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\T}{\mathsf{T}}                 % transpose
+\newcommand{\one}{\mathbf{1}}               % all-ones vector
+\newcommand{\Order}{O}
+
+% ---- model
+\newcommand{\dd}{d}
+\newcommand{\Om}{\Omega}
+\newcommand{\nn}{n}
+\newcommand{\vo}{\mathbf{o}}
+\newcommand{\va}{\mathbf{a}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vy}{\mathbf{y}}
+\newcommand{\vk}{\mathbf{k}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\Pm}{P}
+\newcommand{\Qm}{Q}
+\newcommand{\Lm}{L}
+\newcommand{\Lp}{L^{+}}
+\newcommand{\Glap}{G}
+\newcommand{\Reff}{R}
+
+% ---- first-passage quantities
+\newcommand{\FPT}{\mathcal{T}}
+\newcommand{\Sv}{S}
+\newcommand{\pmf}{f}
+\newcommand{\gd}{g}
+\newcommand{\MF}{T}
+\newcommand{\TN}{T_{N}}
+\newcommand{\TNd}[1]{T_{N}^{(#1)}}
+\newcommand{\tmode}{t^{*}}
+\newcommand{\tmodec}{t^{*}_{\mathrm{c}}}
+\newcommand{\tcert}{t_{\mathrm{cert}}}
+\newcommand{\ratio}{\varrho}
+\newcommand{\Ftil}{\widetilde{F}}
+\newcommand{\Fhat}{\widehat{F}}
+\newcommand{\Ptil}{\widetilde{P}}
+\newcommand{\Phat}{\widehat{P}}
+\newcommand{\hone}{h_{1}}
+
+% ---- spectral notation
+\newcommand{\angk}[1]{\vartheta_{#1}}
+\newcommand{\ck}[1]{c_{#1}}
+\newcommand{\sk}[1]{s_{#1}}
+\newcommand{\alk}[1]{\alpha_{#1}}
+\newcommand{\thk}[2]{\vartheta_{#1}(#2)}
+\newcommand{\sigk}[1]{\sigma_{#1}}
+\newcommand{\phk}[1]{\varphi_{#1}}
+\newcommand{\Bk}[1]{\mathcal{B}_{#1}}
+\newcommand{\muone}{\mu_{1}}
+
+% ---- constants
+\newcommand{\gammaE}{\gamma_{\mathrm{E}}}
+\newcommand{\lemn}{\varpi}
+\newcommand{\Xilem}{\Xi}
+\newcommand{\Kthree}{K_{3}}
+\newcommand{\Kthreep}{K_{3}'}
+\newcommand{\Ginf}{\mathcal{G}_{\infty}}
+\newcommand{\xiH}{\xi_{\mathrm{H}}}
+
+% ---- defects
+\newcommand{\Bset}{\mathcal{B}}
+\newcommand{\Cset}{\mathcal{C}}
+\newcommand{\Thetap}{\Theta}
+\newcommand{\Deff}{D_{\mathrm{eff}}}
+\newcommand{\Dzero}{D_{0}}
+\newcommand{\cond}{\Sigma}
+\newcommand{\condz}{\Sigma_{0}}
+\newcommand{\Pinf}{P_{\infty}}
+\newcommand{\perm}{\kappa}
+\newcommand{\trap}{\Delta}
+\newcommand{\Lgr}{\mathcal{L}}
+\newcommand{\pk}{\mathcal{K}}
+\newcommand{\Pow}{\mathcal{W}}
+\newcommand{\Env}{\mathcal{E}}
+\newcommand{\Tcap}{T_{\mathrm{cap}}}
+\newcommand{\chiT}{\chi_{\MF}}
+\newcommand{\chim}{\chi_{\tmode}}
+
+% ---- geometry labels (text mode)
+\newcommand{\CC}{\textsc{cc}}
+\newcommand{\CtM}{\textsc{c2m}}
+\newcommand{\MtC}{\textsc{m2c}}
+\newcommand{\EXIT}{\textsc{exit}}
+
+% ---- theorem environments (one counter per section; appendices: A.1, B.1, ...)
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\newtheorem{heuristic}[theorem]{Formal result}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% computer-assisted statements (Sections 4 and 7): printed as "Theorem 7.n (<title>; computer-assisted)"
+\theoremstyle{plain}
+\newtheorem{catheoreminner}[theorem]{Theorem}
+\newtheorem{cacorollaryinner}[theorem]{Corollary}
+\newenvironment{catheorem}[1]{\begin{catheoreminner}[#1; computer-assisted]}{\end{catheoreminner}}
+\newenvironment{cacorollary}[1]{\begin{cacorollaryinner}[#1; computer-assisted]}{\end{cacorollaryinner}}
+\theoremstyle{definition}
+\newtheorem{refuted}[theorem]{Refuted statement}
+% pointers into the companion notes R0-R5 (folder proofs/ of the repository) and status markers of Section 7
+\newcommand{\Sref}[2]{[\textsf{#1},~#2]}
+\newcommand{\lateproof}{\ensuremath{^{\star}}}     % proof written after the two internal checks of its companion note (read line by line afterwards)
+\newcommand{\combined}{\ensuremath{^{\diamond}}}   % deduction combining two companion notes, made in R0
+\newcommand{\tcf}{t_{\mathrm{cf}}}                 % closed form T ln(2dX)/(X+2d-1), Eq. (s6_mechanism:eq-L1-simple)
+
+% ---- status vocabulary used in the text (keep the wording uniform)
+%   Theorem / Proposition / Lemma / Corollary : complete proof in the article.
+%   Theorem (computer-assisted) (env. catheorem, cacorollary): proof reduced by hand to finitely many inequalities
+%                                               verified in exact or ball arithmetic; trusted base named (Sec. 7.1).
+%   Refuted statement                         : a natural conjecture (suggested by d = 1 or by numerics) that is false.
+%   Formal result (env. heuristic)            : derived by formal asymptotics, verified numerically, not proved.
+%   "closed-form approximation"               : ALWAYS Eq. (s6_mechanism:eq-L1) (its simplified form: eq-L1-simple);
+%   "exact two-/three-exponential truncation" : maximiser of the two or three slowest exponentials with numerically
+%                                               exact rates and residues (a different approximation; never "two-pole").
+%   Numerical observation                     : established by exact computation at the sizes stated only.
+%   Conjecture                                : believed, supported by evidence, unproved.

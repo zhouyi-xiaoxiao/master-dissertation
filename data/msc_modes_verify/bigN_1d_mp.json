@@ -1,0 +1,23 @@
+[
+ {
+  "N": 10240,
+  "recheck": 43679969,
+  "inc_at_recheck_minus_1": "1.519e-20",
+  "inc_at_recheck": "-5.5962e-20",
+  "recheck_is_argmax": true
+ },
+ {
+  "N": 100000,
+  "recheck": 4166011658,
+  "inc_at_recheck_minus_1": "1.2718e-25",
+  "inc_at_recheck": "-6.7374e-25",
+  "recheck_is_argmax": true
+ },
+ {
+  "N": 1000000,
+  "recheck": 416604915263,
+  "inc_at_recheck_minus_1": "2.8683e-30",
+  "inc_at_recheck": "-5.1407e-30",
+  "recheck_is_argmax": true
+ }
+]

@@ -1,0 +1,117 @@
+% main.tex -- main text of the article; the Supplementary Material is supplement.tex (same macros).
+% Build: sh build_pdfs.sh  (the two documents cite each other through xr-hyper, using copies of their .aux files
+%   in xref/; reproduce.md describes the sequence)
+% Rule:   every number carries a comment  % src: <path of the result file or script it comes from>;
+%         paths are relative to the root of the repository (see README.md).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[section]{placeins}   % keeps every figure and table inside its own section
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[round]{natbib}
+\usepackage{xr-hyper}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\externaldocument{xref/supplement}[supplement.pdf]
+
+% float placement: let a large table or figure share a page with text instead of drifting to the end of its section
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+
+\graphicspath{{figures/}}
+\input{macros}
+
+\hypersetup{
+  pdftitle={Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices},
+  pdfauthor={Xiaoxiao Zhouyi}
+}
+
+\title{Mean and most probable first-passage times of lazy random walks in reflecting
+hypercubic lattices: exact results, modal scaling and inert defects}
+
+\author{Xiaoxiao Zhouyi\\[2pt]
+{\normalsize School of Engineering Mathematics and Technology, University of Bristol, UK}\\
+{\normalsize\texttt{zhouyixiaoxiao@gmail.com}}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the first-passage time of a lazy nearest-neighbour random walk on the reflecting hypercubic lattice
+$\{0,\dots,N-1\}^{\dd}$ to a single absorbing site, mainly between opposite corners, and compare its mean $\MF$ with
+its most probable value, the mode $\tmode$. The means are exact finite sums; in two dimensions a single sum, equivalent
+to a known resistor-grid formula, is proved for every $N$, with the large-$N$ expansion and closed-form coefficients.
+First-passage distributions are computed exactly by time stepping, where every mode is certified to be the global
+maximiser (in exact arithmetic, or with an a-priori bound on round-off), and by Laplace inversion to a relative
+accuracy of about $10^{-10}$.
+% src: data/article/s3_methods_certificate.json (all_runs); data/article/s3_methods_certificate_roundoff.json; data/msc_modes/validation.json (talbot_vs_erlang_mixture); data/msc_modes_verify/analysis.json (summary_d3)
+In one dimension $\tmode/\MF\to0.33328$ for every activity $q$. % src: data/msc_rigorous_1d/03_constants.json
+For the three point-target placements studied the law is proved to be unimodal in continuous time in every
+dimension, and from corner to corner also in discrete time for $q\le\frac45$, a threshold attained on the chain with
+$N=4$; unimodality fails near $q=1$ and for other placements. % src: data/msc_rigorous_unimodality/summary_lc1d.json; data/msc_rigorous_unimodality/summary_certificates.json
+For corner-to-corner transport in two and three dimensions a parameter-free closed form obtained from two-pole
+asymptotics, $\tmode\approx\MF\ln(2\dd X)/(X+2\dd-1)$ with $X=\muone q\MF$ and $\muone$ the slowest relaxation rate of
+the lattice, has a relative error $\Order(1/(X\ln X))$ uniformly in $N\ge12$ ($\dd=2$) and $N\ge10$ ($\dd=3$), and
+the leading laws $\tmode\sim N^{2}\ln\ln N$ ($\dd=2$), which the computed sizes do not reach, and
+$\tmode\sim N^{2}\ln N$ ($\dd=3$), against $\MF\sim N^{2}\ln N$ and $\MF\sim N^{3}$, hold with explicit remainders:
+the separation between mean and mode grows with dimension. These statements are proved in continuous time and, in
+discrete time, for $q\le0.99$ once $N$ exceeds an explicit size and, provisionally, for every $q<1$ once $N$ exceeds an
+explicit $q$-dependent size; $q=1$ is open.
+% src: data/msc_rigorous_asymptotics/80_tables.json (T51_d2, T51_d3, T717_d2, T717_d3)
+Several of these proofs are computer-assisted, with stated trusted bases and published certificates, and a few are
+marked as provisional until examined outside this project. On the square lattice of side $35$, uniformly random
+blocked sites up to a fraction $0.2$ multiply mean and mode by nearly the same factor, the homogenised dilation of
+time $\Dzero/\Deff$, so that $\tmode/\MF$ changes by a few per cent at low density and by $4.7$--$8.9\%$ at the fraction
+$0.2$, whereas the placement of the blocked sites, not their number, decides the direction in which $\tmode/\MF$
+changes.
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_max_abs_mfpt_fac_over_theta_pct_p_le_0.20_pooled, uniform_max_abs_mode_fac_over_theta_pct_p_le_0.20_pooled; uniform_rom_excess_pct_by_p and uniform_ratio_excess_pct_by_p at p = 0.20: 4.71 and 8.94)
+\end{abstract}
+
+\noindent\textbf{Keywords:} first-passage time; lattice random walk; reflecting boundaries; mean first-passage
+time; mode; unimodality; computer-assisted proof; effective resistance; inert defects.
+
+% ------------------------------------------------------------------ main text
+\input{sections/s1_intro}
+\input{sections/s2_model}
+\input{sections/s3_methods}
+\input{sections/s4_mfpt}
+\input{sections/s5_modes}
+\input{sections/s6_mechanism}
+\input{sections/s6b_rigorous}
+\input{sections/s7_defects}
+\input{sections/s9_discussion}
+
+% ------------------------------------------------------------------ end matter
+\section*{Data and code availability}
+All code and data needed to reproduce every number, table and figure of this article and of its Supplementary
+Material are in the repository \citep{ZhouyiRepo}
+\begin{center}\url{https://github.com/zhouyi-xiaoxiao/master-dissertation},\end{center}
+together with the \LaTeX{} sources and a file \texttt{reproduce.md} that lists the exact commands. The folder
+\texttt{proofs/} contains the companion notes R0--R5 \citep{NoteR0,NoteR1,NoteR2,NoteR3,NoteR4,NoteR5} with the
+complete proofs of the results of Sections~\ref{s4_mfpt:sec} and~\ref{s6b_rigorous:sec}; the certificates of the computer-assisted proofs and the programs that check them are
+in \texttt{data/msc\_rigorous\_*} and \texttt{code/msc\_rigorous\_*}. All computations are deterministic or use fixed
+random seeds. The code of the internal checks of the proofs (counter-example searches and separately written
+re-checks, Section~\ref{s6b_rigorous:ssec-status}) is not part of the repository.
+
+\section*{Acknowledgements}
+This article develops work begun in the author's MSc dissertation (University of Bristol, 2025).
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

@@ -1,0 +1,56 @@
+{
+ "uniform": {
+  "pred_slope_mfpt": 2.2706457342786455,
+  "pred_slope_mode": 2.183343791049869,
+  "measured_slope_mfpt_p002": 2.1198340345320066,
+  "measured_slope_mfpt_ci": 0.4113658625376868,
+  "measured_slope_mode_p002": 2.2147292418772486,
+  "measured_slope_mode_ci": 0.11717645548844698,
+  "pred_slope_ratio": -0.08730194322877649
+ },
+ "smart": {
+  "pred_slope_mfpt": 1.2609368003183852,
+  "pred_slope_mode": 1.9227505704254864,
+  "measured_slope_mfpt_p002": 1.2988033778599402,
+  "measured_slope_mfpt_ci": 0.17370787653522354,
+  "measured_slope_mode_p002": 2.0353770557561117,
+  "measured_slope_mode_ci": 0.051385349694006884,
+  "pred_slope_ratio": 0.6618137701071012
+ },
+ "pi_minus_1": 2.141592653589793,
+ "frac_sites_lowering_mfpt": 0.6762060506950123,
+ "frac_sites_lowering_mode": 0.05396565821749796,
+ "max_chi_mfpt": {
+  "value": 0.3817497049201472,
+  "site": [
+   33,
+   34
+  ]
+ },
+ "max_chi_mode": {
+  "value": 0.1053006086540468,
+  "site": [
+   33,
+   34
+  ]
+ },
+ "min_chi_mfpt": {
+  "value": -0.0010372917412311,
+  "site": [
+   1,
+   1
+  ]
+ },
+ "share_mfpt_within_3_of_target": 0.6385733615913649,
+ "share_mode_within_3_of_target": 0.1895308648525749,
+ "share_mfpt_within_3_of_start": -0.004083961873996967,
+ "share_mode_within_3_of_start": -0.006832866099682851,
+ "share_mfpt_within_6_of_target": 0.8762576125430609,
+ "share_mode_within_6_of_target": 0.24982585752058745,
+ "share_mfpt_within_6_of_start": -0.012537211982079792,
+ "share_mode_within_6_of_start": -0.009698435390991961,
+ "share_mfpt_within_10_of_target": 1.0456330284581308,
+ "share_mode_within_10_of_target": 0.2795348736483822,
+ "share_mfpt_within_10_of_start": -0.029382209291895618,
+ "share_mode_within_10_of_start": 0.014968666490222339
+}

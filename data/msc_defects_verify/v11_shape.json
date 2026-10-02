@@ -1,0 +1,44 @@
+{
+ "uniform_p0.1": {
+  "K": 200,
+  "theta": 1.2877204412388312,
+  "KS_ensemble_rescaled_by_theta": 0.010674100481284088,
+  "KS_own_mfpt_mean": 0.007616008922490278,
+  "KS_own_mfpt_median": 0.006967545000053532,
+  "KS_own_mfpt_max": 0.026511446140130346,
+  "KS_ensemble_rescaled_by_mean_mfpt": null
+ },
+ "uniform_p0.2": {
+  "K": 200,
+  "theta": 1.8783370813177744,
+  "KS_ensemble_rescaled_by_theta": 0.03065481388420943,
+  "KS_own_mfpt_mean": 0.012693362741447153,
+  "KS_own_mfpt_median": 0.010984260808617252,
+  "KS_own_mfpt_max": 0.03904669243741277,
+  "KS_ensemble_rescaled_by_mean_mfpt": null
+ },
+ "target_box_R5_g1": {
+  "KS_own_mfpt": 0.03731643247463978,
+  "mfpt_fac": 2.331941363993327
+ },
+ "start_box_R8_g1": {
+  "KS_own_mfpt": 0.04577301466662709,
+  "mfpt_fac": 1.0709777871597121
+ },
+ "wall_mid_gap_centre_g1": {
+  "KS_own_mfpt": 0.041124470653231215,
+  "mfpt_fac": 1.7603592275328444
+ },
+ "serpentine_k3_g3": {
+  "KS_own_mfpt": 0.07154477569396167,
+  "mfpt_fac": 3.5374487333390836
+ },
+ "block12_centre": {
+  "KS_own_mfpt": 0.02255125619274234,
+  "mfpt_fac": 0.9544737529524903
+ },
+ "periodic_a3": {
+  "KS_own_mfpt": 0.007648100740639485,
+  "mfpt_fac": 1.0831099283973349
+ }
+}

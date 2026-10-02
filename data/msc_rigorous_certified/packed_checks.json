@@ -1,0 +1,83 @@
+{
+ "Lemma packed (a): stencil equals the model rules": {
+  "ok": true,
+  "cases": 648
+ },
+ "Lemma packed (b): comparison at every site": {
+  "ok": true,
+  "cases": 4800
+ },
+ "Lemma packed (c): division by reciprocal multiplication": {
+  "ok": true,
+  "cases": 2100
+ },
+ "Lemma single: C_t <= 2^P v_t <= C_t + b_t (exact rationals)": {
+  "ok": true,
+  "steps": 11628,
+  "largest_fraction_of_b_used": 0.9422222222222222
+ },
+ "Proposition termination: lambda_1 simple and dominant, ratio -> lambda_1 (float)": {
+  "ok": true,
+  "cases": [
+   {
+    "d": 1,
+    "N": 8,
+    "q": "4/5",
+    "lambda1": 0.9825180805870445,
+    "second_modulus": 0.847213595499958,
+    "ok": true
+   },
+   {
+    "d": 1,
+    "N": 8,
+    "q": "1/1",
+    "lambda1": 0.9781476007338057,
+    "second_modulus": 0.913545457642601,
+    "ok": true
+   },
+   {
+    "d": 2,
+    "N": 5,
+    "q": "1/1",
+    "lambda1": 0.989100317046532,
+    "second_modulus": 0.9045084971874736,
+    "ok": true
+   },
+   {
+    "d": 2,
+    "N": 5,
+    "q": "4/5",
+    "lambda1": 0.9912802536372254,
+    "second_modulus": 0.9236067977499789,
+    "ok": true
+   },
+   {
+    "d": 3,
+    "N": 3,
+    "q": "1/1",
+    "lambda1": 0.9863703656619851,
+    "second_modulus": 0.8333333333333335,
+    "ok": true
+   },
+   {
+    "d": 3,
+    "N": 4,
+    "q": "1/2",
+    "lambda1": 0.9974580120502601,
+    "second_modulus": 0.9511844635310923,
+    "ok": true
+   }
+  ]
+ },
+ "verify_packed (exact and rounded) against verify_exact.py": {
+  "ok": true,
+  "cases": 95
+ },
+ "Theorem tau: Step-3 identity, bound on |b_n'|, single sign change of phi', root inside the certified enclosure (mpmath)": {
+  "ok": true,
+  "sign_changes_on_grid": 1,
+  "root": "0.1666421327474739493742634582717212105485",
+  "two_tau_star": "0.333284265494947898748526916543442421097"
+ },
+ "ALL OK": true
+}

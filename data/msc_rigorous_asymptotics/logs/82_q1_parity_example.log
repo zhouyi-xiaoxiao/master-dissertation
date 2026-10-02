@@ -1,0 +1,16 @@
+N=8  global maximiser t*=84  sign changes of P(T=t+1)-P(T=t) on [1,424]: 1
+N=9  global maximiser t*=108  sign changes of P(T=t+1)-P(T=t) on [1,483]: 3
+    P(T=106) = 0.00201150788
+    P(T=107) = 0.00201183104
+    P(T=108) = 0.00201226441
+    P(T=109) = 0.00201219672
+    P(T=110) = 0.00201221825
+    P(T=111) = 0.00201178969
+N=10  global maximiser t*=138  sign changes of P(T=t+1)-P(T=t) on [1,550]: 1
+N=11  global maximiser t*=170  sign changes of P(T=t+1)-P(T=t) on [1,623]: 3
+    P(T=168) = 0.00123857399
+    P(T=169) = 0.00123857045
+    P(T=170) = 0.00123858824
+    P(T=171) = 0.00123849321
+    P(T=172) = 0.00123841650
+    P(T=173) = 0.00123823468

@@ -1,0 +1,34 @@
+{
+ "generated_by": "code/article/s7s8_defects_figures.py",
+ "two_time": {
+  "tau_two_slowest_terms": [
+   12934.968813661579,
+   517.9566591841758
+  ],
+  "max_exact": 2493,
+  "max_two_terms": 2506,
+  "max_three_terms": 2493
+ },
+ "shape_family": {
+  "n_configurations_plotted": 13631,
+  "ratio_range": [
+   0.0473108771396552,
+   0.4688326103821101
+  ],
+  "cv_range": [
+   0.7291010779920861,
+   1.1248412676636692
+  ],
+  "frame": [
+   0.03,
+   0.49,
+   0.71,
+   1.14
+  ],
+  "quadratic_drawn": [
+   1.0073491029639712,
+   -0.45643269639259576,
+   -0.24606527164848663
+  ]
+ }
+}

@@ -1,0 +1,18 @@
+{'N': 3, 'tp2': False, 'verdict': 'undetermined (TP2 fails for k in [11, 13, 15, 17])', 'first_t_with_M12_negative': [2, 4, 6], 'increments': '+-----------'}
+{'N': 4, 'tp2': True, 'verdict': 'unimodal, not log-concave', 'first_t_with_M12_negative': [3], 'increments': '0+0+--------'}
+{'N': 5, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '00+++++-----'}
+{'N': 6, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '000++++++++-'}
+{'N': 7, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '0000++++++++'}
+{'N': 8, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '00000+++++++'}
+{'N': 9, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '000000++++++'}
+{'N': 10, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '0000000+++++'}
+{'N': 11, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '00000000++++'}
+{'N': 12, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': '000000000+++'}
+{'N': 13, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': None}
+{'N': 14, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': None}
+{'N': 40, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': None}
+{'N': 80, 'tp2': True, 'verdict': 'log-concave', 'first_t_with_M12_negative': [], 'increments': None}
+q = 4/5, k in [10,19], N in [3,80]  (712830 contiguous minors, 96377478 general minors, criteria agree: True)   [10s]
+  TP2 fails for N in [3] ; last k with a negative minor at N = NMAX: 9
+  not log-concave: N in [3, 4] ;  NOT unimodal: N in [] ;  undetermined by this method: N in [3]
+$P scripts/31_tp2_powers.py 4 5 10 80 --full  9.19s user 0.06s system 70% cpu 13.177 total

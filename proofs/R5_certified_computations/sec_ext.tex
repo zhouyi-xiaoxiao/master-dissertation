@@ -1,0 +1,106 @@
+\section{A second engine and extended ranges}\label{sec:ext}
+
+The ranges of Table~\ref{tab:ranges} were limited by the speed of the Python-integer checker. This section describes a second engine written in C with \texttt{unsigned \_\_int128} integers (\texttt{scripts/c128/fp128.c}, 366 lines including comments). In the wall-clock times recorded on the same (heavily loaded) machine for the upper parts of the ranges of Table~\ref{tab:ranges}, it was between $4.7$ and $71.9$ times faster than the generator (medians $8.7$ to $44.7$, depending on $d$ and $q$) and between $11.1$ and $270.1$ times faster than the Python-integer checker (medians $17.2$ to $206.7$); these ratios of wall-clock times are indicative only.
+% src: data/msc_rigorous_certified/remark_checks.json (key speed_ratios_wall_clock); data/msc_rigorous_certified/c128_build.json (source_lines 366)
+The section gives the lemmas that make its output a proof, the tests that validate it against the programs of Section~\ref{sec:lemmas}, and the theorems obtained with it on larger ranges of $N$. Its trusted base is different from (T1), so its results are stated separately (Theorems~\ref{thm:modesX} and \ref{thm:modesUX}); on the ranges of Table~\ref{tab:ranges} it reproduces every verdict of Theorems~\ref{thm:modes} and \ref{thm:modesU}.
+
+\textbf{Trusted base (T5).} C99 unsigned integer arithmetic on \texttt{uint64\_t} and \texttt{unsigned \_\_int128} ($+$, $-$, $\times$, $/$, $\%$, shifts, bitwise and/or, comparisons), as compiled by Apple clang~21.0.0 for arm64 with \texttt{-O2}; by Lemma~\ref{lem:cint} no operation wraps around. The program uses no floating-point arithmetic. The verdicts are formed from its output by \texttt{scripts/c128/c128\_post.py} with Python integers (T1), which also re-checks the tail inequality site by site.
+% src: data/msc_rigorous_certified/c128_build.json (compiler Apple clang 21.0.0, target arm64-apple-darwin, flags -O2)
+
+\subsection{The engine}
+
+The engine differs from the programs of Section~\ref{sec:lemmas} in three respects.
+\begin{itemize}
+\item[(i)] \emph{No exact phase.} The recurrences of Lemma~\ref{lem:encl} are started at $t_s=1$ with $L_1=U_1=2^Pe_{x_0}$, $P=112$ (the lemma allows any $t_s\ge1$; here $2^PX_1/D^0$ is an integer vector). This gives enclosures $F^-_t\le2^P\sigma_t\le F^+_t$ for every $t\ge1$, which are useless for comparing $\sigma_t$ with $\sigma_{t+1}$ as long as $\sigma_t\ll2^{-P}$.
+\item[(ii)] \emph{A floating-interval side computation for the early relations.} While $F^-_t<2^{48}$, a second pair of vectors $\mathrm{lo}_t\le v_t\le\mathrm{hi}_t$ is carried in a software floating format with 63-bit integer mantissas and directed rounding (Lemma~\ref{lem:float}). Its \emph{relative} width at every site grows by at most about $2^{-58}$ per step, whatever the size of $v_t(y)$ (in one application of \texttt{fsum} of Lemma~\ref{lem:float} the truncations of the terms cost less than $\sum_jc_j\le15$ units of $\mathrm{acc}\ge2^{62}$, and the final rounding less than one unit of the mantissa $m\ge2^{62}$; this estimate is not used in any proof), and it supplies certified relations between $\sigma_t$ and $\sigma_{t+1}$ in the early phase whenever their relative difference exceeds the relative width of the two enclosures.
+\item[(iii)] \emph{Symmetry reduction.} Only the sites with $y_1\le y_2\le\dots\le y_d$ are stored (Lemma~\ref{lem:sym}); this divides the work by almost $d!$.
+\end{itemize}
+
+\begin{lemma}[time of the first possible passage]\label{lem:support}
+Let $d\ge1$, $N\ge2$ and $q\in(0,1]$ be real. For $t\ge1$ and $y\in\Omega'$: $v_t(y)>0$ if and only if $t-1\ge|y|_1$. Consequently $\sigma_t>0$ if and only if $t\ge d(N-1)$, that is, $f(t)=0$ for $t<d(N-1)$ and $f(t)>0$ for all $t\ge d(N-1)$.
+\end{lemma}
+\begin{proof}
+$v_t(y)=(Q^{t-1})(y,x_0)$ is the sum, over all sequences $x_0=z_0,z_1,\dots,z_{t-1}=y$ in $\Omega'$, of the products $\prod_iQ(z_{i+1},z_i)\ge0$. A product is positive only if consecutive sites are equal or lattice neighbours, so $|z_{i+1}|_1\le|z_i|_1+1$ and $t-1\ge|y|_1$ is necessary. Conversely, $Q(x_0,x_0)=1-\frac q2>0$ (the corner $x_0$ has $d$ cancelled moves), and there is a coordinatewise increasing lattice path of length $|y|_1$ from $x_0$ to $y$; it stays in $\Omega'$ because its sites $z$ satisfy $z\le y$ coordinatewise and $y\ne a$. Staying $t-1-|y|_1$ times at $x_0$ and then following this path gives a positive product. Finally the $d$ neighbours of $a$ have $|y|_1=d(N-1)-1$.
+\end{proof}
+
+\begin{lemma}[symmetry reduction]\label{lem:sym}
+Let the symmetric group $S_d$ act on $\Omega$ by permuting coordinates; call a function $Z$ on $\Omega$ \emph{symmetric} if $Z(\pi y)=Z(y)$ for all $\pi\in S_d$, $y\in\Omega$. For $y\in\Omega'$ let $\nu_1(y),\dots,\nu_{2d}(y)$ be the list of the sites $y\pm e_k$, with $y\pm e_k$ replaced by $y$ itself when it lies outside $\Omega$ (a cancelled move).
+\begin{itemize}
+\item[(a)] $\pi x_0=x_0$, $\pi a=a$, and the list $\nu_1(\pi y),\dots,\nu_{2d}(\pi y)$ is a rearrangement of $\pi\nu_1(y),\dots,\pi\nu_{2d}(y)$.
+\item[(b)] For every function $Z$ on $\Omega$ with $Z(a)=0$: $(MZ)(y)=c_sZ(y)+c_m\sum_{j=1}^{2d}Z(\nu_j(y))$ for $y\in\Omega'$.
+\item[(c)] Let $\Psi$ be any function of a number and an unordered list of $2d$ numbers, and for $Z$ with $Z(a)=0$ define $(\widehat\Psi Z)(y)=\Psi\bigl(Z(y);\{Z(\nu_j(y))\}_{j}\bigr)$ for $y\in\Omega'$ and $(\widehat\Psi Z)(a)=0$. If $Z$ is symmetric, so is $\widehat\Psi Z$. Consequently $X_t$, $v_t$, the vectors $L_t$, $U_t$ of Lemma~\ref{lem:encl} with $t_s=1$, and the vectors $\mathrm{lo}_t$, $\mathrm{hi}_t$ of Lemma~\ref{lem:float} are symmetric for every $t\ge1$.
+\item[(d)] Let $\Omega_\le=\{y\in\Omega:\ y_1\le\dots\le y_d\}$ and let $\mathrm{sort}(z)\in\Omega_\le$ be the non-decreasing rearrangement of $z$. A symmetric $Z$ is determined by its restriction to $\Omega_\le$, $Z(z)=Z(\mathrm{sort}(z))$; an inequality between two symmetric functions holds on $\Omega'$ if and only if it holds on $\Omega_\le\setminus\{a\}$; and $\sum_{y\sim a}Z(y)=d\,Z\bigl((N-2,N-1,\dots,N-1)\bigr)$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(a) A permutation of the coordinates maps $\Omega$ onto itself, fixes the two constant vectors $x_0$ and $a$, and maps the set of the $2d$ unit vectors $\pm e_k$ onto itself; $y+e\notin\Omega$ if and only if $\pi y+\pi e\notin\Omega$. (b) is the definition of $M=c_m(A+B)+c_sI$ on $\Omega'$: a neighbour in $\Omega'$ contributes $c_mZ$ of that neighbour, the neighbour $a$ contributes $0=c_mZ(a)$, and each of the $b(y)$ cancelled moves contributes $c_mZ(y)$. (c) By (a), $\{Z(\nu_j(\pi y))\}_j=\{Z(\pi\nu_j(y))\}_j=\{Z(\nu_j(y))\}_j$ as unordered lists, and $Z(\pi y)=Z(y)$. The vectors named are obtained from the symmetric vector $e_{x_0}$ (times a constant) by iterating maps of the form $\widehat\Psi$: by (b), $\Psi=c_sz+c_m\sum_jz_j$ for $X_t$, the same divided by $D$ for $v_t$, followed by $\lfloor\cdot/D\rfloor$ or $\lceil\cdot/D\rceil$ for $L_t$, $U_t$, and the procedure \texttt{fsum} of Lemma~\ref{lem:float} for $\mathrm{lo}_t$, $\mathrm{hi}_t$ (its result does not depend on the order of the terms: $E$ is a maximum and $\mathrm{acc}$ a sum of integers). (d) Every orbit of $S_d$ meets $\Omega_\le$ in exactly one point; the $d$ neighbours $a-e_k$ of $a$ form one orbit.
+\end{proof}
+
+\begin{lemma}[integer routines of the C engine]\label{lem:cint}
+Let $1\le D\le15$ and $P=112$.
+\begin{itemize}
+\item[(a)] Let $0\le W<2^{116}$ be an integer, $w_1=\lfloor W/2^{58}\rfloor$, $w_0=W-2^{58}w_1$, $q_1=\lfloor w_1/D\rfloor$, $r_1=w_1-Dq_1$. Then $w_1<2^{58}$, $c:=2^{58}r_1+w_0<2^{62}$ and $\lfloor W/D\rfloor=2^{58}q_1+\lfloor c/D\rfloor$ (routine \texttt{divfloor}; all divisions are 64-bit).
+\item[(b)] Let $0\le W<2^{126}$ and $1\le D'\le15$. Writing $W=2^{84}a_2+2^{42}a_1+a_0$ with $0\le a_1,a_0<2^{42}$ (so $a_2<2^{42}$), three steps of long division in base $2^{42}$, $a_2=D'q_2+r_2$, $2^{42}r_2+a_1=D'q_1+r_1$, $2^{42}r_1+a_0=D'q_0+r_0$ ($0\le r_i<D'$), give $\lfloor W/D'\rfloor=2^{84}q_2+2^{42}q_1+q_0$, and every intermediate number is less than $2^{46}$ (routine \texttt{divsmall}).
+\item[(c)] If $0\le L\le U\le2^P$ entrywise and $L(a)=U(a)=0$, the routine \texttt{step\_fixed} returns $\lfloor ML/D\rfloor$ and $\lceil MU/D\rceil$, and no 128-bit operation wraps around: every sum of $2d$ entries is at most $2d\,2^P$, $W=c_m(\text{sum})+c_s(\text{entry})\le D\,2^P<2^{116}$, and $W+D-1<2^{116}$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(a) $W=D\,2^{58}q_1+c$ with $0\le c<2^{58}(r_1+1)\le2^{58}D<2^{62}$, hence $\lfloor W/D\rfloor=2^{58}q_1+\lfloor c/D\rfloor$. (b) is the schoolbook division: $W=D'(2^{84}q_2+2^{42}q_1+q_0)+r_0$, and $2^{42}r_i+a_{i-1}<2^{42}D'<2^{46}$. (c) By Lemma~\ref{lem:sym}(b) the routine forms $W=(MZ)(y)$; the bounds follow from $2dc_m+c_s=D$ and $D\,2^{112}+D-1<2^{116}$; $\lceil W/D\rceil=\lfloor(W+D-1)/D\rfloor$ for integers; (a) applies. Lemma~\ref{lem:encl} gives $U_{t+1}\le2^P$, so the hypothesis propagates.
+\end{proof}
+
+\begin{lemma}[floating enclosures]\label{lem:float}
+Let $\mathbb F=\{0\}\cup\{m\,2^e:\ m,e\in\mathbb Z,\ 2^{62}\le m<2^{63}\}$.
+\begin{itemize}
+\item[(a)] (\texttt{fsum}) Let $x_1,\dots,x_k\in\mathbb F$, let $c_1,\dots,c_k\ge0$ be integers with $\sum_jc_j\le15$, let $1\le D'\le15$ and $s=\frac1{D'}\sum_jc_jx_j$. The routine \texttt{fsum} returns $z_\downarrow\in\mathbb F$ with $z_\downarrow\le s$ (mode ``down'') or $z_\uparrow\in\mathbb F$ with $z_\uparrow\ge s$ (mode ``up''); the result is $0$ if and only if $s=0$; no operation wraps around; and the exponent of a non-zero result lies in $[E-4,E+5]$, where $E$ is the largest exponent of a non-zero term.
+\item[(b)] Define $\mathrm{lo}_1=\mathrm{hi}_1=e_{x_0}$ and, for $y\in\Omega'$, with $\nu_j$ as in Lemma~\ref{lem:sym},
+\[
+\mathrm{lo}_{t+1}(y)=\mathrm{fsum}_\downarrow\bigl((c_s,\mathrm{lo}_t(y)),(c_m,\mathrm{lo}_t(\nu_j(y)))_{j\le2d};D\bigr),
+\]
+\[
+\mathrm{hi}_{t+1}(y)=\mathrm{fsum}_\uparrow\bigl((c_s,\mathrm{hi}_t(y)),(c_m,\mathrm{hi}_t(\nu_j(y)))_{j\le2d};D\bigr)
+\]
+(with the value $0$ at $a$). Then $\mathrm{lo}_t\le v_t\le\mathrm{hi}_t$ on $\Omega'$ for all $t\ge1$, and $\mathrm{lo}_t(y)=0\iff\mathrm{hi}_t(y)=0\iff v_t(y)=0$.
+\item[(c)] Let $\underline\sigma_t=\mathrm{fsum}_\downarrow\bigl((1,\mathrm{lo}_t(y))_{y\sim a};1\bigr)$ and $\overline\sigma_t=\mathrm{fsum}_\uparrow\bigl((1,\mathrm{hi}_t(y))_{y\sim a};1\bigr)$. Then $\underline\sigma_t\le\sigma_t\le\overline\sigma_t$, and both vanish if and only if $\sigma_t=0$. Hence: $\overline\sigma_t<\underline\sigma_{t+1}$ implies $f(t)<f(t+1)$; $\overline\sigma_{t+1}<\underline\sigma_t$ implies $f(t)>f(t+1)$; and $\overline\sigma_t=\overline\sigma_{t+1}=0$ implies $f(t)=f(t+1)=0$.
+\item[(d)] Two elements $m2^e$, $m'2^{e'}$ of $\mathbb F\setminus\{0\}$ satisfy $m2^e<m'2^{e'}$ if and only if $(e,m)<(e',m')$ lexicographically.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(a) If no term has $c_jx_j\ne0$ the routine returns $0=s$. Otherwise let $E$ be the largest exponent among the non-zero terms $x_j=m_j2^{e_j}$ with $c_j\ge1$, and $s_j=E-e_j\ge0$. The routine forms $\mathrm{acc}=\sum_jc_jv_j$ with $v_j=\lfloor m_j/2^{s_j}\rfloor$ (down) or $\lceil m_j/2^{s_j}\rceil$ (up); for $s_j\ge63$ these are $0$ and $1$, because $0<m_j<2^{63}$ (the program obtains them by a shift for $s_j\le63$ and sets them directly for $s_j\ge64$, where a shift of a 64-bit word is undefined in C). So $\mathrm{acc}\,2^E\le\sum_jc_jx_j$, resp.\ $\ge$. A term with $s_j=0$ exists and contributes $c_jm_j\ge2^{62}$, and $v_j\le2^{63}$, so $2^{62}\le\mathrm{acc}\le15\cdot2^{63}<2^{67}$. Next $\mathrm{num}=2^{58}\mathrm{acc}<2^{125}$ and $Q=\lfloor\mathrm{num}/D'\rfloor$, resp.\ $\lceil\mathrm{num}/D'\rceil=\lfloor(\mathrm{num}+D'-1)/D'\rfloor$, computed by \texttt{divsmall} (Lemma~\ref{lem:cint}(b); $\mathrm{num}+D'-1<2^{126}$); thus $Q\,2^{E-58}\le s$, resp.\ $\ge s$, and, since $2^{120}\le\mathrm{num}<2^{125}$ and $1\le D'\le15$, $2^{116}<\lfloor2^{120}/15\rfloor\le Q<2^{125}$ in both modes. Let $\ell\in[117,125]$ be the number of binary digits of $Q$ and $\varsigma=\ell-63\in[54,62]$. The mantissa is $m=\lfloor Q/2^\varsigma\rfloor$, resp.\ $\lceil Q/2^\varsigma\rceil$, so $2^{62}\le m\le2^{63}$, and the result $m\,2^{E-58+\varsigma}$ is $\le s$, resp.\ $\ge s$; if $m=2^{63}$ (possible only in mode ``up'') the pair $(m,\varsigma)$ is replaced by $(2^{62},\varsigma+1)$, which represents the same number. The exponent is $E-58+\varsigma\in[E-4,E+5]$. The result is non-zero, as is $s$.
+
+(b) Induction on $t$: $v_{t+1}(y)=\frac1D\bigl[c_sv_t(y)+c_m\sum_jv_t(\nu_j(y))\bigr]$ by Lemma~\ref{lem:sym}(b), all coefficients are non-negative, so (a) gives $\mathrm{lo}_{t+1}(y)\le\frac1D[c_s\mathrm{lo}_t(y)+\dots]\le v_{t+1}(y)\le\frac1D[c_s\mathrm{hi}_t(y)+\dots]\le\mathrm{hi}_{t+1}(y)$. By (a), $\mathrm{lo}_{t+1}(y)=0$ iff every term with a positive coefficient vanishes, iff (induction) the same holds for $v_t$, iff $v_{t+1}(y)=0$; likewise for $\mathrm{hi}$. (The coefficients sum to $D\le15$, and $1=2^{62}\,2^{-62}\in\mathbb F$.)
+(c) follows from (a), (b) and $f=\frac q{2d}\sigma$. (d) $2^{62}\le m,m'<2^{63}$: if $e<e'$ then $m2^e<2^{63+e}\le2^{62+e'}\le m'2^{e'}$.
+\end{proof}
+
+In the symmetry-reduced program the sums over $y\sim a$ in (c) and in $F^\pm_t$ are replaced by $d$ times the value at the representative $(N-2,N-1,\dots,N-1)$ (Lemma~\ref{lem:sym}(d)); by the same lemma the reduced program computes the restrictions to $\Omega_\le$ of exactly the vectors defined above. The exponents are stored in 32-bit signed integers: by (a) they stay in $[-62-4t,\,-62+5t]$ after $t$ steps, and the floating phase lasts fewer than $10^5$ steps in all runs.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (largest t_sw 69335, macro XMaxTsw); asserted for every certificate in code/msc_rigorous_certified_c128/audit_ext.py
+
+\textbf{Certificate data of the C engine.} For given $(d,N,q)$ the program writes (binary file) the integers $F^-_t=\sum_{y\sim a}L_t(y)$, $F^+_t=\sum_{y\sim a}U_t(y)$ for $1\le t\le T+1$; the early relations $\mathrm{relf}_t\in\{<,>,=,?\}$ of Lemma~\ref{lem:float}(c) for the times $t<t_{\rm sw}$, where $t_{\rm sw}$ is the first time with $F^-_{t_{\rm sw}}\ge2^{48}$ (and ``?'' afterwards); the tail time $T$, the first $t$ with $U_{t+1}(y)<L_t(y)$ at every stored non-target site; and the two vectors $L_T$, $U_{T+1}$ on the stored sites. The post-processor (Python integers) sets $\mathrm{rel}_t$ to ``$<$'' if $F^+_t<F^-_{t+1}$, to ``$>$'' if $F^-_t>F^+_{t+1}$, and to $\mathrm{relf}_t$ otherwise (a contradiction between two decided relations would raise an error; none occurred); it re-checks $U_{T+1}<L_T$ at every stored non-target site and that $F^-_T$, $F^+_{T+1}$ are the sums of these vectors over the neighbours of $a$; it computes the largest ratio $\gamma=\max_yU_{T+1}(y)/L_T(y)<1$ exactly; and it forms the verdicts with the same code as the generator of Section~\ref{sec:lemmas} (\texttt{fpcore.Checker.finish}).
+
+\begin{proposition}[soundness of the C certificates]\label{prop:soundC}
+The data just described satisfy the hypotheses of Proposition~\ref{prop:sound}: $F^-_t\le2^P\sigma_t\le F^+_t$ for $1\le t\le T+1$; every $\mathrm{rel}_t$ is ``?'' or a true relation between $f(t)$ and $f(t+1)$; $v_{T+1}<v_T$ on $\Omega'$, and $v_{T+1}\le\gamma v_T$. Moreover $F^+_t>0$ if and only if $\sigma_t>0$, so the first $t$ with $F^+_t>0$ is $t_0=d(N-1)$.
+\end{proposition}
+\begin{proof}
+Enclosures: Lemma~\ref{lem:encl} with $t_s=1$, computed without wrap-around by Lemma~\ref{lem:cint}(c), on the representatives by Lemma~\ref{lem:sym}. Relations: by the enclosures, resp.\ by Lemma~\ref{lem:float}(c),(d). Tail: $2^Pv_{T+1}\le U_{T+1}<L_T\le2^Pv_T$ on $\Omega_\le\setminus\{a\}$, hence on $\Omega'$ by Lemma~\ref{lem:sym}(d); and $2^Pv_{T+1}\le U_{T+1}\le\gamma L_T\le\gamma2^Pv_T$. Supports: $\lceil W/D\rceil=0$ iff $W=0$, so by induction $U_t(y)=0$ iff $v_t(y)=0$ (as in Lemma~\ref{lem:float}(b)); the last claim is Lemma~\ref{lem:support}.
+\end{proof}
+
+\subsection{Validation of the engine}
+
+The following tests are evidence that the compiled program does what Lemmas~\ref{lem:cint}--\ref{lem:float} say; they are not part of the proofs.
+\begin{itemize}
+\item[(V1)] \emph{Byte-identical output of a separately written Python-integer mirror.} \texttt{scripts/c128/c128\_ref.py} implements the mathematical description above with Python integers and dictionaries of coordinates (no limbs, no index arrays). For \XRefSmall\ small cases ($d=1$, $N\le40$ and $N=50,64,80$; $d=2$, $N\le16$ and $N=20,24$; $d=3$, $N\le8$ and $N=10$; $q\in\{4/5,1/2,1\}$ and some cases with $q\in\{2/3,3/4,1/3,3/5\}$; with and without symmetry reduction) and \XRefMedium\ medium cases (up to $74451$ time steps, $d=1$, $N=200$, $q=1$, or $1830$ stored sites, $d=2$, $N=60$) the complete output files (all $F^\pm_t$, all early relations, $T$, $t_{\rm sw}$ and the final vectors) of the C program are byte-identical with the mirror's (\texttt{certs/c128\_refcheck.json}, \texttt{c128\_refcheck\_medium.json}). In the small cases this holds for the optimised build and for a build with the options \texttt{-O1 -DCHECK} and \texttt{-fsanitize=undefined,address}, in which every division is compared with the native 128-bit division and every range assumption of Lemma~\ref{lem:cint} is asserted.
+% src: data/msc_rigorous_certified/c128_refcheck.json (286 cases; both builds, code/msc_rigorous_certified_c128/c128_validate_ref.py), data/msc_rigorous_certified/c128_refcheck_medium.json (10 cases; T_tail and stored_sites of these cases in data/msc_rigorous_certified/c128_*.jsonl)
+\item[(V2)] \emph{Regression on Theorems~\ref{thm:modes} and \ref{thm:modesU}.} For all \TotalCerts\ triples $(d,q,N)$ of Table~\ref{tab:ranges} the C certificate has the same $t_0$, $t^*$, $T$, the same verdicts (mode certified, strictly unimodal), the same number of certified strict local maxima and of undecided relations as the certificate of the generator, and the enclosures of $2^P\sigma_t$ at $t^*-1,t^*,t^*+1$ intersect (number of disagreements: \XRegressBad). Since every one of those certificates was confirmed with Python integers by \texttt{verify\_packed.py}, the C engine agrees with a Python-integer computation on \TotalCerts\ cases with up to $4\times10^5$ time steps.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key modes.*.tierA_identical_count); largest T_tail 416188 in data/msc_rigorous_certified/packed_d1_q4-5.jsonl
+\item[(V3)] \emph{Cross-checks inside the extended ranges} (Table~\ref{tab:rangesX}): \XXLimb\ of the new certificates were re-derived by the generator \texttt{fplimb.py} (exact Python-integer early phase, then int64 limbs) and \XXPacked\ by \texttt{verify\_packed.py} (Python integers only), each a single computation of less than twenty minutes; all have identical $t_0$, $t^*$, $T$ and verdicts and intersecting enclosures.
+% src: data/msc_rigorous_certified/xcheck_limb_*.jsonl, data/msc_rigorous_certified/xcheck_packed_*.jsonl (field seconds, wall-clock; longest 938 s)
+\item[(V4)] \emph{Every certificate computed twice.} Each of the \XRecheckN\ certificates was computed a second time, in a separate run (\texttt{scripts/c128/c128\_recheck.py}); the sha256 digest of the complete output file (all $F^\pm_t$, the early relations, $T$, $t_{\rm sw}$ and the vectors $L_T$, $U_{T+1}$) agrees with that of the first run in every case (\XRecheckBad\ failures). This guards against transient hardware faults, the computer having no error-correcting memory.
+% src: data/msc_rigorous_certified/c128_recheck_*.jsonl
+\item[(V5)] \emph{Conservation of probability.} Since $\sum_{y\in\Omega'}v_t(y)+\sum_{s<t}f(s)=1$ and $f=\frac{c_m}{D}\sigma$, the output of a correct run must satisfy
+\[
+D\sum_{y}\mu(y)L_T(y)+c_m\sum_{s=1}^{T-1}F^-_s\ \le\ D\,2^P\ \le\ D\sum_{y}\mu(y)U_{T+1}(y)+c_m\sum_{s=1}^{T}F^+_s ,
+\]
+where the sums over $y$ run over the stored sites and $\mu(y)$ is the number of lattice sites represented by $y$. Both inequalities were verified with Python integers for all \XRecheckN\ certificates; the two sides differ from $D\,2^P$ by less than $\XMaxSlack$ in relative terms. This single test ties the whole sequence of $F^\pm_t$ to the final vectors: a wrap-around, a wrong neighbour index or a corrupted entry anywhere in the run would show up as a violation unless it were smaller than this slack.
+% src: data/msc_rigorous_certified/c128_recheck_*.jsonl (fields conservation_ok, relative_slack)
+\item[(V6)] \emph{Reduced versus full lattice.} By Lemma~\ref{lem:sym} the reduced and the unreduced program must produce the same integers $F^\pm_t$, the same early relations and the same $T$; this was checked in every case of (V1) (both variants agree with the mirror) and is implied by (V2), the programs of Section~\ref{sec:lemmas} working on the full lattice.
+% src: data/msc_rigorous_certified/c128_refcheck.json (field reduced), data/msc_rigorous_certified/ext_lemma_checks.json (check B)
+\end{itemize}

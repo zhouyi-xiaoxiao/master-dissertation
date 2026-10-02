@@ -1,0 +1,433 @@
+% sections/appC_tables.tex -- Supplementary Section S10: extended tables.
+% Body only.  Labels: prefix "appC_tables:".
+% The numerical rows of all tables are generated from the result files by  code/article/appC_tables_build.py
+% (fragments in data/article/appC_tables_fragments/, cross-checks and derived numbers in
+% data/article/appC_tables_checks.json).  Do not edit those rows by hand:
+% `python code/article/appC_tables_build.py --check'  verifies that they are verbatim copies.
+% Paths in "% src:" comments are relative to the root of the repository (see README.md).
+%
+% local helpers (no new notation): ragged-right cell, and a group that sets the tables in a smaller
+% size while the captions stay in the normal size
+\providecommand{\appCrr}{\raggedright\hspace{0pt}}
+\providecommand{\appCtablesetup}{%
+  \footnotesize
+  \setlength{\LTcapwidth}{\textwidth}%
+  \setlength{\tabcolsep}{4pt}%
+  \renewcommand{\tablename}{\normalsize Table}}
+
+\section{Extended tables}\label{appC_tables:sec}
+
+This section gives the full tables behind Sections~\ref{s3_methods:sec}--\ref{s7_defects:sec} of the main text. The
+numerical rows are copied from the result files by a script, not retyped; only the typography differs from the sources.
+% src: code/article/appC_tables_build.py; data/article/appC_tables_checks.json
+Unless stated otherwise, times are in steps, $q=0.8$, and the walk goes from one corner to the opposite corner (\CC).
+
+\subsection{Exact modes and means}\label{appC_tables:ssec-modes}
+
+All rows of Tables~\ref{appC_tables:tab-T1}--\ref{appC_tables:tab-T3} up to $N=10\,240$ are certified global maximisers
+(Proposition~\ref{s3_methods:prop-certificate}; for $N=10\,240$ see Section~\ref{sup_methods:ssec-certificate}). The last
+two rows of Table~\ref{appC_tables:tab-T1} are the local maxima of \eqref{s5_modes:eq-1d-pmf} nearest the continuum
+prediction, located in double precision and confirmed in 50-digit arithmetic; they are the global maximisers by
+Theorem~\ref{s6b_rigorous:thm-1d}(c) (computer-assisted). The ratios of the three large-$N$ rows, $0.33328426$,
+$0.33328427$ and $0.33328427$, agree with the limit~\eqref{s5_modes:eq-1d-ratio} to seven decimals.
+% src: data/msc_modes_verify/bigN_1d_mp.json; data/msc_modes/laplace_modes.jsonl (d = 1: mode_discrete_q0.8); data/article/appC_tables_checks.json (T1_large_N_rows); data/article/s3_methods_certificate.json (CC_q0.8_d1, CC_q0.8_d2, CC_q0.8_d3); data/article/s3_methods_certificate_chain.json (certified_global_maximiser, N = 10240)
+
+\begingroup\appCtablesetup
+% src: data/msc_modes/tables.md (Table T1, 15 of 33 rows, exact columns); last three rows: data/msc_modes_verify/bigN_1d_mp.json and data/article/appC_tables_checks.json (T1_large_N_rows)
+\begin{longtable}{@{}rrrr@{}}
+\caption{One dimension, reflecting end to absorbing end, $q=0.8$, discrete time: exact mode $\tmode$ and mean
+$\MF=N(N-1)/q$ (15 of the 33 computed sizes, and three larger sizes).}
+\label{appC_tables:tab-T1}\\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$5$ & $8$ & $25$ & $0.32000$ \\
+$9$ & $29$ & $90$ & $0.32222$ \\
+$13$ & $64$ & $195$ & $0.32821$ \\
+$17$ & $113$ & $340$ & $0.33235$ \\
+$21$ & $174$ & $525$ & $0.33143$ \\
+$25$ & $249$ & $750$ & $0.33200$ \\
+$29$ & $338$ & $1015$ & $0.33300$ \\
+$35$ & $495$ & $1487.5$ & $0.33277$ \\
+$50$ & $1020$ & $3062.5$ & $0.33306$ \\
+$70$ & $2012$ & $6037.5$ & $0.33325$ \\
+$100$ & $4124$ & $12\,375$ & $0.33325$ \\
+$140$ & $8107$ & $24\,325$ & $0.33328$ \\
+$200$ & $16\,580$ & $49\,750$ & $0.33327$ \\
+$400$ & $66\,490$ & $199\,500$ & $0.33328$ \\
+$1000$ & $416\,188$ & $1.24875\times10^{6}$ & $0.33328$ \\
+\midrule
+$10\,240$ & $43\,679\,969$ & $131\,059\,200$ & $0.33328$ \\
+$100\,000$ & $4\,166\,011\,658$ & $12\,499\,875\,000$ & $0.33328$ \\
+$1\,000\,000$ & $416\,604\,915\,263$ & $1\,249\,998\,750\,000$ & $0.33328$ \\
+\end{longtable}
+\endgroup
+
+\begingroup\appCtablesetup
+% src: data/msc_modes/tables.md (Table T2, 15 of 31 rows, exact columns)
+\begin{longtable}{@{}rrrr@{}}
+\caption{Two dimensions, \CC, $q=0.8$, discrete time: exact mode and mean (15 of the 31 computed sizes). Means are
+printed to six significant figures.}
+\label{appC_tables:tab-T2}\\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$5$ & $36$ & $133.523$ & $0.2696$ \\
+$9$ & $136$ & $582.819$ & $0.2333$ \\
+$13$ & $304$ & $1413.12$ & $0.2151$ \\
+$17$ & $541$ & $2662.84$ & $0.2032$ \\
+$21$ & $849$ & $4359.64$ & $0.1947$ \\
+$25$ & $1228$ & $6525.22$ & $0.1882$ \\
+$29$ & $1679$ & $9177.43$ & $0.1829$ \\
+$35$ & $2493$ & $14\,100.8$ & $0.1768$ \\
+$50$ & $5253$ & $31\,614.8$ & $0.1662$ \\
+$70$ & $10\,570$ & $67\,212.4$ & $0.1573$ \\
+$100$ & $22\,110$ & $148\,521$ & $0.1489$ \\
+$140$ & $44\,248$ & $312\,092$ & $0.1418$ \\
+$200$ & $92\,116$ & $682\,335$ & $0.1350$ \\
+$301$ & $212\,975$ & $1.6634\times10^{6}$ & $0.1280$ \\
+$401$ & $383\,013$ & $3.09907\times10^{6}$ & $0.1236$ \\
+\end{longtable}
+\endgroup
+
+\begingroup\appCtablesetup
+% src: data/msc_modes/tables.md (Table T3, all 17 rows, exact columns)
+\begin{longtable}{@{}rrrr@{}}
+\caption{Three dimensions, \CC, $q=0.8$, discrete time: exact mode and mean (all computed sizes). Means are printed to
+six significant figures.}
+\label{appC_tables:tab-T3}\\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+$N$ & $\tmode$ & $\MF$ & $\tmode/\MF$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$5$ & $85$ & $555.333$ & $0.1531$ \\
+$7$ & $187$ & $1616.08$ & $0.1157$ \\
+$9$ & $332$ & $3545.23$ & $0.0936$ \\
+$11$ & $523$ & $6602.02$ & $0.0792$ \\
+$13$ & $760$ & $11\,045.7$ & $0.0688$ \\
+$15$ & $1044$ & $17\,135.5$ & $0.0609$ \\
+$17$ & $1376$ & $25\,130.6$ & $0.0548$ \\
+$19$ & $1757$ & $35\,290.2$ & $0.0498$ \\
+$25$ & $3202$ & $81\,348.9$ & $0.0394$ \\
+$30$ & $4759$ & $141\,444$ & $0.0336$ \\
+$35$ & $6644$ & $225\,599$ & $0.0295$ \\
+$40$ & $8863$ & $337\,864$ & $0.0262$ \\
+$50$ & $14\,323$ & $662\,926$ & $0.0216$ \\
+$60$ & $21\,175$ & $1.14903\times10^{6}$ & $0.0184$ \\
+$70$ & $29\,447$ & $1.82859\times10^{6}$ & $0.0161$ \\
+$80$ & $39\,161$ & $2.734\times10^{6}$ & $0.0143$ \\
+$100$ & $62\,998$ & $5.35199\times10^{6}$ & $0.0118$ \\
+\end{longtable}
+\endgroup
+
+\subsection{Scaling fits}\label{appC_tables:ssec-fits}
+
+Each law is fitted by least squares to $\ln\tmode$ on $10\le N\le200$ ($10\le N\le100$ for $\dd=3$). The data are exact,
+so half-widths and residuals measure misfit, not noise. Inside the window the laws are hard to tell apart; outside it
+they are not: a pure $N^{2}$ law for $\dd=2$ is $30.80\%$ too low at $N=16\,777\,216$, and a pure $N^{3}$ law for $\dd=3$ is
+$6798.98\%$ too high at $N=4096$. On the information criterion $A N^{a}(\ln N)^{b}$ is preferred to $N^{2}(A\ln\ln N+B)$ in
+both two-dimensional panels, so the fits do not reveal the $\ln\ln N$ law, which is proved, with a slowly decaying
+remainder, in Theorem~\ref{s6b_rigorous:thm-laws}.
+% src: data/msc_modes/tables.md (fit tables); data/msc_modes/fit_results.json (fits)
+A second implementation reproduces parameters and extrapolation errors to the printed digits; its $\Delta\mathrm{AICc}$
+values differ by at most $2.8$ units, without changing a ranking.
+% src: data/msc_modes_verify/analysis.json (fits); data/msc_modes/fit_results.json (fits); data/checks/modes_scaling_fits_recheck.json (max_abs_dAICc_difference = 2.786, ranking_by_AICc_identical_in_every_window, params_max_rel_diff = 1.0e-7)
+
+\begingroup\appCtablesetup\setlength{\tabcolsep}{3pt}
+% src: data/msc_modes/tables.md (tables "2D mode (continuous time, unit rate): fit on N = 10..200, extrapolated", "3D mode (continuous time, unit rate): fit on N = 10..100, extrapolated", "2D mode, exact discrete PMF, q = 0.8, N = 11..200", "3D mode, exact discrete PMF, q = 0.8, N = 11..100"); data/msc_modes/fit_results.json (fits: n_points, holdout_N)
+\begin{longtable}{@{}lp{3.7cm}rrrrrrr@{}}
+\caption{Least-squares fits of $\ln\tmode$ against $N$ (\CC). Parameters are given with the half-width of their
+95\% least-squares interval in brackets; ``rms'' and ``max'' are the root-mean-square and the largest absolute
+residual of $\ln\tmode$, in units of $10^{-2}$; $\Delta\mathrm{AICc}$ is relative to the best law of the panel.
+The last columns give the relative error, in per cent, of the fitted law at sizes outside the fitted window
+($2^{24}=16\,777\,216$).
+The closed-form approximation \eqref{s6_mechanism:eq-L1} and the closed form \eqref{s6_mechanism:eq-L1-simple}, which
+have no fitted parameter, are assessed in
+Table~\ref{s6_mechanism:tab-accuracy}.}
+\label{appC_tables:tab-fits-full}\\
+\toprule
+law & parameters (half-width) & rms & max & $\Delta\mathrm{AICc}$ & \multicolumn{4}{c}{extrapolation error (\%)} \\
+\midrule
+\endfirsthead
+\multicolumn{9}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+law & parameters (half-width) & rms & max & $\Delta\mathrm{AICc}$ & \multicolumn{4}{c}{extrapolation error (\%)} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{9}{@{}l}{(a) $\dd=2$, continuous time at unit rate, fitted on 13 sizes with $10\le N\le200$;
+errors at} \tabularnewline
+ & & & & & $N=1280$ & $10\,240$ & $163\,840$ & $2^{24}$ \tabularnewline
+\midrule
+$A N^{2}$ & \appCrr ${\ln A=0.50339\,(0.052)}$ & $8.34$ & $18.1$ & $121.7$ & $-17.04$ & $-21.89$ & $-26.19$ & $-30.80$ \tabularnewline
+$A N^{a}$ & \appCrr ${\ln A=0.14378\,(0.046)}$ \newline ${a=2.0925\,(0.011)}$ & $1.53$ & $3.42$ & $81.2$ & $+12.21$ & $+28.04$ & $+56.34$ & $+124.92$ \tabularnewline
+$A N^{2}(\ln N)^{b}$ & \appCrr ${\ln A=0.047535\,(0.019)}$ \newline ${b=0.34275\,(0.014)}$ & $0.519$ & $1.09$ & $53.0$ & $+3.23$ & $+6.08$ & $+9.67$ & $+14.99$ \tabularnewline
+$A N^{a}(\ln N)^{b}$ & \appCrr ${\ln A=0.0034407\,(0.0041)}$ \newline ${a=1.9526\,(0.0037)}$ \newline ${b=0.51462\,(0.014)}$ & $0.0572$ & $0.0933$ & $0.0$ & $-1.34$ & $-4.03$ & $-8.99$ & $-18.97$ \tabularnewline
+$N^{2}(A\ln\ln N+B)$ & \appCrr ${A=0.55506\,(0.0069)}$ \newline ${B=0.92175\,(0.009)}$ & $0.160$ & $0.299$ & $22.3$ & $+1.00$ & $+1.78$ & $+2.67$ & $+3.84$ \tabularnewline
+$N^{2}(A\ln N+B)$ & \appCrr ${A=0.1537\,(0.015)}$ \newline ${B=1.0622\,(0.056)}$ & $1.19$ & $2.55$ & $74.7$ & $+8.42$ & $+17.17$ & $+29.72$ & $+51.40$ \tabularnewline
+\midrule
+\multicolumn{9}{@{}l}{(b) $\dd=3$, continuous time at unit rate, fitted on 10 sizes with $10\le N\le100$;
+errors at} \tabularnewline
+ & & & & & $N=320$ & $1280$ & $4096$ & \tabularnewline
+\midrule
+$A N^{3}$ & \appCrr ${\ln A=-2.0909\,(0.44)}$ & $58.3$ & $101$ & $143.7$ & $+584.88$ & $+2286.85$ & $+6798.98$ &  \tabularnewline
+$A N^{2}$ & \appCrr ${\ln A=1.4547\,(0.091)}$ & $12.0$ & $23.4$ & $112.2$ & $-25.82$ & $-35.37$ & $-41.62$ &  \tabularnewline
+$A N^{a}$ & \appCrr ${\ln A=0.85038\,(0.05)}$ \newline ${a=2.1704\,(0.014)}$ & $1.19$ & $2.25$ & $70.2$ & $+8.35$ & $+19.56$ & $+31.67$ &  \tabularnewline
+$A N^{2}(\ln N)^{b}$ & \appCrr ${\ln A=0.74292\,(0.0024)}$ \newline ${b=0.57194\,(0.0019)}$ & $0.0494$ & $0.105$ & $6.5$ & $-0.81$ & $-2.25$ & $-3.77$ &  \tabularnewline
+$A N^{a}(\ln N)^{b}$ & \appCrr ${\ln A=0.74632\,(0.0024)}$ \newline ${a=2.0058\,(0.0033)}$ \newline ${b=0.55273\,(0.011)}$ & $0.0264$ & $0.0368$ & $0.0$ & $-0.50$ & $-1.57$ & $-2.72$ &  \tabularnewline
+$N^{2}(A\ln N+B)$ & \appCrr ${A=0.72063\,(0.023)}$ \newline ${B=1.7587\,(0.081)}$ & $0.489$ & $0.878$ & $52.4$ & $+2.46$ & $+4.34$ & $+5.67$ &  \tabularnewline
+\midrule
+\multicolumn{9}{@{}l}{(c) $\dd=2$, exact discrete modes at $q=0.8$, 25 sizes with $11\le N\le200$}
+\tabularnewline
+\midrule
+$A N^{2}$ & \appCrr ${\ln A=0.72188\,(0.033)}$ & $7.77$ & $16.1$ & $242.8$ &  &  &  &  \tabularnewline
+$A N^{a}$ & \appCrr ${\ln A=0.37735\,(0.025)}$ \newline ${a=2.0901\,(0.0064)}$ & $1.27$ & $3.26$ & $154.8$ &  &  &  &  \tabularnewline
+$A N^{2}(\ln N)^{b}$ & \appCrr ${\ln A=0.27394\,(0.011)}$ \newline ${b=0.34042\,(0.0085)}$ & $0.448$ & $1.09$ & $102.8$ &  &  &  &  \tabularnewline
+$A N^{a}(\ln N)^{b}$ & \appCrr ${\ln A=0.22176\,(0.0031)}$ \newline ${a=1.9508\,(0.0026)}$ \newline ${b=0.52296\,(0.0099)}$ & $0.0542$ & $0.112$ & $0.0$ &  &  &  &  \tabularnewline
+$N^{2}(A\ln\ln N+B)$ & \appCrr ${A=0.69628\,(0.0061)}$ \newline ${B=1.1483\,(0.0079)}$ & $0.159$ & $0.296$ & $51.1$ &  &  &  &  \tabularnewline
+$N^{2}(A\ln N+B)$ & \appCrr ${A=0.18788\,(0.01)}$ \newline ${B=1.346\,(0.04)}$ & $0.997$ & $2.50$ & $142.8$ &  &  &  &  \tabularnewline
+\midrule
+\multicolumn{9}{@{}l}{(d) $\dd=3$, exact discrete modes at $q=0.8$, 14 sizes with $11\le N\le100$}
+\tabularnewline
+\midrule
+$A N^{3}$ & \appCrr ${\ln A=-1.8032\,(0.34)}$ & $57.3$ & $96.1$ & $206.3$ &  &  &  &  \tabularnewline
+$A N^{2}$ & \appCrr ${\ln A=1.665\,(0.07)}$ & $11.7$ & $20.1$ & $161.8$ &  &  &  &  \tabularnewline
+$A N^{a}$ & \appCrr ${\ln A=1.0788\,(0.032)}$ \newline ${a=2.169\,(0.0091)}$ & $0.999$ & $2.03$ & $96.2$ &  &  &  &  \tabularnewline
+$A N^{2}(\ln N)^{b}$ & \appCrr ${\ln A=0.96098\,(0.0012)}$ \newline ${b=0.57548\,(0.001)}$ & $0.0322$ & $0.0667$ & $0.0$ &  &  &  &  \tabularnewline
+$A N^{a}(\ln N)^{b}$ & \appCrr ${\ln A=0.96208\,(0.0026)}$ \newline ${a=2.0016\,(0.0034)}$ \newline ${b=0.56994\,(0.012)}$ & $0.0307$ & $0.0684$ & $2.7$ &  &  &  &  \tabularnewline
+$N^{2}(A\ln N+B)$ & \appCrr ${A=0.89816\,(0.02)}$ \newline ${B=2.2067\,(0.069)}$ & $0.423$ & $0.877$ & $72.1$ &  &  &  &  \tabularnewline
+\end{longtable}
+\endgroup
+
+\subsection{Full-support check and dependence on the activity}\label{appC_tables:ssec-shape}
+
+In 35 runs the exact probability mass function was iterated over its whole support, until $\Sv(t)<10^{-12}$. In every
+run it has one local maximum and no local minimum, and the accumulated mass differs from $1$ by at most
+$2.0\times10^{-12}$; for $\dd=1$ the mean recomputed from the mass function equals $N(N-1)/q$ to the four decimals
+printed (Table~\ref{appC_tables:tab-unimodal}). For these placements and activities unimodality is proved
+(Theorems~\ref{s6b_rigorous:thm-unimodal}, \ref{s6b_rigorous:thm-45} and~\ref{s6b_rigorous:thm-1d}).
+% src: data/msc_modes/full_tail.json; data/msc_modes/summary_tables.md (Table U); data/article/appC_tables_checks.json (unimodal_*)
+
+\begingroup\appCtablesetup\renewcommand{\arraystretch}{0.95}% the 35 rows stay on one page
+% src: data/msc_modes/summary_tables.md (Table U, all 35 rows), cross-checked entry by entry against data/msc_modes/full_tail.json
+\begin{longtable}{@{}clrrrrrccrrrr@{}}
+\caption{Exact discrete first-passage mass functions iterated until $\Sv(t)<10^{-12}$: number of steps, missing
+mass $1-\sum_{t}\pmf(t)$, mode, number of local maxima and of local minima over the whole support, mean
+recomputed from the mass function, coefficient of variation, probability of arrival by the mode, and median.
+Geometry labels as in Section~\ref{s2_model:ssec-geom}.}
+\label{appC_tables:tab-unimodal}\\
+\toprule
+$\dd$ & geom. & $N$ & $q$ & steps & $1-\sum\pmf$ & $\tmode$ & max. & min. & mean & CV &
+$\Prob(\FPT\le\tmode)$ & median \\
+\midrule
+\endfirsthead
+\multicolumn{13}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+$\dd$ & geom. & $N$ & $q$ & steps & $1-\sum\pmf$ & $\tmode$ & max. & min. & mean & CV &
+$\Prob(\FPT\le\tmode)$ & median \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1 & \CC & $5$ & $0.8$ & $1024$ & $2.2\times10^{-16}$ & $8$ & 1 & 0 & $25.0000$ & $0.8124$ & $0.1700$ & $19$ \\
+1 & \CC & $5$ & $0.5$ & $1024$ & $3.0\times10^{-14}$ & $13$ & 1 & 0 & $40.0000$ & $0.8216$ & $0.1743$ & $30$ \\
+1 & \CC & $21$ & $0.8$ & $12\,288$ & $3.7\times10^{-13}$ & $174$ & 1 & 0 & $525.0000$ & $0.8163$ & $0.1655$ & $398$ \\
+1 & \CC & $21$ & $0.5$ & $19\,456$ & $5.0\times10^{-13}$ & $279$ & 1 & 0 & $840.0000$ & $0.8167$ & $0.1662$ & $636$ \\
+1 & \CC & $51$ & $0.8$ & $72\,704$ & $7.7\times10^{-13}$ & $1062$ & 1 & 0 & $3187.5000$ & $0.8165$ & $0.1665$ & $2414$ \\
+1 & \CC & $51$ & $0.5$ & $115\,712$ & $8.9\times10^{-13}$ & $1699$ & 1 & 0 & $5100.0000$ & $0.8165$ & $0.1665$ & $3863$ \\
+1 & \CC & $101$ & $0.8$ & $285\,696$ & $9.7\times10^{-13}$ & $4207$ & 1 & 0 & $12\,625.0000$ & $0.8165$ & $0.1665$ & $9563$ \\
+1 & \CC & $101$ & $0.5$ & $456\,704$ & $9.8\times10^{-13}$ & $6732$ & 1 & 0 & $20\,200.0000$ & $0.8165$ & $0.1665$ & $15\,301$ \\
+2 & \CC & $5$ & $0.8$ & $4096$ & $-4.4\times10^{-16}$ & $36$ & 1 & 0 & $133.5227$ & $0.8581$ & $0.1413$ & $99$ \\
+2 & \CC & $5$ & $0.5$ & $5120$ & $8.4\times10^{-13}$ & $58$ & 1 & 0 & $213.6364$ & $0.8597$ & $0.1430$ & $158$ \\
+2 & \CC & $9$ & $0.8$ & $14\,336$ & $8.6\times10^{-13}$ & $136$ & 1 & 0 & $582.8188$ & $0.8832$ & $0.1239$ & $426$ \\
+2 & \CC & $9$ & $0.5$ & $23\,552$ & $4.1\times10^{-13}$ & $219$ & 1 & 0 & $932.5100$ & $0.8836$ & $0.1253$ & $682$ \\
+2 & \CC & $15$ & $0.8$ & $50\,176$ & $6.5\times10^{-13}$ & $414$ & 1 & 0 & $1983.6493$ & $0.8992$ & $0.1129$ & $1440$ \\
+2 & \CC & $15$ & $0.5$ & $79\,872$ & $7.5\times10^{-13}$ & $663$ & 1 & 0 & $3173.8388$ & $0.8993$ & $0.1130$ & $2304$ \\
+2 & \CC & $21$ & $0.8$ & $110\,592$ & $7.7\times10^{-13}$ & $849$ & 1 & 0 & $4359.6443$ & $0.9077$ & $0.1064$ & $3153$ \\
+2 & \CC & $21$ & $0.5$ & $176\,128$ & $8.9\times10^{-13}$ & $1359$ & 1 & 0 & $6975.4308$ & $0.9078$ & $0.1065$ & $5044$ \\
+2 & \CC & $29$ & $0.8$ & $233\,472$ & $8.7\times10^{-13}$ & $1679$ & 1 & 0 & $9177.4308$ & $0.9147$ & $0.1009$ & $6614$ \\
+2 & \CC & $29$ & $0.5$ & $372\,736$ & $9.4\times10^{-13}$ & $2688$ & 1 & 0 & $14\,683.8893$ & $0.9147$ & $0.1010$ & $10\,583$ \\
+2 & \CC & $35$ & $0.8$ & $359\,424$ & $9.0\times10^{-13}$ & $2493$ & 1 & 0 & $14\,100.8080$ & $0.9183$ & $0.0981$ & $10\,145$ \\
+2 & \CC & $35$ & $0.5$ & $574\,464$ & $9.7\times10^{-13}$ & $3989$ & 1 & 0 & $22\,561.2929$ & $0.9183$ & $0.0981$ & $16\,233$ \\
+3 & \CC & $5$ & $0.8$ & $14\,336$ & $9.4\times10^{-13}$ & $85$ & 1 & 0 & $555.3328$ & $0.9290$ & $0.0852$ & $397$ \\
+3 & \CC & $7$ & $0.8$ & $43\,008$ & $8.0\times10^{-13}$ & $187$ & 1 & 0 & $1616.0828$ & $0.9494$ & $0.0665$ & $1146$ \\
+3 & \CC & $9$ & $0.8$ & $95\,232$ & $9.6\times10^{-13}$ & $332$ & 1 & 0 & $3545.2319$ & $0.9607$ & $0.0551$ & $2501$ \\
+3 & \CC & $11$ & $0.8$ & $177\,152$ & $1.3\times10^{-12}$ & $523$ & 1 & 0 & $6602.0241$ & $0.9679$ & $0.0475$ & $4642$ \\
+3 & \CC & $15$ & $0.8$ & $462\,848$ & $2.0\times10^{-12}$ & $1044$ & 1 & 0 & $17\,135.4649$ & $0.9764$ & $0.0375$ & $12\,003$ \\
+2 & \CtM & $5$ & $0.8$ & $2048$ & $-4.4\times10^{-16}$ & $10$ & 1 & 0 & $45.0000$ & $0.8840$ & $0.1238$ & $33$ \\
+2 & \CtM & $11$ & $0.8$ & $8192$ & $4.5\times10^{-14}$ & $57$ & 1 & 0 & $293.7896$ & $0.9063$ & $0.1061$ & $213$ \\
+2 & \CtM & $21$ & $0.8$ & $33\,792$ & $5.3\times10^{-13}$ & $226$ & 1 & 0 & $1297.6238$ & $0.9197$ & $0.0971$ & $933$ \\
+2 & \MtC & $5$ & $0.8$ & $4096$ & $3.3\times10^{-16}$ & $6$ & 1 & 0 & $113.4280$ & $1.0030$ & $0.0319$ & $78$ \\
+2 & \MtC & $11$ & $0.8$ & $23\,552$ & $7.1\times10^{-13}$ & $46$ & 1 & 0 & $848.1058$ & $0.9913$ & $0.0352$ & $589$ \\
+2 & \MtC & $21$ & $0.8$ & $109\,568$ & $9.1\times10^{-13}$ & $196$ & 1 & 0 & $3995.3900$ & $0.9886$ & $0.0313$ & $2780$ \\
+3 & \CtM & $5$ & $0.8$ & $6144$ & $4.2\times10^{-14}$ & $24$ & 1 & 0 & $207.5000$ & $0.9490$ & $0.0681$ & $147$ \\
+3 & \CtM & $11$ & $0.8$ & $64\,512$ & $1.0\times10^{-12}$ & $141$ & 1 & 0 & $2376.7869$ & $0.9770$ & $0.0367$ & $1664$ \\
+3 & \MtC & $5$ & $0.8$ & $14\,336$ & $8.8\times10^{-13}$ & $17$ & 1 & 0 & $520.3252$ & $0.9907$ & $0.0205$ & $362$ \\
+3 & \MtC & $11$ & $0.8$ & $177\,152$ & $1.3\times10^{-12}$ & $115$ & 1 & 0 & $6429.2117$ & $0.9937$ & $0.0112$ & $4469$ \\
+\end{longtable}
+\endgroup
+
+For $q\le0.9$ the product of $q$ and the discrete mode differs from the continuous-time mode at unit rate by at most
+$2.16$: $q\tmode$ is independent of $q$ up to a few steps (Table~\ref{appC_tables:tab-activity}). At $q=1$ the walk has a
+parity. For $\dd=1$ the raw maximiser ($832$ at $N=51$, $13\,332$ at $N=201$) lies below the continuous-time mode
+($849.87$, $13\,398.02$); the maximiser of the two-step average ($848$, $13\,398$) removes the bias. For $\dd=2$ and $q=1$
+the mass function has two neighbouring local maxima at its peak ($t=678$ and $680$ for $N=21$), which moves the maximiser
+by at most two steps.
+% src: data/msc_modes/summary_tables.md (Table Q); data/article/appC_tables_checks.json (activity_*); data/msc_modes_verify/extra.json (q1_2d_N21_local_maxima_t)
+
+\begingroup\appCtablesetup
+% src: data/msc_modes/summary_tables.md (Table Q, all 34 rows)
+\begin{longtable}{@{}crrrrrr@{}}
+\caption{Dependence on the activity $q$ and parity (\CC, exact discrete mass functions). ``Two-step'' is the first
+index of the maximising pair of $\tfrac12[\pmf(t)+\pmf(t+1)]$; $\tmodec$ is the mode of the continuous-time density
+at unit rate.}
+\label{appC_tables:tab-activity}\\
+\toprule
+$\dd$ & $N$ & $q$ & $\argmax_{t}\pmf(t)$ & two-step & $q\times\argmax_{t}\pmf(t)$ & $\tmodec$ \\
+\midrule
+\endfirsthead
+\multicolumn{7}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+$\dd$ & $N$ & $q$ & $\argmax_{t}\pmf(t)$ & two-step & $q\times\argmax_{t}\pmf(t)$ & $\tmodec$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1 & $51$ & $0.3$ & $2832$ & $2832$ & $849.6$ & $849.87$ \\
+1 & $51$ & $0.5$ & $1699$ & $1699$ & $849.5$ & $849.87$ \\
+1 & $51$ & $0.9$ & $944$ & $943$ & $849.6$ & $849.87$ \\
+1 & $51$ & $1.0$ & $832$ & $848$ & $832.0$ & $849.87$ \\
+1 & $201$ & $0.3$ & $44\,660$ & $44\,659$ & $13\,398.0$ & $13\,398.02$ \\
+1 & $201$ & $0.5$ & $26\,796$ & $26\,795$ & $13\,398.0$ & $13\,398.02$ \\
+1 & $201$ & $0.9$ & $14\,886$ & $14\,886$ & $13\,397.4$ & $13\,398.02$ \\
+1 & $201$ & $1.0$ & $13\,332$ & $13\,398$ & $13\,332.0$ & $13\,398.02$ \\
+2 & $21$ & $0.3$ & $2265$ & $2265$ & $679.5$ & $679.83$ \\
+2 & $21$ & $0.5$ & $1359$ & $1358$ & $679.5$ & $679.83$ \\
+2 & $21$ & $0.8$ & $849$ & $848$ & $679.2$ & $679.83$ \\
+2 & $21$ & $0.9$ & $755$ & $754$ & $679.5$ & $679.83$ \\
+2 & $21$ & $1.0$ & $678$ & $678$ & $678.0$ & $679.83$ \\
+2 & $51$ & $0.3$ & $14\,599$ & $14\,598$ & $4379.7$ & $4379.94$ \\
+2 & $51$ & $0.5$ & $8759$ & $8758$ & $4379.5$ & $4379.94$ \\
+2 & $51$ & $0.9$ & $4866$ & $4865$ & $4379.4$ & $4379.94$ \\
+2 & $51$ & $1.0$ & $4380$ & $4379$ & $4380.0$ & $4379.94$ \\
+2 & $101$ & $0.3$ & $60\,187$ & $60\,186$ & $18\,056.1$ & $18\,056.39$ \\
+2 & $101$ & $0.5$ & $36\,112$ & $36\,111$ & $18\,056.0$ & $18\,056.39$ \\
+2 & $101$ & $0.9$ & $20\,062$ & $20\,061$ & $18\,055.8$ & $18\,056.39$ \\
+2 & $101$ & $1.0$ & $18\,056$ & $18\,055$ & $18\,056.0$ & $18\,056.39$ \\
+3 & $11$ & $0.3$ & $1397$ & $1397$ & $419.1$ & $419.61$ \\
+3 & $11$ & $0.5$ & $838$ & $837$ & $419.0$ & $419.61$ \\
+3 & $11$ & $0.8$ & $523$ & $522$ & $418.4$ & $419.61$ \\
+3 & $11$ & $0.9$ & $465$ & $464$ & $418.5$ & $419.61$ \\
+3 & $11$ & $1.0$ & $418$ & $418$ & $418.0$ & $419.61$ \\
+3 & $21$ & $0.3$ & $5839$ & $5839$ & $1751.7$ & $1752.30$ \\
+3 & $21$ & $0.5$ & $3503$ & $3502$ & $1751.5$ & $1752.30$ \\
+3 & $21$ & $0.9$ & $1945$ & $1945$ & $1750.5$ & $1752.30$ \\
+3 & $21$ & $1.0$ & $1750$ & $1750$ & $1750.0$ & $1752.30$ \\
+3 & $31$ & $0.3$ & $13\,628$ & $13\,628$ & $4088.4$ & $4089.06$ \\
+3 & $31$ & $0.5$ & $8176$ & $8176$ & $4088.0$ & $4089.06$ \\
+3 & $31$ & $0.9$ & $4541$ & $4541$ & $4086.9$ & $4089.06$ \\
+3 & $31$ & $1.0$ & $4087$ & $4086$ & $4087.0$ & $4089.06$ \\
+\end{longtable}
+\endgroup
+
+\subsection{Deterministic geometries}\label{appC_tables:ssec-defects}
+
+Table~\ref{appC_tables:tab-deterministic} lists the clean lattice and the 28 deterministic placements of
+Section~\ref{s8_defects_placement:ssec-det} under the identifiers of the data file; the key is in the caption. The ratio
+$\tmode/\MF$ ranges from $0.0905$ (target enclosed) to $0.3385$ (serpentine), against $0.1768$ on the clean lattice. A
+second implementation reproduces every row, with identical modes. The periodic rows are for one phase of each array,
+and the phase matters: for $A=3$ and $A=2$ the tabulated phase is the one with the smallest factor of the mean, for
+$A=4$ the twelfth smallest of sixteen; over the four phases of the period-2 array the factor of the mean averages
+$1.46$.
+% src: data/msc_defects/structured_deterministic.csv; data/msc_defects_verify/v06_det.csv; data/article/appC_tables_checks.json (deterministic_*); data/msc_defects_verify/v06_periodic.csv; data/article/derived_checks.json (D_periodic_phases)
+
+\begingroup\appCtablesetup
+% src: data/msc_defects/tables/structured_deterministic.md (all 29 rows), cross-checked against data/msc_defects/structured_deterministic.csv and data/msc_defects_verify/v06_det.csv
+\begin{longtable}{@{}lrrrrrrrrr@{}}
+\caption{The clean lattice and 28 deterministic placements of blocked sites, $N=35$, $q=0.8$, \CC, discrete time,
+all values exact: number
+$M$ of blocked sites, number $\nn$ of accessible sites, mean, mode, their ratio, their factors relative to the
+clean lattice ($\MF_{0}$, $\tmode_{0}$: first row), coefficient of variation and median in units of the mean.
+\emph{Key} (sites $(x_{1},x_{2})$, start $(0,0)$, target $(34,34)$).
+\texttt{wall}: every site of the line $x_{1}=17$ (\texttt{mid}), $5$ (\texttt{nearstart}) or $29$
+(\texttt{neartarget}) is blocked except a gap of $g$ consecutive sites, centred or at the edge $x_{2}=0$
+(\texttt{startedge}) or $x_{2}=34$ (\texttt{targetedge}).
+\texttt{serpentine\_k}$K$: $K$ equally spaced walls of this kind with three-site gaps at alternating edges.
+\texttt{target\_box\_R}$R$\texttt{\_g}$G$, \texttt{start\_box}: an L-shaped wall at Chebyshev distance $R$ from the
+corner, with a door on one arm: for $G=1$ one open site, the second site from the lattice edge (the edge site
+itself stays blocked); for $G=3$ the three sites nearest the edge. \texttt{both\_box}: the two together.
+\texttt{block}$K$: a solid $K\times K$ block occupying, in both coordinates, the sites $26$--$31$
+(\texttt{near\_target}), $3$--$8$ (\texttt{near\_start}), or $14$--$19$ ($K=6$) and $11$--$22$ ($K=12$) in the
+centre.
+\texttt{periodic\_a}$A$: the sites whose two coordinates are both congruent to a fixed offset modulo $A$ (offsets
+$1$, $2$, $1$ for $A=4$, $3$, $2$; for $A=3$ and $A=2$ this is the phase with the smallest factor of the mean).}
+% src (key): code/msc_defects/04_structured.py (functions wall, serpentine, box, block, periodic, deterministic_configs)
+\label{appC_tables:tab-deterministic}\\
+\toprule
+geometry & $M$ & $\nn$ & $\MF$ & $\tmode$ & $\tmode/\MF$ & $\MF/\MF_{0}$ & $\tmode/\tmode_{0}$ & CV &
+median$/\MF$ \\
+\midrule
+\endfirsthead
+\multicolumn{10}{@{}l}{\emph{Table~\thetable\ (continued)}} \\
+\toprule
+geometry & $M$ & $\nn$ & $\MF$ & $\tmode$ & $\tmode/\MF$ & $\MF/\MF_{0}$ & $\tmode/\tmode_{0}$ & CV &
+median$/\MF$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\texttt{clean} & $0$ & $1225$ & $14\,100.8$ & $2493$ & $0.1768$ & $1.000$ & $1.000$ & $0.918$ & $0.719$ \\
+\texttt{wall\_mid\_gap\_centre\_g1} & $34$ & $1191$ & $24\,822.5$ & $7826$ & $0.3153$ & $1.760$ & $3.139$ & $0.855$ & $0.752$ \\
+\texttt{wall\_mid\_gap\_centre\_g3} & $32$ & $1193$ & $19\,366.8$ & $5711$ & $0.2949$ & $1.373$ & $2.291$ & $0.866$ & $0.745$ \\
+\texttt{wall\_mid\_gap\_centre\_g9} & $26$ & $1199$ & $16\,363.7$ & $3996$ & $0.2442$ & $1.160$ & $1.603$ & $0.891$ & $0.732$ \\
+\texttt{wall\_mid\_gap\_startedge\_g3} & $32$ & $1193$ & $24\,599.2$ & $6166$ & $0.2507$ & $1.745$ & $2.473$ & $0.889$ & $0.736$ \\
+\texttt{wall\_mid\_gap\_targetedge\_g3} & $32$ & $1193$ & $21\,117.2$ & $6921$ & $0.3277$ & $1.498$ & $2.776$ & $0.839$ & $0.762$ \\
+\texttt{wall\_nearstart\_gap\_centre\_g3} & $32$ & $1193$ & $15\,306.9$ & $4665$ & $0.3048$ & $1.086$ & $1.871$ & $0.850$ & $0.749$ \\
+\texttt{wall\_neartarget\_gap\_centre\_g3} & $32$ & $1193$ & $32\,212.4$ & $4341$ & $0.1348$ & $2.284$ & $1.741$ & $0.949$ & $0.710$ \\
+\texttt{serpentine\_k1\_g3} & $32$ & $1193$ & $21\,343.1$ & $6750$ & $0.3163$ & $1.514$ & $2.708$ & $0.847$ & $0.758$ \\
+\texttt{serpentine\_k2\_g3} & $64$ & $1161$ & $43\,869.9$ & $14\,302$ & $0.3260$ & $3.111$ & $5.737$ & $0.826$ & $0.755$ \\
+\texttt{serpentine\_k3\_g3} & $96$ & $1129$ & $49\,880.9$ & $16\,886$ & $0.3385$ & $3.537$ & $6.773$ & $0.820$ & $0.757$ \\
+\texttt{serpentine\_k4\_g3} & $128$ & $1097$ & $93\,318.3$ & $30\,424$ & $0.3260$ & $6.618$ & $12.204$ & $0.823$ & $0.755$ \\
+\texttt{serpentine\_k6\_g3} & $192$ & $1033$ & $165\,747.9$ & $54\,165$ & $0.3268$ & $11.754$ & $21.727$ & $0.822$ & $0.756$ \\
+\texttt{target\_box\_R3\_g1} & $6$ & $1219$ & $30\,307.9$ & $3029$ & $0.0999$ & $2.149$ & $1.215$ & $0.960$ & $0.706$ \\
+\texttt{start\_box\_R3\_g1} & $6$ & $1219$ & $14\,125.0$ & $2610$ & $0.1848$ & $1.002$ & $1.047$ & $0.911$ & $0.722$ \\
+\texttt{target\_box\_R5\_g1} & $10$ & $1215$ & $32\,882.3$ & $3040$ & $0.0925$ & $2.332$ & $1.219$ & $0.963$ & $0.705$ \\
+\texttt{start\_box\_R5\_g1} & $10$ & $1215$ & $14\,354.9$ & $3112$ & $0.2168$ & $1.018$ & $1.248$ & $0.895$ & $0.728$ \\
+\texttt{target\_box\_R8\_g1} & $16$ & $1209$ & $35\,239.3$ & $3188$ & $0.0905$ & $2.499$ & $1.279$ & $0.962$ & $0.705$ \\
+\texttt{start\_box\_R8\_g1} & $16$ & $1209$ & $15\,101.7$ & $4444$ & $0.2943$ & $1.071$ & $1.783$ & $0.855$ & $0.745$ \\
+\texttt{target\_box\_R5\_g3} & $8$ & $1217$ & $22\,256.5$ & $2782$ & $0.1250$ & $1.578$ & $1.116$ & $0.946$ & $0.710$ \\
+\texttt{start\_box\_R5\_g3} & $8$ & $1217$ & $14\,166.5$ & $2740$ & $0.1934$ & $1.005$ & $1.099$ & $0.907$ & $0.723$ \\
+\texttt{both\_box\_R5\_g1} & $20$ & $1205$ & $33\,014.3$ & $3799$ & $0.1151$ & $2.341$ & $1.524$ & $0.951$ & $0.709$ \\
+\texttt{block6\_near\_target} & $36$ & $1189$ & $17\,302.6$ & $2536$ & $0.1466$ & $1.227$ & $1.017$ & $0.934$ & $0.714$ \\
+\texttt{block6\_centre} & $36$ & $1189$ & $13\,951.0$ & $2674$ & $0.1917$ & $0.989$ & $1.073$ & $0.910$ & $0.722$ \\
+\texttt{block6\_near\_start} & $36$ & $1189$ & $13\,689.9$ & $2498$ & $0.1825$ & $0.971$ & $1.002$ & $0.913$ & $0.721$ \\
+\texttt{block12\_centre} & $144$ & $1081$ & $13\,458.9$ & $3074$ & $0.2284$ & $0.954$ & $1.233$ & $0.890$ & $0.730$ \\
+\texttt{periodic\_a4} & $81$ & $1144$ & $16\,422.8$ & $2863$ & $0.1743$ & $1.165$ & $1.148$ & $0.920$ & $0.719$ \\
+\texttt{periodic\_a3} & $121$ & $1104$ & $15\,272.7$ & $2945$ & $0.1928$ & $1.083$ & $1.181$ & $0.909$ & $0.723$ \\
+\texttt{periodic\_a2} & $289$ & $936$ & $17\,588.7$ & $3494$ & $0.1987$ & $1.247$ & $1.402$ & $0.905$ & $0.724$ \\
+\end{longtable}
+\endgroup

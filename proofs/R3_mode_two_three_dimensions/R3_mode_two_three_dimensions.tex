@@ -1,0 +1,1391 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\allowdisplaybreaks
+\emergencystretch=3em
+
+\title{The mode of the corner-to-corner first-passage time in two and three dimensions: rigorous asymptotics}
+\author{\emph{Xiaoxiao Zhouyi}, 2026-10-01.\\ Companion note R3}
+\date{2026-10-01}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+\medskip\noindent{\small\textit{Note.} This document is the companion note R3 of the article ``Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices'' (\texttt{paper.pdf}, Section~7; Supplementary Material, Section~S8), in the repository \texttt{https://\allowbreak github.com/\allowbreak zhouyi-xiaoxiao/\allowbreak master-dissertation}. In the repository, its scripts are in \texttt{code/msc\_rigorous\_asymptotics/} and its data in \texttt{data/msc\_rigorous\_asymptotics/}; paths written \texttt{scripts/\dots} and \texttt{data/\dots} below refer to these folders; the paths in the \texttt{\%~src} comments of the \LaTeX{} source are relative to the root of the repository, and the run logs they cite are in \texttt{data/msc\_rigorous\_*/logs/}. Other run logs, the code of the internal checks and working notes mentioned below are not part of the repository; \texttt{notes/VERIFICATION.md} summarises how this note was checked.}\par\medskip
+
+\begin{abstract}
+For the lazy nearest-neighbour walk on $\{1,\dots,N\}^d$ ($d=2,3$) with move probability $q$, reflecting walls and an absorbing target at one corner, started at the opposite corner, we replace the formal two-pole asymptotics of the first-passage \emph{mode} $t^*$ by theorems with explicit error terms. The proof rests on (i) an exact decomposition $T\overset{d}{=}U+T_\pi$ of the first-passage time into an independent ''spreading time'' $U$ with distribution function $u=v^d$ ($v$ the distribution function of a sum of $N-1$ independent exponentials) and the hitting time $T_\pi$ from the uniform start; (ii) strict unimodality of the continuous-time density (a direct proof), and for the discrete walk either unimodality ($q\le\frac12$) or a four-region argument that needs no unimodality (all $q<1$, with constants uniform in $q$); (iii) an exact identity for the derivative of the density in which the two slowest poles appear with explicit coefficients and every remainder term has a sign and an explicit exponential bound; (iv) two-sided bounds for the pole data in terms of the lattice sum $X_s=\mu\,\mathbb E_\pi T$; (v) sharp two-sided bounds for $X_s$ itself; and (vi) a ball-arithmetic certificate (Arb) for the resulting inequalities, uniform in $N\ge N_0$.
+\end{abstract}
+
+
+\setcounter{section}{-1}
+\section{Results and status}
+
+Notation: $x=\pi/(2N)$, $\mu=\frac{2q}{d}\sin^2x$ (slowest relaxation rate), $X=\mu\,\mathbb E T$, $\tau^*=\mu t^*$, closed form $\tau_{\rm cf}=X\ln(2dX)/(X+2d-1)$, $c_3=\frac{\pi^2}{2}\int_0^\infty(e^{-z}(I_0+I_1)(z))^3dz$.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{8.9cm}>{\raggedright\arraybackslash}p{3.6cm}}
+\toprule
+label & statement & status \\ \midrule
+\endhead
+Prop. 1.5, Rem. 1.6 & $g=\pi_a\varphi+\varphi*h_{\rm ac}$; $T\overset d=U+T_\pi$; exact pole expansion (continuous and discrete time, all $q\in(0,1]$) & Theorem (proved) \\
+Thm 1.11 & continuous-time density strictly unimodal for every $d\ge1$, $N\ge2$ except $(d,N)=(1,2)$ (where $\mu T$ is exponential and there is no interior mode); $g'=\varphi B$ with $B$ nonincreasing & Theorem (proved) \\
+Prop. 2.1, Thm 2.3 & exact identity for $g'$; window theorem $\Phi_-\le g'\le\Phi_+$ & Theorem (proved) \\
+Lemmas 3.1–3.5 & two-sided bounds for $\nu_0,\rho_0,m_0,\nu_1,\rho_1$ and the near poles in terms of $X_s$ & Theorem (proved) \\
+Props 4.5, 4.6 & $2\pi\ln N-2.32\le X_s\le2\pi\ln N-1.60$ ($d=2$); $c_3N-3\pi-5.85/N\le X_s\le c_3N-8.38$ ($d=3$), all $N\ge10$ & computer-assisted (certified constants $c_\kappa$, $J$, $T_d(1)$) \\
+Thm 5.1 & $-K^-_d<X(\tau^*-\tau_{\rm cf})<K^+_d$ for all $N\ge N_0$, e.g. $(K^-,K^+)=(4.242,7.486)$ for $d=2$, $N\ge20$; $(1.564,3.663)$ for $d=3$, $N\ge20$ & computer-assisted proof (ball arithmetic) \\
+Thm 6.1 & $d=2$, $N\ge20$: $\tau^*=\ln\ln N+\ln8\pi+R_N$, $-\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\le R_N<0$ & computer-assisted (consequence of Thm 5.1, Cor. 4.7) \\
+Thm 6.2 & $d=3$, $N\ge20$: $\tau^*=\ln N+\ln(6c_3)+R_N$, $-\frac{9.2+5\ln(6c_3N)}{c_3N-7.63}\le R_N<0$, $\ln(6c_3)=3.75282\ldots$ & computer-assisted (consequence of Thm 5.1, Cor. 4.7) \\
+Thm 6.3 & two-sided bounds $c_1N^2\ell_d(N)\le t^*\le c_2N^2\ell_d(N)$, $N\ge20$, explicit $c_1,c_2$ & computer-assisted (consequence of Thms 6.1, 6.2) \\
+Prop. 7.1 & discrete-time identity for the forward difference of the PMF, all $q\in(0,1]$ & Theorem (proved) \\
+Thm 7.4 & discrete-time PMF unimodal for $q\le\frac12$, $d\ge2$, $N\ge3$ (log-concavity of $u_{t+1}-u_t$) & Theorem; uses the theorem of Walkup and Liggett that ultra log-concave sequences are closed under convolution \\
+Thm 7.8 & discrete time, all $q\in(0,\frac12]$: $t_{\rm cf}-\frac{K^-}{X\mu}<t^*<t_{\rm cf}+\frac{K^+}{X\mu}+2$, e.g. $(K^-,K^+)=(4.479,7.542)$ ($d=2$), $(2.661,3.761)$ ($d=3$) for $N\ge20$ & computer-assisted proof \\
+Cor. 7.9 & discrete time, $q\le\frac12$: the laws of Thms 6.1–6.3 with slightly larger constants & computer-assisted (consequence of Thm 7.8) \\
+Lemmas 7.10–7.12, Thm 7.13 & all $q<1$ (no unimodality): pairing lemma for the one-dimensional factors, bound for the poles with negative multiplier, four-region localisation of the maximisers & Theorem (proved) \\
+Thm 7.14 & discrete time, $q\le q_{\max}\in\{0.8,0.9,0.95,0.99\}$: the same window for all $N\ge N_0$; e.g. $q\le0.8$: $(K^-,K^+)=(2.850,6.613)$ for $d=2$, $N\ge37$; $(5.189,6.634)$ for $d=3$, $N\ge13$ & computer-assisted proof \\
+Cor. 7.15 & discrete time, $q\le0.99$: $t^*=\frac{4N^2}{\pi^2q}[\ln\ln N+\ln8\pi+O(\frac{\ln\ln N}{\ln N})]$ resp. $\frac{6N^2}{\pi^2q}[\ln N+\ln6c_3+O(\frac{\ln N}{N})]$ with explicit constants & computer-assisted (consequence of Thm 7.14) \\
+Lemma 7.16 & under (H), the $q$-dependent constants of Lemma 7.11 are bounded by functions of $N$ alone & Theorem (proved) \\
+Thm 7.17 & discrete time, every $q\in(0,1)$ and every $N\ge\max(N_*,N_1(q))$, $N_*=59$ ($d=2$), $12$ ($d=3$), $N_1(q)=\min\{N\ge4:\sin\frac\pi N\le\frac{1-q}q\}$: the same window with constants uniform in $q$, e.g. $(2.082,6.061)$ ($d=2$), $(6.379,7.183)$ ($d=3$) & computer-assisted proof \\
+Cor. 7.18 & the laws of Cor. 7.15 for every $q<1$ and $N\ge\max(N_*,N_1(q))$ & computer-assisted (consequence of Thm 7.17) \\
+Rem. 7.19 & $N<N_1(q)$ (where (H) fails) and some $N<N_*$: not covered; $q=1$: the PMF is not unimodal in general, laws conjectured & open; conjecture \\
+Rem. 5.3(iii) & $X(\tau^*-\tau_{\rm cf})\to K_d^\infty$, $K_2^\infty\approx3.74$, $K_3^\infty\approx-0.22$ & Numerical observation \\
+\bottomrule
+\end{longtable}}
+
+% src: data/msc_rigorous_asymptotics/80_tables.json; data/msc_rigorous_asymptotics/logs/80_tables.log; data/msc_rigorous_asymptotics/50_cert_constants.json
+
+''Computer-assisted'' means: the statement is reduced by complete proofs to finitely many explicit inequalities, which are verified with rigorous ball arithmetic (Arb through python-flint); the scripts and certificate files are listed in the Appendix. All other numerical work in the scripts is sanity checking and is not used in proofs.
+
+In real time the continuous-time laws read ($N\ge20$)
+\begin{gather*}
+d=2:\ t^*=\frac{4N^2}{\pi^2q}\bigl[\ln\ln N+\ln 8\pi+R_N\bigr](1+\rho_N), \\
+d=3:\ t^*=\frac{6N^2}{\pi^2q}\bigl[\ln N+3.75282\ldots+R_N\bigr](1+\rho_N), \qquad 0\le\rho_N\le\frac{0.83}{N^2}.
+\end{gather*}
+
+\setcounter{section}{0}
+\section{Setting, spectral structure, and unimodality}
+
+Throughout, $d\ge 1$ and $N\ge 3$ are integers, $q\in(0,1]$, and
+\begin{equation*}
+x:=\frac{\pi}{2N},\qquad \mu:=\frac{q}{d}\Bigl(1-\cos\frac{\pi}{N}\Bigr)=\frac{2q}{d}\sin^2x .
+\end{equation*}
+The main results concern $d\in\{2,3\}$; in $d=3$ we assume $N\ge4$ from Section 2 on. Lemmas 1.1–1.4, 1.7 and 1.10, Proposition 1.5 and Theorem 1.11 also hold for $N=2$, with the same proofs (they do not use $\varepsilon_2$); Lemmas 1.8 and 1.9 need $N\ge3$.
+
+\subsection{The walk}
+
+The state space is $\{1,\dots,N\}^d$. In one step the walk attempts, with probability $q/(2d)$ each, a move $n\to n\pm e_i$ ($i=1,\dots,d$) and stays put with probability $1-q$; an attempted move that leaves the box is cancelled. Let $A$ be the symmetric $N\times N$ matrix
+\begin{equation*}
+(Af)(n)=f(n)-\tfrac12 f(n-1)-\tfrac12 f(n+1),\qquad\text{with the conventions } f(0):=f(1),\ f(N+1):=f(N),
+\end{equation*}
+and let $A_i$ denote $A$ acting on the $i$-th coordinate. The one-step transition matrix is $P=I-\frac qd\sum_{i=1}^dA_i$ (symmetric). The \emph{continuous-time} walk has transition semigroup $p_t=\exp\bigl(-t\,\frac qd\sum_iA_i\bigr)$ (each allowed move has rate $q/(2d)$). The target is the corner $a=(N,\dots,N)$, the start is the opposite corner $x_0=(1,\dots,1)$, and $T$ is the first time the walk is at $a$.
+
+\begin{lemma}[{spectrum of $A$}]
+For $k=0,\dots,N-1$ put $h_k(n)=\cos\frac{\pi k(2n-1)}{2N}$ and $a_k=1-\cos\frac{\pi k}{N}=2\sin^2(kx)$. Then $Ah_k=a_kh_k$, the $h_k$ are mutually orthogonal, $\sum_{n=1}^Nh_k(n)^2=N/\alpha_k$ with $\alpha_0=1$, $\alpha_k=2$ $(k\ge1)$, and
+\begin{equation*}
+h_k(1)=\cos(kx),\qquad h_k(N)=(-1)^k\cos(kx).
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Extend $h_k$ to all integers $n$ by the same formula. The identity $\cos(\alpha+\beta)+\cos(\alpha-\beta)=2\cos\alpha\cos\beta$ gives $h_k(n+1)+h_k(n-1)=2\cos(\pi k/N)\,h_k(n)$ for every $n$. Moreover $h_k(0)=\cos(-kx)=h_k(1)$ and $h_k(N+1)=\cos(\pi k+kx)=(-1)^k\cos(kx)=\cos(\pi k-kx)=h_k(N)$, so the extension agrees with the conventions in the definition of $A$; hence $(Ah_k)(n)=(1-\cos(\pi k/N))h_k(n)$ for $1\le n\le N$. The numbers $a_0<a_1<\dots<a_{N-1}$ are distinct and $A$ is symmetric, so the $h_k$ are orthogonal. For $k\ge 1$, $\sum_{n=1}^N h_k(n)^2=\frac N2+\frac12\,\mathrm{Re}\bigl(e^{-i\pi k/N}\sum_{n=1}^Ne^{2\pi ikn/N}\bigr)=\frac N2$ because $1\le k\le N-1$; for $k=0$ the sum is $N$. The boundary values were computed above.
+\end{proof}
+
+\subsection{Scaled spectral data}
+
+All formulas are written in the \emph{scaled time} $\tau=\mu t$. Define, for $k\in\{0,\dots,N-1\}$,
+\begin{gather*}
+\varepsilon_k:=\frac{a_k}{a_1}=\frac{\sin^2(kx)}{\sin^2x}, \qquad \gamma_0:=1,\quad \gamma_k:=2\cos^2(kx)\ (k\ge1),
+\end{gather*}
+and for a multi-index $k\in\mathcal K:=\{0,\dots,N-1\}^d\setminus\{0\}$
+\begin{gather*}
+\mu_k:=\sum_{i=1}^d\varepsilon_{k_i}, \qquad w_k:=\prod_{i=1}^d\gamma_{k_i}>0, \qquad c_k:=(-1)^{k_1+\dots+k_d}\,w_k .
+\end{gather*}
+Note $0=\varepsilon_0<\varepsilon_1=1<\varepsilon_2<\dots<\varepsilon_{N-1}$ (because $kx\le\pi/2$), $\varepsilon_2=4\cos^2x\in[3,4)$ and $\gamma_k>0$. We use the abbreviations
+\begin{gather*}
+A:=\gamma_1=2\cos^2x, \qquad W:=dA, \qquad \gamma_2=2\cos^2(2x), \qquad C_1:=d(d-1)A^2, \\
+C_2:=d\,\gamma_2\varepsilon_2 ,
+\end{gather*}
+and the one-dimensional functions
+\begin{gather*}
+\omega(\tau):=\sum_{k=0}^{N-1}\gamma_k e^{-\varepsilon_k\tau}, \\
+v(\tau):=\sum_{k=0}^{N-1}(-1)^k\gamma_ke^{-\varepsilon_k\tau}.
+\end{gather*}
+
+\begin{lemma}[{propagators at the corners}]
+With $\pi_a:=N^{-d}$ and $t=\tau/\mu$,
+\begin{gather*}
+N^d\,p_{t}(a,a)=\omega(\tau)^d=1+\sum_{k\in\mathcal K}w_ke^{-\mu_k\tau}, \\
+N^d\,p_{t}(x_0,a)=v(\tau)^d=:u(\tau)=1+\sum_{k\in\mathcal K}c_ke^{-\mu_k\tau}.
+\end{gather*}
+In discrete time, $N^dP^t(a,a)=1+\sum_{k}w_k(1-\mu\mu_k)^t$ and $N^dP^t(x_0,a)=1+\sum_kc_k(1-\mu\mu_k)^t$. In particular $\omega(0)=N$, $v(0)=0$, $1+\sum_kw_k=N^d$ and $1+\sum_kc_k=0$.
+\end{lemma}
+
+\begin{proof}
+By Lemma 1.1, $e^{-sA}(n,m)=\sum_k\frac{\alpha_k}{N}h_k(n)h_k(m)e^{-sa_k}$. Since the $A_i$ commute and act on different coordinates, $p_t(n,m)=\prod_i e^{-(tq/d)A}(n_i,m_i)$. With $s=tq/d$ we have $sa_k=\varepsilon_k\tau$, $\frac{\alpha_k}{N}h_k(N)^2=\gamma_k/N$ and $\frac{\alpha_k}{N}h_k(1)h_k(N)=(-1)^k\gamma_k/N$; expanding the products gives the two formulas. The discrete case is identical because $P=I-\frac qd\sum_iA_i$ has the eigenvalue $1-\frac qd\sum_ia_{k_i}=1-\mu\mu_k$ on $\prod_ih_{k_i}(n_i)$. The last assertions are the case $\tau=0$ ($p_0$ is the identity matrix).
+\end{proof}
+
+\subsection{Renewal equation and the pole expansion}
+
+Let $m_1<m_2<\dots<m_L$ be the \emph{distinct} values of $\mu_k$, $k\in\mathcal K$ (so $m_1=1$), and
+\begin{gather*}
+W_i:=\sum_{k:\,\mu_k=m_i}w_k>0, \qquad R(s):=\sum_{k\in\mathcal K}\frac{w_k}{s+\mu_k}=\sum_{i=1}^L\frac{W_i}{s+m_i}, \\
+\mathsf D(\nu):=1-\nu\sum_{k\in\mathcal K}\frac{w_k}{\mu_k-\nu}.
+\end{gather*}
+
+\begin{lemma}[{renewal equation}]
+For $s>0$, with $\hat u(s)=\int_0^\infty e^{-s\tau}u(\tau)\,d\tau$,
+\begin{gather*}
+\mathbb E\,e^{-s\mu T}=\frac{s\,\hat u(s)}{1+sR(s)}\quad\text{(continuous time)}, \\
+\sum_{t\ge1}\mathbb P(T=t)z^t=\frac{\sum_{t\ge0}z^tP^t(x_0,a)}{\sum_{t\ge0}z^tP^t(a,a)}\quad(|z|<1)\quad\text{(discrete time)}.
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$T$ is a stopping time and the walk is at $a$ at time $T$ (on $\{T<\infty\}$). By the strong Markov property, $p_t(x_0,a)=\mathbb E\bigl[\mathbf 1_{T\le t}\,p_{t-T}(a,a)\bigr]$, hence $\int_0^\infty e^{-\sigma t}p_t(x_0,a)dt=\mathbb E[e^{-\sigma T}]\int_0^\infty e^{-\sigma t}p_t(a,a)dt$ for $\sigma>0$. Put $\sigma=\mu s$ and use Lemma 1.2: $\int_0^\infty e^{-s\tau}\omega(\tau)^d d\tau=\frac1s+R(s)$. The discrete identity is the same computation with $P^t(x_0,a)=\sum_{s=1}^t\mathbb P(T=s)P^{t-s}(a,a)$.
+\end{proof}
+
+\begin{lemma}[{poles, residues, sum rules}]
+(a) $\mathsf D$ has exactly $L$ zeros, all real and simple, and they interlace the levels:
+\begin{equation*}
+0<\nu_0<m_1=1<\nu_1<m_2<\nu_2<\dots<\nu_{L-1}<m_L .
+\end{equation*}
+(b) For $s\notin\{-\nu_j\}$,
+\begin{gather*}
+\hat h(s):=\frac{1}{1+sR(s)}=\pi_a+\sum_{j=0}^{L-1}\frac{\rho_j}{s+\nu_j}, \\
+\rho_j=\Bigl(\sum_{k\in\mathcal K}\frac{w_k\mu_k}{(\mu_k-\nu_j)^2}\Bigr)^{-1}>0 .
+\end{gather*}
+(c) (sum rules) With $b_j:=\rho_j/\nu_j$:
+\begin{gather*}
+\pi_a+\sum_jb_j=1, \qquad \pi_a+\sum_j\frac{\rho_j}{\nu_j-m_i}=0\ \ (i=1,\dots,L), \\
+\sum_j\rho_j=R_{\rm tot}:=\frac{d}{4N^d\sin^2x}, \\
+\frac1{\rho_j}=\frac1{\nu_j}+\nu_j\sum_{k}\frac{w_k}{(\mu_k-\nu_j)^2}.
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+(a) $\mathsf D'(\nu)=-\sum_iW_im_i/(m_i-\nu)^2<0$ wherever defined. On $(0,m_1)$, $\mathsf D$ decreases from $\mathsf D(0)=1$ to $-\infty$; on each $(m_i,m_{i+1})$ it decreases from $+\infty$ to $-\infty$; on $(m_L,\infty)$ it decreases from $+\infty$ to $1+\sum_iW_i>0$; for $\nu\le0$, $\mathsf D(\nu)\ge1$. So there is exactly one zero in $(0,m_1)$ and in each $(m_i,m_{i+1})$, and none elsewhere on the real line. Now $1+sR(s)=Q(s)/\prod_i(s+m_i)$ with $Q$ a polynomial of degree $L$ and leading coefficient $1+\sum_iW_i=N^d$ (Lemma 1.2), and $Q(-\nu)=\mathsf D(\nu)\prod_i(m_i-\nu)$. Thus the $L$ numbers $-\nu_j$ are roots of $Q$, hence all its roots, and they are simple.
+
+(b) $\hat h=\prod_i(s+m_i)/Q(s)$ is a ratio of polynomials of equal degree with simple poles, so it equals its limit $N^{-d}=\pi_a$ at infinity plus $\sum_j\rho_j/(s+\nu_j)$, where $1/\rho_j=\frac{d}{ds}(1+sR(s))|_{s=-\nu_j}=\sum_iW_im_i/(m_i-\nu_j)^2$.
+
+(c) $\hat h(0)=1$ gives the first rule; $\hat h(-m_i)=0$ (the numerator vanishes, the denominator does not) gives the second. For the third, $1+sR(s)=N^d-\sum_kw_k\mu_k/(s+\mu_k)$, so $\hat h(s)=\pi_a+\pi_a^2\sum_kw_k\mu_k\,s^{-1}+O(s^{-2})$ as $s\to\infty$, i.e. $\sum_j\rho_j=\pi_a^2\sum_kw_k\mu_k$. By Lemma 1.2 with $n=m=a$, $\pi_a\sum_kw_k\mu_k$ is the diagonal entry at $a$ of $\mu^{-1}\frac qd\sum_iA_i$, which equals $\mu^{-1}\frac qd\cdot\frac d2=d/(4\sin^2x)$ ($A(N,N)=\frac12$). The fourth: $\sum_kw_k\mu_k/(\mu_k-\nu_j)^2=\sum_kw_k/(\mu_k-\nu_j)+\nu_j\sum_kw_k/(\mu_k-\nu_j)^2$ and $\sum_kw_k/(\mu_k-\nu_j)=1/\nu_j$ since $\mathsf D(\nu_j)=0$.
+\end{proof}
+
+\begin{proposition}[{density of $T$; decomposition}]
+Put $\varphi:=u'$ and $h_{\rm ac}(\tau):=\sum_j\rho_je^{-\nu_j\tau}$. In continuous time $\mu T$ has the density
+\begin{gather*}
+g(\tau)=\pi_a\varphi(\tau)+\int_0^\tau\varphi(\tau-s)\,h_{\rm ac}(s)\,ds=\sum_{j=0}^{L-1}\rho_j\,\hat\varphi(-\nu_j)\,e^{-\nu_j\tau}, \\
+\hat\varphi(s)=-\sum_{k\in\mathcal K}\frac{c_k\mu_k}{s+\mu_k},
+\end{gather*}
+on $\tau\ge0$; the real-time density is $\mu g(\mu t)$ and $\int_0^\infty g=1$. In discrete time, for $t\ge1$,
+\begin{equation*}
+\mathbb P(T=t)=\mu\sum_{j=0}^{L-1}\rho_j\,\hat\varphi(-\nu_j)\,(1-\mu\nu_j)^{t-1}.
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+Since $u(0)=0$ (Lemma 1.2), $s\hat u(s)=1+\sum_kc_ks/(s+\mu_k)=(1+\sum_kc_k)-\sum_kc_k\mu_k/(s+\mu_k)=\hat\varphi(s)$, the Laplace transform of $\varphi=u'=-\sum_kc_k\mu_ke^{-\mu_k\tau}$. By Lemmas 1.3 and 1.4, $\mathbb E e^{-s\mu T}=\hat\varphi(s)\hat h(s)$, which is the Laplace transform of $\pi_a\varphi+\varphi*h_{\rm ac}$. This function is a finite linear combination of exponentials $e^{-\mu_k\tau}$, $e^{-\nu_j\tau}$, hence integrable on $[0,\infty)$; by uniqueness of the Laplace transform of finite signed measures (apply Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol. II, 2nd ed., Section XIII.1, Theorem 1, to the two positive measures law$(\mu T)+g^-d\tau$ and $g^+d\tau$) it is the density of $\mu T$; in particular $\int g=\hat\varphi(0)\hat h(0)=1$. In the product $\hat\varphi\hat h$ the simple poles of $\hat\varphi$ at $-m_i$ are cancelled by the zeros of $\hat h$, and $\hat\varphi(s)\hat h(s)\to0$ at infinity, so $\hat\varphi\hat h=\sum_j\rho_j\hat\varphi(-\nu_j)/(s+\nu_j)$; this gives the second expression for $g$.
+
+Discrete time: put $s=(1-z)/(\mu z)$ for $0<z<1$. By Lemma 1.2, $\sum_tz^tP^t(a,a)\cdot N^d=\frac1{1-z}+\sum_k\frac{w_k}{1-(1-\mu\mu_k)z}=\frac1{\mu z}\bigl(\frac1s+R(s)\bigr)$, and likewise $N^d\sum_tz^tP^t(x_0,a)=\frac1{\mu z}\hat u(s)$. By Lemma 1.3 the generating function of $T$ is $\hat\varphi(s)\hat h(s)=\sum_j\rho_j\hat\varphi(-\nu_j)\frac{\mu z}{1-(1-\mu\nu_j)z}$, and $\frac{\mu z}{1-(1-\mu\nu_j)z}=\mu\sum_{t\ge1}(1-\mu\nu_j)^{t-1}z^t$.
+\end{proof}
+
+\begin{remark}
+$\hat h$ is the Laplace transform of the hitting time $T_\pi$ of $a$ from the uniform (stationary) start, which has an atom $\pi_a$ at $0$ and density $h_{\rm ac}$; and $u=v^d$ is a distribution function (Lemma 1.7). So $\mu T\overset{d}{=}U+\mu T_\pi$ with $U\sim u$ independent of $T_\pi$. Only the analytic content (Proposition 1.5) is used below. Write
+\begin{gather*}
+X_s:=R(0)=\sum_{k\in\mathcal K}\frac{w_k}{\mu_k}, \qquad \mathbb E U=\int_0^\infty(1-u)=-\sum_{k}\frac{c_k}{\mu_k}, \\
+X:=\mu\,\mathbb E T=X_s+\mathbb E U,
+\end{gather*}
+($\mathbb E[\mu T]=-\frac{d}{ds}(\hat\varphi\hat h)(0)=-\hat\varphi'(0)-\hat h'(0)=\mathbb EU+R(0)$). $X$ is the quantity ''$X=\mu_1\cdot{\rm MFPT}$'' of Section~6 of the article, and the closed form is $\tau_{\rm cf}:=X\ln(2dX)/(X+2d-1)$ in scaled time.
+
+\end{remark}
+
+\subsection{The one-dimensional factor $v$}
+
+\begin{lemma}[{hypoexponential structure}]
+$\displaystyle\int_0^\infty e^{-s\tau}v'(\tau)\,d\tau=\prod_{k=1}^{N-1}\frac{\varepsilon_k}{s+\varepsilon_k}$. Consequently $v$ is the distribution function of $H=\xi_1+\dots+\xi_{N-1}$ with independent $\xi_k\sim{\rm Exp}(\varepsilon_k)$; $v'>0$ on $(0,\infty)$, $0\le v\le1$, $v(0)=0$, and
+\begin{gather*}
+\prod_{l\ne k}\frac{\varepsilon_l}{\varepsilon_l-\varepsilon_k}=(-1)^{k+1}\gamma_k \\
+(1\le k\le N-1;\ \text{product over }1\le l\le N-1).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+Let $M=A/a_1$ (eigenvalues $\varepsilon_k$). By Lemma 1.1, $(s+M)^{-1}(1,N)=\sum_k\frac{\alpha_k}{N}\frac{h_k(1)h_k(N)}{s+\varepsilon_k}=\hat v(s)/N$. By Cramer's rule $(s+M)^{-1}(1,N)=(-1)^{N+1}\det(\widetilde M)/\det(s+M)$, where $\widetilde M$ is $s+M$ with row $N$ and column $1$ deleted. As $s+M$ is tridiagonal, $\widetilde M$ is lower triangular with diagonal entries equal to the super-diagonal entries $-1/(2a_1)$ of $s+M$, so $\det\widetilde M=(-2a_1)^{-(N-1)}$ and
+\begin{equation*}
+s\hat v(s)=\frac{N(2a_1)^{-(N-1)}}{\prod_{k=1}^{N-1}(s+\varepsilon_k)} .
+\end{equation*}
+Since $s\hat v(s)\to v(\infty)=1$ as $s\downarrow0$, $N(2a_1)^{-(N-1)}=\prod_k\varepsilon_k$, and $s\hat v(s)=\hat{v'}(s)$ because $v(0)=0$. The right-hand side is the Laplace transform of the density of $H$, which is positive on $(0,\infty)$; by uniqueness $v'$ is that density. Finally $v'(\tau)=\sum_{k\ge1}(-1)^{k+1}\gamma_k\varepsilon_ke^{-\varepsilon_k\tau}$ by definition of $v$, while the partial fraction expansion of $\prod_k\varepsilon_k/(s+\varepsilon_k)$ has the coefficient $\varepsilon_k\prod_{l\ne k}\varepsilon_l/(\varepsilon_l-\varepsilon_k)$ at $1/(s+\varepsilon_k)$; comparing coefficients of the linearly independent functions $e^{-\varepsilon_k\tau}$ gives the product formula.
+\end{proof}
+
+\begin{lemma}[{bounds for $v$}]
+Let $p_2$ be the density of $\xi_2+\dots+\xi_{N-1}$. Then $v'+v''=p_2\ge0$ and, for all $\tau\ge0$,
+\begin{gather*}
+0\le p_2(\tau)\le\gamma_2\varepsilon_2(\varepsilon_2-1)e^{-\varepsilon_2\tau}, \\
+Ae^{-\tau}-\gamma_2\varepsilon_2e^{-\varepsilon_2\tau}\le v'(\tau)\le Ae^{-\tau}, \\
+Ae^{-\tau}-\gamma_2e^{-\varepsilon_2\tau}\le1-v(\tau)\le Ae^{-\tau}.
+\end{gather*}
+Moreover $\ell(\tau):=Ae^{-\tau}-\gamma_2e^{-\varepsilon_2\tau}$ satisfies $0\le\ell\le1-v\le1$.
+\end{lemma}
+
+\begin{proof}
+Let $p_3$ be the density of $\xi_3+\dots+\xi_{N-1}$ (the unit mass at $0$ if $N=3$). Then $p_2=\varepsilon_2e^{-\varepsilon_2\cdot}*p_3$, i.e. $e^{\varepsilon_2\tau}p_2(\tau)=\varepsilon_2\int_0^\tau e^{\varepsilon_2s}p_3(ds)$, which is nondecreasing with limit $\varepsilon_2\,\mathbb E e^{\varepsilon_2(\xi_3+\dots)}=\varepsilon_2\prod_{l\ge3}\frac{\varepsilon_l}{\varepsilon_l-\varepsilon_2}$. By Lemma 1.7 with $k=2$, $\frac{\varepsilon_1}{\varepsilon_1-\varepsilon_2}\prod_{l\ge3}\frac{\varepsilon_l}{\varepsilon_l-\varepsilon_2}=-\gamma_2$, i.e. $\prod_{l\ge3}\frac{\varepsilon_l}{\varepsilon_l-\varepsilon_2}=\gamma_2(\varepsilon_2-1)$. This is the bound on $p_2$. Next $v'=e^{-\cdot}*p_2$ (as $\varepsilon_1=1$), i.e. $e^{\tau}v'(\tau)=\int_0^\tau e^sp_2(s)ds$; differentiating gives $v'+v''=p_2$, and the limit is $\mathbb Ee^{\xi_2+\dots}=\prod_{l\ge2}\frac{\varepsilon_l}{\varepsilon_l-1}=\gamma_1=A$ (Lemma 1.7, $k=1$). Hence $e^\tau v'(\tau)=A-\int_\tau^\infty e^sp_2(s)ds\in[A-\gamma_2\varepsilon_2e^{-(\varepsilon_2-1)\tau},A]$. Integrating over $(\tau,\infty)$ gives the bounds on $1-v$. Finally $\gamma_2\le A$ (because $0\le\cos2x\le\cos x$ for $x\le\pi/6$) and $\varepsilon_2>1$ give $\ell\ge0$.
+\end{proof}
+
+\subsection{The function $\varphi=u'$ for $d\ge2$}
+
+\begin{lemma}[{bounds for $\varphi$}]
+Let $d\ge2$. Then $\varphi=d\,v^{d-1}v'\ge0$, $\varphi(0)=0$, and the functions
+\begin{equation*}
+\tilde q:=\varphi'+\varphi,\qquad r:=We^{-\tau}-\varphi,\qquad r_1:=-r'=We^{-\tau}+\varphi'=r+\tilde q
+\end{equation*}
+satisfy, for all $\tau\ge0$,
+\begin{gather*}
+0\le\tilde q\le C_1e^{-2\tau}+C_2(\varepsilon_2-1)e^{-\varepsilon_2\tau}, \\
+We^{-\tau}g_\ell(\tau)\ \le\ r\ \le\ \bar r(\tau):=C_1e^{-2\tau}+C_2e^{-\varepsilon_2\tau}, \\
+r\le r_1\le\bar r_1(\tau):=2C_1e^{-2\tau}+C_2\varepsilon_2e^{-\varepsilon_2\tau},
+\end{gather*}
+where $g_\ell=\ell$ (any $d\ge2$) or $g_\ell=2\ell-\ell^2$ (if $d\ge3$). Also $r\le We^{-\tau}$, $r(0)=W$, $r(\tau)=e^{-\tau}\int_\tau^\infty e^s\tilde q(s)ds$, and $1-u\le\min(1,We^{-\tau})$.
+\end{lemma}
+
+\begin{proof}
+$\varphi'=d(d-1)v^{d-2}v'^2+dv^{d-1}v''$, so by Lemma 1.8 $\tilde q=d(d-1)v^{d-2}v'^2+dv^{d-1}p_2$, which lies between $0$ and $d(d-1)A^2e^{-2\tau}+d\gamma_2\varepsilon_2(\varepsilon_2-1)e^{-\varepsilon_2\tau}$. Since $(e^\tau\varphi)'=e^\tau\tilde q\ge0$ and $e^\tau\varphi=dv^{d-1}(e^\tau v')\to dA=W$, we get $W-e^\tau\varphi(\tau)=\int_\tau^\infty e^s\tilde q(s)ds$, which is the formula for $r$; inserting the bound on $\tilde q$ gives $0\le r\le\bar r$. $r\le We^{-\tau}$ and $r(0)=W$ follow from $\varphi\ge0$, $\varphi(0)=dv(0)^{d-1}v'(0)=0$. Next $r_1=-r'=We^{-\tau}+\varphi'=(We^{-\tau}-\varphi)+(\varphi'+\varphi)=r+\tilde q$, which gives $r\le r_1\le\bar r+C_1e^{-2\tau}+C_2(\varepsilon_2-1)e^{-\varepsilon_2\tau}=\bar r_1$.
+
+Lower bound: $r=d(Ae^{-\tau}-v')+dv'(1-v^{d-1})$. By Lemma 1.8, $0\le\ell\le1-v$; hence $1-v^{d-1}\ge1-v\ge\ell$, and if $d\ge3$ also $v^{d-1}\le v^2\le(1-\ell)^2$, i.e. $1-v^{d-1}\ge2\ell-\ell^2$. In both cases $0\le g_\ell\le1$ and $1-v^{d-1}\ge g_\ell$, so, using $Ae^{-\tau}-v'\ge0$ and $v'\ge0$, $r\ge d(Ae^{-\tau}-v')g_\ell+dv'g_\ell=We^{-\tau}g_\ell$. Finally $1-u=1-v^d\le d(1-v)\le We^{-\tau}$.
+\end{proof}
+
+\subsection{Unimodality in continuous time}
+
+\begin{lemma}[{log-concavity}]
+$v'$, $v$ and $\varphi=d\,v^{d-1}v'$ are positive, $C^\infty$ and log-concave on $(0,\infty)$ (for every $d\ge1$).
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1.} Let $\Pi:[0,\infty)\to[0,\infty)$ be continuous, positive and $C^1$ on $(0,\infty)$, with $\Pi'/\Pi$ nonincreasing on $(0,\infty)$. Then $F(\tau):=\int_0^\tau\Pi$ is positive on $(0,\infty)$ and $F'/F$ is nonincreasing there. Indeed for $0<s\le\tau$, $\Pi'(\tau)/\Pi(\tau)\le\Pi'(s)/\Pi(s)$, i.e. $\Pi'(\tau)\Pi(s)\le\Pi'(s)\Pi(\tau)$; integrating over $s\in(\delta,\tau)$ and letting $\delta\downarrow0$, $\Pi'(\tau)F(\tau)\le\Pi(\tau)(\Pi(\tau)-\Pi(0))\le\Pi(\tau)^2$, which is $(F'/F)'=(F''F-F'^2)/F^2\le0$ (note $F'=\Pi$, $F''=\Pi'$ on $(0,\infty)$).
+
+\emph{Step 2.} Let $p_j$ be the density of $\xi_j+\dots+\xi_{N-1}$ ($1\le j\le N-1$). $p_{N-1}(\tau)=\varepsilon_{N-1}e^{-\varepsilon_{N-1}\tau}$ is continuous on $[0,\infty)$, positive, with constant logarithmic derivative. Suppose $p_{j+1}$ is continuous on $[0,\infty)$, positive and $C^1$ on $(0,\infty)$ with nonincreasing logarithmic derivative. Then so is $\Pi(s):=e^{\varepsilon_js}p_{j+1}(s)$, and $p_j(\tau)=\varepsilon_je^{-\varepsilon_j\tau}\int_0^\tau\Pi$ has, by Step 1, the logarithmic derivative $-\varepsilon_j+F'/F$, nonincreasing; $p_j$ is continuous on $[0,\infty)$, positive and $C^1$ on $(0,\infty)$. By induction $v'=p_1$ is log-concave; by Step 1 with $\Pi=v'$, so is $v$; and $\ln\varphi=\ln d+(d-1)\ln v+\ln v'$ is concave. Smoothness is clear from the explicit exponential sums.
+\end{proof}
+
+\begin{theorem}[{strict unimodality, continuous time}]
+Let $d\ge1$ and $N\ge2$ with $(d,N)\ne(1,2)$. The function $B(\tau):=g'(\tau)/\varphi(\tau)$ is nonincreasing on $(0,\infty)$. Consequently there is a unique $\tau^*\in(0,\infty)$ with $g'(\tau^*)=0$; $g'>0$ on $(0,\tau^*)$ and $g'<0$ on $(\tau^*,\infty)$. In particular the continuous-time first-passage density has the unique mode $t^*=\tau^*/\mu$, and for any $\tau>0$
+\begin{equation*}
+g'(\tau)>0\iff\tau<\tau^*,\qquad g'(\tau)<0\iff\tau>\tau^* .
+\end{equation*}
+\end{theorem}
+
+\begin{proof}
+By Proposition 1.5, $g(\tau)=\pi_a\varphi(\tau)+\int_0^\tau\varphi(s)h_{\rm ac}(\tau-s)ds$. Differentiating and substituting $s\to\tau-s$,
+\begin{gather*}
+g'(\tau)=\pi_a\varphi'(\tau)+\varphi(\tau)h_{\rm ac}(0)-\int_0^\tau\varphi(\tau-s)\,\eta(s)\,ds, \\
+\eta:=-h_{\rm ac}'=\sum_j\rho_j\nu_je^{-\nu_js}>0 .
+\end{gather*}
+Hence, for $\tau>0$,
+\begin{equation*}
+B(\tau)=\pi_a\frac{\varphi'(\tau)}{\varphi(\tau)}+h_{\rm ac}(0)-\int_0^\infty\mathbf 1_{\{s<\tau\}}\frac{\varphi(\tau-s)}{\varphi(\tau)}\,\eta(s)\,ds .
+\end{equation*}
+$\varphi'/\varphi$ is nonincreasing (Lemma 1.10). For fixed $s>0$ the function $\tau\mapsto\mathbf 1_{\{s<\tau\}}\varphi(\tau-s)/\varphi(\tau)$ is nondecreasing: it vanishes for $\tau\le s$, and for $s<\tau_1<\tau_2$ concavity of $\ln\varphi$ gives $\ln\varphi(\tau_2)-\ln\varphi(\tau_2-s)\le\ln\varphi(\tau_1)-\ln\varphi(\tau_1-s)$. Therefore $B$ is nonincreasing.
+
+Next, $\varphi(0)=0$: for $d\ge2$ because $\varphi=dv^{d-1}v'$ and $v(0)=0$; for $d=1$ (so $N\ge3$) because $\varphi=v'$ is the density of $\xi_1+(\xi_2+\dots+\xi_{N-1})$, a convolution of two bounded densities on $[0,\infty)$, so $v'(\tau)\le\tau\,\varepsilon_1\sup p_2\to0$ as $\tau\downarrow0$ (Lemma 1.7). Also $\varphi>0$ on $(0,\infty)$ (Lemma 1.10). $g$ is a finite sum of exponentials, $g(0)=\pi_a\varphi(0)=0$, $g(\tau)\to0$ as $\tau\to\infty$ and $\int g=1$; so $g$ has a positive maximum at some $\tau^*\in(0,\infty)$, where $g'(\tau^*)=0$. The zero set of $g'$ in $(0,\infty)$ equals the zero set of the monotone function $B$ (as $\varphi>0$), hence is an interval; $g'$ is real-analytic and not identically zero, so this interval is the single point $\tau^*$. Monotonicity of $B$ gives the signs.
+\end{proof}
+
+\begin{remark}
+(o) The excluded case $(d,N)=(1,2)$ is a genuine exception: then $L=1$, $\pi_a=\frac12$, $\nu_0=\frac12$, $\rho_0=\frac14$, $\varphi(\tau)=v'(\tau)=e^{-\tau}$, and Proposition 1.5 gives $g(\tau)=\frac12e^{-\tau}+\frac12(e^{-\tau/2}-e^{-\tau})=\frac12e^{-\tau/2}$: $\mu T$ is exponentially distributed, $g'<0$ on $(0,\infty)$ and the density has no interior mode (its supremum is at the endpoint $\tau=0$). The proof above uses $\varphi(0)=0$ exactly once, to place the maximum of $g$ in the interior. (i) The argument is a direct proof, for this situation, of Ibragimov's theorem that a log-concave density is strongly unimodal (I. A. Ibragimov, \emph{On the composition of unimodal distributions}, Theory Probab. Appl. 1 (1956), 255–260, main theorem; see also S. Dharmadhikari and K. Joag-Dev, \emph{Unimodality, Convexity, and Applications}, Academic Press 1988, Section 1.4), applied to $U$ (log-concave) and $T_\pi$ (unimodal with mode $0$). (ii) In discrete time the same argument works whenever the sequence $u_{t+1}-u_t$ is log-concave and $t\mapsto\sum_j\rho_j(1-\mu\nu_j)^{t}$ is nonincreasing; see Section 7. For $q=1$ unimodality is false in general (parity).
+\end{remark}
+
+\setcounter{section}{1}
+\section{An exact identity for $g'$ and the window theorem}
+
+\textbf{Standing assumptions for Sections 2–6:} continuous time, scaled units; $d\in\{2,3\}$; $N\ge3$ if $d=2$ and $N\ge4$ if $d=3$.
+
+Under these assumptions $\varepsilon_k\ge\varepsilon_2=4\cos^2x\ge3$ for $k\ge2$, with $\varepsilon_2>3$ if $N\ge4$. A multi-index $k$ has $\mu_k<\varepsilon_2$ iff all $k_i\in\{0,1\}$, and then $\mu_k=\#\{i:k_i=1\}$. Hence the lowest levels and their weights are
+\begin{gather*}
+m_1=1,\ W_1=W=dA; \qquad m_2=2,\ W_2=\tbinom d2A^2=\tfrac12C_1; \qquad (d=3)\ \ m_3=3,\ W_3=A^3; \\
+\text{next level }\varepsilon_2 .
+\end{gather*}
+We write $\theta:=\nu_1-1\in(0,1)$, $\Gamma:=\rho_1/\theta$, and call \emph{near poles} the $\nu_j$ with $2<\nu_j<\varepsilon_2$ (that is $j=2$ if $d=2$; $j\in\{2,3\}$ if $d=3$) and \emph{far poles} the $\nu_j>\varepsilon_2$; $\mathcal N$ denotes the index set of the near poles. For a function $f$ on $[0,\infty)$ and $\nu>0$ put $(f*E_\nu)(\tau):=\int_0^\tau f(s)e^{-\nu(\tau-s)}ds$.
+
+\begin{proposition}[{exact identity}]
+Let $m_0:=\hat\varphi(-\nu_0)=\int_0^\infty\varphi(s)e^{\nu_0s}ds$ and $J(\tau):=\int_\tau^\infty r(s)e^{\nu_0s}ds$. For all $\tau\ge0$,
+\begin{equation*}
+g'(\tau)=W\sum_{j\ge1}\frac{\rho_j}{\nu_j-1}e^{-\nu_j\tau}-\rho_0\nu_0m_0e^{-\nu_0\tau}-\rho_0\nu_0e^{-\nu_0\tau}J(\tau)-\rho_0r(\tau)+\pi_ar_1(\tau)+\sum_{j\ge1}\rho_j\,(r_1*E_{\nu_j})(\tau).
+\end{equation*}
+All six terms have a definite sign: the first, fifth and sixth are $\ge0$, the others $\le0$.
+\end{proposition}
+
+\begin{proof}
+By Proposition 1.5, $g=\pi_a\varphi+\sum_j\rho_j(\varphi*E_{\nu_j})$, and $\frac{d}{d\tau}(\varphi*E_\nu)=\varphi-\nu(\varphi*E_\nu)$.
+
+\emph{Pole} $j=0$\emph{.} $(\varphi*E_{\nu_0})(\tau)=e^{-\nu_0\tau}\bigl[m_0-\int_\tau^\infty\varphi e^{\nu_0s}ds\bigr]$ and, since $\varphi=We^{-s}-r$ and $\nu_0<1$, $\int_\tau^\infty\varphi e^{\nu_0s}ds=\frac{W}{1-\nu_0}e^{-(1-\nu_0)\tau}-J(\tau)$. Therefore
+\begin{equation*}
+\frac{d}{d\tau}(\varphi*E_{\nu_0})=We^{-\tau}-r-\nu_0m_0e^{-\nu_0\tau}+\frac{\nu_0W}{1-\nu_0}e^{-\tau}-\nu_0e^{-\nu_0\tau}J=\frac{W}{1-\nu_0}e^{-\tau}-r-\nu_0m_0e^{-\nu_0\tau}-\nu_0e^{-\nu_0\tau}J .
+\end{equation*}
+
+\emph{Poles} $j\ge1$\emph{.} Integrating by parts and using $\varphi(0)=0$, $\varphi-\nu(\varphi*E_\nu)=\varphi'*E_\nu$. With $\varphi'=-We^{-s}+r_1$ and $(E_1*E_\nu)(\tau)=(e^{-\tau}-e^{-\nu\tau})/(\nu-1)$ for $\nu\ne1$,
+\begin{equation*}
+\frac{d}{d\tau}(\varphi*E_{\nu_j})=-\frac{W}{\nu_j-1}\bigl(e^{-\tau}-e^{-\nu_j\tau}\bigr)+(r_1*E_{\nu_j}).
+\end{equation*}
+
+\emph{Summation.} The total coefficient of $We^{-\tau}$ is $\frac{\rho_0}{1-\nu_0}-\sum_{j\ge1}\frac{\rho_j}{\nu_j-1}=\pi_a$ by the sum rule of Lemma 1.4(c) with $m_i=1$. Since $\pi_a\varphi'+\pi_aWe^{-\tau}=\pi_ar_1$, the identity follows. Signs: $\rho_j>0$, $\nu_j>1$ for $j\ge1$, $m_0>0$, and $r_1\ge r\ge0$ (Lemma 1.9).
+\end{proof}
+
+Define
+\begin{gather*}
+a_1:=W\Gamma=\frac{W\rho_1}{\theta}, \qquad a_0:=\rho_0\nu_0m_0, \qquad \kappa(\tau):=\int_0^\tau r_1(s)e^{\nu_1s}ds, \\
+E_-(\tau):=\frac{\nu_0J(\tau)+r(\tau)e^{\nu_0\tau}}{\nu_0m_0},
+\end{gather*}
+\begin{equation*}
+P_{\rm rest}(\tau):=W\sum_{j\ge2}\frac{\rho_j}{\nu_j-1}e^{-\nu_j\tau}+\pi_ar_1(\tau)+\sum_{j\ge2}\rho_j(r_1*E_{\nu_j})(\tau).
+\end{equation*}
+Because $\rho_1(r_1*E_{\nu_1})(\tau)=\rho_1e^{-\nu_1\tau}\kappa(\tau)$, Proposition 2.1 reads
+\begin{equation*}
+g'(\tau)=a_1e^{-\nu_1\tau}\Bigl[1+\frac{\theta}{W}\kappa(\tau)\Bigr]-a_0e^{-\nu_0\tau}\bigl[1+E_-(\tau)\bigr]+P_{\rm rest}(\tau). \tag{2.1}
+\end{equation*}
+
+\begin{lemma}[{bounds for the correction terms}]
+Let $s_x:=\ln((d-1)A)\ge0$, $\hat\beta:=1-b_0-b_1$, $c_\beta:=2W+2C_1\varepsilon_2/(\varepsilon_2-2)$, and
+\begin{gather*}
+I^+(\theta):=W\frac{e^{\theta s_x}-1}{\theta}+\frac{C_1e^{-(1-\theta)s_x}}{1-\theta}+\frac{C_2e^{-(\varepsilon_2-1-\theta)s_x}}{\varepsilon_2-1-\theta}, \\
+\bar\kappa:=W+(1+\theta)I^+(\theta),
+\end{gather*}
+\begin{equation*}
+\kappa_{\rm lo}(\tau):=W-\bar r(\tau)e^{(1+\theta)\tau}+(1+\theta)W\int_0^\tau e^{\theta s}g_\ell(s)\,ds,
+\end{equation*}
+\begin{gather*}
+E_-^{\rm lo}(\tau):=\frac{We^{-(1-\nu_0)\tau}g_\ell(\tau)}{\nu_0m_0}, \\
+\bar E_-(\tau):=\frac{1}{\nu_0m_0}\Bigl[\frac{2C_1e^{-(2-\nu_0)\tau}}{2-\nu_0}+\frac{C_2\varepsilon_2e^{-(\varepsilon_2-\nu_0)\tau}}{\varepsilon_2-\nu_0}\Bigr],
+\end{gather*}
+\begin{gather*}
+\bar P_{\rm rest}(\tau):=e^{-2\tau}\Bigl[c_\beta\hat\beta+\sum_{i\in\mathcal N}\rho_iN_i(\tau)\Bigr]+e^{-\varepsilon_2\tau}C_2\varepsilon_2\bigl[\pi_a+\tau R_{\rm tot}\bigr], \\
+N_i(\tau):=2C_1\min\Bigl(\tau,\frac1{\nu_i-2}\Bigr)+C_2\varepsilon_2\min\Bigl(\tau,\frac1{\varepsilon_2-\nu_i}\Bigr).
+\end{gather*}
+Then for all $\tau>0$: (a) $\kappa_{\rm lo}(\tau)\le\kappa(\tau)\le\bar\kappa$; (b) $0\le E_-^{\rm lo}(\tau)\le E_-(\tau)\le\bar E_-(\tau)$; (c) $0\le P_{\rm rest}(\tau)\le\bar P_{\rm rest}(\tau)$.
+\end{lemma}
+
+\begin{proof}
+(a) Integrating by parts ($r_1=-r'$, $r(0)=W$): $\kappa(\tau)=W-r(\tau)e^{\nu_1\tau}+\nu_1\int_0^\tau r(s)e^{\nu_1s}ds$. Lower bound: $r\le\bar r$ in the second term and $r\ge We^{-s}g_\ell(s)$ in the third (Lemma 1.9). Upper bound: $\kappa$ is nondecreasing ($r_1\ge0$) and $r(\tau)e^{\nu_1\tau}\to0$ ($r=O(e^{-2\tau})$, $\nu_1<2$), so $\kappa(\tau)\le W+\nu_1\int_0^\infty re^{\nu_1s}ds$; use $r\le We^{-s}$ on $[0,s_x]$ and $r\le\bar r$ on $[s_x,\infty)$ ($\theta<1<\varepsilon_2-1$ makes the integrals converge) to get $\int_0^\infty re^{\nu_1s}ds\le I^+(\theta)$.
+
+(b) $J(\tau)\le\int_\tau^\infty\bar r(s)e^{\nu_0s}ds=\frac{C_1e^{-(2-\nu_0)\tau}}{2-\nu_0}+\frac{C_2e^{-(\varepsilon_2-\nu_0)\tau}}{\varepsilon_2-\nu_0}$; adding $\bar r(\tau)e^{\nu_0\tau}/\nu_0$ and using $\frac{1}{a-\nu_0}+\frac1{\nu_0}=\frac{a}{\nu_0(a-\nu_0)}$ for $a=2,\varepsilon_2$ gives $\bar E_-$. The lower bound keeps only $r(\tau)e^{\nu_0\tau}\ge We^{-(1-\nu_0)\tau}g_\ell(\tau)\ge0$.
+
+(c) $P_{\rm rest}\ge0$ is clear. For $j\ge2$ we have $\nu_j>2$, so $\rho_j/(\nu_j-1)\le2b_j$ and $e^{-\nu_j\tau}\le e^{-2\tau}$: the first sum is at most $2W\beta_2e^{-2\tau}$, $\beta_2:=\sum_{j\ge2}b_j$. The second term is at most $\pi_a\bar r_1(\tau)$. For the third, $r_1\le\bar r_1=2C_1E_2+C_2\varepsilon_2E_{\varepsilon_2}$ and, for $a\ne\nu$,
+\begin{equation*}
+(E_a*E_\nu)(\tau)=\frac{e^{-\min(a,\nu)\tau}-e^{-\max(a,\nu)\tau}}{|a-\nu|}\le e^{-\min(a,\nu)\tau}\min\Bigl(\tau,\frac{1}{|a-\nu|}\Bigr).
+\end{equation*}
+For a near pole ($2<\nu_i<\varepsilon_2$) this gives $(r_1*E_{\nu_i})\le e^{-2\tau}N_i(\tau)$. For a far pole ($\nu_j>\varepsilon_2$): $(E_2*E_{\nu_j})\le e^{-2\tau}/(\nu_j-2)\le e^{-2\tau}\frac{\varepsilon_2}{\varepsilon_2-2}\frac1{\nu_j}$ and $(E_{\varepsilon_2}*E_{\nu_j})\le\tau e^{-\varepsilon_2\tau}$. Summing, with $\sum_{\rm far}b_j\le\beta_2$ and $\sum_{\rm far}\rho_j\le R_{\rm tot}$ (Lemma 1.4(c)),
+\begin{equation*}
+P_{\rm rest}\le e^{-2\tau}\Bigl[2W\beta_2+2C_1\pi_a+\frac{2C_1\varepsilon_2}{\varepsilon_2-2}\beta_2+\sum_{i\in\mathcal N}\rho_iN_i(\tau)\Bigr]+e^{-\varepsilon_2\tau}C_2\varepsilon_2[\pi_a+\tau R_{\rm tot}].
+\end{equation*}
+Finally $\beta_2+\pi_a=1-b_0-b_1=\hat\beta$ (Lemma 1.4(c)) and $2C_1\le c_\beta$.
+\end{proof}
+
+\begin{theorem}[{window theorem}]
+Define for $\tau>0$
+\begin{gather*}
+\Phi_-(\tau):=a_1e^{-\nu_1\tau}\Bigl[1+\frac\theta W\kappa_{\rm lo}(\tau)\Bigr]-a_0e^{-\nu_0\tau}\bigl[1+\bar E_-(\tau)\bigr], \\
+\Phi_+(\tau):=a_1e^{-\nu_1\tau}\Bigl[1+\frac\theta W\bar\kappa\Bigr]+\bar P_{\rm rest}(\tau)-a_0e^{-\nu_0\tau}\bigl[1+E_-^{\rm lo}(\tau)\bigr].
+\end{gather*}
+Then $\Phi_-(\tau)\le g'(\tau)\le\Phi_+(\tau)$ for all $\tau>0$. Consequently, by Theorem 1.11,
+\begin{gather*}
+\Phi_-(\tau_-)>0\ \Longrightarrow\ \tau_-<\tau^*, \qquad \Phi_+(\tau_+)<0\ \Longrightarrow\ \tau^*<\tau_+ .
+\end{gather*}
+Equivalently, with $\Lambda:=a_1/a_0$ and $\hat\nu:=\nu_1-\nu_0$: $\tau_-<\tau^*$ as soon as $\ln\Lambda-\hat\nu\tau_-+\ln\bigl(1+\frac\theta W\kappa_{\rm lo}(\tau_-)\bigr)-\ln\bigl(1+\bar E_-(\tau_-)\bigr)>0$ (when $1+\frac\theta W\kappa_{\rm lo}(\tau_-)>0$), and $\tau^*<\tau_+$ as soon as $\ln\Lambda-\hat\nu\tau_++\ln\bigl(1+\frac\theta W\bar\kappa+\bar P_{\rm rest}(\tau_+)e^{\nu_1\tau_+}/a_1\bigr)-\ln\bigl(1+E_-^{\rm lo}(\tau_+)\bigr)<0$.
+\end{theorem}
+
+\begin{proof}
+Insert Lemma 2.2 into (2.1) (all prefactors are positive), then apply Theorem 1.11.
+\end{proof}
+
+\begin{remark}[{the two-pole crossing}]
+Dropping all corrections, $g'$ vanishes at $t_c:=\ln\Lambda/\hat\nu$. Section 3 shows $\Lambda=WX_s(1+O(1/X_s))$, $\hat\nu=1+(W-1)/X_s+O(X_s^{-2})$, and that every correction in Theorem 2.3 is of relative size $O(1/X_s)$; this is the rigorous form of the ''two slowest poles'' heuristic. The checks \texttt{scripts/\allowbreak 40\_\allowbreak check\_\allowbreak thmA.py} (identity, all bounds of Lemmas 1.8, 1.9, 2.2 and Theorem 2.3 against a dense eigen-decomposition, $d=2$: $N\le36$, $d=3$: $N\le12$; 0 violations, exactly one sign change of $g'$) and \texttt{scripts/\allowbreak 41\_\allowbreak windows\_\allowbreak exact.py} (windows from $\Phi_\pm$ with float pole data against the exact modes, $d=2$: $N\le1810$, $d=3$: $N\le160$) are sanity checks only.
+\end{remark}
+
+\setcounter{section}{2}
+\section{The pole data in terms of lattice sums}
+
+Throughout this section
+\begin{gather*}
+y:=\frac1{X_s}, \qquad \sigma:=\sum_{k\in\mathcal K}\frac{w_k}{\mu_k^2}, \\
+T_1:=\sum_{k:\,\mu_k\ge\varepsilon_2}\frac{w_k}{\mu_k(\mu_k-1)} .
+\end{gather*}
+Every statement is an exact identity or a two-sided bound; no asymptotic symbol is used. Section 4 supplies $\sigma\le Z_d$ and enclosures of $X_s$ and $T_1$.
+
+\begin{lemma}[{the slowest pole}]
+Put $s:=1-\nu_0X_s$, so $\nu_0=y(1-s)$. Then
+\begin{gather*}
+s=\nu_0^2\sigma',\quad \sigma':=\sum_k\frac{w_k}{\mu_k(\mu_k-\nu_0)}\in\Bigl[\sigma,\frac{\sigma}{1-\nu_0}\Bigr]; \\
+\frac1{b_0}=1+\nu_0^2\sigma'',\quad \sigma'':=\sum_k\frac{w_k}{(\mu_k-\nu_0)^2}\in\Bigl[\sigma,\frac{\sigma}{(1-\nu_0)^2}\Bigr].
+\end{gather*}
+Consequently, since $\sigma\ge W$,
+\begin{gather*}
+W\nu_0^2\le s\le\frac{\sigma y^2}{1-y}, \qquad y\Bigl(1-\frac{\sigma y^2}{1-y}\Bigr)\le\nu_0\le y, \\
+0\le1-b_0\le\frac{\nu_0^2\sigma}{(1-\nu_0)^2}, \qquad 0\le\ln\frac1{b_0}\le\frac{\nu_0^2\sigma}{(1-\nu_0)^2}.
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$\mathsf D(\nu_0)=0$ reads $1=\nu_0\sum_kw_k/(\mu_k-\nu_0)=\nu_0\sum_k w_k\bigl[\frac1{\mu_k}+\frac{\nu_0}{\mu_k(\mu_k-\nu_0)}\bigr]=\nu_0X_s+\nu_0^2\sigma'$. As $\mu_k\ge1>\nu_0$, $\mu_k-\nu_0\ge\mu_k(1-\nu_0)$, which gives the bounds on $\sigma'$ and $\sigma''$; the formula for $1/b_0=\nu_0/\rho_0$ is Lemma 1.4(c). $\sigma\ge W$ because the $k$ with $\mu_k=1$ contribute $W$. Hence $s\ge W\nu_0^2\ge0$, so $\nu_0\le y$, and then $s\le\nu_0^2\sigma/(1-\nu_0)\le y^2\sigma/(1-y)$ ($t\mapsto t^2/(1-t)$ is increasing). The last two bounds follow from $1-b_0=\nu_0^2\sigma''/(1+\nu_0^2\sigma'')$ and $\ln(1+z)\le z$.
+\end{proof}
+
+\begin{lemma}[{$\mathbb E U$ and $m_0$}]
+Let $H_d:=\sum_{j=1}^d1/j$ and $h_d(\nu):=\sum_{j=1}^d(-1)^{j+1}\binom dj\frac{1}{j-\nu}$ for $0\le\nu<1$ (so $h_2(\nu)=\frac2{1-\nu}-\frac1{2-\nu}$, $h_3(\nu)=\frac3{1-\nu}-\frac3{2-\nu}+\frac1{3-\nu}$, $h_d(0)=H_d$). Then
+\begin{gather*}
+\mathbb EU_{\rm lo}:=H_d-\frac{d\gamma_2A^{-\varepsilon_2}}{\varepsilon_2}+(\ln A)\bigl(1-(\gamma_2A^{-\varepsilon_2})^d\bigr)\ \le\ \mathbb EU\ \le\ \ln A+H_d=:\mathbb EU_{\rm hi}, \\
+\nu_0\,\mathbb EU\le\ln m_0\le\nu_0\bigl(\ln A+h_d(\nu_0)\bigr).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$\mathbb EU=\int_0^\infty(1-v^d)\,ds$ and $m_0=\mathbb Ee^{\nu_0U}=1+\nu_0\int_0^\infty(1-v(s)^d)e^{\nu_0s}ds$ (integrate by parts; $1-u\le We^{-s}$, $\nu_0<1$). By Lemma 1.8, $v\ge(1-Ae^{-s})_+$, and $A\ge\frac32$. Substituting $z=Ae^{-s}$ on $s\ge\ln A$,
+\begin{gather*}
+\int_0^\infty\bigl[1-(1-Ae^{-s})_+^d\bigr]e^{\nu s}ds=\frac{A^\nu-1}{\nu}+A^\nu\int_0^1\frac{1-(1-z)^d}{z^{1+\nu}}dz=\frac{A^\nu-1}{\nu}+A^\nu h_d(\nu) \\
+(0<\nu<1),
+\end{gather*}
+and for $\nu=0$ the value is $\ln A+H_d$ (note $\int_0^1(1-(1-z)^d)z^{-1}dz=\int_0^1\frac{1-w^d}{1-w}dw=H_d$). This gives $\mathbb EU\le\ln A+H_d$ and $m_0\le A^{\nu_0}(1+\nu_0h_d(\nu_0))$, hence $\ln m_0\le\nu_0(\ln A+h_d(\nu_0))$. Jensen's inequality gives $m_0\ge e^{\nu_0\mathbb EU}$.
+
+Lower bound for $\mathbb EU$: by Lemma 1.8, $v\le1-\ell$ with $\ell=Ae^{-s}-\gamma_2e^{-\varepsilon_2s}\in[0,1]$. For $s\ge s_A:=\ln A$ both $1-\ell$ and $1-Ae^{-s}$ lie in $[0,1]$ and differ by $\gamma_2e^{-\varepsilon_2s}$, so $(1-\ell)^d\le(1-Ae^{-s})^d+d\gamma_2e^{-\varepsilon_2s}$ and $\int_{s_A}^\infty(1-v^d)\ge H_d-d\gamma_2A^{-\varepsilon_2}/\varepsilon_2$. For $s<s_A$, $v(s)\le v(s_A)\le1-\ell(s_A)=\gamma_2A^{-\varepsilon_2}\le1$, so $\int_0^{s_A}(1-v^d)\ge(\ln A)(1-(\gamma_2A^{-\varepsilon_2})^d)$.
+\end{proof}
+
+\begin{lemma}[{the second pole and the leading coefficient}]
+Put
+\begin{gather*}
+S_\nu:=\sum_{k:\,\mu_k\ge2}\frac{w_k}{\mu_k(\mu_k-\nu_1)}, \\
+S_{2\nu}:=\sum_{k:\,\mu_k\ge2}\frac{w_k}{(\mu_k-\nu_1)^2}, \qquad e:=\frac{\theta}{1+\theta}+(1+\theta)S_\nu, \\
+\zeta:=\frac{1}{W(1+\theta)^2}+\frac{S_{2\nu}}{W}.
+\end{gather*}
+Then (a) $\dfrac W\theta=X_s-W-1+e$, equivalently $\dfrac{\theta}{1+\theta}=\dfrac{Wy}{1+(e-1)y}$;
+
+(b) $a_1=W\Gamma=\dfrac{\theta}{1+\theta}\cdot\dfrac{1}{1+\theta^2\zeta}$ and $b_1=\dfrac{\theta\,\Gamma}{1+\theta}$;
+
+(c) with $[\,\cdot\,]_{3}$ meaning ''only if $d=3$'',
+\begin{equation*}
+\frac{W_2}{2(1-\theta)}+\Bigl[\frac{W_3}{3(2-\theta)}\Bigr]_3+T_1\ \le\ S_\nu\ \le\ \frac{W_2}{2(1-\theta)}+\Bigl[\frac{W_3}{3(2-\theta)}\Bigr]_3+T_1\frac{\varepsilon_2-1}{\varepsilon_2-1-\theta},
+\end{equation*}
+\begin{equation*}
+W_2\ \le\ S_{2\nu}\ \le\ \frac{W_2}{(1-\theta)^2}+\Bigl[\frac{W_3}{(2-\theta)^2}\Bigr]_3+T_1\,\frac{\varepsilon_2}{\varepsilon_2-1}\Bigl(\frac{\varepsilon_2-1}{\varepsilon_2-1-\theta}\Bigr)^2 ;
+\end{equation*}
+(d) with $s$ as in Lemma 3.1,
+\begin{equation*}
+\ln\Lambda=\ln\frac{a_1}{a_0}=\ln(WX_s)-\ln\bigl(1+(e-1)y\bigr)-\ln(1+\theta^2\zeta)+\ln\frac1{b_0}-2\ln(1-s)-\ln m_0 .
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+(a) $\mathsf D(\nu_1)=0$ gives $\frac1{\nu_1}=-\frac W\theta+\sum_{\mu_k\ge2}\frac{w_k}{\mu_k-\nu_1}$ and $\sum_{\mu_k\ge2}\frac{w_k}{\mu_k-\nu_1}=\sum_{\mu_k\ge2}\frac{w_k}{\mu_k}+\nu_1S_\nu=X_s-W+\nu_1S_\nu$. Hence $\frac W\theta=X_s-W-1+\bigl(1-\frac1{\nu_1}\bigr)+\nu_1S_\nu$, and $1-\frac1{\nu_1}=\frac\theta{1+\theta}$. Adding $W$: $W\frac{1+\theta}{\theta}=X_s-1+e$.
+
+(b) By Lemma 1.4(c), $\frac1{\rho_1}=\frac1{\nu_1}+\nu_1\bigl[\frac W{\theta^2}+S_{2\nu}\bigr]$. Multiply by $\theta$: $\frac1\Gamma=\frac{\theta}{1+\theta}+\frac{(1+\theta)W}{\theta}+\theta(1+\theta)S_{2\nu}=\frac{(1+\theta)W}{\theta}\bigl[1+\theta^2\zeta\bigr]$. $b_1=\rho_1/\nu_1$.
+
+(c) The levels $\ge2$ are $2$ (weight $W_2$), $3$ (weight $W_3$, $d=3$), and the $\mu_k\ge\varepsilon_2$. For the latter, $\frac{1}{\mu_k-1}\le\frac1{\mu_k-\nu_1}=\frac{1}{\mu_k-1}\cdot\frac{\mu_k-1}{\mu_k-1-\theta}\le\frac1{\mu_k-1}\cdot\frac{\varepsilon_2-1}{\varepsilon_2-1-\theta}$, which gives the bounds for $S_\nu$; and $\frac{w_k}{(\mu_k-\nu_1)^2}=\frac{w_k}{\mu_k(\mu_k-1)}\cdot\frac{\mu_k}{\mu_k-1}\bigl(\frac{\mu_k-1}{\mu_k-1-\theta}\bigr)^2$ with both factors decreasing in $\mu_k$.
+
+(d) $a_0=\rho_0\nu_0m_0=b_0\nu_0^2m_0=b_0y^2(1-s)^2m_0$; combine with (a), (b).
+\end{proof}
+
+\begin{lemma}[{near poles}]
+For $i\in\mathcal N$ let $m_i\in\{2,3\}$ be the level just below $\nu_i$ and $\theta_i:=\nu_i-m_i>0$. Then $\rho_i\le\theta_i^2/(m_iW_i)$ and
+\begin{gather*}
+\frac{W_i}{\theta_i}=X_s-\sum_{l\le i}\frac{W_l}{m_l}+\nu_i\,\Sigma_i-\sum_{l<i}\frac{W_l}{\nu_i-m_l}-\frac1{\nu_i}, \\
+\Sigma_i:=\sum_{l>i}\frac{W_l}{m_l(m_l-\nu_i)},
+\end{gather*}
+where
+\begin{gather*}
+\Bigl[\frac{W_3}{3(1-\theta_2)}\Bigr]_3+T_1\le\Sigma_2\le\Bigl[\frac{W_3}{3(1-\theta_2)}\Bigr]_3+T_1\frac{\varepsilon_2-1}{\varepsilon_2-2-\theta_2}, \\
+T_1\le\Sigma_3\le T_1\frac{\varepsilon_2-1}{\varepsilon_2-3-\theta_3}\quad(d=3).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$\mathsf D(\nu_i)=0$: $\frac1{\nu_i}=-\sum_{l<i}\frac{W_l}{\nu_i-m_l}-\frac{W_i}{\theta_i}+\sum_{l>i}\frac{W_l}{m_l-\nu_i}$ and $\sum_{l>i}\frac{W_l}{m_l-\nu_i}=\sum_{l>i}\frac{W_l}{m_l}+\nu_i\Sigma_i$, $\sum_{l>i}W_l/m_l=X_s-\sum_{l\le i}W_l/m_l$. The bounds for $\Sigma_i$ are obtained as in Lemma 3.3(c) ($\mu_k\ge\varepsilon_2$: $\frac1{\mu_k-1}\le\frac1{\mu_k-\nu_i}\le\frac1{\mu_k-1}\frac{\varepsilon_2-1}{\varepsilon_2-\nu_i}$; for $i=2$, $d=3$ the level $3$ contributes $W_3/(3(3-\nu_2))$). Finally $1/\rho_i=\sum_lW_lm_l/(m_l-\nu_i)^2\ge W_im_i/\theta_i^2$.
+\end{proof}
+
+\begin{lemma}
+$\hat\beta=1-b_0-b_1=\pi_a+\sum_{j\ge2}b_j$, $\pi_a=N^{-d}$ and $R_{\rm tot}=\dfrac{d}{4N^d\sin^2x}\le\dfrac d4N^{2-d}$.
+\end{lemma}
+
+\begin{proof}
+Lemma 1.4(c), and $\sin x\ge\frac2\pi x=\frac1N$.
+\end{proof}
+
+\begin{remark}[{first-order picture}]
+As $X_s\to\infty$ (i.e. $N\to\infty$) the lemmas give $\nu_0=y(1+O(y^2))$, $b_0=1+O(y^2)$, $\theta=Wy(1+O(y))$, $a_1=Wy(1+O(y))$, $a_0=y^2(1+O(y))$, so $\Lambda=WX_s(1+O(y))$ and $t_c=\ln\Lambda/(\nu_1-\nu_0)=\ln(WX_s)\bigl(1-(W-1)y\bigr)+O(y)$, while every correction term in Theorem 2.3 is $O(y)$ relative to the two main terms. This is made quantitative, with explicit constants, in Section 5.
+\end{remark}
+
+\setcounter{section}{3}
+\section{Lattice sums}
+
+\subsection{Comparison with $|k|^{-4}$}
+
+\begin{lemma}
+(a) For $0\le a\le\pi/2$: $a^2\cos a\le\sin^2a$. (b) For every $k\in\mathcal K$, with $nz(k)$ the number of nonzero coordinates,
+\begin{gather*}
+\frac{w_k}{\mu_k^2}\le\frac{2^{nz(k)}}{|k|^4}, \qquad \text{hence} \\
+\sum_{k\in S}\frac{w_k}{\mu_k^2}\le\sum_{k'\in\mathbb Z^d:\ (|k'_1|,\dots,|k'_d|)\in S}\frac1{|k'|^4}\ \ \text{for every }S\subset\mathcal K, \\
+\sigma\le Z_d:=\sum_{k'\in\mathbb Z^d\setminus0}\frac{1}{|k'|^4}.
+\end{gather*}
+(c) For fixed integer $k\ge1$ the functions $x\mapsto\varepsilon_k=\sin^2(kx)/\sin^2x$ and $x\mapsto\gamma_k=2\cos^2(kx)$ are nonincreasing on $(0,\pi/(2k)]$, $\varepsilon_k\le k^2$, and $\varepsilon_k\ge\cot^2\frac{\pi}{2(k+1)}\ge\frac{4(k+1)^2}{\pi^2}-1$ whenever $N\ge k+1$.
+\end{lemma}
+
+\begin{proof}
+(a) For $0\le a\le\pi/2$, $\sin a\ge a-a^3/6\ge0$ and $\cos a\le1-a^2/2+a^4/24$, so $\sin^2a-a^2\cos a\ge a^2\bigl[(1-\tfrac{a^2}6)^2-1+\tfrac{a^2}2-\tfrac{a^4}{24}\bigr]=\tfrac{a^4}{6}\bigl(1-\tfrac{a^2}{12}\bigr)\ge0$.
+
+(b) Put $a_i=k_ix\in[0,\pi/2)$. Then $w_k/2^{nz(k)}=\prod_i\cos^2a_i$ and $\mu_k=\sum_i\sin^2a_i/\sin^2x$. By (a), $\prod_j\cos a_j\cdot\sum_ia_i^2\le\sum_ia_i^2\cos a_i\le\sum_i\sin^2a_i$; squaring and using $\sin x\le x$: $\prod_i\cos^2a_i\cdot\sin^4x/(\sum_i\sin^2a_i)^2\le x^4/(\sum a_i^2)^2=|k|^{-4}$. The $2^{nz(k)}$ points $k'$ with $(|k_i'|)=k$ have $|k'|=|k|$.
+
+(c) $\frac{d}{dx}\frac{\sin kx}{\sin x}=\frac{\cos kx\cos x}{\sin x}\cdot\frac{k\tan x-\tan kx}{\sin x}\le0$ for $kx<\pi/2$ because $\tan$ is convex on $[0,\pi/2)$ with $\tan0=0$ (at $kx=\pi/2$ the derivative is $-\cos x/\sin^2x<0$). $|\sin kx|\le k\sin x$ gives $\varepsilon_k\le k^2$. If $N\ge k+1$ then $x\le\frac{\pi}{2(k+1)}$ and by monotonicity $\varepsilon_k\ge\sin^2\frac{k\pi}{2(k+1)}/\sin^2\frac{\pi}{2(k+1)}=\cot^2\frac{\pi}{2(k+1)}$; finally $\cot^2a=\sin^{-2}a-1\ge a^{-2}-1$.
+\end{proof}
+
+\begin{lemma}[{tails of $Z_d$; certified values}]
+For integers $K\ge1$ let ${\rm tail}_d(K):=\sum_{k\in\mathbb Z^d,\ |k|_\infty>K}|k|^{-4}$. Then
+\begin{gather*}
+{\rm tail}_2(K)\le\frac{c_\square^{(2)}}{K^2}+\frac{4}{3K^3}, \\
+{\rm tail}_3(K)\le\frac{c_\square^{(3)}}{K}+\frac{3c_\square^{(2)}}{K^2}+\frac{2}{K^3}, \\
+c_\square^{(2)}=\frac\pi2+1,\quad c_\square^{(3)}=24\int_{[0,1]^2}\frac{da\,db}{(1+a^2+b^2)^2}.
+\end{gather*}
+Certified (Arb, \texttt{scripts/\allowbreak 50\_\allowbreak cert\_\allowbreak constants.py}): $c_\square^{(3)}=10.44503701\ldots$,
+\begin{equation*}
+6.026748\le Z_2\le6.0268126,\qquad 16.35967\le Z_3\le16.53592 .
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+$f(y)=|y|^{-4}$ is decreasing in each $|y_i|$. For $k\in\{1,2,\dots\}^m$, $f(k)\le\int_{\prod_i[k_i-1,k_i]}f$; the cells with $\max_ik_i>K$ tile $\{y\in[0,\infty)^m:\max y_i>K\}$, so $\sum_{k\in\mathbb N_{\ge1}^m,\max k_i>K}f(k)\le2^{-m}\int_{|y|_\infty>K}|y|^{-4}dy=2^{-m}c_\square^{(m)}K^{m-4}$ with $c_\square^{(m)}:=\int_{\mathbb R^m,|y|_\infty>1}|y|^{-4}dy$ ($c_\square^{(1)}=2/3$). Sorting $k\in\mathbb Z^3$, $|k|_\infty>K$, by the set of nonzero coordinates gives $8\cdot\frac{c^{(3)}_\square}{8K}+12\cdot\frac{c_\square^{(2)}}{4K^2}+6\cdot\frac{1}{3K^3}$; in $d=2$: $4\cdot\frac{c_\square^{(2)}}{4K^2}+4\cdot\frac1{3K^3}$. In polar coordinates $c^{(2)}_\square=\int_0^{2\pi}\frac12\max(|\cos\vartheta|,|\sin\vartheta|)^2d\vartheta=4\int_0^{\pi/4}\cos^2\vartheta\,d\vartheta=\frac\pi2+1$. For $c_\square^{(3)}$: the region is the union of six congruent pieces $\{|y_3|>1,\ |y_1|,|y_2|<|y_3|\}$ etc.; substituting $y_1=y_3a$, $y_2=y_3b$ gives $c_\square^{(3)}=6\int_1^\infty z^{-2}dz\int_{[-1,1]^2}(1+a^2+b^2)^{-2}=24\int_{[0,1]^2}(1+a^2+b^2)^{-2}$; the inner integral in $b$ is elementary and the remaining one-dimensional integral is enclosed by \texttt{acb.integral}. The enclosures of $Z_d$ are (exact partial sum over $|k|_\infty\le K$, evaluated in ball arithmetic) $+[0,{\rm tail}_d(K)]$ with $K=200$ ($d=2$) and $K=60$ ($d=3$).
+\end{proof}
+
+\subsection{The kernel $\kappa$ and the one-dimensional return function $\omega$}
+
+Recall $\omega(s)=\sum_{k=0}^{N-1}\gamma_ke^{-\varepsilon_ks}$, so that $X_s=\int_0^\infty(\omega(s)^d-1)\,ds$ (integrate $\omega^d-1=\sum_{k\in\mathcal K}w_ke^{-\mu_ks}$). Put
+\begin{gather*}
+\lambda:=\frac1{2\sin^2x}, \\
+\kappa(z):=\frac1\pi\int_0^\pi(1+\cos\vartheta)e^{-z(1-\cos\vartheta)}d\vartheta=\frac4\pi\int_0^1e^{-2zt^2}\sqrt{1-t^2}\,dt \\
+(z\ge0).
+\end{gather*}
+(The second form follows from $\vartheta=2\phi$, $t=\sin\phi$. By the integral representation of the modified Bessel functions, DLMF 10.32.3, $\kappa(z)=e^{-z}(I_0(z)+I_1(z))$; this is used only to evaluate $\kappa$ numerically in Arb.)
+
+\begin{lemma}[{bounds for $\kappa$}]
+$\kappa$ is decreasing, $\kappa(0)=1$, and for $z>0$
+\begin{equation*}
+\sqrt{\tfrac{2}{\pi z}}\Bigl(1-\frac1{4z}\Bigr)-\frac{e^{-2z}}{\pi z}\ \le\ \kappa(z)\ \le\ \min\Bigl(1,\sqrt{\tfrac{2}{\pi z}}\Bigr).
+\end{equation*}
+Consequently, for $z\ge1$: $\kappa(z)\ge\sqrt{2/(\pi z)}\,(1-\frac1{3z})$ and $\kappa(z)^3\ge(\frac{2}{\pi z})^{3/2}(1-\frac1z)$; and with $K_2(Z):=\int_0^Z\kappa^2$, for $Z\ge Z_1\ge1$,
+\begin{gather*}
+\frac2\pi\ln Z+c_\kappa^{\rm lo}(Z_1)\le K_2(Z)\le\frac2\pi\ln Z+c_\kappa^{\rm hi}(Z_1), \\
+c_\kappa^{\rm hi}:=K_2(Z_1)-\frac2\pi\ln Z_1,\quad c_\kappa^{\rm lo}:=c_\kappa^{\rm hi}-\frac1{\pi Z_1}-\frac{\sqrt{2/\pi}}{\pi}\,\frac{e^{-2Z_1}}{Z_1^{3/2}} .
+\end{gather*}
+Certified (Arb): with $Z_1=10$, $c_\kappa^{\rm lo}\ge0.48012$, $c_\kappa^{\rm hi}\le0.51196$; and $J:=\int_0^\infty\kappa^3\in[1.4401510,\,1.4401549]$, so that
+\begin{equation*}
+c_3:=\frac{\pi^2}{2}J\in[7.106860,\,7.106880],\qquad \ln(6c_3)\in[3.752820,\,3.752823].
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Upper bound: $\sqrt{1-t^2}\le1$ and $\int_0^\infty e^{-2zt^2}dt=\frac12\sqrt{\pi/(2z)}$. Lower bound: $\sqrt{1-t^2}\ge1-t^2$ on $[0,1]$, $\int_1^\infty e^{-2zt^2}dt\le\int_1^\infty te^{-2zt^2}dt=\frac{e^{-2z}}{4z}$ and $\int_0^\infty t^2e^{-2zt^2}dt=\frac{\sqrt\pi}{4(2z)^{3/2}}$, so $\kappa\ge\frac4\pi\bigl[\frac12\sqrt{\frac{\pi}{2z}}-\frac{e^{-2z}}{4z}-\frac{\sqrt\pi}{4(2z)^{3/2}}\bigr]$, which is the claim. For $z\ge1$, $\frac{e^{-2z}}{\pi z}\le\sqrt{\frac2{\pi z}}\frac1{12z}$ (equivalent to $e^{-2z}\sqrt z\le\sqrt{2\pi}/12$, true at $z=1$ and the left side decreases), whence $\kappa\ge\sqrt{2/(\pi z)}(1-\frac1{3z})$ and, by Bernoulli, the bound for $\kappa^3$. For $K_2$: $\kappa^2\le\frac{2}{\pi z}$ gives the upper bound; and for $z\ge1$, squaring the (positive) lower bound, $\kappa^2\ge\frac{2}{\pi z}(1-\frac1{2z})-2\sqrt{\frac2\pi}\frac{e^{-2z}}{\pi z^{3/2}}$, whose integral over $[Z_1,Z]$ is at least $\frac2\pi\ln\frac Z{Z_1}-\frac1{\pi Z_1}-\frac{\sqrt{2/\pi}}{\pi}e^{-2Z_1}Z_1^{-3/2}$. $K_2(10)$ and $\int_0^{2000}\kappa^3$ are enclosed by \texttt{acb.integral}; the tail $\int_{2000}^\infty\kappa^3$ lies between $(\frac2\pi)^{3/2}(2Z^{-1/2}-\frac23Z^{-3/2})$ and $(\frac2\pi)^{3/2}2Z^{-1/2}$ at $Z=2000$.
+\end{proof}
+
+\begin{lemma}[{bounds for $\omega$}]
+Let $c_0:=\frac12(\cosh2-1)$, $G_A:=(1-e^{-4/c_0})^{-1}$, $\beta_N:=(2N-1)^2\sin^2x/c_0$,
+\begin{gather*}
+\iota_A(s):=G_A\,\pi\sqrt{\pi/s}\;e^{-\beta_N/s}, \qquad \iota_B:=\frac{4Ne^{-(2N-1)}}{1-e^{-2N}}, \\
+\bar\omega(s):=2e^{-s}+2e^{-3s}+\frac{2e^{-(64/\pi^2-1)s}}{1-e^{-32s/\pi^2}} .
+\end{gather*}
+Then for all $N\ge3$: (a) $\omega(s)\ge\max\bigl(1,N\kappa(\lambda s)\bigr)$ for $s>0$; (b) $\omega(s)\le N\kappa(\lambda s)+\iota_A(s)+\iota_B$ for $0<s\le1$; (c) $\omega(s)\le1+\bar\omega(s)$ for $s>0$.
+\end{lemma}
+
+\begin{proof}
+Since $\varepsilon_k=\lambda(1-\cos\frac{\pi k}N)$ and $\gamma_k=1+\cos\frac{\pi k}N$ ($k\ge1$), we have $\omega(s)=\frac12\sum_{j\in\mathbb Z/2N}F(\pi j/N)$ with $F(\vartheta):=(1+\cos\vartheta)e^{-z(1-\cos\vartheta)}$, $z=\lambda s$ (the terms $j$ and $-j$ coincide, $j=N$ contributes $0$, $j=0$ contributes $2$). For $n\in\mathbb Z$ let $p_z(n):=\frac1{2\pi}\int_{-\pi}^\pi e^{in\vartheta}e^{-z(1-\cos\vartheta)}d\vartheta$. Expanding $e^{z\cos\vartheta}=\sum_m\frac{z^m}{m!}\bigl(\frac{e^{i\vartheta}+e^{-i\vartheta}}2\bigr)^m$ shows $p_z(n)=p_z(-n)\ge0$. The Fourier coefficients of $F$ are $\hat F(n)=p_z(n)+\frac12p_z(n-1)+\frac12p_z(n+1)$, the Fourier series converges absolutely, and $\sum_{j\in\mathbb Z/2N}e^{in\pi j/N}=2N\cdot\mathbf 1_{2N|n}$; hence
+\begin{equation*}
+\omega(s)=N\sum_{m\in\mathbb Z}\hat F(2Nm)=N\kappa(z)+N\sum_{m\ge1}\bigl[2p_z(2Nm)+p_z(2Nm-1)+p_z(2Nm+1)\bigr],
+\end{equation*}
+because $\hat F(0)=\frac1{2\pi}\int F=\kappa(z)$. (a) follows from $p_z\ge0$, and from $\omega\ge\gamma_0=1$.
+
+(b) Let $n\ge1$, $\eta\ge0$. The integrand of $p_z(n)$ is entire and $2\pi$-periodic, so the contour may be shifted to $\vartheta+i\eta$; with ${\rm Re}\cos(\vartheta+i\eta)=\cos\vartheta\cosh\eta$,
+\begin{gather*}
+p_z(n)\le e^{-n\eta+z(\cosh\eta-1)}\,p_{z\cosh\eta}(0), \\
+p_{z'}(0)=\frac1\pi\int_0^\pi e^{-z'(1-\cos\vartheta)}d\vartheta\le\min\Bigl(1,\frac12\sqrt{\frac{\pi}{2z'}}\Bigr),
+\end{gather*}
+the last bound by $1-\cos\vartheta\ge2\vartheta^2/\pi^2$ on $[0,\pi]$. Since $(\cosh\eta-1)/\eta^2$ is increasing, $\cosh\eta-1\le\frac{c_0}{2}\eta^2$ for $0\le\eta\le2$. If $z\ge n/(2c_0)$ take $\eta=n/(c_0z)\le2$: $p_z(n)\le\frac12\sqrt{\frac{\pi}{2z}}e^{-n^2/(2c_0z)}$. If $z<n/(2c_0)$ take $\eta=2$: $p_z(n)\le e^{-2n+2c_0z}\le e^{-n}$. So in all cases $p_z(n)\le Q(n):=\frac12\sqrt{\frac\pi{2z}}e^{-n^2/(2c_0z)}+e^{-n}$, which is decreasing in $n$, and the bracket above is at most $4Q(2Nm-1)$. Now $(2Nm-1)^2-(2N-1)^2\ge4N^2(m-1)$ and $z\le\lambda\le N^2/2$ (as $\sin x\ge1/N$), so $\sum_{m\ge1}e^{-(2Nm-1)^2/(2c_0z)}\le G_Ae^{-(2N-1)^2/(2c_0z)}$; with $z=\lambda s$: $\frac12\sqrt{\frac{\pi}{2z}}=\frac{\sin x}{2}\sqrt{\frac\pi s}$, $\frac{(2N-1)^2}{2c_0z}=\frac{\beta_N}{s}$ and $N\sin x\le\frac\pi2$. This gives $N\cdot4\sum_mQ(2Nm-1)\le\iota_A(s)+\iota_B$.
+
+(c) $\gamma_k\le2$, $\varepsilon_1=1$, $\varepsilon_2\ge3$ and, by Lemma 4.1(c), $\varepsilon_k\ge\frac{4(k+1)^2}{\pi^2}-1$ for $3\le k\le N-1$. Hence $\omega-1\le2e^{-s}+2e^{-3s}+2e^{s}\sum_{j\ge4}e^{-4j^2s/\pi^2}$ and $j^2-16\ge8(j-4)$ for $j\ge4$.
+\end{proof}
+
+\subsection{Two-sided bounds for $X_s$}
+
+Let $T_d(1):=\int_1^\infty[(1+\bar\omega)^d-1]\,ds$; certified: $T_2(1)\le1.852100$, $T_3(1)\le3.415423$. Let $\epsilon_2,\epsilon_3$ be the numbers
+\begin{gather*}
+\epsilon_2:=\frac{2G_A\pi^2e^{-\beta}}{\beta}+4\sqrt\pi\,\iota_B+(\iota_A(1)+\iota_B)^2, \\
+\epsilon_3:=\frac{3G_A\pi^{5/2}e^{-\beta}}{\beta}+3\pi\iota_B\Bigl(1+\ln\frac{N^2}{\pi}\Bigr)+6\sqrt\pi(\iota_A(1)+\iota_B)^2+(\iota_A(1)+\iota_B)^3
+\end{gather*}
+evaluated at $N=10$ ($\beta=\beta_{10}$); certified: $\epsilon_2\le0.00555$, $\epsilon_3\le0.01552$. Both expressions are decreasing in $N$ for $N\ge10$.
+
+\begin{proposition}[{$d=2$}]
+For all $N\ge10$, $X^{(2)}_{\rm lo}(N)\le X_s\le\bar X^{(2)}(N)$, where
+\begin{gather*}
+X^{(2)}_{\rm lo}(N):=2N^2\sin^2x\Bigl[\frac2\pi\ln\frac{2N^2}{\pi}+c_\kappa^{\rm lo}-\frac2\pi\Bigr], \\
+\bar X^{(2)}(N):=2N^2\sin^2x\Bigl[\frac2\pi\ln\lambda+c_\kappa^{\rm hi}\Bigr]-1+T_2(1)+\epsilon_2 .
+\end{gather*}
+Both bounds are increasing in $N$, and
+\begin{equation*}
+2\pi\ln N-2.32\ \le\ X_s\ \le\ 2\pi\ln N-1.60\qquad(N\ge10).
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+\emph{Lower bound.} By Lemma 4.4(a), $\omega^2-1\ge(N^2\kappa(\lambda s)^2-1)_+$, so for any $Z_0>0$, $X_s\ge\lambda^{-1}\int_0^{Z_0}(N^2\kappa^2-1)dz=2\sin^2x\,[N^2K_2(Z_0)-Z_0]$. Take $Z_0=2N^2/\pi\ge10$ and use Lemma 4.3.
+
+\emph{Upper bound.} Split at $s=1$. On $(1,\infty)$ use Lemma 4.4(c): $\int_1^\infty(\omega^2-1)\le T_2(1)$. On $(0,1]$ use Lemma 4.4(b) with $\iota:=\iota_A+\iota_B$: $\omega^2-1\le N^2\kappa^2-1+2\iota N\kappa+\iota^2$. First, $\int_0^1N^2\kappa(\lambda s)^2ds=2N^2\sin^2x\,K_2(\lambda)$ and $\lambda\ge10$ for $N\ge10$. Next $N\kappa(\lambda s)\le N\sqrt{2/(\pi\lambda s)}=2N\sin x/\sqrt{\pi s}\le\sqrt{\pi/s}$, so $\int_0^12\iota N\kappa\le2G_A\pi^2\int_0^1s^{-1}e^{-\beta_N/s}ds+4\sqrt\pi\iota_B\le2G_A\pi^2e^{-\beta_N}/\beta_N+4\sqrt\pi\iota_B$ (substitute $u=1/s$), and $\int_0^1\iota^2\le(\iota_A(1)+\iota_B)^2$ since $\iota_A$ is increasing on $(0,1]$ ($\beta_N\ge\frac12$). As $\beta_N$ increases and $\iota_B$ decreases with $N$, these corrections are at most $\epsilon_2$.
+
+\emph{Monotonicity.} $N\sin x=\frac\pi2\frac{\sin x}{x}$ and $\lambda$ are increasing in $N$ and the brackets are positive.
+
+\emph{Simple form.} $2N^2\sin^2x=\frac{\pi^2}2(\frac{\sin x}{x})^2\in[\frac{\pi^2}{2}(1-\frac{x^2}3),\frac{\pi^2}2]$. Lower: $X^{(2)}_{\rm lo}=(\frac{\sin x}{x})^2[2\pi\ln N-c_L]$ with $c_L=-\frac{\pi^2}{2}(\frac2\pi\ln\frac2\pi+c_\kappa^{\rm lo}-\frac2\pi)\le2.1914$, and $\frac{x^2}{3}2\pi\ln N\le0.12$ for $N\ge10$. Upper: $\ln\lambda\le\ln\frac{2N^2}{\pi^2}-2\ln(1-\frac{x^2}6)\le\ln\frac{2N^2}{\pi^2}+0.0083$, so $\bar X^{(2)}\le2\pi\ln N+\pi\ln\frac{2}{\pi^2}+0.0261+\frac{\pi^2}{2}c_\kappa^{\rm hi}-1+T_2(1)+\epsilon_2\le2\pi\ln N-1.60$.
+\end{proof}
+
+\begin{proposition}[{$d=3$}]
+For all $N\ge10$, $X^{(3)}_{\rm lo}(N)\le X_s\le\bar X^{(3)}(N)$, where
+\begin{gather*}
+X^{(3)}_{\rm lo}(N):=2\sin^2x\Bigl[N^3J-\frac{6N^2}{\pi}\Bigr], \\
+\bar X^{(3)}(N):=2\sin^2x\,N^3J-2(N\sin x)^3\Bigl(\frac4\pi\Bigr)^{3/2}\Bigl(1-\frac{1}{3\lambda}\Bigr)-1+T_3(1)+\epsilon_3 .
+\end{gather*}
+Both bounds are increasing in $N$, and
+\begin{equation*}
+c_3N-3\pi-\frac{5.85}{N}\ \le\ X_s\ \le\ c_3N-8.38\qquad(N\ge10).
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+\emph{Lower bound.} By Lemma 4.4(a), $X_s\ge\lambda^{-1}\int_0^\infty(N^3\kappa^3-1)_+dz=\lambda^{-1}\bigl[N^3J-\int_0^\infty\min(N^3\kappa^3,1)dz\bigr]$, and by Lemma 4.3 $\int_0^\infty\min(N^3\kappa^3,1)\le\int_0^\infty\min\bigl(N^3(\tfrac{2}{\pi z})^{3/2},1\bigr)dz=3z_0$ with $z_0=2N^2/\pi$.
+
+\emph{Upper bound.} On $(1,\infty)$: $\int_1^\infty(\omega^3-1)\le T_3(1)$. On $(0,1]$: $\omega^3-1\le N^3\kappa^3-1+3\iota N^2\kappa^2+3\iota^2N\kappa+\iota^3$. First $\int_0^1N^3\kappa(\lambda s)^3ds=\frac{N^3}{\lambda}\bigl[J-\int_\lambda^\infty\kappa^3\bigr]$ and, by Lemma 4.3 ($\lambda\ge1$), $\int_\lambda^\infty\kappa^3\ge(\frac2\pi)^{3/2}\bigl(2\lambda^{-1/2}-\frac23\lambda^{-3/2}\bigr)$; note $\frac{N^3}{\lambda}(\frac2\pi)^{3/2}2\lambda^{-1/2}=2(N\sin x)^3(\frac4\pi)^{3/2}$. Next $N^2\kappa(\lambda s)^2\le\min(N^2,\pi/s)$, so $\int_0^13\iota N^2\kappa^2\le3G_A\pi^{5/2}\int_0^1s^{-3/2}e^{-\beta_N/s}ds+3\iota_B\pi(1+\ln\frac{N^2}\pi)\le3G_A\pi^{5/2}\frac{e^{-\beta_N}}{\beta_N}+3\pi\iota_B(1+\ln\frac{N^2}{\pi})$; and $\int_0^13\iota^2N\kappa\le3(\iota_A(1)+\iota_B)^2\cdot2\sqrt\pi$, $\int_0^1\iota^3\le(\iota_A(1)+\iota_B)^3$. All these are decreasing in $N$, hence at most $\epsilon_3$.
+
+\emph{Monotonicity.} $X^{(3)}_{\rm lo}=2(N\sin x)^2[NJ-\frac6\pi]$ is increasing. $\bar X^{(3)}=(N\sin x)^2\bigl[2NJ-2(N\sin x)(\frac4\pi)^{3/2}(1-\frac23\sin^2x)\bigr]+{\rm const}$; the derivative in $N$ of the subtracted term is at most $2(\frac4\pi)^{3/2}\bigl[\frac{x^3}{3}+\frac\pi2\cdot\frac43\frac{x^2}{N}\bigr]\le0.02<2J$ for $N\ge10$, so the bracket is increasing (and positive).
+
+\emph{Simple form.} $2\sin^2x\,N^3J=c_3N(\frac{\sin x}x)^2\in[c_3N-\frac{c_3\pi^2}{12N},c_3N]$ and $2\sin^2x\cdot6N^2/\pi\le3\pi$. For the upper bound, $N\sin x\ge\frac\pi2(1-\frac{x^2}{6})$ and $\frac1{3\lambda}=\frac23\sin^2x$ give, for $N\ge10$, $2(N\sin x)^3(\frac4\pi)^{3/2}(1-\frac1{3\lambda})\ge10.82$, so $\bar X^{(3)}\le c_3N-10.82-1+3.4155+0.0156\le c_3N-8.38$.
+\end{proof}
+
+\begin{corollary}
+For $N\ge10$: $X=X_s+\mathbb EU$ satisfies $2\pi\ln N-0.24\le X\le2\pi\ln N+0.60$ if $d=2$, and $c_3N-7.63\le X\le c_3N-5.85$ if $d=3$. Moreover $\sin^2x\cdot X_s\le\frac{\pi^2}{4N^2}(2\pi\ln N+1.3)$ $(d=2)$, $\le\frac{\pi^2c_3}{4N}$ $(d=3)$, and both right-hand sides are decreasing in $N$.
+\end{corollary}
+
+\begin{proof}
+For $N\ge10$ we have $A=2\cos^2x\in[1.9507,2]$ and $\varepsilon_2=2A\ge3.9014$. The function $f(x):=\gamma_2A^{-\varepsilon_2}=2\cos^2(2x)\exp\bigl(-4\cos^2x\,\ln(2\cos^2x)\bigr)$ satisfies $(\ln f)'(x)=4\sin(2x)\bigl[1+\ln(2\cos^2x)-\frac{1}{\cos2x}\bigr]>0$ on $(0,\frac\pi{20}]$, because there $1+\ln(2\cos^2x)\ge1.668$ and $1/\cos2x\le1.052$; so $f$ is decreasing in $N$ and $f\le f(\frac{\pi}{20})=0.13328\ldots\le0.1333$ for $N\ge10$. Since $\mathbb EU_{\rm lo}$ of Lemma 3.2 is decreasing in $f$ and increasing in $\varepsilon_2$ and $\ln A$, it is at least $\frac32-\frac{2\cdot0.1333}{3.9014}+\ln(1.9507)(1-0.1333^2)\ge2.0879$ for $d=2$ and $\frac{11}{6}-\frac{3\cdot0.1333}{3.9014}+\ln(1.9507)(1-0.1333^3)\ge2.3974$ for $d=3$; and $\mathbb EU_{\rm hi}\le\ln2+H_d$. Hence $2.08\le\mathbb EU\le2.20$ for $d=2$ and $2.39\le\mathbb EU\le2.53$ for $d=3$. Add Propositions 4.5 and 4.6 (with $3\pi+0.585\le10.02$). The last claim follows from $\sin x\le x$, $X_s\le\bar X^{(d)}(N)$ and $\frac{d}{dN}\frac{a\ln N+b}{N^2}<0$ for $\ln N>\frac12-\frac ba$.
+\end{proof}
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log
+
+\subsection{The lattice constant $T_1$}
+
+\begin{lemma}[{enclosures of $T_1$}]
+Let $N_a\le N\le N_b\le\infty$ be integers, $x_b:=\frac{\pi}{2N_a}$, $x_a:=\frac{\pi}{2N_b}$ ($x_a=0$ if $N_b=\infty$), and $1\le K\le N_a-1$. Write $\varepsilon_j(\xi)=\sin^2(j\xi)/\sin^2\xi$ (with $\varepsilon_j(0)=j^2$), $\gamma_j(\xi)=2\cos^2(j\xi)$ for $j\ge1$, $\gamma_0=1$, $\varepsilon_0=0$, and let $\mathcal K_K:=\{k\in\{0,\dots,K\}^d:\max_ik_i\ge2\}$. Then
+\begin{gather*}
+\sum_{k\in\mathcal K_K}\frac{\prod_i\gamma_{k_i}(x_b)}{\mu_k^{+}(\mu_k^{+}-1)}\ \le\ T_1(N)\ \le\ \sum_{k\in\mathcal K_K}\frac{\prod_i\gamma_{k_i}(x_a)}{\mu_k^{-}(\mu_k^{-}-1)}+\frac{M}{M-1}\,{\rm tail}_d(K), \\
+\mu_k^{+}:=\sum_i\varepsilon_{k_i}(x_a),\ \ \mu_k^{-}:=\sum_i\varepsilon_{k_i}(x_b),\ \ M:=\varepsilon_{K+1}(x_b).
+\end{gather*}
+If $K=N-1$ (so $N_a=N_b=N$) the tail term is absent and both sides equal $T_1(N)$.
+\end{lemma}
+
+\begin{proof}
+The $k\in\mathcal K$ with $\mu_k\ge\varepsilon_2$ are exactly those with $\max_ik_i\ge2$ (Section 2). For $k\in\mathcal K_K$ ($K\le N-1$), Lemma 4.1(c) gives $\mu_k^-\le\mu_k\le\mu_k^+$ and $\prod\gamma_{k_i}(x_b)\le w_k\le\prod\gamma_{k_i}(x_a)$; $t\mapsto1/(t(t-1))$ is decreasing on $t>1$ and $\mu_k^-\ge\varepsilon_2(x_b)\ge3$. For the remaining $k$ (some $k_i\ge K+1$), $\mu_k\ge\varepsilon_{K+1}(x)\ge M$ so $\frac{w_k}{\mu_k(\mu_k-1)}\le\frac{M}{M-1}\frac{w_k}{\mu_k^2}$, and Lemma 4.1(b) bounds the sum of $w_k/\mu_k^2$ over these $k$ by ${\rm tail}_d(K)$. All remaining terms are nonnegative, which gives the lower bound.
+\end{proof}
+
+\setcounter{section}{4}
+\section{The closed form: an explicit, computer-assisted theorem}
+
+Recall $X=\mu\,\mathbb E T=X_s+\mathbb EU$ and the closed form of the computations of Sections~5--6 of the article, in scaled time,
+\begin{gather*}
+\tau_{\rm cf}:=\frac{X\ln(2dX)}{X+2d-1} \\
+\Bigl(\text{i.e. } t_{\rm cf}=\frac{\tau_{\rm cf}}{\mu}={\rm MFPT}\cdot\frac{\ln(2dX)}{X+2d-1}\Bigr).
+\end{gather*}
+
+\begin{theorem}[{accuracy of the closed form; continuous time}]
+Let $d\in\{2,3\}$ and let $\tau^*=\mu t^*$ be the scaled mode of the corner-to-corner first-passage density. For every $N\ge N_0$,
+\begin{equation*}
+-K^-_d(N_0)\ <\ X\,(\tau^*-\tau_{\rm cf})\ <\ K^+_d(N_0),
+\end{equation*}
+with the following certified constants:
+
+\begin{center}\small
+\begin{tabular}{lccccccccc}
+\toprule
+$d=2$: $N_0$ & 12 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 & $10^6$ \\ \midrule
+$K^-_2$ & 7.653 & 5.669 & 4.242 & 3.023 & 2.058 & 1.320 & 0.767 & $-0.116$ & $-1.382$ \\
+$K^+_2$ & 10.280 & 8.774 & 7.486 & 6.348 & 5.449 & 4.839 & 4.641 & 4.641 & 4.641 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\small
+\begin{tabular}{lccccccccc}
+\toprule
+$d=3$: $N_0$ & 10 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 & $10^6$ \\ \midrule
+$K^-_3$ & 3.120 & 1.995 & 1.564 & 1.214 & 1.160 & 1.068 & 0.995 & 0.862 & 0.828 \\
+$K^+_3$ & 7.120 & 4.659 & 3.663 & 2.786 & 2.149 & 1.740 & 1.598 & 1.465 & 1.427 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+(A negative $K^-$ means that $\tau^*>\tau_{\rm cf}$. $K^\pm_d(N_0)$ is the maximum of the block constants over all blocks of Section 5.3 that meet $[N_0,\infty)$.)
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T51_d2, T51_d3); data/msc_rigorous_asymptotics/52_cert_theoremB_d2.jsonl, data/msc_rigorous_asymptotics/52_cert_theoremB_d3.jsonl
+In particular, with $K_d:=\max(K_d^-,K_d^+)$,
+\begin{gather*}
+|t^*-t_{\rm cf}|\le\frac{K_d(N_0)}{X}\cdot\frac1\mu, \\
+\frac{|t^*-t_{\rm cf}|}{t_{\rm cf}}\le\frac{K_d(N_0)\,(1+\frac{2d-1}{X})}{X\ln(2dX)} \qquad (N\ge N_0),
+\end{gather*}
+so the relative error of the closed form is $O\bigl(1/(\ln N\,\ln\ln N)\bigr)$ in $d=2$ and $O\bigl(1/(N\ln N)\bigr)$ in $d=3$, with the explicit constants above and the explicit $X$ of Corollary 4.7.
+\end{theorem}
+
+The proof occupies the rest of this section. It is computer-assisted: the analytic reduction (Lemma 5.2) and the enclosures of Sections 3–4 turn the sign conditions of Theorem 2.3 into finitely many inequalities between explicit elementary expressions over parameter boxes, which are verified in ball arithmetic (Arb, via python-flint 0.9.0) by \texttt{scripts/\allowbreak 52\_\allowbreak cert\_\allowbreak theoremB.py} using \texttt{scripts/\allowbreak certlib.py}.
+
+\subsection{The scaled sign function}
+
+Fix $c\in\mathbb R$ and put
+\begin{gather*}
+y'=\frac1X=\frac{y}{1+y\,\mathbb EU}, \qquad t:=\tau_{\rm cf}+c\,y', \qquad \xi:=\frac{\sin^2x}{y}, \\
+\delta:=t-\ln\frac Wy, \qquad a:=W+1-e .
+\end{gather*}
+
+\begin{lemma}[{decomposition}]
+With the notation of Lemmas 3.1–3.3,
+\begin{gather*}
+\delta=-\ln\cos^2x+\ln(1+y\,\mathbb EU)-(2d-1)\,y'\tau_{\rm cf}+c\,y', \qquad e^{-t}=\frac yWe^{-\delta}, \\
+e^{-(\varepsilon_2-2)t}=\frac{y^2}{W^2}e^{-2\delta}e^{4\xi\,yt}, \tag{5.1}
+\end{gather*}
+and
+\begin{equation*}
+\frac{\ln\Lambda-\hat\nu t}{y}={\rm T_I}+{\rm T_{II}}+{\rm T_{III}}+{\rm T_{IV}}+{\rm T_V}, \tag{5.2}
+\end{equation*}
+\begin{gather*}
+{\rm T_I}:=-\frac{\ln(1+(e-1)y)}{y}-\frac{\ln(1+\theta^2\zeta)}{y}+\frac{\ln(1/b_0)}{y}-\frac{2\ln(1-s)}{y}, \\
+{\rm T_{II}}:=-\frac{\ln m_0+\ln(1+y\,\mathbb EU)}{y}, \qquad {\rm T_{III}}:=\frac{\ln\cos^2x}{y},
+\end{gather*}
+\begin{gather*}
+{\rm T_{IV}}:=y\tau_{\rm cf}\cdot\bigl(2d\,\xi+q_4\bigr),\quad q_4:=-\frac{(2d-1)\mathbb EU}{1+y\,\mathbb EU}-\frac{Wa}{1-ay}-\frac sy, \\
+{\rm T_V}:=-c\,\frac{1+\theta-\nu_0}{1+y\,\mathbb EU}.
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$\tau_{\rm cf}(1+(2d-1)y')=\ln(2dX)=\ln\frac{2d}{W}+\ln\frac Wy+\ln(1+y\,\mathbb EU)$ and $2d/W=1/\cos^2x$ give the formula for $\delta$; the other two relations in (5.1) follow from $t=\ln(W/y)+\delta$ and $\varepsilon_2-2=2-4\sin^2x$, $\sin^2x\cdot t=\xi\,yt$. By Lemma 3.3(d), $\ln\Lambda=\ln(W/y)+y\,{\rm T_I}-\ln m_0$, and $\hat\nu t=t+(\theta-\nu_0)t$, so
+\begin{equation*}
+\ln\Lambda-\hat\nu t=y{\rm T_I}-\ln m_0-\delta-(\theta-\nu_0)(\tau_{\rm cf}+cy').
+\end{equation*}
+Inserting $\delta$: the terms $-\ln m_0-\ln(1+y\mathbb EU)$ give $y{\rm T_{II}}$, $\ln\cos^2x=y{\rm T_{III}}$, the terms proportional to $c$ give $-cy'(1+\theta-\nu_0)=y{\rm T_V}$, and the terms proportional to $\tau_{\rm cf}$ give $\tau_{\rm cf}[(2d-1)y'-\theta+\nu_0]$. By Lemma 3.3(a), $\theta=Wy/(1-ay)$, by Lemma 3.1 $\nu_0=y(1-s)$, and $y'=y/(1+y\mathbb EU)$; hence $(2d-1)y'-\theta+\nu_0=y\bigl[(2d-1)-\frac{(2d-1)y\mathbb EU}{1+y\mathbb EU}-W-\frac{Way}{1-ay}+1-s\bigr]=y\bigl[(2d-W)+yq_4\bigr]$, and $2d-W=2d\sin^2x=2d\,\xi y$.
+\end{proof}
+
+By Theorem 2.3, $\tau^*<t$ if ${\rm S}^+(t)<0$ and $\tau^*>t$ if ${\rm S}^-(t)>0$, where
+\begin{gather*}
+{\rm S}^+(t):=\ln\Lambda-\hat\nu t+\ln\Bigl(1+\frac\theta W\bar\kappa+\frac{\bar P_{\rm rest}(t)e^{\nu_1t}}{a_1}\Bigr)-\ln\bigl(1+E_-^{\rm lo}(t)\bigr), \\
+{\rm S}^-(t):=\ln\Lambda-\hat\nu t+\ln\Bigl(1+\frac\theta W\kappa_{\rm lo}(t)\Bigr)-\ln\bigl(1+\bar E_-(t)\bigr).
+\end{gather*}
+Using (5.1), all correction terms are expressed through quantities that stay bounded as $y\to0$: with $\theta t=\frac\theta y\,yt$, $\nu_0t=(1-s)\,yt$, $a_1=y\,\alpha_1$ where $\alpha_1:=W/[(1+(e-1)y)(1+\theta^2\zeta)]$ (Lemma 3.3),
+\begin{equation*}
+\frac{\bar P_{\rm rest}(t)e^{\nu_1t}}{a_1\,y}=\frac{e^{-\delta+\theta t}}{W\alpha_1}\Bigl[\frac{c_\beta\hat\beta+\sum_{i\in\mathcal N}\rho_iN_i(t)}{y}+\frac{e^{-2\delta+4\xi yt}}{W^2}C_2\varepsilon_2\bigl(y\pi_a+yt\,R_{\rm tot}\bigr)\Bigr], \tag{5.3}
+\end{equation*}
+\begin{gather*}
+\frac{E_-^{\rm lo}(t)}{y}=\frac{e^{-\delta+\nu_0t}}{(1-s)m_0}\cdot\frac{g_\ell(t)}{y}, \\
+\frac{\ell(t)}{y}=\frac{e^{-\delta}}{W}\bigl[A-\gamma_2e^{-(\varepsilon_2-1)t}\bigr], \\
+\frac{\bar E_-(t)}{y}=\frac{e^{-2\delta+\nu_0t}}{W^2(1-s)m_0}\Bigl[\frac{2C_1}{2-\nu_0}+\frac{C_2\varepsilon_2e^{-(\varepsilon_2-2)t}}{\varepsilon_2-\nu_0}\Bigr], \tag{5.4}
+\end{gather*}
+and $\kappa_{\rm lo}(t)$ involves $t$ only through $e^{-(1-\theta)t}=\frac yWe^{-\delta+\theta t}$ and smaller exponentials. (These are identities; e.g. $e^{-2t}e^{\nu_1t}=\frac yWe^{-\delta}e^{\theta t}$.)
+
+\subsection{Enclosures used by the certificate}
+
+A \emph{block} is a set of integers $\{N_a,\dots,N_b\}$ ($N_a\ge10$; $N_b=\infty$ allowed). For $N$ in a block:
+
+(E1) $x\in[\frac{\pi}{2N_b},\frac{\pi}{2N_a}]$; hence enclosures of $A$, $W$, $\varepsilon_2$, $\gamma_2$, $C_1$, $C_2$, $W_2$, $W_3$ (monotone in $x$).
+
+(E2) $y\in[1/\bar X^{(d)}(N_b),\,1/X^{(d)}_{\rm lo}(N_a)]$ by Propositions 4.5/4.6 and their monotonicity ($y\ge0$ if $N_b=\infty$).
+
+(E3) $\xi=\sin^2x\cdot X_s\le\sin^2\frac{\pi}{2N_a}\,\bar X^{(d)}(N_b)$ if $N_b<\infty$, and $\xi\le\frac{\pi^2}{4N_a^2}(2\pi\ln N_a+1.3)$ resp. $\frac{\pi^2c_3}{4N_a}$ if $N_b=\infty$ (Corollary 4.7); $\ln\cos^2x\in[-\xi y/\cos^2x,0]$.
+
+(E4) $\sigma\le Z_d$ (Lemmas 4.1, 4.2), and $s$, $\nu_0$, $b_0$ by Lemma 3.1: $1-s\in[1-\frac{Z_dy^2}{1-y},\,1-W\nu_0^2]$.
+
+(E5) $\mathbb EU\in[\mathbb EU_{\rm lo},\mathbb EU_{\rm hi}]$ and $\ln m_0/\nu_0\in[\mathbb EU,\ln A+h_d(\nu_0)]$ (Lemma 3.2).
+
+(E6) $T_1\in[T_1^{\rm lo},T_1^{\rm hi}]$ by Lemma 4.8, with $K=N-1$ (exact sums) for blocks $\{N\}$, $N\le64$, and $K=\min(K_{\max},N_a-1)$, $K_{\max}=24$ ($d=2$), $48$ ($d=3$) otherwise.
+
+(E7) $e$ and $\theta$: by Lemma 3.3(a),(c), $\theta=Wy/(1-(W+1-e)y)$ is a decreasing function of $e$, and $e=\frac\theta{1+\theta}+(1+\theta)S_\nu$ is bounded below/above by increasing functions $e_{\rm lo}(\theta)$, $e_{\rm hi}(\theta)$ of $\theta$. Starting from $\theta\ge0$, the monotone iteration $e\ge e_{\rm lo}(\theta_{\rm lo})\Rightarrow\theta\le\bar\theta(e_{\rm lo})\Rightarrow e\le e_{\rm hi}(\bar\theta)\Rightarrow\theta\ge\theta_{\rm lo}(e_{\rm hi})\Rightarrow\dots$ produces valid enclosures at every step (six steps are used). Then $\zeta$, $\alpha_1$, $b_1=\theta\alpha_1y/(W(1+\theta))$ by Lemma 3.3(b),(c).
+
+(E8) Near poles: Lemma 3.4 gives $W_i/\theta_i=X_s-(\dots)$ with the right side enclosed by monotone functions of $\theta_i$; the same monotone iteration (four steps) gives $\theta_i/y\in[\underline\vartheta_i,\bar\vartheta_i]$, and $\rho_i/y\le\bar\vartheta_i^2\,y/(m_iW_i)$. In $N_i(t)$ we use $\min(t,\frac1{\nu_2-2})\le\min(t,\frac{1}{\theta_{2,{\rm lo}}})$, $\frac{1}{\varepsilon_2-\nu_2}\le\frac1{\varepsilon_2-2-\bar\theta_2}$, and for $d=3$: $\frac1{\nu_3-2}\le\frac{1}{1+\theta_{3,\rm lo}}$, $\frac1{\varepsilon_2-\nu_3}\le\frac{1}{\varepsilon_2-3-\bar\theta_3}$.
+
+(E9) $\hat\beta/y\le\frac{(1-s)\nu_0Z_d}{(1-\nu_0)^2}-\frac{b_1}{y}$ (Lemmas 3.1, 3.5), $\pi_a\le N_a^{-d}$, $R_{\rm tot}\le\frac d4N_a^{2-d}$.
+
+(E10) Elementary monotonicity: $y\mapsto y\ln(1/y)$ is increasing on $(0,1/e)$; $(\alpha,y)\mapsto\ln(1+\alpha y)/y$ is increasing in $\alpha$ and decreasing in $y>0$ (limit $\alpha$ at $y=0$); $-\ln(1-s)\in[s,s/(1-s)]$; $\ln(1+z)\in[z-z^2/2,z]$ for $z\ge0$; $(e^{u}-1)/u\in[1,(1+e^{u})/2]$ for $u\ge0$. In particular $y\tau_{\rm cf}=\bigl[y\ln(2d)+y\ln(1+y\mathbb EU)+y\ln\frac1y\bigr]/(1+(2d-1)y')$ and $yt=y\tau_{\rm cf}+c\,y\,y'$ are enclosed without singularity at $y=0$.
+
+\subsection{The certificate}
+
+\emph{Blocks.} $d=2$: the singletons $\{N\}$, $10\le N\le64$; then $\{N_a,\dots,\lfloor1.08N_a\rfloor\}$ up to $10^7$; then $\{N_a,\dots,\lfloor N_a^{1.3}\rfloor\}$ up to $10^{60}$; then one unbounded block ($220$ blocks). $d=3$: singletons for $10\le N\le200$; ratio $1.06$ up to $10^7$; ratio $1.5$ up to $10^9$; one unbounded block ($389$ blocks). The blocks partition $\{N\ge10\}$.
+
+\emph{Verification.} For each block the script computes the balls (E1)–(E9), searches (scan with step $0.5$, then bisection, rounded up to $10^{-3}$) for the smallest numbers $c_+$ and $c_-$ for which it can \textbf{verify in ball arithmetic} that
+\begin{gather*}
+\sup\frac{{\rm S}^+(\tau_{\rm cf}+c_+y')}{y}<0 \qquad \text{and} \qquad \inf\frac{{\rm S}^-(\tau_{\rm cf}-c_-y')}{y}>0
+\end{gather*}
+over the whole parameter box, using (5.2)–(5.4) with ${\rm T_I},\dots,{\rm T_V}$ and the correction terms evaluated as balls (for ${\rm S}^+$ an upper bound of the correction is used, for ${\rm S}^-$ a lower bound; for every $c$ the script also checks $t>0$, and constants $c$ printed with three decimals are entered as balls containing the decimal value). The certificate files \texttt{data/\allowbreak 52\_\allowbreak cert\_\allowbreak theoremB\_\allowbreak d2.jsonl}, \texttt{data/\allowbreak 52\_\allowbreak cert\_\allowbreak theoremB\_\allowbreak d3.jsonl} list, for every block, $[y_{\rm lo},y_{\rm hi}]$, the enclosures of $e,\theta,T_1,\xi$, the constants $c_\pm$ and the two Boolean results (all \texttt{true}).
+
+\begin{proof}[{Proof of Theorem 5.1}]
+Let $N\ge N_0\ge10$ and let $B$ be the block containing $N$. The true parameter tuple of $N$ lies in the box of $B$ by (E1)–(E9). Hence ${\rm S}^+(\tau_{\rm cf}+c_+(B)/X)<0$ and ${\rm S}^-(\tau_{\rm cf}-c_-(B)/X)>0$, and Theorem 2.3 gives $\tau_{\rm cf}-c_-(B)/X<\tau^*<\tau_{\rm cf}+c_+(B)/X$. The table lists $K^\pm_d(N_0)=\max\{c_\pm(B):\ B\cap[N_0,\infty)\ne\emptyset\}$, the maximum over all blocks that meet $[N_0,\infty)$ (including the block that contains $N_0$ when $N_0$ is not the left end of a block); so every $N\ge N_0$ lies in a block whose constants are at most $K^\pm_d(N_0)$ (\texttt{scripts/\allowbreak 80\_\allowbreak tables.py}, which also records the block containing each $N_0$). The relative bound follows from $t_{\rm cf}=\tau_{\rm cf}/\mu$ and $\tau_{\rm cf}=\ln(2dX)/(1+(2d-1)/X)$.
+\end{proof}
+
+\begin{remark}[{what is and is not sharp}]
+(i) Sanity checks: \texttt{scripts/\allowbreak 54\_\allowbreak bruteforce\_\allowbreak theorem51.py} (for $d=2$, $N\in\{12,16,24,36,48\}$ and $d=3$, $N\in\{10,12,14\}$ the exact $g'$, from a dense eigen-decomposition, is positive at $\tau_{\rm cf}-c_-/X$ and negative at $\tau_{\rm cf}+c_+/X$; likewise for the discrete forward differences with $q=\frac12,\frac14$), \texttt{scripts/\allowbreak 51\_\allowbreak validate\_\allowbreak enclosures.py} (every enclosure contains the float value computed from the full lattice sums; the certified interval contains $X(\tau^*-\tau_{\rm cf})$ computed from the exact modes of Sections~5--6 of the article, $d=2$: $N\le1810$, $d=3$: $N\le160$) and \texttt{scripts/\allowbreak 53\_\allowbreak check\_\allowbreak decomposition.py} (identity (5.2) to $10^{-12}$; exact pieces inside the balls). (ii) The observed values of $X(\tau^*-\tau_{\rm cf})$ are $0.40$ ($N=20$) to $1.99$ ($N=1810$) in $d=2$ and $0.30$ ($N=10$) to $-0.12$ ($N=160$) in $d=3$; the certified windows are a few units wide at moderate $N$ because the pole data are replaced by enclosures. (iii) \textbf{Numerical observation (not proved):} $X(\tau^*-\tau_{\rm cf})$ converges, with limits $K_2^\infty\approx3.74$ and $K_3^\infty\approx-0.22$ (the latter extrapolated; the value at $N=4096$ is $-0.214$); formally $K_d^\infty=\lim_N\bigl[1-S_1-2\,\mathbb EU+W+\int_0^\infty r e^{s}ds-\frac{d-1}{d}\bigr]$ with $S_1=\sum_{\mu_k\ge2}w_k/(\mu_k(\mu_k-1))$. The certified asymptotic windows $(2.52,4.65)$ for $d=2$ ($N\ge10^{40}$; block maximum $c_-=-2.529$, $c_+=4.641$) and $(-0.83,1.43)$ for $d=3$ ($N\ge10^6$) are consistent with this. The approach to the limit is slow in $d=2$ (error of order $\ln X/X$).
+\end{remark}
+
+\setcounter{section}{5}
+\section{Asymptotic theorems and two-sided bounds (continuous time)}
+
+In this section $t^*$ is the mode of the continuous-time first-passage density in real time (jump-attempt rate $q$; $q\in(0,1]$ only rescales time here), $\tau^*=\mu t^*$, and
+\begin{gather*}
+\frac1\mu=\frac{d}{2q\sin^2x}=\frac{2dN^2}{\pi^2q}\Bigl(\frac{x}{\sin x}\Bigr)^2, \\
+1\le\Bigl(\frac x{\sin x}\Bigr)^2\le1+\frac{0.83}{N^2}\quad(N\ge20). \tag{6.1}
+\end{gather*}
+(The last bound: $\sin x\ge x(1-x^2/6)$, and $(1-u)^{-2}\le1+2.01u$ for $0\le u\le1.1\cdot10^{-3}$ (indeed $(1-u)^{-2}-1-2u=u^2\frac{3-2u}{(1-u)^2}\le3.01u^2$), applied with $u=x^2/6=\pi^2/(24N^2)\le1.03\cdot10^{-3}$; then $2.01\cdot\frac{\pi^2}{24}=0.8266\ldots\le0.83$.)
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log
+
+\begin{theorem}[{$d=2$}]
+For every $N\ge20$,
+\begin{equation*}
+\ln\ln N+\ln(8\pi)-\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\ \le\ \tau^*\ <\ \ln\ln N+\ln(8\pi),
+\end{equation*}
+and consequently
+\begin{gather*}
+t^*=\frac{4N^2}{\pi^2q}\Bigl[\ln\ln N+\ln(8\pi)+R_N\Bigr](1+\rho_N), \\
+-\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\le R_N<0,\quad 0\le\rho_N\le\frac{0.83}{N^2}.
+\end{gather*}
+In particular $t^*=\frac{4}{\pi^2q}N^2\ln\ln N\,(1+o(1))$ with the explicit rate
+\begin{equation*}
+\frac{t^*}{\frac{4}{\pi^2q}N^2\ln\ln N}-1=\frac{\ln(8\pi)}{\ln\ln N}+O\Bigl(\frac{1}{\ln N}\Bigr)\in\Bigl[\frac{\ln(8\pi)+R^{\rm lo}_N}{\ln\ln N},\ \frac{\ln 8\pi}{\ln\ln N}\Bigl(1+\frac{0.83}{N^2}\Bigr)+\frac{0.83}{N^2}\Bigr],
+\end{equation*}
+where $R_N^{\rm lo}$ is the lower bound for $R_N$ above. (The leading correction $\ln(8\pi)/\ln\ln N=3.224/\ln\ln N$ is positive and decays extremely slowly; the two-term form is the practically relevant statement.)
+\end{theorem}
+
+\begin{proof}
+By Theorem 5.1 ($N_0=20$), $\tau^*=\tau_{\rm cf}+\vartheta/X$ with $-4.242<\vartheta<7.486$, and $\tau_{\rm cf}=\ln(4X)-\frac{3\ln(4X)}{X+3}$. By Corollary 4.7, $L-0.24\le X\le L+0.60$ with $L:=2\pi\ln N\ge18.82$. Hence $\ln(4X)-\ln(8\pi\ln N)=\ln\frac XL\in\bigl[-\frac{0.24}{L-0.24},\frac{0.60}{L}\bigr]$.
+
+\emph{Upper bound.} $\tau^*-\ln(8\pi\ln N)\le\frac{0.60}L+\frac{7.486}{X}-\frac{3\ln(4X)}{X+3}$. Since $X\ge18.58$: $\ln(4X)\ge4.30$, $\frac{X}{X+3}\ge0.86$, so $\frac{3\ln(4X)}{X+3}\ge\frac{11.09}{X}$, while $\frac{0.60}{L}\le\frac{0.62}{X}$ (as $X\le L+0.6\le1.032L$). Thus the right side is $\le(0.62+7.486-11.09)/X<0$.
+
+\emph{Lower bound.} $\tau^*-\ln(8\pi\ln N)\ge-\frac{0.24}{L-0.24}-\frac{3\ln(4X)}{X+3}-\frac{4.242}{X}\ge-\frac{0.24+4.242+3\ln(4L+2.4)}{L-0.24}$, using $X\ge L-0.24$, $X+3\ge L-0.24$ and $\ln(4X)\le\ln(4L+2.4)$.
+
+The statements for $t^*$ follow from (6.1) with $d=2$.
+\end{proof}
+
+\begin{theorem}[{$d=3$}]
+For every $N\ge20$, with $c_3=\frac{\pi^2}{2}\int_0^\infty\bigl(e^{-z}(I_0(z)+I_1(z))\bigr)^3dz\in[7.106860,7.106880]$,
+\begin{gather*}
+\ln N+\ln(6c_3)-\frac{9.2+5\ln(6c_3N)}{c_3N-7.63}\ \le\ \tau^*\ <\ \ln N+\ln(6c_3), \\
+\ln(6c_3)\in[3.752820,3.752823],
+\end{gather*}
+and consequently
+\begin{gather*}
+t^*=\frac{6N^2}{\pi^2q}\Bigl[\ln N+\ln(6c_3)+R_N\Bigr](1+\rho_N), \\
+-\frac{9.2+5\ln(6c_3N)}{c_3N-7.63}\le R_N<0,\quad0\le\rho_N\le\frac{0.83}{N^2}.
+\end{gather*}
+In particular $t^*=\frac{6}{\pi^2q}N^2\ln N\,(1+o(1))$ with $\dfrac{t^*}{\frac{6}{\pi^2q}N^2\ln N}-1=\dfrac{\ln(6c_3)}{\ln N}+O\bigl(\tfrac1N\bigr)$; this is the law of the computations of Sections~5--6 of the article, ''$(6/(\pi^2q))N^2(\ln N+3.753)$'' with a proven remainder $O(N\ln N)$ in $t^*$.
+\end{theorem}
+
+\begin{proof}
+By Theorem 5.1 ($N_0=20$), $\tau^*=\tau_{\rm cf}+\vartheta/X$, $-1.564<\vartheta<3.663$, $\tau_{\rm cf}=\ln(6X)-\frac{5\ln(6X)}{X+5}$; by Corollary 4.7, $c_3N-7.63\le X\le c_3N-5.85$, so $\ln(6X)-\ln(6c_3N)\in\bigl[-\frac{7.63}{c_3N-7.63},-\frac{5.85}{c_3N}\bigr]$. Upper bound: $\tau^*-\ln(6c_3N)\le-\frac{5\ln(6X)}{X+5}+\frac{3.663}{X}<0$ because $X\ge134$ gives $5\ln(6X)\frac{X}{X+5}\ge32$. Lower bound: $\tau^*-\ln(6c_3N)\ge-\frac{7.63}{c_3N-7.63}-\frac{5\ln(6c_3N)}{c_3N-7.63}-\frac{1.564}{c_3N-7.63}$. Then use (6.1) with $d=3$.
+\end{proof}
+
+\begin{theorem}[{two-sided bounds with explicit constants}]
+For all $N\ge20$:
+\begin{gather*}
+d=2: \\
+\frac{4}{\pi^2q}N^2\bigl(\ln\ln N+2.27\bigr)\ \le\ t^*\ \le\ \frac{4}{\pi^2q}N^2\bigl(\ln\ln N+3.2242\bigr)\Bigl(1+\frac{0.83}{N^2}\Bigr), \\
+\frac{0.405}{q}N^2\ln\ln N\le t^*\le\frac{1.60}{q}N^2\ln\ln N;
+\end{gather*}
+\begin{gather*}
+d=3: \\
+\frac{6}{\pi^2q}N^2\bigl(\ln N+3.43\bigr)\ \le\ t^*\ \le\ \frac{6}{\pi^2q}N^2\bigl(\ln N+3.7529\bigr)\Bigl(1+\frac{0.83}{N^2}\Bigr), \\
+\frac{0.607}{q}N^2\ln N\le t^*\le\frac{1.38}{q}N^2\ln N .
+\end{gather*}
+\end{theorem}
+
+\begin{proof}
+The error terms $E_2(N):=\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}$ and $E_3(N):=\frac{9.2+5\ln(6c_3N)}{c_3N-7.63}$ are decreasing in $N\ge20$, with $E_2(20)\le0.951$ and $E_3(20)\le0.320$; $\ln(8\pi)\in[3.2241,3.2242]$. This gives the refined bounds from Theorems 6.1 and 6.2. For the crude ones: $\tau^*\ge\ln\ln N$ resp. $\ln N$ gives the lower constants $4/\pi^2\ge0.405$, $6/\pi^2\ge0.607$; and $(1+\frac{3.2242}{\ln\ln 20})(1+\frac{0.83}{400})\le3.947$, $\frac{4}{\pi^2}\cdot3.947\le1.60$; $(1+\frac{3.7529}{\ln20})(1+\frac{0.83}{400})\le2.258$, $\frac6{\pi^2}\cdot2.258\le1.38$ (the ratios $(\ln\ln N+c)/\ln\ln N$ and $(\ln N+c)/\ln N$ are decreasing).
+\end{proof}
+
+\begin{corollary}[{mode versus mean}]
+For $N\ge20$, $\dfrac{t^*}{\mathbb ET}=\dfrac{\tau^*}{X}=\dfrac{\ln(2dX)}{X+2d-1}+\dfrac{\vartheta_N}{X^2}$ with $\vartheta_N$ as in Theorem 5.1; in particular $t^*/\mathbb ET\to0$, like $\frac{\ln\ln N}{2\pi\ln N}$ in $d=2$ and like $\frac{\ln N}{c_3N}$ in $d=3$.
+\end{corollary}
+
+\begin{proof}
+Theorem 5.1 and $t^*/\mathbb ET=\tau^*/X$.
+\end{proof}
+
+\begin{remark}
+\texttt{scripts/\allowbreak 60\_\allowbreak check\_\allowbreak asymptotics.py} compares Theorems 6.1–6.3, Corollary 4.7 and Theorem 5.1 with the exact continuous-time modes and means of the computations of Sections~5--6 of the article (\texttt{data/msc\_modes/}) ($d=2$: 38 values of $N$ from $20$ to $1.7\cdot10^7$; $d=3$: 21 values from $20$ to $4096$): all inequalities hold. Observed: $X-2\pi\ln N\to0.3816$ ($d=2$), $X-c_3N\approx-6.4$ ($d=3$), $R_N\approx-0.55$ at $N=20$ and $-0.14$ at $N=1.7\cdot10^7$ ($d=2$); $R_N\approx-0.29$ at $N=20$ and $-0.002$ at $N=4096$ ($d=3$).
+\end{remark}
+
+\setcounter{section}{6}
+\section{Discrete time}
+
+In discrete time $\mathbb P(T=t)=\mu\,g(t-1)$ with $g(t):=\sum_ja_j(1-\mu\nu_j)^t$, $a_j=\rho_j\hat\varphi(-\nu_j)$, $t\in\mathbb N_0$ (Proposition 1.5), and $\mu\,\mathbb ET=X$ as in continuous time. We use the following calculus on sequences $f:\mathbb N_0\to\mathbb R$ (for rates $k\ge0$ with $\mu k\le1$):
+\begin{gather*}
+E_k(t):=(1-\mu k)^t, \qquad (Df)(t):=\frac{f(t+1)-f(t)}{\mu}, \\
+(f\star E_\nu)(t):=\mu\sum_{s=0}^{t-1}f(s)E_\nu(t-1-s).
+\end{gather*}
+Then $DE_k=-kE_k$; $D(f\star E_\nu)=f-\nu(f\star E_\nu)$; $(Df)\star E_\nu=f-\nu(f\star E_\nu)-f(0)E_\nu$; $E_a\star E_\nu=(E_a-E_\nu)/(\nu-a)$ for $a\ne\nu$; and for $a>\nu\ge0$, $\mu a<1$: $\mu\sum_{s\ge t}E_a(s)/E_\nu(s+1)=\frac{E_a(t)/E_\nu(t)}{a-\nu}$ (geometric sums). With $u_t:=N^dP^t(x_0,a)=1+\sum_kc_kE_{\mu_k}(t)$ define
+\begin{gather*}
+\varphi:=Du=-\sum_kc_k\mu_kE_{\mu_k}, \qquad r:=WE_1-\varphi=\sum_{\mu_k\ge2}c_k\mu_kE_{\mu_k}, \\
+r_1:=-Dr=\sum_{\mu_k\ge2}c_k\mu_k^2E_{\mu_k}, \qquad \tilde J:=\sum_{\mu_k\ge2}\frac{c_k\mu_k}{\mu_k-\nu_0}E_{\mu_k}.
+\end{gather*}
+
+\subsection{The identity (all $q\in(0,1]$)}
+
+\begin{proposition}[{discrete identity}]
+Let $d\in\{2,3\}$, $N\ge3$ ($N\ge4$ if $d=3$), $q\in(0,1]$. Then $g=\pi_a\varphi+\sum_j\rho_j(\varphi\star E_{\nu_j})$ and, for all $t\in\mathbb N_0$,
+\begin{equation*}
+(Dg)(t)=W\sum_{j\ge1}\frac{\rho_j}{\nu_j-1}E_{\nu_j}(t)-\rho_0\nu_0m_0E_{\nu_0}(t)-\rho_0\nu_0\tilde J(t)-\rho_0r(t)+\pi_ar_1(t)+\sum_{j\ge1}\rho_j\,(r_1\star E_{\nu_j})(t).
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+Coefficientwise. By $E_a\star E_\nu=(E_a-E_\nu)/(\nu-a)$ and the sum rules of Lemma 1.4(c), $\sum_j\rho_j(\varphi\star E_{\nu_j})=\sum_k(-c_k\mu_k)E_{\mu_k}\sum_j\frac{\rho_j}{\nu_j-\mu_k}+\sum_j\rho_jE_{\nu_j}\sum_k\frac{-c_k\mu_k}{\mu_k-\nu_j}=-\pi_a\varphi+\sum_j\rho_j\hat\varphi(-\nu_j)E_{\nu_j}$, which is the first claim. Next $\varphi\star E_{\nu_0}=m_0E_{\nu_0}-\frac{W}{1-\nu_0}E_1+\tilde J$ (the level $\mu_k=1$ has $\sum c_k=-W$), so $D(\varphi\star E_{\nu_0})=\varphi-\nu_0(\varphi\star E_{\nu_0})=\frac{W}{1-\nu_0}E_1-r-\nu_0m_0E_{\nu_0}-\nu_0\tilde J$. For $j\ge1$, since $\varphi(0)=u_1/\mu=0$, $D(\varphi\star E_{\nu_j})=(D\varphi)\star E_{\nu_j}=(-WE_1+r_1)\star E_{\nu_j}=-\frac{W}{\nu_j-1}(E_1-E_{\nu_j})+r_1\star E_{\nu_j}$. The total coefficient of $WE_1$ is $\frac{\rho_0}{1-\nu_0}-\sum_{j\ge1}\frac{\rho_j}{\nu_j-1}=\pi_a$, and $\pi_aD\varphi+\pi_aWE_1=\pi_ar_1$.
+\end{proof}
+
+\subsection{Positivity and bounds for $q\le\frac12$}
+
+From now on $q\in(0,\frac12]$. Then $\mu\mu_k\le2q\cdot\max_k\frac1d\sum_i\sin^2(k_ix)<1$ and $\mu\nu_j<1$ for all $k,j$, so all $E$'s are nonnegative and nonincreasing in $t$. Put $p_k:=q\,a_k=d\mu\varepsilon_k\in(0,1)$, $\beta_k:=1-p_k\in(0,1)$, and let $v_n:=N\,(I-qA)^n(1,N)=\sum_k(-1)^k\gamma_k\beta_k^n$ (one-dimensional lazy chain).
+
+\begin{lemma}[{one-dimensional structure}]
+$v_{n}-v_{n-1}=\mathbb P(H^D=n)$ for $n\ge1$, where $H^D=G_1+\dots+G_{N-1}$ with independent $G_k$ geometric on $\{1,2,\dots\}$ with success probability $p_k$. With $\psi(n):=(v_{n+1}-v_n)/p_1$ and $\pi_2$ the probability mass function of $G_2+\dots+G_{N-1}$:
+\begin{gather*}
+\psi(n+1)-\beta_1\psi(n)=\pi_2(n+1)\in\bigl[0,\ p_2\gamma_2(\varepsilon_2-1)\beta_2^{\,n}\bigr], \\
+A\beta_1^n-\gamma_2\varepsilon_2\beta_2^n\le\psi(n)\le A\beta_1^n, \\
+A\beta_1^n-\gamma_2\beta_2^n\le1-v_n\le A\beta_1^n .
+\end{gather*}
+Moreover the sequences $(\psi(n))_{n\ge0}$ and $(v_n)_{n\ge0}$ are nonnegative, log-concave, with supports $\{n\ge N-2\}$ and $\{n\ge N-1\}$.
+\end{lemma}
+
+\begin{proof}
+Lemma 1.7 says $\sum_k\frac{(-1)^k\gamma_k}{s+\varepsilon_k}=\frac1s\prod_{k\ge1}\frac{\varepsilon_k}{s+\varepsilon_k}$ as rational functions. Substituting $s=\frac{1-z}{d\mu z}$ and multiplying by $\frac{1}{d\mu z}$: $\sum_nv_nz^n=\sum_k\frac{(-1)^k\gamma_k}{1-\beta_kz}=\frac{1}{1-z}\prod_{k\ge1}\frac{p_kz}{1-\beta_kz}$, i.e. $(1-z)\sum_nv_nz^n=\mathbb E z^{H^D}$. Conditioning on $G_1$: $p_1\psi(n)=\mathbb P(H^D=n+1)=\sum_{m=1}^np_1\beta_1^{n-m}\pi_2(m)$, so $\psi(n)\beta_1^{-n}=\sum_{m\le n}\beta_1^{-m}\pi_2(m)$ is nondecreasing with limit $\mathbb E\beta_1^{-(G_2+\dots)}=\prod_{k\ge2}\frac{p_k}{\beta_1-\beta_k}=\prod_{k\ge2}\frac{\varepsilon_k}{\varepsilon_k-1}=A$ (Lemma 1.7; $\beta_1-\beta_k=d\mu(\varepsilon_k-1)$), and $\psi(n+1)-\beta_1\psi(n)=\pi_2(n+1)$. In the same way $\pi_2(m)\beta_2^{-(m-1)}\uparrow p_2\prod_{k\ge3}\frac{\varepsilon_k}{\varepsilon_k-\varepsilon_2}=p_2\gamma_2(\varepsilon_2-1)$. Then $A\beta_1^n-\psi(n)=\beta_1^n\sum_{m>n}\beta_1^{-m}\pi_2(m)\le p_2\gamma_2(\varepsilon_2-1)\frac{\beta_2^n}{\beta_1-\beta_2}=\gamma_2\varepsilon_2\beta_2^n$, and summing $1-v_n=p_1\sum_{m\ge n}\psi(m)$ gives the last bounds.
+
+Log-concavity: if $(\Pi(m))_{m\ge m_0}$ is positive and log-concave then so are its partial sums $F(n)=\sum_{m\le n}\Pi(m)$: $F(n)^2\ge F(n-1)F(n+1)\iff F(n)\Pi(n)\ge F(n-1)\Pi(n+1)$, and $\Pi(m)\Pi(n+1)\le\Pi(m+1)\Pi(n)$ for $m\le n-1$, so $F(n-1)\Pi(n+1)\le\Pi(n)\sum_{m\le n-1}\Pi(m+1)\le\Pi(n)F(n)$. The mass function of $G_j+\dots+G_{N-1}$ is $p_j\beta_j^{n-1}\sum_{m\le n-1}\beta_j^{-m}\pi_{j+1}(m)$, so by induction on $j$ (starting from a geometric law) all these mass functions, in particular $\psi$, are log-concave on their supports, and so is $v$ (partial sums of $p_1\psi$).
+\end{proof}
+
+\begin{lemma}[{multinomial representation; bounds}]
+Let $(n_1,\dots,n_d)$ be multinomial with $t$ trials and equal cell probabilities. Then $u_t=\mathbb E\prod_iv_{n_i}$, $\varphi(t)=\mathbb E\sum_i\psi(n_i)\prod_{l\ne i}v_{n_l}$, and for numbers $b_1,\dots,b_d$: $\mathbb E\prod_ib_i^{n_i}=(\frac1d\sum_ib_i)^t$. Consequently, for $d\ge2$ and all $t\in\mathbb N_0$, with $\tilde q:=D\varphi+\varphi$:
+\begin{gather*}
+0\le\varphi\le WE_1, \qquad 0\le\tilde q\le C_1E_2+C_2(\varepsilon_2-1)E_{\varepsilon_2}, \\
+W\mathfrak g\le r\le\bar r:=C_1E_2+C_2E_{\varepsilon_2}, \\
+r\le r_1=r+\tilde q\le\bar r_1:=2C_1E_2+C_2\varepsilon_2E_{\varepsilon_2},
+\end{gather*}
+where $\mathfrak g:=AE_2-\gamma_2E_{1+\varepsilon_2}$ (any $d\ge2$) or, if $d=3$, $\mathfrak g:=2AE_2-2\gamma_2E_{1+\varepsilon_2}-A^2E_3+2A\gamma_2E_{2+\varepsilon_2}-\gamma_2^2E_{1+2\varepsilon_2}$. (These are the bounds of Lemma 1.9 with $e^{-k\tau}$ replaced by $E_k(t)$.)
+\end{lemma}
+
+\begin{proof}
+$P=\frac1d\sum_i(I-qA_i)$, so one step of the walk chooses a coordinate uniformly and moves it by the one-dimensional lazy chain; hence $P^t(x_0,a)=\mathbb E\prod_iN^{-1}v_{n_i}$. Adding one trial in a uniform cell $I$: $u_{t+1}=\mathbb E\frac1d\sum_iv_{n_i+1}\prod_{l\ne i}v_{n_l}$, which gives the formula for $\varphi=(u_{t+1}-u_t)/\mu$ because $p_1=d\mu$. The moment formula is the multinomial theorem; in particular $\mathbb E\beta_1^{n_i}=E_1$, $\mathbb E\beta_2^{n_i}=E_{\varepsilon_2}$, $\mathbb E\beta_1^{n_i+n_l}=E_2$, $\mathbb E\beta_1^{n_i}\beta_2^{n_l}=E_{1+\varepsilon_2}$, $\mathbb E\beta_1^{n_i+n_l+n_m}=E_3$, etc. ($i,l,m$ distinct).
+
+$\varphi\le\mathbb E\sum_iA\beta_1^{n_i}=WE_1$. For $\tilde q$: writing $1-\mu=\frac1d(\beta_1+d-1)$ and adding one trial,
+\begin{equation*}
+\mu\tilde q(t)=\varphi(t+1)-(1-\mu)\varphi(t)=\mathbb E\frac1d\sum_i\Bigl[\bigl(\psi(n_i+1)-\beta_1\psi(n_i)\bigr)\prod_{l\ne i}v_{n_l}+\sum_{m\ne i}\psi(n_i)\bigl(v_{n_m+1}-v_{n_m}\bigr)\prod_{l\ne i,m}v_{n_l}\Bigr],
+\end{equation*}
+which is $\ge0$ and, by Lemma 7.2, $\le\mathbb E\frac1d\sum_i\bigl[p_2\gamma_2(\varepsilon_2-1)\beta_2^{n_i}+\sum_{m\ne i}A\beta_1^{n_i}p_1A\beta_1^{n_m}\bigr]=\mu\bigl[C_2(\varepsilon_2-1)E_{\varepsilon_2}+C_1E_2\bigr]$. Next $r=WE_1-\varphi=\mathbb E\sum_i(A\beta_1^{n_i}-\psi(n_i))\prod_{l\ne i}v_{n_l}+\mathbb E\sum_iA\beta_1^{n_i}(1-\prod_{l\ne i}v_{n_l})$. Upper bound: first term $\le\mathbb E\sum_i\gamma_2\varepsilon_2\beta_2^{n_i}=C_2E_{\varepsilon_2}$, second $\le\mathbb E\sum_iA\beta_1^{n_i}\sum_{l\ne i}A\beta_1^{n_l}=C_1E_2$. Lower bound: the first term is $\ge0$; with $\ell_n:=A\beta_1^n-\gamma_2\beta_2^n\in[0,1-v_n]$ we have $1-\prod_{l\ne i}v_{n_l}\ge\ell_{n_l}$ for one $l\ne i$, and for $d=3$, $1-v_{n_l}v_{n_m}\ge\ell_{n_l}+\ell_{n_m}-\ell_{n_l}\ell_{n_m}$; taking expectations gives $W\mathfrak g$. Finally $r_1=-Dr=WE_1+D\varphi=r+\tilde q$.
+\end{proof}
+
+\subsection{Unimodality for $q\le\frac12$}
+
+\begin{theorem}[{unimodality, discrete time, $q\le\frac12$}]
+Let $d\ge2$, $N\ge3$, $q\in(0,\frac12]$. The sequence $\varphi$ is log-concave with support $\{t\ge t_0\}$, $t_0=d(N-1)-1$; the function $B_D(t):=\mu\,(Dg)(t)/\varphi(t)$ is nonincreasing on $\{t\ge t_0\}$ and $g(t)=0$ for $t<t_0$. Consequently $t\mapsto\mathbb P(T=t)$ is unimodal, and for integers $t\ge t_0$:
+\begin{gather*}
+(Dg)(t)<0\ \Longrightarrow\ \text{every maximiser }t^*\text{ of }\mathbb P(T=\cdot)\text{ satisfies }t^*\le t+1; \\
+(Dg)(t)>0\ \Longrightarrow\ t^*\ge t+2 .
+\end{gather*}
+\end{theorem}
+
+\begin{proof}
+By symmetry and Lemma 7.3, $\varphi(t)=d\cdot d^{-t}\sum_{n_1+\dots+n_d=t}\frac{t!}{n_1!\cdots n_d!}\psi(n_1)v_{n_2}\cdots v_{n_d}$, i.e.
+\begin{gather*}
+d^{\,t-1}\varphi(t)=t!\,\bigl(\alpha*\beta^{*(d-1)}\bigr)(t), \\
+\alpha(n):=\frac{\psi(n)}{n!},\quad \beta(n):=\frac{v_n}{n!},
+\end{gather*}
+where $*$ is the ordinary convolution of sequences on $\mathbb N_0$. The sequences $\alpha,\beta$ are nonnegative, not identically zero and summable ($\psi$ and $v$ are bounded), and $n!\,\alpha(n)=\psi(n)$, $n!\,\beta(n)=v_n$ are log-concave with supports that are half-lines (Lemma 7.2). A nonnegative summable sequence $a$ with contiguous support for which $n\mapsto n!\,a(n)$ is log-concave is called \emph{ultra log-concave} (of order $\infty$); equivalently $a(n)/\pi_\lambda(n)$ is log-concave for a Poisson mass function $\pi_\lambda$, and multiplying $a$ by a positive constant (e.g. normalising it to a probability sequence) does not change the property. \textbf{The convolution of two ultra log-concave sequences is ultra log-concave:} D. W. Walkup, \emph{Pólya sequences, binomial convolution and the union of random sets}, J. Appl. Probab. 13 (1976), 76–85, Theorem 1; T. M. Liggett, \emph{Ultra logconcave sequences and negative dependence}, J. Combin. Theory Ser. A 79 (1997), 315–325, Theorem 2 (order $\infty$); a short proof is given by A. Marsiglietti and J. Melbourne, \emph{Geometric and functional inequalities for log-concave probability sequences}, Discrete Comput. Geom. 71 (2024), 556–586, Corollary 3.4 (numbering of arXiv:2004.12005v4), whose definitions (Definition 2.1 and Example 2.5 there) are the ones used here. Applying this $d-1$ times, $\alpha*\beta^{*(d-1)}$ is ultra log-concave, i.e. $t\mapsto d^{\,t-1}\varphi(t)$ is log-concave with contiguous support; hence $\varphi$ is log-concave, with support $\{t\ge(N-2)+(d-1)(N-1)\}$.
+
+With $h(n):=\sum_j\rho_jE_{\nu_j}(n)$ (nonincreasing, as all $1-\mu\nu_j\in(0,1)$) and $\eta(n):=h(n-1)-h(n)\ge0$,
+\begin{equation*}
+g(t+1)-g(t)=\pi_a(\varphi(t+1)-\varphi(t))+\mu\varphi(t)h(0)-\mu\sum_{n=1}^t\varphi(t-n)\eta(n).
+\end{equation*}
+For $t\ge t_0$ divide by $\varphi(t)>0$: $\varphi(t+1)/\varphi(t)$ is nonincreasing in $t$ and each $\varphi(t-n)/\varphi(t)$ ($=0$ if $t-n<t_0$) is nondecreasing in $t$, so $B_D$ is nonincreasing. For $t<t_0$, $g(t)=0$. Therefore $\{t\ge t_0:(Dg)(t)>0\}$ is an initial segment and $\{(Dg)(t)<0\}$ a final segment of $\{t\ge t_0\}$, $g$ is nondecreasing on the first and strictly decreasing on the second, and the maximisers of $g$ are $\ge t+1$ if $(Dg)(t)>0$ and $\le t$ if $(Dg)(t)<0$. Finally $\mathbb P(T=t)=\mu g(t-1)$.
+\end{proof}
+
+\begin{remark}
+(i) The exact integer-arithmetic check \texttt{scripts/\allowbreak 71\_\allowbreak check\_\allowbreak discrete\_\allowbreak unimodal.py} confirms log-concavity of $\varphi$ and the single sign change of $\mathbb P(T=t+1)-\mathbb P(T=t)$ for ten small cases ($q\in\{\frac12,\frac13,\frac14,\frac15\}$). (ii) On the citation: the theorem numbers for Walkup's and Liggett's papers are those given by O. Johnson, \emph{Log-concavity and the maximum entropy property of the Poisson distribution}, Stochastic Process. Appl. 117 (2007), 791–802 (proof of Lemma 3.1: ''Theorem 1 of Walkup'' and ''Theorem 2 of Liggett'' for the closure of ultra log-concave laws under convolution); the two original papers were not consulted directly. The statement used, and its proof, can be checked in the openly available paper of Marsiglietti and Melbourne cited in the proof. (iii) Theorem 7.14 (with $q_{\max}=0.8$) and Theorem 7.17 below cover $q\le\frac12$ without Theorem 7.4 for $N\ge37$ ($d=2$) and $N\ge12$ ($d=3$); Theorem 7.4 is needed only for the remaining range $11\le N\le36$ ($d=2$), $N\in\{10,11\}$ ($d=3$) of Theorem 7.8 and for its better constants.
+
+\end{remark}
+
+\subsection{Window theorem and explicit bounds for $q\le\frac12$}
+
+Define $\kappa(t):=(r_1\star E_{\nu_1})(t)/E_{\nu_1}(t)$, $E_-(t):=[\nu_0\tilde J(t)+r(t)]/(\nu_0m_0E_{\nu_0}(t))$ and $P_{\rm rest}:=W\sum_{j\ge2}\frac{\rho_j}{\nu_j-1}E_{\nu_j}+\pi_ar_1+\sum_{j\ge2}\rho_j(r_1\star E_{\nu_j})$, so that Proposition 7.1 reads $Dg=a_1E_{\nu_1}[1+\frac\theta W\kappa]-a_0E_{\nu_0}[1+E_-]+P_{\rm rest}$. Put $\tau:=\mu t$.
+
+\begin{lemma}[{corrections, $q\le\frac12$}]
+For $t\ge1$, with $\varrho_a:=\frac{1-\mu a}{1-\mu\nu_1}$, $\mathfrak g=\sum_ic_iE_{a_i}$ as in Lemma 7.3, and any $s_x=\mu S$, $S\in\mathbb N_{\ge1}$:
+
+(a) $\displaystyle \kappa_{\rm lo}^D(t):=W-\frac{\bar r(t)}{E_{\nu_1}(t)}+\nu_1W\sum_ic_i\frac{\varrho_{a_i}-\varrho_{a_i}^{\,t}}{a_i-\nu_1}\ \le\ \kappa(t)\ \le\ \bar\kappa_D:=\frac{W}{1-\mu\nu_1}+\nu_1\Bigl[W\frac{e^{\theta s_x/(1-\mu\nu_1)}-1}{\theta}+\frac{C_1e^{-(1-\theta)s_x}}{1-\theta}+\frac{C_2e^{-(\varepsilon_2-1-\theta)s_x}}{\varepsilon_2-1-\theta}\Bigr];$
+
+(b) $\displaystyle \frac{W\mathfrak g(t)}{\nu_0m_0E_{\nu_0}(t)}\le E_-(t)\le\frac{1}{\nu_0m_0E_{\nu_0}(t)}\Bigl[\frac{2C_1E_2(t)}{2-\nu_0}+\frac{C_2\varepsilon_2E_{\varepsilon_2}(t)}{\varepsilon_2-\nu_0}\Bigr];$
+
+(c) $\displaystyle 0\le P_{\rm rest}(t)\le E_2(t)\Bigl[c_\beta\hat\beta+\sum_{i\in\mathcal N}\rho_iN_i^D(t)\Bigr]+E_{\varepsilon_2}(t)C_2\varepsilon_2\Bigl[\pi_a+\frac{\tau R_{\rm tot}}{1-\varepsilon_2\mu}\Bigr]$, $N_i^D:=2C_1\min\bigl(\frac{\tau}{1-2\mu},\frac{1}{\nu_i-2}\bigr)+C_2\varepsilon_2\min\bigl(\frac{\tau}{1-\nu_i\mu},\frac{1}{\varepsilon_2-\nu_i}\bigr)$;
+
+(d) for $0\le b<a$ with $a\mu<1$: $e^{-(a-b)\tau/(1-a\mu)}\le E_a(t)/E_b(t)\le e^{-(a-b)\tau}$; and $\hat\nu_D:=\frac1\mu\ln\frac{1-\mu\nu_0}{1-\mu\nu_1}$ satisfies $\hat\nu_D-\hat\nu\in\mu\bigl[\frac{\nu_1^2}{2}-\frac{\nu_0^2}{2(1-\mu\nu_0)},\ \frac{\nu_1^2}{2(1-\mu\nu_1)}-\frac{\nu_0^2}{2}\bigr]$.
+\end{lemma}
+
+\begin{proof}
+(a) Summation by parts with $\mu r_1(s)=r(s)-r(s+1)$, $r(0)=W$ and $b:=1-\mu\nu_1$: $\kappa(t)=\sum_{s<t}\frac{r(s)-r(s+1)}{b^{s+1}}=\frac Wb-\frac{r(t)}{E_{\nu_1}(t)}+\mu\nu_1\sum_{s=1}^{t-1}\frac{r(s)}{E_{\nu_1}(s+1)}$. Lower bound: $W/b\ge W$, $r(t)\le\bar r(t)$, $r(s)\ge W\mathfrak g(s)$ and $\mu\sum_{s=1}^{t-1}E_a(s)/E_{\nu_1}(s+1)=(\varrho_a-\varrho_a^t)/(a-\nu_1)$. Upper bound: $\kappa$ is nondecreasing with limit $\frac Wb+\mu\nu_1\sum_{s\ge1}r(s)/E_{\nu_1}(s+1)$; use $r\le WE_1$ for $1\le s<S$: $\mu\sum_{s=1}^{S-1}E_1(s)/E_{\nu_1}(s+1)=(\varrho_1^S-\varrho_1)/\theta\le(e^{\theta s_x/b}-1)/\theta$ since $\varrho_1=1+\mu\theta/b$; and $r\le\bar r$ for $s\ge S$: $\mu\sum_{s\ge S}E_2(s)/E_{\nu_1}(s+1)=\varrho_2^S/(1-\theta)\le e^{-(1-\theta)s_x}/(1-\theta)$, similarly for $E_{\varepsilon_2}$.
+
+(b) $\tilde J(t)=\mu\sum_{s\ge t}r(s)E_{\nu_0}(t)/E_{\nu_0}(s+1)\in[0,\frac{C_1E_2}{2-\nu_0}+\frac{C_2E_{\varepsilon_2}}{\varepsilon_2-\nu_0}]$ by the geometric sum formula and $0\le r\le\bar r$; add $r/\nu_0$ as in Lemma 2.2(b).
+
+(c) As in Lemma 2.2(c), using $E_{\nu_j}\le E_2$ for $\nu_j\ge2$ and, for $a<\nu$, $E_a\star E_\nu=E_a\frac{1-(E_\nu/E_a)}{\nu-a}\le E_a\min\bigl(\frac1{\nu-a},\frac{\tau}{1-\mu a}\bigr)$ because $1-\varrho^t\le t(1-\varrho)$ with $1-\varrho=\frac{\mu(\nu-a)}{1-\mu a}$.
+
+(d) $E_a/E_b=(1-z)^t$ with $z=\frac{\mu(a-b)}{1-b\mu}$ and $-\frac{z}{1-z}\le\ln(1-z)\le-z$, $\frac{z}{1-z}=\frac{\mu(a-b)}{1-a\mu}$. For $\hat\nu_D=\nu_1\ell(\mu\nu_1)-\nu_0\ell(\mu\nu_0)$ with $\ell(z)=-\ln(1-z)/z$ use $\frac z2\le\ell(z)-1\le\frac{z}{2(1-z)}$.
+\end{proof}
+
+\begin{theorem}[{window theorem, discrete time, $q\le\frac12$}]
+For every integer $t\ge1$,
+\begin{equation*}
+a_1E_{\nu_1}\Bigl[1+\frac\theta W\kappa^D_{\rm lo}\Bigr]-a_0E_{\nu_0}\bigl[1+\bar E^D_-\bigr]\ \le\ Dg\ \le\ a_1E_{\nu_1}\Bigl[1+\frac\theta W\bar\kappa_D\Bigr]+\bar P^D_{\rm rest}-a_0E_{\nu_0}\bigl[1+E_-^{{\rm lo},D}\bigr]
+\end{equation*}
+(all functions evaluated at $t$; the barred/lo quantities are those of Lemma 7.6). Hence $(Dg)(t)>0$ as soon as $\ln\Lambda-\hat\nu_D\tau+\ln(1+\frac\theta W\kappa^D_{\rm lo}(t))-\ln(1+\bar E_-^D(t))>0$, and $(Dg)(t)<0$ as soon as $\ln\Lambda-\hat\nu_D\tau+\ln\bigl(1+\frac\theta W\bar\kappa_D+\frac{\bar P^D_{\rm rest}(t)}{a_1E_{\nu_1}(t)}\bigr)-\ln(1+E_-^{{\rm lo},D}(t))<0$.
+\end{theorem}
+
+\begin{proof}
+Proposition 7.1 and Lemma 7.6; $E_{\nu_1}(t)/E_{\nu_0}(t)=e^{-\hat\nu_D\tau}$.
+\end{proof}
+
+\begin{theorem}[{explicit bounds, discrete time, all $q\in(0,\frac12]$; computer-assisted}]
+Let $d\in\{2,3\}$, $q\in(0,\frac12]$, $t_{\rm cf}:=\tau_{\rm cf}/\mu={\rm MFPT}\cdot\ln(2dX)/(X+2d-1)$. For every $N\ge N_0$, every maximiser $t^*$ of $t\mapsto\mathbb P(T=t)$ satisfies
+\begin{equation*}
+t_{\rm cf}-\frac{K^-_{d,D}(N_0)}{X\mu}\ <\ t^*\ <\ t_{\rm cf}+\frac{K^+_{d,D}(N_0)}{X\mu}+2,
+\end{equation*}
+with the certified constants
+
+\begin{center}\small
+\begin{tabular}{lcccccccc}
+\toprule
+$d=2$: $N_0$ & 12 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 \\ \midrule
+$K^-_{2,D}$ & 8.546 & 6.119 & 4.479 & 3.131 & 2.099 & 1.332 & 0.770 & $-0.116$ \\
+$K^+_{2,D}$ & 10.392 & 8.859 & 7.542 & 6.377 & 5.462 & 4.842 & 4.641 & 4.641 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\small
+\begin{tabular}{lcccccccc}
+\toprule
+$d=3$: $N_0$ & 10 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 \\ \midrule
+$K^-_{3,D}$ & 5.293 & 3.442 & 2.661 & 1.962 & 1.527 & 1.318 & 1.144 & 0.898 \\
+$K^+_{3,D}$ & 7.513 & 4.834 & 3.761 & 2.829 & 2.165 & 1.744 & 1.599 & 1.465 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The constants are uniform in $q\in(0,\frac12]$; $K^\pm_{d,D}(N_0)$ is the maximum of the block constants over all blocks that meet $[N_0,\infty)$, as in the proof of Theorem 5.1.
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T78_d2, T78_d3); data/msc_rigorous_asymptotics/logs/80_tables.log
+\end{theorem}
+
+\begin{proof}
+Fix a block and constants $c_\pm$. Let $t_+:=\lceil(\tau_{\rm cf}+c_+/X)/\mu\rceil$ and $t_-:=\lfloor(\tau_{\rm cf}-c_-/X)/\mu\rfloor$; then $\mu t_+=\tau_{\rm cf}+c\,y'$ with $c\in[c_+,c_++\mu X]$, and $\mu t_-=\tau_{\rm cf}+c\,y'$ with $c\in[-c_--\mu X,-c_-]$. For $q\le\frac12$, $\mu\le\frac1d\sin^2x=\xi y/d$, hence $\mu X\le\xi(1+y\mathbb EU)/d$, $\mu\tau\le\xi\,y\tau/d$ and $\mu\tau/y\le\xi\tau/d$. The script \texttt{scripts/\allowbreak 72\_\allowbreak cert\_\allowbreak discrete.py} evaluates, in ball arithmetic over the same blocks and enclosures as in Section 5 and with $c$ replaced by these balls, an upper bound of the second sign function of Theorem 7.7 at $t_+$ and a lower bound of the first at $t_-$, divided by $y$. Compared with the continuous case (Lemma 5.2 applies verbatim to $\ln\Lambda-\hat\nu\tau$) the following changes are made, each justified by Lemma 7.6:
+
+\begin{itemize}
+\item the term $-(\hat\nu_D-\hat\nu)\tau/y\in\bigl[-\frac{\xi\tau}{d}\bigl(\frac{\nu_1^2}{2(1-\mu\nu_1)}-\frac{\nu_0^2}{2}\bigr),0\bigr]$ is added (for the unbounded block $\xi\tau$ is bounded using $\xi\ln\frac1y\le\frac{\pi^2}{4N_a^2}M\ln M$, $M=2\pi\ln N_a+1.3$ resp. $c_3N_a$, which is decreasing in $N_a$);
+\item upper side: $\bar\kappa\to\bar\kappa_D$ with $s_x\in[\ln((d-1)A),\ln((d-1)A)+\mu]$; $\tau\to\tau/(1-2\mu)$ in $N_2$; $R_{\rm tot}\to R_{\rm tot}/(1-\varepsilon_2\mu)$; the ratios $E_2/E_{\nu_1}$, $E_{\varepsilon_2}/E_{\nu_1}$ are bounded by their continuous counterparts (Lemma 7.6(d)); in $E_-^{{\rm lo},D}$ the positive terms of $W\mathfrak g/E_{\nu_0}$ are multiplied by $1-\frac{2(2-\nu_0)\mu\tau}{1-2\mu}$ (the term $2A\gamma_2E_{2+\varepsilon_2}$ is dropped) and the negative ones are bounded by their continuous counterparts;
+\item lower side: in $\kappa^D_{\rm lo}$, $\frac{\varrho_a-\varrho_a^t}{a-\nu_1}\ge\frac{1-e^{-(a-\nu_1)\tau}}{a-\nu_1}-\frac{\mu}{1-\mu\nu_1}$ for the positive coefficients and $\le\frac1{a-\nu_1}$ for the negative ones; $\bar r/E_{\nu_1}$ and $\bar E^D_-$ are bounded by their continuous counterparts.
+\end{itemize}
+
+For all blocks with $N_a\ge11$ ($d=2$) resp. $N_a\ge10$ ($d=3$) the script verifies the two strict inequalities (files \texttt{data/\allowbreak 72\_\allowbreak cert\_\allowbreak discrete\_\allowbreak d2.jsonl}, \texttt{data/\allowbreak 72\_\allowbreak cert\_\allowbreak discrete\_\allowbreak d3.jsonl}); the single block $d=2$, $N=10$ fails and is excluded. Hence $(Dg)(t_+)<0$ and $(Dg)(t_-)>0$, and Theorem 7.4 gives $t_-+2\le t^*\le t_++1$, which implies the claim.
+\end{proof}
+
+\begin{corollary}[{asymptotics in discrete time, $q\le\frac12$}]
+For $q\in(0,\frac12]$ and $N\ge20$ every maximiser $t^*$ of the first-passage probability mass function satisfies
+\begin{equation*}
+d=2:\quad \frac{4N^2}{\pi^2q}\Bigl[\ln\ln N+\ln8\pi-\frac{4.72+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\Bigr]<t^*<\frac{4N^2}{\pi^2q}\bigl[\ln\ln N+\ln8\pi\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2,
+\end{equation*}
+\begin{equation*}
+d=3:\quad \frac{6N^2}{\pi^2q}\Bigl[\ln N+\ln(6c_3)-\frac{10.30+5\ln(6c_3N)}{c_3N-7.63}\Bigr]<t^*<\frac{6N^2}{\pi^2q}\bigl[\ln N+\ln(6c_3)\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2 .
+\end{equation*}
+In particular the laws $t^*\sim\frac{4}{\pi^2q}N^2\ln\ln N$ ($d=2$) and $t^*\sim\frac{6}{\pi^2q}N^2\ln N$ ($d=3$) of the computations of Sections~5--6 of the article are theorems for the discrete walk with $q\le\frac12$, with the same explicit rates as in Theorems 6.1–6.3.
+\end{corollary}
+
+\begin{proof}
+Repeat the proofs of Theorems 6.1 and 6.2 with $(K^-,K^+)=(4.479,7.542)$ resp. $(2.661,3.761)$ from Theorem 7.8 ($N_0=20$): the upper bounds still hold since $0.62+7.542-11.09<0$ and $3.761<32$; in the lower bounds $0.24+4.479\le4.72$ and $7.63+2.661\le10.30$.
+\end{proof}
+
+\subsection{All $q<1$: localisation without unimodality}
+
+For $q>\frac12$ some of the numbers $\beta_k=1-2q\sin^2(kx)$, $1-\mu\mu_k$, $1-\mu\nu_j$ are negative, the mass function need not be unimodal (for $q=1$ it is not unimodal in general, because of parity effects), and Lemma 7.2 and Theorem 7.4 are not available. We show that the bounds of Lemma 7.3 survive when $N$ is not too small, bound the poles with negative multiplier, and replace unimodality by a four-region argument. Throughout this subsection
+\begin{equation*}
+q\in(0,1),\qquad N\ge4,\qquad \sin(2x)\le\frac{1-q}{q}, \tag{H}
+\end{equation*}
+and $\varrho_q:=\max(2q-1,0)$. The third condition is void for $q\le\frac12$, and it holds if and only if $N\ge N_1(q):=\min\{N\ge4:\sin\frac\pi N\le\frac{1-q}{q}\}$ ($\sin\frac\pi N$ decreases in $N$); $N_1(q)=4$ for $q\le\frac12$ and $N_1(q)\approx\pi q/(1-q)$ as $q\to1$. Two consequences of (H) are used throughout: since $\mu=\frac{2q}{d}\sin^2x$ and $q\sin2x\le1-q$,
+\begin{gather*}
+\varepsilon_2\mu=\frac{2q}{d}\sin^2(2x)\le\frac{2(1-q)}{d}\sin(2x)<2(1-q), \\
+\mu\le q\sin(2x)\le1-q,\ \text{ i.e. }\ \varrho_q\le1-2\mu, \tag{H'}
+\end{gather*}
+where we used $\sin2x<1$ ($N\ge4$) and $\sin x\le d\cos x$.
+
+\begin{lemma}[{pairing}]
+Assume (H). For $j\in\{1,2,3\}$ the power series $\prod_{k=j}^{N-1}(1-\beta_kz)^{-1}$ has nonnegative coefficients; $\beta_1\ge\beta_2\ge1-q>0$; and $|\beta_k|<\beta_j$ for $k>j$, $j\in\{1,2\}$. Consequently all statements of Lemma 7.2 except log-concavity, and all statements of Lemma 7.3, remain true (with $\pi_j(m):=[z^m]\prod_{k\ge j}\frac{p_kz}{1-\beta_kz}\ge0$ in place of the mass functions); in particular $0\le v_n\le1$ is nondecreasing, $\varphi\ge0$, $\tilde q\ge0$ and
+\begin{equation*}
+\tilde q\ \ge\ q_{\rm lo}:=d(d-1)\bigl[A^2E_2-2A\gamma_2\varepsilon_2E_{1+\varepsilon_2}-(d-2)A^3E_3\bigr].
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Fix $j$ and pair $k$ with $k':=N+j-1-k$, an involution of $\{j,\dots,N-1\}$. Since $k'x=\frac\pi2+(j-1)x-kx$, $\sin^2(kx)+\sin^2(k'x)=1+\sin^2(kx)-\sin^2(kx-(j-1)x)=1+\sin((2k-j+1)x)\sin((j-1)x)\le1+\sin((j-1)x)$, hence $\beta_k+\beta_{k'}\ge2-2q(1+\sin((j-1)x))\ge0$ by (H) ($\sin((j-1)x)\le\sin2x$). For a pair $k\ne k'$ with, say, $\beta_k\ge\beta_{k'}$ we get $\beta_k\ge|\beta_{k'}|$, and the coefficients of $\frac{1}{(1-\beta_kz)(1-\beta_{k'}z)}$ are $\sum_{i=0}^n\beta_k^i\beta_{k'}^{n-i}=\frac{\beta_k^{n+1}-\beta_{k'}^{n+1}}{\beta_k-\beta_{k'}}\ge0$ (or $(n+1)\beta_k^n$ if equal). A fixed point $k=k'$ has $\sin^2(kx)=\frac12(1+\sin((j-1)x))$, so $\beta_k=1-q(1+\sin((j-1)x))\ge0$. A product of series with nonnegative coefficients has nonnegative coefficients.
+
+$N\ge4$ gives $\sin^2(2x)\le\frac12$, so $\beta_2\ge1-q$. For $k>j$: $\beta_k<\beta_j$ and $\beta_k+\beta_j\ge2-2q(\cos^2x+\sin^2(jx))=2-2q(1+\sin((j+1)x)\sin((j-1)x))>0$ for $j=1,2$ (for $j=2$: $\sin3x\,\sin x<\sin x\le\sin2x\le\frac{1-q}{q}$).
+
+Now repeat the proof of Lemma 7.2: $\pi_1(n+1)=\sum_{m=1}^np_1\beta_1^{n-m}\pi_2(m)$ with $\pi_2\ge0$, so $\psi(n)\beta_1^{-n}=\sum_{m\le n}\beta_1^{-m}\pi_2(m)$ is nondecreasing; its limit is the value at $z=1/\beta_1$ of $\prod_{k\ge2}\frac{p_kz}{1-\beta_kz}$, which is analytic there because $|\beta_k|<\beta_1$, i.e. $\prod_{k\ge2}\frac{p_k}{\beta_1-\beta_k}=A$. The same argument with $\pi_3\ge0$ and $|\beta_k|<\beta_2$ gives $0\le\pi_2(m)\le p_2\gamma_2(\varepsilon_2-1)\beta_2^{m-1}$, and the remaining bounds of Lemma 7.2 follow verbatim; $v_n=\sum_{m\le n}\pi_1(m)\in[0,1]$ since $v_n\to1$. The proof of Lemma 7.3 uses only these facts (all the numbers $E_k(t)$ occurring there have positive bases $\frac1d(\beta_{k_1}+\dots+\beta_{k_d})$ with $k_i\in\{0,1,2\}$).
+
+Lower bound for $\tilde q$: in the formula for $\mu\tilde q$ in the proof of Lemma 7.3 drop the first (nonnegative) sum and use $v_{n_m+1}-v_{n_m}=p_1\psi(n_m)$: $\mu\tilde q\ge\frac{p_1}{d}\mathbb E\sum_{i\ne m}\psi(n_i)\psi(n_m)\prod_{l\ne i,m}v_{n_l}$. With $L_n:=A\beta_1^n-\gamma_2\varepsilon_2\beta_2^n\le\psi(n)\le A\beta_1^n$ and $\psi\ge0$ one has $\psi(n)\psi(m)\ge A^2\beta_1^{n+m}-A\gamma_2\varepsilon_2(\beta_1^n\beta_2^m+\beta_2^n\beta_1^m)$ (if $L_m\ge0$: $\psi(n)\psi(m)\ge L_nL_m$; if $L_m<0$ the right side equals $A\beta_1^nL_m-A\gamma_2\varepsilon_2\beta_2^n\beta_1^m\le0$); for $d=3$, $v_{n_l}\ge1-A\beta_1^{n_l}$ and $\psi\psi\le A^2\beta_1^{n+m}$ give $\psi\psi v\ge\psi\psi-A^3\beta_1^{n+m+l}$. Taking expectations ($p_1/d=\mu$, $d(d-1)$ ordered pairs) gives $q_{\rm lo}$.
+\end{proof}
+
+Call a pole \emph{negative} if $\mu\nu_j\ge1$ and \emph{positive} otherwise; let $\mathcal Q$ be the set of negative poles (empty if $q\le\frac12$). The poles $\nu_0,\nu_1$ and the near poles are positive.
+
+\begin{lemma}[{negative poles}]
+Assume (H). For $j\in\mathcal Q$: $|1-\mu\nu_j|\le\varrho_q\le1-2\mu$, and $\mu\sum_{j\in\mathcal Q}\rho_j\le\mu R_{\rm tot}=\frac{q}{2}\pi_a$. For all $t\in\mathbb N_0$:
+
+(a) $\displaystyle\Bigl|\sum_{j\in\mathcal Q}\rho_j\Bigl[\frac{W}{\nu_j-1}E_{\nu_j}+r_1\star E_{\nu_j}\Bigr](t)\Bigr|\le n_q(t):=\frac{q\pi_a}{2}\Bigl[\Bigl(\frac{W}{1-\mu}+\frac{2C_1}{2(1-q)-2\mu}\Bigr)E_2(t)+\frac{C_2\varepsilon_2}{2(1-q)-\varepsilon_2\mu}E_{\varepsilon_2}(t)\Bigr];$
+
+(b) $\displaystyle\Bigl|\sum_{j\in\mathcal Q}\rho_j\bigl((D\varphi)\star E_{\nu_j}\bigr)(t)\Bigr|\le\omega_q\varphi(t)+\omega_q'(t)$, $\ \omega_q:=\frac{q\pi_a}{2}\cdot\frac{1}{2(1-q)-\mu}$, $\ \omega'_q(t):=\frac{q\pi_a}{2}\Bigl[\frac{C_1E_2(t)}{2(1-q)-2\mu}+\frac{C_2(\varepsilon_2-1)E_{\varepsilon_2}(t)}{2(1-q)-\varepsilon_2\mu}\Bigr];$
+
+(c) $\displaystyle\Bigl|\sum_{j\in\mathcal Q}\rho_j(\varphi\star E_{\nu_j})(t)\Bigr|\le\frac{q\pi_a}{4(1-q)}$.
+\end{lemma}
+
+\begin{proof}
+$\nu_j<m_L$ and $\mu m_L<2q$, so $1-\mu\nu_j\in(1-2q,0]$ for $j\in\mathcal Q$; $\varrho_q\le1-2\mu$ is (H'). $\mu R_{\rm tot}=\frac{2q}{d}\sin^2x\cdot\frac{d}{4N^d\sin^2x}$ (Lemma 1.4(c)). If $q\le\frac12$ then $\mu\nu_j<\mu m_L<2q\le1$ for all $j$, so $\mathcal Q=\emptyset$, all sums over $\mathcal Q$ vanish and there is nothing to prove; let $q>\frac12$, so $\varrho_q=2q-1$. For $0\le a\le\varepsilon_2$, (H') gives $(1-a\mu)-\varrho_q=2(1-q)-a\mu>0$ and hence $\mu\sum_{s<t}E_a(s)\varrho_q^{\,t-1-s}=\mu\frac{E_a(t)-\varrho_q^t}{(1-a\mu)-\varrho_q}\le\frac{\mu E_a(t)}{2(1-q)-a\mu}$ (this inequality is false in general for $q<\frac12$, where $\varrho_q=0$, but it is not needed there). (a) $|E_{\nu_j}(t)|\le\varrho_q^t\le E_2(t)$, $\frac{1}{\nu_j-1}\le\frac{\mu}{1-\mu}$, and $|r_1\star E_{\nu_j}|\le\mu\sum_{s<t}\bar r_1(s)\varrho_q^{t-1-s}$. (b) $D\varphi=\tilde q-\varphi$ with $\varphi,\tilde q\ge0$, so $|D\varphi|\le\varphi+\tilde q$; $\varphi(s)\le\varphi(t)E_1(s)/E_1(t)$ for $s\le t$ (as $\tilde q\ge0$) gives $\mu\sum_{s<t}\varphi(s)\varrho_q^{t-1-s}\le\frac{\mu\varphi(t)}{2(1-q)-\mu}$, and $\tilde q\le C_1E_2+C_2(\varepsilon_2-1)E_{\varepsilon_2}$. (c) $\varphi=1-u-Q\le1$ with $Q:=\mu\sum_{s\ge t}\tilde q(s)\ge0$, so $|\varphi\star E_{\nu_j}|\le\mu\sum_{s<t}\varrho_q^{t-1-s}\le\frac{\mu}{2(1-q)}$. In each case multiply by $\sum_{\mathcal Q}\rho_j$.
+\end{proof}
+
+\begin{lemma}[{the four regions}]
+Assume (H), $d\in\{2,3\}$ ($N\ge4$). Let $\Phi_\pm^D$ denote the two bounds of Theorem 7.7 (with $\bar P^D_{\rm rest}$ referring to the positive poles $j\ge2$), $Q(t):=\mu\sum_{s\ge t}\tilde q(s)=1-u_t-\varphi(t)$, and
+\begin{gather*}
+B_1(t):=\frac{1}{E_1(t)}\Bigl[\frac{a_1\nu_1}{W}E_{\nu_1}(t)-\frac{\rho_0\nu_0}{1-\nu_0}E_{\nu_0}(t)\Bigr], \\
+Q_{\rm lo}(t):=d(d-1)\Bigl[\frac{A^2E_2(t)}{2}-\frac{2A\gamma_2\varepsilon_2E_{1+\varepsilon_2}(t)}{1+\varepsilon_2}-\frac{(d-2)A^3E_3(t)}{3}\Bigr].
+\end{gather*}
+(A) For $t\ge1$: $\Phi_-^D(t)-n_q(t)\le(Dg)(t)\le\Phi_+^D(t)+n_q(t)$. Moreover $\mathcal A(t):=\bigl[a_1E_{\nu_1}(1+\frac\theta W\bar\kappa_D)+\bar P^D_{\rm rest}+n_q\bigr](t)/(a_0E_{\nu_0}(t))$ is nonincreasing on $\{t:\mu t\ge1\}$ and $(Dg)(t)\le a_0E_{\nu_0}(t)[\mathcal A(t)-1]$.
+
+(B) For $t\ge1$: $(Dg)(t)\ge\varphi(t)\,[B_1(t)-\omega_q]-\omega_q'(t)$; $B_1$ is nonincreasing, $\varphi/E_1$ is nondecreasing with $\varphi/E_1\ge W-\bar r/E_1$, and $\omega_q'/E_1$ is nonincreasing.
+
+(C) For all $t$: $\ \rho_0E_{\nu_0}(t)\bigl(1-WE_1(t)\bigr)-\frac{q\pi_a}{4(1-q)}\ \le\ g(t)\ \le\ \rho_0\Bigl[1-Q(t)+\frac{\nu_0\varphi(t)}{1-\nu_0}\Bigr]+\frac{q\pi_a}{4(1-q)}$; $Q$ is nonincreasing, $Q\ge Q_{\rm lo}$ and $\varphi\le1$.
+\end{lemma}
+
+\begin{proof}
+(A) In Proposition 7.1 split the sums over $j\ge2$ into positive and negative poles. Lemma 7.6 (whose proof uses only Lemma 7.3, $0<1-\mu\nu_j<1$ for the poles concerned, and the convergence of the geometric series defining $\tilde J$, which holds because $|1-\mu\mu_k|\le\max(1-2\mu,\varrho_q)<1-\mu\nu_0$) bounds the positive part, Lemma 7.11(a) the negative part. For the monotonicity write $\mathcal A=\frac{E_1}{E_{\nu_0}}\cdot\frac{1}{a_0}\bigl[a_1(1+\frac\theta W\bar\kappa_D)\frac{E_{\nu_1}}{E_1}+\frac{\bar P^D_{\rm rest}+n_q}{E_1}\bigr]$: $E_1/E_{\nu_0}$ and $E_{\nu_1}/E_1$, $E_2/E_1$, $E_{\varepsilon_2}/E_1$ are nonincreasing, and $t\mapsto t\,(E_2/E_1)(t)$, $t\,(E_{\varepsilon_2}/E_1)(t)$ are nonincreasing for $\mu t\ge1$ (the ratio of consecutive values of $t\varrho^t$ is $(1+\frac1t)\varrho\le1$ iff $t\ge\frac{\varrho}{1-\varrho}$, and $\frac{\varrho}{1-\varrho}=\frac{1-2\mu}{\mu}$ resp. $\frac{1-\varepsilon_2\mu}{(\varepsilon_2-1)\mu}$); hence each term $\min(c\,\tau,c')E_2/E_1$ and $\tau E_{\varepsilon_2}/E_1$ of $\bar P^D_{\rm rest}/E_1$ is nonincreasing. The last inequality is $Dg\le\Phi^D_++n_q$ with $E_-^{{\rm lo},D}\ge0$ dropped.
+
+(B) $Dg=\pi_aD\varphi+\sum_j\rho_j\,(D\varphi)\star E_{\nu_j}$ (as $\varphi(0)=0$) and $(D\varphi)\star E_\nu=\varphi-\nu(\varphi\star E_\nu)$. For a positive pole, $\varphi(s)\le\varphi(t)E_1(s)/E_1(t)$ ($s\le t$) gives $(\varphi\star E_\nu)(t)\le\varphi(t)\frac{(E_1\star E_\nu)(t)}{E_1(t)}$, i.e.
+\begin{gather*}
+(D\varphi)\star E_{\nu_j}\ge\varphi\Bigl[-\frac{1}{\nu_j-1}+\frac{\nu_j}{\nu_j-1}\frac{E_{\nu_j}}{E_1}\Bigr]\ (j\ge1), \\
+(D\varphi)\star E_{\nu_0}\ge\varphi\Bigl[\frac{1}{1-\nu_0}-\frac{\nu_0}{1-\nu_0}\frac{E_{\nu_0}}{E_1}\Bigr],
+\end{gather*}
+and $\pi_aD\varphi\ge-\pi_a\varphi$. Summing over the positive poles and using $\frac{\rho_0}{1-\nu_0}-\pi_a-\sum_{j\ge1,\,j\notin\mathcal Q}\frac{\rho_j}{\nu_j-1}=\sum_{j\in\mathcal Q}\frac{\rho_j}{\nu_j-1}\ge0$ (Lemma 1.4(c)) and dropping the nonnegative terms with $j\ge2$: the positive poles contribute at least $\varphi B_1$. The negative poles are bounded by Lemma 7.11(b). Monotonicity: $E_{\nu_1}/E_1$ decreases, $E_{\nu_0}/E_1$ increases; $(\varphi/E_1)(t+1)-(\varphi/E_1)(t)=\mu\tilde q(t)/E_1(t+1)\ge0$; $r\le\bar r$.
+
+(C) $g=\pi_a\varphi+\sum_j\rho_j(\varphi\star E_{\nu_j})$. Upper bound: $(\varphi\star E_{\nu_0})(t)\le\mu\sum_{s<t}\varphi(s)=u_t$; for positive $j\ge1$, $(\varphi\star E_{\nu_j})\le\varphi/(\nu_j-1)$ and $\sum_{j\ge1,\,j\notin\mathcal Q}\frac{\rho_j}{\nu_j-1}\le\frac{\rho_0}{1-\nu_0}-\pi_a$; so the positive part is $\le\rho_0[u+\frac{\varphi}{1-\nu_0}]$, and $u+\varphi=1-Q$ (sum $D\varphi+\varphi=\tilde q$ over $s\ge t$). Lower bound: the positive part is $\ge\rho_0(\varphi\star E_{\nu_0})(t)\ge\rho_0E_{\nu_0}(t)u_t$ and $1-u_t=\mu\sum_{s\ge t}\varphi(s)\le WE_1(t)$. The negative part is bounded by Lemma 7.11(c). $Q\ge Q_{\rm lo}$ follows from Lemma 7.10 and $\mu\sum_{s\ge t}E_k(s)=E_k(t)/k$.
+\end{proof}
+
+\begin{theorem}[{localisation without unimodality}]
+Assume (H), $d\in\{2,3\}$, and let $t_E\le t_B\le t_-<t_+$ be integers with $\mu t_+\ge1$ such that
+
+(A) $\mathcal A(t_+)<1$;
+
+(B) $\Phi^D_-(t)-n_q(t)>0$ for every integer $t\in[t_B,t_-]$;
+
+(C) $c_E:=W-\bar r(t_E)/E_1(t_E)>0$, $B_1(t_B)>\omega_q$ and $c_E\,(B_1(t_B)-\omega_q)>\omega_q'(t_E)/E_1(t_E)$;
+
+(D) $1-Q_{\rm lo}(t_E)+\dfrac{\nu_0}{1-\nu_0}+\dfrac{q\pi_a}{2(1-q)\rho_0}<E_{\nu_0}(t_-)\bigl(1-WE_1(t_-)\bigr)$.
+
+Then every maximiser $t^*$ of $t\mapsto\mathbb P(T=t)$ satisfies $t_-+2\le t^*\le t_++1$.
+\end{theorem}
+
+\begin{proof}
+By (A) and Lemma 7.12(A), $\mathcal A(t)\le\mathcal A(t_+)<1$ and so $(Dg)(t)<0$ for all $t\ge t_+$: no maximiser of $g$ exceeds $t_+$. By (C) and Lemma 7.12(B), for $t_E\le t\le t_B$: $(Dg)(t)/E_1(t)\ge c_E(B_1(t_B)-\omega_q)-\omega_q'(t_E)/E_1(t_E)>0$; by (B) and Lemma 7.12(A), $(Dg)(t)>0$ for $t_B\le t\le t_-$. Hence $g$ is strictly increasing on $[t_E,t_-+1]$: no maximiser in $[t_E,t_-]$. By (D) and Lemma 7.12(C), for $t\le t_E$: $g(t)\le\rho_0[1-Q_{\rm lo}(t_E)+\frac{\nu_0}{1-\nu_0}]+\frac{q\pi_a}{4(1-q)}<\rho_0E_{\nu_0}(t_-)(1-WE_1(t_-))-\frac{q\pi_a}{4(1-q)}\le g(t_-)$: no maximiser in $[0,t_E]$. So the maximisers of $g$ lie in $[t_-+1,t_+]$, and $\mathbb P(T=t)=\mu g(t-1)$.
+\end{proof}
+
+\begin{theorem}[{explicit bounds for $q\le q_{\max}<1$; computer-assisted}]
+Let $d\in\{2,3\}$, $q_{\max}\in\{0.8,0.9,0.95,0.99\}$ and $q\in(0,q_{\max}]$. For every $N\ge N_0$ every maximiser $t^*$ of $t\mapsto\mathbb P(T=t)$ satisfies
+\begin{equation*}
+t_{\rm cf}-\frac{K^-}{X\mu}\ <\ t^*\ <\ t_{\rm cf}+\frac{K^+}{X\mu}+2,
+\end{equation*}
+with the following certified constants $(K^-,K^+)$; the first $N_0$ in each row is the smallest for which the certificate succeeds for all $N\ge N_0$:
+
+\begin{center}\small
+\begin{tabular}{ll>{\raggedright\arraybackslash}p{12.5cm}}
+\toprule
+$q_{\max}$ & $d$ & $(N_0;\ K^-,K^+)$ \\ \midrule
+0.8 & 2 & $(37;\ 2.850,\ 6.613)$, $(50;\ 2.255,\ 6.152)$, $(100;\ 1.448,\ 5.560)$, $(200;\ 0.875,\ 5.145)$, $(1000;\ -0.016,\ 5.135)$ \\
+0.8 & 3 & $(13;\ 5.189,\ 6.634)$, $(20;\ 3.459,\ 4.729)$, $(30;\ 2.527,\ 3.715)$, $(50;\ 1.851,\ 2.973)$, $(100;\ 1.568,\ 2.488)$, $(200;\ 1.334,\ 2.305)$, $(1000;\ 1.021,\ 2.141)$ \\
+0.9 & 2 & $(46;\ 2.456,\ 6.303)$, $(50;\ 2.300,\ 6.171)$, $(100;\ 1.460,\ 5.566)$, $(200;\ 0.878,\ 5.147)$, $(1000;\ -0.015,\ 5.135)$ \\
+0.9 & 3 & $(29;\ 2.762,\ 3.804)$, $(50;\ 1.946,\ 2.980)$, $(100;\ 1.619,\ 2.489)$, $(1000;\ 1.028,\ 2.141)$ \\
+0.95 & 2 & $(60;\ 2.065,\ 6.052)$, $(100;\ 1.479,\ 5.578)$, $(200;\ 0.884,\ 5.151)$, $(1000;\ -0.015,\ 5.135)$ \\
+0.95 & 3 & $(60;\ 1.971,\ 2.807)$, $(100;\ 1.647,\ 2.492)$, $(1000;\ 1.032,\ 2.141)$ \\
+0.99 & 2 & $(312;\ 0.550,\ 5.135)$, $(1000;\ 0.003,\ 5.135)$ \\
+0.99 & 3 & $(312;\ 1.236,\ 2.231)$, $(1000;\ 1.033,\ 2.141)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+As in Theorem 5.1, each entry is the maximum of the block constants over all blocks that meet $[N_0,\infty)$. In particular, for the value $q=\frac45$ the closed form satisfies $|t^*-t_{\rm cf}|<\frac{6.613}{X\mu}+2$ for all $N\ge37$ ($d=2$) and $|t^*-t_{\rm cf}|<\frac{6.634}{X\mu}+2$ for all $N\ge13$ ($d=3$). The finitely many smaller $N$ are not covered by this theorem (Remark 7.19).
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T714_q0p8_d2 ... T714_q0p99_d3); data/msc_rigorous_asymptotics/logs/80_tables.log
+\end{theorem}
+
+\begin{proof}
+We verify the hypotheses of Theorem 7.13 with $t_+:=\lceil(\tau_{\rm cf}+c_+/X)/\mu\rceil$, $t_-:=\lfloor(\tau_{\rm cf}-c_-/X)/\mu\rfloor$, $t_B:=\lfloor(\tau_{\rm cf}-c_-/X-b_B)/\mu\rfloor$, $t_E:=\lceil\tau_E/\mu\rceil$, where $(\tau_E,b_B)=(1.2,2.4)$ for $d=2$ and $(1.8,3.0)$ for $d=3$. The script \texttt{scripts/\allowbreak 76\_\allowbreak cert\_\allowbreak q\_\allowbreak large.py} works with the blocks and enclosures of Section 5, restricted to $N\ge N_1(q_{\max})$ (which gives the third condition of (H) for all $q\le q_{\max}$), and with $\mu\le2q_{\max}\xi y/d$; the constants $n_q,\omega_q,\omega_q',\frac{q\pi_a}{1-q}$ are increasing in $q$ and are evaluated at $q_{\max}$, using $\pi_a/y=N^{-d}X_s\le N_a^{-d}\bar X^{(d)}(N_b)$. In ball arithmetic it checks, for each block:
+
+\begin{itemize}
+\item $\varepsilon_2\mu<2(1-q_{\max})$ and $2q_{\max}-1<1-2\mu$ (these follow from (H') and are checked only as a safeguard), and $c_++c_->0$, $\tau_{\rm cf}+c_+y'\ge1$ (so $t_-<t_+$ and $\mu t_+\ge1$);
+\item (A): the upper sign function of Theorem 7.8 with $E_-^{{\rm lo},D}$ replaced by $0$ and $n_q/(a_1E_{\nu_1})$ added inside the logarithm is negative for $\tau\in[\tau_{\rm cf}+c_+y',\tau_{\rm cf}+c_+y'+\mu]$ (this is $\mathcal A(t_+)<1$);
+\item (B): the lower sign function with $n_q/(a_1E_{\nu_1})$ subtracted inside the logarithm is positive for all $\tau\in[\tau_{\rm cf}-c_-y'-\mu-b_B,\ \tau_{\rm cf}-c_-y']$; this interval is covered by the shifts $b\in[b_i,b_{i+1}]$ of a mesh $0=b_0<b_1<\dots=b_B$ (first step $0.01$, ratio $1.25$, maximal step $0.06$), each treated as a ball; the term $b\,\hat\nu/y$ of ${\rm S}/y$ is bounded below by $b_i\inf\hat\nu/\sup y$;
+\item (C): with the bounds $E_{\nu_1}/E_1\ge e^{-\theta\tau/(1-\nu_1\mu)}$, $E_{\nu_0}/E_1\le e^{(1-\nu_0)\tau/(1-\mu)}$ (Lemma 7.6(d)) at $\tau_B\in[\tau_{\rm cf}-c_-y'-b_B-\mu,\tau_{\rm cf}-c_-y'-b_B]$, $\ B_1(t_B)/y\ge\alpha_1\frac{\nu_1}{W}e^{-\theta\tau_B/(1-\nu_1\mu)}-\frac{(1-s)^2W}{1-\nu_0}e^{\delta_B-\nu_0\tau_B+(1-\nu_0)\mu\tau_B/(1-\mu)}$, $\ c_E\ge W-C_1e^{-\tau_E}-C_2e^{-(\varepsilon_2-1)\tau_E}$, $\ \omega'_q(t_E)/E_1(t_E)\le\frac{q\pi_a}{2}\bigl[\frac{C_1e^{-\tau_E}}{2(1-q)-2\mu}+\frac{C_2(\varepsilon_2-1)e^{-(\varepsilon_2-1)\tau_E}}{2(1-q)-\varepsilon_2\mu}\bigr]$, and $\tau_E+\mu<\tau_{\rm cf}-c_-y'-b_B$ (so $t_E\le t_B$);
+\item (D): with $E_2(t_E)\ge e^{-2(\tau_E+\mu)/(1-2\mu)}$, $E_{1+\varepsilon_2}(t_E)\le e^{-(1+\varepsilon_2)\tau_E}$, $E_3(t_E)\le e^{-3\tau_E}$, $\rho_0\ge y(1-s)/(1+\nu_0^2Z_d/(1-\nu_0)^2)$, $E_{\nu_0}(t_-)\ge e^{-\nu_0\tau_-/(1-\nu_0\mu)}$ and $WE_1(t_-)\le ye^{-\delta_-+\mu}$.
+\end{itemize}
+
+The constant $c_-$ is the smallest value (to $10^{-3}$) for which the lower sign condition is verified, increased by $0.1$. The certificate files \texttt{data/\allowbreak 76\_\allowbreak cert\_\allowbreak q0p8\_\allowbreak d2.jsonl}, … list all blocks with the five Boolean results; for every block that meets $[N_0,\infty)$, with $N_0$ as in the table, all are \texttt{true}. Theorem 7.13 then gives $t_-+2\le t^*\le t_++1$.
+\end{proof}
+
+\begin{corollary}[{asymptotic laws for the discrete walk, $q\le0.99$}]
+Let $q\in(0,0.99]$ and $N\ge N_0(q)$, where $N_0=100$ for $q\le0.95$ and $N_0=312$ for $0.95<q\le0.99$. Then every maximiser $t^*$ of the first-passage probability mass function satisfies
+\begin{equation*}
+d=2:\quad \frac{4N^2}{\pi^2q}\Bigl[\ln\ln N+\ln8\pi-\frac{1.72+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\Bigr]<t^*<\frac{4N^2}{\pi^2q}\bigl[\ln\ln N+\ln8\pi\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2,
+\end{equation*}
+\begin{equation*}
+d=3:\quad \frac{6N^2}{\pi^2q}\Bigl[\ln N+\ln(6c_3)-\frac{9.28+5\ln(6c_3N)}{c_3N-7.63}\Bigr]<t^*<\frac{6N^2}{\pi^2q}\bigl[\ln N+\ln(6c_3)\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2 .
+\end{equation*}
+\end{corollary}
+
+\begin{proof}
+For these $N_0$, Theorem 7.14 gives $(K^-,K^+)\le(1.479,5.578)$ for $d=2$ (the row $q_{\max}=0.95$, $N_0=100$; the block $\{99,\dots,106\}$ is included) and $\le(1.647,2.492)$ for $d=3$. Repeat the proofs of Theorems 6.1 and 6.2: the upper bounds hold since $0.62+5.578<12.88\le3\ln(4X)\frac{X}{X+3}$ and $2.492<41.4\le5\ln(6X)\frac{X}{X+5}$ for $N\ge100$ (the right-hand sides increase in $X$; use $X\ge2\pi\ln N-0.24$ resp. $X\ge c_3N-7.63$); in the lower bounds $0.24+1.479\le1.72$ and $7.63+1.647\le9.28$.
+\end{proof}
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log; data/msc_rigorous_asymptotics/80_tables.json
+
+\subsection{All $q<1$ at once: constants uniform in $q$}
+
+The constants $n_q$, $\omega_q$, $\omega'_q$ and $\frac{q\pi_a}{1-q}$ of Lemma 7.11 and Theorem 7.13 blow up as $q\to1$ for fixed $N$, but under (H) they are bounded in terms of $N$ alone. This removes the restriction $q\le q_{\max}$ of Theorem 7.14.
+
+\begin{lemma}[{constants uniform in $q$}]
+Let $d\in\{2,3\}$, $N\ge10$, $x=\frac{\pi}{2N}$, and let $q\in(0,1)$ satisfy (H). Put
+\begin{gather*}
+D_1(x):=2\sin2x-\tfrac2d\sin^2x, \qquad D_2(x):=2\sin2x-\tfrac4d\sin^2x, \\
+D_{\varepsilon_2}(x):=\sin2x\,\bigl(2-\tfrac2d\sin2x\bigr).
+\end{gather*}
+(a) $\mu\le\frac2d\sin^2x$, and (H') holds.
+
+(b) For $a\in\{1,2,\varepsilon_2\}$: $2(1-q)-a\mu\ge q\,D_a(x)>0$, hence $\dfrac{q}{2(1-q)-a\mu}\le\dfrac{1}{D_a(x)}$; and $\dfrac{q}{1-q}\le\dfrac{1}{\sin2x}$.
+
+(c) $D_1$, $D_2$, $D_{\varepsilon_2}$ are increasing on $(0,\frac{\pi}{20}]$, and $N\mapsto N\,D_a(\frac{\pi}{2N})$ ($a\in\{1,2,\varepsilon_2\}$) and $N\mapsto N\sin\frac\pi N$ are increasing on $N\ge10$.
+
+Consequently, for all $t$,
+\begin{gather*}
+n_q(t)\le\bar n(t):=\frac{\pi_a}{2}\Bigl[\Bigl(\frac{W}{1-\mu}+\frac{2C_1}{D_2(x)}\Bigr)E_2(t)+\frac{C_2\varepsilon_2}{D_{\varepsilon_2}(x)}E_{\varepsilon_2}(t)\Bigr], \\
+\omega_q\le\bar\omega:=\frac{\pi_a}{2D_1(x)},
+\end{gather*}
+\begin{gather*}
+\omega'_q(t)\le\bar\omega'(t):=\frac{\pi_a}{2}\Bigl[\frac{C_1E_2(t)}{D_2(x)}+\frac{C_2(\varepsilon_2-1)E_{\varepsilon_2}(t)}{D_{\varepsilon_2}(x)}\Bigr], \\
+\frac{q\pi_a}{1-q}\le\frac{\pi_a}{\sin2x},
+\end{gather*}
+and the right-hand sides do not depend on $q$.
+\end{lemma}
+
+\begin{proof}
+(a) $\mu=\frac{2q}{d}\sin^2x\le\frac2d\sin^2x$; (H') was derived from (H) above. (b) By (H), $2(1-q)\ge2q\sin2x$, and $a\mu=q\cdot\frac{2a}{d}\sin^2x$; for $a=\varepsilon_2=4\cos^2x$ one has $\frac{2\varepsilon_2}{d}\sin^2x=\frac2d\sin^22x$. Hence $2(1-q)-a\mu\ge q\,D_a(x)$, and $D_a(x)>0$ because $2\sin2x=4\sin x\cos x>\frac{2a}{d}\sin^2x$ for $a\le2$, $x\le\frac\pi{20}$, and $\sin2x<1\le\frac d2$. The bound for $\frac{q}{1-q}$ is (H). (c) For $a\in\{1,2\}$, $D_a'(x)=4\cos2x-\frac{2a}{d}\sin2x\ge4\cos\frac\pi{10}-2\sin\frac\pi{10}>0$; $D_{\varepsilon_2}=h(\sin2x)$ with $h(s)=2s-\frac2ds^2$ increasing for $s<\frac d2$. Next $N\sin\frac\pi N=\pi\,\frac{\sin u}{u}\big|_{u=\pi/N}$ increases with $N$, and $N\sin^2\frac{\pi}{2N}=\frac\pi2\sin v\cdot\frac{\sin v}{v}\big|_{v=\pi/(2N)}$ decreases with $N$; so $N D_a(\frac\pi{2N})=2N\sin\frac\pi N-\frac{2a}{d}N\sin^2\frac\pi{2N}$ ($a=1,2$) and $ND_{\varepsilon_2}(\frac\pi{2N})=N\sin\frac\pi N\,(2-\frac2d\sin\frac\pi N)$ increase with $N$. The final bounds follow by inserting (b) and $q<1$ into the definitions of $n_q,\omega_q,\omega'_q$ in Lemma 7.11.
+\end{proof}
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log (numerical facts used in (b), (c))
+
+\begin{theorem}[{window for the discrete walk, uniform in $q<1$; computer-assisted}]
+Let $d\in\{2,3\}$ and $N_*:=59$ for $d=2$, $N_*:=12$ for $d=3$. For every $q\in(0,1)$ and every integer $N\ge\max(N_*,N_1(q))$, where $N_1(q)=\min\{N\ge4:\sin\frac\pi N\le\frac{1-q}{q}\}$, every maximiser $t^*$ of $t\mapsto\mathbb P(T=t)$ satisfies
+\begin{gather*}
+t_{\rm cf}-\frac{K^-_{d,u}(N_0)}{X\mu}\ <\ t^*\ <\ t_{\rm cf}+\frac{K^+_{d,u}(N_0)}{X\mu}+2 \\
+\text{whenever }N\ge\max(N_0,N_1(q)),\ N_0\ge N_*,
+\end{gather*}
+with the following certified constants $(N_0;\ K^-_{d,u},K^+_{d,u})$, the same for all $q$:
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.4cm}>{\raggedright\arraybackslash}p{7.8cm}}
+\toprule
+$d$ & $(N_0;\ K^-_{d,u},\ K^+_{d,u})$ \\ \midrule
+2 & $(59;\ 2.082,\ 6.061)$, $(100;\ 1.508,\ 5.594)$, $(200;\ 0.908,\ 5.167)$, $(312;\ 0.578,\ 5.135)$, $(1000;\ -0.009,\ 5.135)$ \\
+3 & $(12;\ 6.379,\ 7.183)$, $(15;\ 5.094,\ 5.907)$, $(20;\ 3.923,\ 4.766)$, $(30;\ 2.847,\ 3.741)$, $(50;\ 2.047,\ 2.989)$, $(100;\ 1.675,\ 2.495)$, $(200;\ 1.398,\ 2.309)$, $(312;\ 1.243,\ 2.234)$, $(1000;\ 1.036,\ 2.142)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In particular, for every fixed $q\in(0.99,1)$ the window holds for all $N\ge N_1(q)$ (here $N_1(q)\ge312>N_*$, and $N_1(q)\approx\pi q/(1-q)$ as $q\to1$).
+\end{theorem}
+% src: data/msc_rigorous_asymptotics/78_cert_allq_d2.jsonl, data/msc_rigorous_asymptotics/78_cert_allq_d3.jsonl; data/msc_rigorous_asymptotics/80_tables.json (keys T717_d2, T717_d3); data/msc_rigorous_asymptotics/logs/80_tables.log
+
+\begin{proof}
+Lemma 7.12 and Theorem 7.13 remain true when $n_q,\omega_q,\omega'_q$ and $\frac{q\pi_a}{1-q}$ are replaced by the larger quantities $\bar n,\bar\omega,\bar\omega'$, $\frac{\pi_a}{\sin2x}$ of Lemma 7.16: their proofs use only upper bounds for these quantities and, in Lemma 7.12(A), the fact that $\bar n/E_1$, like $n_q/E_1$, is a combination with nonnegative coefficients of $E_2/E_1$ and $E_{\varepsilon_2}/E_1$, both nonincreasing. Fix a block $B=\{N_a,\dots,N_b\}$ of Section 5.3 with $N_a\ge10$. For $N\in B$ and $q$ with (H): $\mu\le\frac2d\xi y$ (Lemma 7.16(a)); $\pi_a X_s/D_a(x)\le N_a^{-d}\bar X^{(d)}(N_b)/D_a(\frac{\pi}{2N_b})$ and $\pi_aX_s/\sin2x\le N_a^{-d}\bar X^{(d)}(N_b)/\sin\frac{\pi}{N_b}$ if $N_b<\infty$ (Lemma 7.16(c), (E2)); and, if $N_b=\infty$, $\pi_aX_s/D_a(x)=N^{1-d}X_s/(ND_a(x))\le N_a^{1-d}M(N_a)/(N_aD_a(\frac{\pi}{2N_a}))$ with $M(N)=2\pi\ln N+1.3$ ($d=2$), $c_3N$ ($d=3$), because $X_s\le M(N)$, $N^{1-d}M(N)$ decreases and $ND_a(\frac\pi{2N})$ increases (Corollary 4.7, Lemma 7.16(c)); likewise with $\sin2x$ in place of $D_a$. Here $\pi_a/y=\pi_aX_s$. The script \texttt{scripts/\allowbreak 78\_\allowbreak cert\_\allowbreak allq.py} (function \texttt{quni\_\allowbreak bounds} in \texttt{scripts/\allowbreak certlib.py}) verifies, in ball arithmetic and for each block, the hypotheses (A)–(D) of Theorem 7.13 exactly as in the proof of Theorem 7.14, with $q_{\max}$ replaced by $1$ in $\mu\le\frac{2q_{\max}}{d}\xi y$ and with $\bar n,\bar\omega,\bar\omega',\frac{\pi_a}{\sin2x}$ in place of the $q$-dependent constants; it also verifies $c_++c_->0$ and $\tau_{\rm cf}+c_+y'\ge1$. All checks succeed for every block with $N_a\ge N_*$ (files \texttt{data/\allowbreak 78\_\allowbreak cert\_\allowbreak allq\_\allowbreak d2.jsonl}, \texttt{data/\allowbreak 78\_\allowbreak cert\_\allowbreak allq\_\allowbreak d3.jsonl}; 171 resp. 387 blocks). Theorem 7.13 gives $t_-+2\le t^*\le t_++1$ for every $N$ in such a block and every $q$ with (H). The table lists, for each $N_0$, the maximum of $c_\pm$ over the blocks that meet $[N_0,\infty)$.
+\end{proof}
+
+\begin{corollary}[{asymptotic laws for the discrete walk, every $q<1$}]
+Let $q\in(0,1)$ and $N\ge\max(N_*,N_1(q))$. Then every maximiser $t^*$ of the first-passage probability mass function satisfies
+\begin{equation*}
+d=2:\quad \frac{4N^2}{\pi^2q}\Bigl[\ln\ln N+\ln8\pi-\frac{2.33+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\Bigr]<t^*<\frac{4N^2}{\pi^2q}\bigl[\ln\ln N+\ln8\pi\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2,
+\end{equation*}
+\begin{equation*}
+d=3:\quad \frac{6N^2}{\pi^2q}\Bigl[\ln N+\ln(6c_3)-\frac{14.01+5\ln(6c_3N)}{c_3N-7.63}\Bigr]<t^*<\frac{6N^2}{\pi^2q}\bigl[\ln N+\ln(6c_3)\bigr]\Bigl(1+\frac{0.83}{N^2}\Bigr)+2,
+\end{equation*}
+and for $N\ge\max(100,N_1(q))$ the same holds with the numerators $1.75$ ($d=2$) and $9.31$ ($d=3$) in place of $2.33$ and $14.01$.
+\end{corollary}
+
+\begin{proof}
+Repeat the proofs of Theorems 6.1 and 6.2 (which use Corollary 4.7, valid for $N\ge10$, and, for $d=2$, $X\le1.032L$, valid for $N\ge20$) with the constants of Theorem 7.17 at $N_0=N_*$ resp. $N_0=100$: $(2.082,6.061)$ and $(1.508,5.594)$ for $d=2$, $(6.379,7.183)$ and $(1.675,2.495)$ for $d=3$. Upper bounds: $0.62+6.061<12.39\le3\ln(4X)\frac{X}{X+3}$ for $N\ge59$ and $0.62+5.594<12.88$ for $N\ge100$; $7.183<28.8\le5\ln(6X)\frac{X}{X+5}$ for $N\ge12$ (the right-hand sides increase in $X$). Lower bounds: $0.24+2.082\le2.33$, $0.24+1.508\le1.75$, $7.63+6.379\le14.01$, $7.63+1.675\le9.31$.
+\end{proof}
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log; data/msc_rigorous_asymptotics/80_tables.json
+
+\subsection{What remains open in discrete time}
+
+\begin{remark}
+(i) \emph{Uncovered parameters.} For $q\le\frac12$ the window is proved for $N\ge12$ ($d=2$; the certificate also covers $N=11$, with the weaker constants $(K^-,K^+)=(10.476,11.191)$) and $N\ge10$ ($d=3$) (Theorem 7.8). For $\frac12<q<1$ it is proved for $N\ge\max(N_*,N_1(q))$ (Theorem 7.17) and, for $q\le q_{\max}\in\{0.8,0.9\}$, also for $N\ge37$ resp. $46$ when $d=2$ (Theorem 7.14). Not covered are: all $N<N_1(q)$, where (H) fails (for $q$ close to $1$ this is the range $N\lesssim\pi q/(1-q)$); for $d=2$ and $\frac12<q<1$ the $N$ with $N_1(q)\le N\le58$ that are not covered by Theorem 7.14; for $d=3$ and $\frac12<q<1$ the values $N\in\{10,11\}$ with $N\ge N_1(q)$; and $N<10$. In the uniform certificate the blocks below $N_*$ fail only in the value inequality (D) for $36\le N\le58$ ($d=2$) and for $N\in\{10,11\}$ ($d=3$); for $d=2$ they fail also in (B) when $32\le N\le35$, in (B) and (C) when $12\le N\le31$, and already in the lower sign condition when $N\in\{10,11\}$. (ii) \emph{The simple walk.} For $q=1$, condition (H) fails for every $N$, and the mass function is not unimodal in general: for $d=2$, $N=9$, exact integer arithmetic gives $\mathbb P(T=108)=0.0020122644\ldots>\mathbb P(T=109)=0.0020121967\ldots<\mathbb P(T=110)=0.0020122182\ldots$ (two local maxima two steps apart; the same pattern occurs for $N=11$, but not for $N\in\{8,10\}$). The present method gives nothing for $q=1$. We conjecture that the global maximiser still satisfies the laws of Corollary 7.18 (the observed values of $X(\mu t^*-\tau_{\rm cf})$ for $q=1$ lie in the ranges quoted in Numerical observation 7.20).
+\end{remark}
+% src: data/msc_rigorous_asymptotics/logs/80_tables.log; data/msc_rigorous_asymptotics/80_tables.json (failing blocks); data/msc_rigorous_asymptotics/logs/82_q1_parity_example.log
+
+\begin{observation}
+(a) \texttt{scripts/\allowbreak 77\_\allowbreak validate\_\allowbreak q\_\allowbreak large.py}: all exact discrete modes of the computations of Sections~5--6 of the article with $q\in\{0.8,0.9\}$ covered by the certificates lie in the windows of Theorem 7.14, and for $(d,N,q)\in\{(2,37,0.8),(2,44,0.8),(3,13,0.8),(3,14,0.8),(2,40,0.5)\}$ a dense eigen-decomposition confirms the four region statements of Theorem 7.13 with the certified constants. (b) \texttt{scripts/\allowbreak 75\_\allowbreak check\_\allowbreak q\_\allowbreak large.py} checks Lemmas 7.10–7.12 by brute force for nine cases with $q$ between $0.5$ and $0.9$ (0 violations; the one-dimensional part in 40-digit arithmetic). (c) \texttt{scripts/\allowbreak 74\_\allowbreak observe\_\allowbreak q\_\allowbreak large.py}: for $q\in\{0.8,0.9,1\}$ the observed $X(\mu t^*-\tau_{\rm cf})$ ranges over $[0.24,1.67]$ ($d=2$, $12\le N\le401$) and $[-1.09,-0.35]$ ($d=3$, $13\le N\le100$). (d) \texttt{scripts/\allowbreak 79\_\allowbreak validate\_\allowbreak allq.py}: for ten cases $(d,N,q)$, eight of them with $q$ the largest value allowed by (H) (rounded down to six digits; e.g. $(2,320,0.990278)$, $(2,200,0.984535)$, $(3,40,0.927248)$, $(3,12,0.794395)$, none of them covered by Theorem 7.14) and two with $q\le\frac12$, the maximiser of the mass function computed by direct iteration lies in the window of Theorem 7.17; a spectral tail bound (Cauchy interlacing for the killed transition matrix) shows that it is the global maximiser, up to floating-point rounding. The observed $X(\mu t^*-\tau_{\rm cf})$ lies in $[0.99,1.61]$ ($d=2$) and $[-0.93,-0.46]$ ($d=3$).
+\end{observation}
+% src: data/msc_rigorous_asymptotics/logs/74_observe_q_large.log; data/msc_rigorous_asymptotics/logs/75_check_q_large.log; data/msc_rigorous_asymptotics/logs/77_validate_q_large.log; data/msc_rigorous_asymptotics/79_validate_allq.json; data/msc_rigorous_asymptotics/logs/79_validate_allq.log
+
+\setcounter{section}{7}
+\section{What is not proved (exact remaining gaps)}
+
+\begin{enumerate}
+\item \textbf{Discrete time, q close to 1.} Theorem 7.17 covers every $q\in(0,1)$, but only for $N\ge\max(N_*,N_1(q))$, and $N_1(q)\approx\pi q/(1-q)\to\infty$ as $q\to1$: for $N<N_1(q)$ the pairing lemma (Lemma 7.10) and hypothesis (H) fail and nothing is proved. Between $N_1(q)$ and $N_*$ part of the range is covered by Theorems 7.8 and 7.14; the rest is listed in Remark 7.19(i).
+\item \textbf{The simple random walk (q = 1):} the PMF is not unimodal in general (parity; Remark 7.19(ii) gives an exact example), condition (H) fails for every $N$, and the present method does not apply; only Propositions 1.5 and 7.1 hold. That the laws of Corollary 7.18 hold for $q=1$ is a conjecture.
+\item \textbf{Sharpness of the constants.} $X(\tau^*-\tau_{\rm cf})$ is enclosed in an interval a few units wide; the true value appears to converge to $K_2^\infty\approx3.74$, $K_3^\infty\approx-0.22$ (Remark 5.3(iii)). Proving the limit would require two-sided bounds for $S_\nu$, $\mathbb EU$ and $\int_0^\infty re^{s}ds$ with $o(1)$ errors; the present enclosures have $O(1)$ slack ($T_1$: tail bound $\approx10.4/K$ in $d=3$; $\kappa$: $[\kappa_{\rm lo},\bar\kappa]$). Consequently Theorem 5.1 proves a relative error of the closed form of at most $K_d/(X\ln(2dX))\cdot(1+o(1))$, e.g. $\le10.4\%$ at $N=20$ and $\le2.2\%$ at $N=1000$ in $d=2$, whereas the observed error is about $1\%$; in $d=3$ the proven bound is $0.42\%$ at $N=20$ and $0.03\%$ at $N=100$ (observed: $0.016\%$ and $0.0015\%$).
+\item \textbf{Small N.} Theorem 5.1 starts at $N_0=12$ ($d=2$; at $N=10,11$ the certificate gives the weaker constants $(12.89,12.14)$, $(9.03,11.07)$) and $N_0=10$ ($d=3$); smaller $N$ are finite computations that are not done here.
+\item \textbf{Other geometries} (corner–centre etc.) are not treated; the decomposition $T\overset d=U+T_\pi$ holds for any pair, but $u'$ is log-concave and the alternating bounds of Lemma 1.8 hold only when the one-dimensional factors are end-to-end passages.
+\item \textbf{Cited results.} Theorem 7.4 (hence Theorem 7.8, but not Theorems 7.13, 7.14 and 7.17, which cover $q\le\frac12$ for $N\ge37$ ($d=2$) resp. $N\ge12$ ($d=3$)) uses the closure of ultra log-concave sequences under convolution (Walkup 1976, Theorem 1; Liggett 1997, Theorem 2; short proof: Marsiglietti–Melbourne 2024, Corollary 3.4 of arXiv:2004.12005v4). The theorem numbers for the two older papers are taken from Johnson (2007), who cites them for this statement; those two papers were not consulted directly (Remark 7.5(ii)). Everything else is self-contained except the Laplace-transform uniqueness theorem (Feller) and the Bessel-function identity used to evaluate $\kappa$ numerically (DLMF 10.32.3).
+\item \textbf{Computer assistance.} Propositions 4.5, 4.6, Theorem 5.1, Theorems 6.1–6.3, Theorems 7.8, 7.14, 7.17 and Corollaries 7.9, 7.15, 7.18 depend on ball-arithmetic computations (Arb via python-flint 0.9.0): the constants of \texttt{50\_\allowbreak cert\_\allowbreak constants.py} and the block certificates of \texttt{52\_\allowbreak cert\_\allowbreak theoremB.py}, \texttt{72\_\allowbreak cert\_\allowbreak discrete.py}, \texttt{76\_\allowbreak cert\_\allowbreak q\_\allowbreak large.py}, \texttt{78\_\allowbreak cert\_\allowbreak allq.py} (all re-run with \texttt{scripts/\allowbreak run\_\allowbreak all\_\allowbreak certs.sh}). The trusted base is Arb, python-flint and the transcription of the formulas into \texttt{certlib.py}; the transcription is cross-checked by \texttt{51\_\allowbreak validate\_\allowbreak enclosures.py} and \texttt{53\_\allowbreak check\_\allowbreak decomposition.py}, which compare every enclosure with separately computed floating-point values, and the windows are compared with brute-force modes in \texttt{54}, \texttt{73}, \texttt{77} and \texttt{79}. The certificate files of \texttt{52}, \texttt{72} and \texttt{76} were also re-checked block by block with separately written code using mpmath interval arithmetic (with the $T_1$ enclosures recomputed in floating point), within the same project and on the same machine (code not released); this re-check is not part of the proof, and it does not cover \texttt{78}.
+\end{enumerate}
+
+\appendix
+\section{Files}
+
+In the repository, \texttt{scripts/} is \texttt{code/\allowbreak msc\_\allowbreak rigorous\_\allowbreak asymptotics/} and \texttt{data/} is \texttt{data/\allowbreak msc\_\allowbreak rigorous\_\allowbreak asymptotics/}; the run logs cited in the \texttt{\%~src} comments are in \texttt{data/\allowbreak msc\_\allowbreak rigorous\_\allowbreak asymptotics/\allowbreak logs/}, other logs and working notes are not released.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{7.4cm}>{\raggedright\arraybackslash}p{7.8cm}}
+\toprule
+file & role \\ \midrule
+\endhead
+\texttt{scripts/\allowbreak certlib.py} & ball-arithmetic library: $X_s$ bounds (Props 4.5, 4.6), $T_1$ enclosures (Lemma 4.8), pole enclosures (Section 3), sign function (Lemma 5.2, Thm 7.7) \\
+\texttt{scripts/\allowbreak 50\_\allowbreak cert\_\allowbreak constants.py} $\to$ \texttt{data/\allowbreak 50\_\allowbreak cert\_\allowbreak constants.json} & certified constants $Z_2,Z_3,c_\square,J,c_3,c_\kappa,T_d(1)$ \\
+\texttt{scripts/\allowbreak 52\_\allowbreak cert\_\allowbreak theoremB.py} $\to$ \texttt{data/\allowbreak 52\_\allowbreak cert\_\allowbreak theoremB\_\allowbreak d\{2,3\}.jsonl} & certificate for Theorem 5.1 (220 + 389 blocks) \\
+\texttt{scripts/\allowbreak 72\_\allowbreak cert\_\allowbreak discrete.py} $\to$ \texttt{data/\allowbreak 72\_\allowbreak cert\_\allowbreak discrete\_\allowbreak d\{2,3\}.jsonl} & certificate for Theorem 7.8 \\
+\texttt{scripts/\allowbreak 76\_\allowbreak cert\_\allowbreak q\_\allowbreak large.py} $\to$ \texttt{data/\allowbreak 76\_\allowbreak cert\_\allowbreak q\{0p8,0p9,0p95,0p99\}\_\allowbreak d\{2,3\}.jsonl} & certificate for Theorem 7.14 (four regions, no unimodality) \\
+\texttt{scripts/\allowbreak 78\_\allowbreak cert\_\allowbreak allq.py} $\to$ \texttt{data/\allowbreak 78\_\allowbreak cert\_\allowbreak allq\_\allowbreak d\{2,3\}.jsonl} & certificate for Theorem 7.17 (four regions, constants uniform in $q<1$, Lemma 7.16) \\
+\texttt{scripts/\allowbreak 80\_\allowbreak tables.py} $\to$ \texttt{data/\allowbreak 80\_\allowbreak tables.json}, \texttt{logs/\allowbreak 80\_\allowbreak tables.log} & tables of certified constants (maximum over all blocks meeting $[N_0,\infty)$) \\
+(commands in \texttt{reproduce.md}) & serial re-run of all block certificates and of the tables \\
+\texttt{scripts/\allowbreak 83\_\allowbreak compare\_\allowbreak cert\_\allowbreak runs.py} $\to$ \texttt{logs/\allowbreak 83\_\allowbreak compare\_\allowbreak *.log} & block-by-block comparison of certificate re-runs (0 differences) \\
+\texttt{scripts/\allowbreak r4lib.py} & float library for sanity checks \\
+\texttt{scripts/\allowbreak 40\_\allowbreak check\_\allowbreak thmA.py}, \texttt{41\_\allowbreak windows\_\allowbreak exact.py} & checks of Sections 1–2 (dense eigen-decomposition; exact modes) \\
+\texttt{scripts/\allowbreak 51\_\allowbreak validate\_\allowbreak enclosures.py}, \texttt{53\_\allowbreak check\_\allowbreak decomposition.py}, \texttt{54\_\allowbreak bruteforce\_\allowbreak theorem51.py} & checks of Sections 3–5 (and of Theorem 7.8 for small $N$) \\
+\texttt{scripts/\allowbreak 60\_\allowbreak check\_\allowbreak asymptotics.py} & checks of Section 6 against exact modes up to $N=1.7\cdot10^7$ ($d=2$), $4096$ ($d=3$) \\
+\texttt{scripts/\allowbreak 70\_\allowbreak check\_\allowbreak discrete.py}, \texttt{71\_\allowbreak check\_\allowbreak discrete\_\allowbreak unimodal.py}, \texttt{73\_\allowbreak validate\_\allowbreak discrete.py}, \texttt{74\_\allowbreak observe\_\allowbreak q\_\allowbreak large.py}, \texttt{75\_\allowbreak check\_\allowbreak q\_\allowbreak large.py}, \texttt{77\_\allowbreak validate\_\allowbreak q\_\allowbreak large.py}, \texttt{79\_\allowbreak validate\_\allowbreak allq.py}, \texttt{82\_\allowbreak q1\_\allowbreak parity\_\allowbreak example.py} & checks of Section 7 \\
+\texttt{scripts/\allowbreak 81\_\allowbreak check\_\allowbreak text\_\allowbreak constants.py} $\to$ \texttt{logs/\allowbreak 81\_\allowbreak check\_\allowbreak text\_\allowbreak constants.log} & interval checks of the numerical claims in the text (Corollaries 4.7, 7.15, 7.18, display (6.1), Lemma 7.16) \\
+\texttt{data/\allowbreak } & outputs of all scripts \\
+\bottomrule
+\end{longtable}}
+
+\end{document}

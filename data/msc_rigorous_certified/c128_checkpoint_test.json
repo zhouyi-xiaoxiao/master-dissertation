@@ -1,0 +1,39 @@
+{
+ "binary_sha256_matches_build": true,
+ "cases": [
+  {
+   "d": 1,
+   "N": 1500,
+   "q": "4/5",
+   "budget_seconds": 0.5,
+   "interruptions": 9,
+   "calls": 10,
+   "sha256": "9538e8511aab0a2c651c041faef40e232ca77a42f1b2e1c90fb7849b655466f3",
+   "identical_to_certificate": true,
+   "seconds": 9.78
+  },
+  {
+   "d": 3,
+   "N": 50,
+   "q": "4/5",
+   "budget_seconds": 0.5,
+   "interruptions": 4,
+   "calls": 5,
+   "sha256": "964b40201b3a1a60d856daa645f09580bc2713bed6069151a70e6155797b5f90",
+   "identical_to_certificate": true,
+   "seconds": 3.1
+  },
+  {
+   "d": 2,
+   "N": 120,
+   "q": "4/5",
+   "budget_seconds": 0.5,
+   "interruptions": 2,
+   "calls": 3,
+   "sha256": "2cab44842f81f4296e4b26608c8ef19dd6e3f2168de8729cab3cc3a0c7779835",
+   "identical_to_certificate": true,
+   "seconds": 1.98
+  }
+ ],
+ "all_identical": true
+}

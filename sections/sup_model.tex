@@ -1,0 +1,165 @@
+% sup_model.tex -- Supplementary Section S1: notation, proofs of the propositions of Section 2 of the main text,
+% and numerical checks.  Numerical checks: code/article/s2_model_checks.py -> data/article/s2_model_checks.json
+\section{Model: notation, proofs and checks}\label{sup_model:sec}
+
+\begin{table}[htb]
+\centering
+\caption{Main notation. Sites are zero-based; $s$ without a subscript is the Laplace variable.}
+\label{s2_model:tab-notation}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\Om$, $\nn$, $q$ & lattice $\{0,\dots,N-1\}^{\dd}$; number of sites $N^{\dd}$; activity \\
+$\vo$, $\va$ & start site; target site \\
+$\Pm$, $\Pm_1$ & transition matrix \eqref{s2_model:eq-P}; the same at $q=1$ \\
+$\Qm$, $r$ & $\Pm$ without the row and column of $\va$; one-step absorption vector $(I-\Qm)\one$ \\
+$X_t$, $\FPT$ & position of the walker after $t$ steps; first-passage time $\min\{t\ge0:X_t=\va\}$ \\
+$\Sv(t)$, $\pmf(t)$ & survival probability $\Prob(\FPT>t)$; first-passage PMF \eqref{s2_model:eq-pmf} \\
+$h$ & vector of the mean first-passage times $\E_{\vx}[\FPT]$ over the start sites $\vx$ \\
+$\MF$, $\tmode$, $\ratio$ & mean first-passage time; mode (Definition~\ref{s2_model:def-mode}); $\tmode/\MF$ \\
+$\gd(t)$, $\tmodec$ & unit-rate continuous-time density; its mode (at activity $q$ the mode is $\tmodec/q$) \\
+$\tcert$ & time beyond which $\pmf$ is certified to stay below its maximum (Proposition~\ref{s3_methods:prop-certificate}) \\
+$\Ftil(z)$, $\Fhat(s)$ & generating function of $\pmf$; Laplace transform of $\gd$ \\
+$\Phat(\vx,s\mid\vy)$, $\mu_{\vk}$ & reflecting propagator \eqref{s2_model:eq-prop}; its rates \\
+$\psi_{k}(m)$, $\phi_{\vk}(\vx)$ & one-dimensional cosine eigenvector; product eigenvector $\prod_i\psi_{k_i}(x_i)$ \\
+$\muone$, $X$ & slowest reflecting rate \eqref{s2_model:eq-mu1}; $\muone\,q\MF$ \\
+$\nu_j$, $b_j$ & decay rates and residues of the first-passage law \eqref{s2_model:eq-spectral} \\
+$\Lm$, $\Lp$, $\Glap$, $\Reff$ & $I-\Pm$; its pseudo-inverse; pseudo-inverse of the grid Laplacian; effective resistance \\
+$\sk{k}$, $\ck{k}$, $\alk{k}$ & $\sin\frac{\pi k}{2N}$; $\cos\frac{\pi k}{2N}$; $1$ if $k=0$, else $2$ \\
+$\angk{k}$, $\thk{k}{m}$ & $\frac{\pi k}{N}$; $\frac{\pi k(2m+1)}{2N}=(m+\tfrac12)\,\angk{k}$ \\
+$\theta_3(x)$, $\theta_4(x)$ & Jacobi theta functions of the nome $x$: $\sum_{n\in\mathbb Z}x^{n^{2}}$, $\sum_{n\in\mathbb Z}(-1)^{n}x^{n^{2}}$ \\
+$\Bset$, $\Cset$, $p$ & blocked sites; open cluster of the start; blocked fraction (Section~\ref{s7_defects:sec}) \\
+$\Thetap(p)$, $\Deff$, $\cond$ & time-dilation factor $\Dzero/\Deff$; effective diffusivity; conductivity of the diluted lattice \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The walk}
+
+The cancelled-move rule \eqref{s2_model:eq-P} must be distinguished from the bounce-back rule, which puts a walker
+that tries to leave on the interior neighbour: for $N\ge3$ that rule gives $\Pm(\vx,\vx+\ve_i)=q/\dd\neq\Pm(\vx+\ve_i,\vx)$
+at a wall, a non-symmetric matrix with a non-uniform stationary distribution. Under the cancelled-move rule
+$\eta=0$ in the interior and $\eta=\dd$ at a corner.
+
+By irreducibility every $\vx\neq\va$ has a path to $\va$ of positive probability and length at most $\nn-1$, so every row
+sum of $\Qm^{\nn-1}$ is below one: the spectral radius of $\Qm$ is below one, $I-\Qm$ is invertible, and
+\eqref{s2_model:eq-T} follows from $\MF=\sum_t t\pmf(t)=\sum_{t\ge0}\Sv(t)$. The maximum in
+Definition~\ref{s2_model:def-mode} exists because $\pmf\ge0$ and $\sum_t\pmf(t)=1$.
+
+\subsection{Proof of Proposition~\ref{s2_model:prop-structure}}
+
+(a) By \eqref{s2_model:eq-P} the off-diagonal entries of $\Pm$ are $q$ times those of $\Pm_1$ and both matrices have
+unit row sums, so $\Pm=(1-q)I+q\Pm_1$. Deleting the row and column of $\va$ gives $\Qm=(1-q)I+q\Qm_1$, and
+$r=(I-\Qm)\one=q\,r_1$. Then $\MF=\ve_{\vo}^{\T}(I-\Qm)^{-1}\one=q^{-1}\ve_{\vo}^{\T}(I-\Qm_1)^{-1}\one$ by
+\eqref{s2_model:eq-T}.
+
+(b) Summing \eqref{s2_model:eq-pmf} gives $\Ftil_q(z)=z\,\ve_{\vo}^{\T}(I-z\Qm)^{-1}r$ for small $|z|$, and integrating
+$\gd$ gives $\Fhat(s)=\ve_{\vo}^{\T}(sI+I-\Qm_1)^{-1}r_1$ for $\operatorname{Re}s\ge0$; both are rational functions and
+are continued as such. By (a),
+\[
+  I-z\Qm=(1-z)I+zq\,(I-\Qm_1)=zq\Bigl[\frac{1-z}{zq}\,I+(I-\Qm_1)\Bigr],
+\]
+so $z\,(I-z\Qm)^{-1}r=z\,(zq)^{-1}\bigl(sI+I-\Qm_1\bigr)^{-1}q\,r_1$ with $s=(1-z)/(zq)$, which is
+\eqref{s2_model:eq-transform}.
+
+(c) Insert $\eu^{-(I-\Qm_1)t}=\sum_\nu\eu^{-\nu t}\Pi_\nu$,
+$\Qm^{t-1}=\bigl(I-q(I-\Qm_1)\bigr)^{t-1}=\sum_\nu(1-q\nu)^{t-1}\Pi_\nu$ and
+$(sI+I-\Qm_1)^{-1}=\sum_\nu(s+\nu)^{-1}\Pi_\nu$ into the definitions and use $r=q\,r_1$. Because
+$(I-\Qm_1)^{-1}r_1=\one$, we get $\sum_\nu b_\nu/\nu=\ve_{\vo}^{\T}\one=1$ and
+$\sum_\nu b_\nu/\nu^{2}=\ve_{\vo}^{\T}(I-\Qm_1)^{-1}\one=q\MF$. The formula for $\Sv$ follows from
+$\Sv(t)=\sum_{\tau>t}\pmf(\tau)$.
+
+(d) $\gd_q(t)=\ve_{\vo}^{\T}\eu^{-q(I-\Qm_1)t}q\,r_1=q\,\gd(qt)$ by (a). Its mean is
+$\ve_{\vo}^{\T}(I-\Qm)^{-2}r=\ve_{\vo}^{\T}(I-\Qm)^{-1}\one=\MF$. The eigenvalues of $\Qm$ are $1-q\nu$ with
+$\nu\in(0,2)$, hence larger than $1-2q$. \hfill$\square$
+
+In double precision the two sides of \eqref{s2_model:eq-transform} agree to $3\times10^{-16}$ at 15 test points in
+$\dd=1,2,3$, and to $8\times10^{-16}$ in a separately written implementation.
+% src: data/msc_modes/validation.json (z_transform_identity); data/msc_modes_verify/validate.json (ztransform_identity_and_stepper); data/article/s2_model_checks.json (structure)
+Part (d) also bounds parity effects: at $q=0.8$ any alternating component of $\pmf$ decays at least as fast as
+$0.6^{t}$.
+
+\subsection{Proof of Proposition~\ref{s2_model:prop-interlacing}}
+
+The eigenvalues of $\Pm$ are $1-q\mu_{\vk}$, and relaxation across the box takes about $2\dd N^{2}/(\pi^{2}q)$ steps.
+Solve $(sI+I-\Pm_1)\,c=\ve_{\va}$ for the column $c=\Phat(\cdot,s\mid\va)$, with the target written last and $c'$
+the restriction of $c$ to the other sites:
+\begin{equation}\label{s2_model:eq-block}
+  (sI+I-\Qm_1)\,c'=r_1\,\Phat(\va,s\mid\va),\qquad
+  \bigl[s+1-\Pm_1(\va,\va)\bigr]\,\Phat(\va,s\mid\va)-r_1^{\T}c'=1 .
+\end{equation}
+The first equation, the formula $\Fhat(s)=\ve_{\vo}^{\T}(sI+I-\Qm_1)^{-1}r_1$ and the symmetry of the propagator give
+\eqref{s2_model:eq-renewal}. The algebra of Proposition~\ref{s2_model:prop-structure}(b) applied to $\Pm$ gives
+$\Ptil(\vx,z\mid\vy)=[(I-z\Pm)^{-1}]_{\vx\vy}=\Phat(\vx,s\mid\vy)/(qz)$ at $s=(1-z)/(qz)$, so the same ratio of
+discrete-time propagators equals $\Ftil_q(z)$. Eliminating $c'$ from \eqref{s2_model:eq-block} gives
+\begin{equation}\label{s2_model:eq-schur}
+  \frac{1}{\Phat(\va,s\mid\va)}=s+1-\Pm_1(\va,\va)-\sum_{\nu}\frac{\lVert\Pi_\nu r_1\rVert^{2}}{s+\nu},
+\end{equation}
+the sum running over the distinct eigenvalues of $I-\Qm_1$.
+
+(i) By \eqref{s2_model:eq-prop}, $\Phat(\va,s\mid\va)=\sum_{i=0}^{m}w_i/(s+\mu_{(i)})$ with all $w_i>0$. For non-real
+$s$ its imaginary part is $-\operatorname{Im}s\sum_i w_i/|s+\mu_{(i)}|^{2}\neq0$. On the real axis its derivative
+$-\sum_i w_i/(s+\mu_{(i)})^{2}$ is negative, and on each interval $(-\mu_{(i+1)},-\mu_{(i)})$ the function falls from
+$+\infty$ to $-\infty$, so it has exactly one zero there, which is simple. It is positive for $s>0$ and negative for
+$s<-\mu_{(m)}$.
+
+(ii) The zeros of $\Phat(\va,s\mid\va)$ are the poles of its reciprocal, which by \eqref{s2_model:eq-schur} are the
+points $s=-\nu$ with $\Pi_\nu r_1\neq0$. If $b_\nu=\ve_{\vo}^{\T}\Pi_\nu r_1\neq0$ then $\Pi_\nu r_1\neq0$.
+
+(iii) $\Qm_1$ is then a symmetric, irreducible, non-negative matrix, so by the Perron--Frobenius theorem its largest
+eigenvalue $1-\nu_{\min}$ is simple with an eigenvector $v>0$. Since $r_1\ge0$ and $r_1\neq0$,
+$\Pi_{\nu_{\min}}r_1=v\,(v^{\T}r_1)/\lVert v\rVert^{2}\neq0$ and $b_{\nu_{\min}}=v(\vo)\,(v^{\T}r_1)/\lVert v\rVert^{2}>0$;
+by (ii) $\nu_{\min}$ is the smallest of the $\nu_{(i)}$. With $h=(I-\Qm_1)^{-1}\one$, $h(\vx)=q\MF_{\vx\to\va}$, we have
+$v^{\T}\one=v^{\T}(I-\Qm_1)h=\nu_{\min}\,v^{\T}h$. For $\dd=1$ the hypothesis holds when $\va$ is an end site.
+\hfill$\square$
+
+The eigenvectors of $\Qm_1$ that are orthogonal to $r_1$ are exactly the eigenvectors of the reflecting lattice that
+vanish at the target (extended by zero at $\va$; they are combinations of cosine modes of equal rate). They survive
+the removal of the target unchanged and carry no first-passage probability. All other decay rates are shifted, by
+\eqref{s2_model:eq-interlace}, to values strictly between the weighted reflecting rates. For a corner target every
+$\phi_{\vk}(\va)$ is non-zero, so $\mu_{(1)}=\muone$; for a centre target ($N$ odd) the modes with an odd index vanish
+there and $\mu_{(1)}=\frac{2}{\dd}\sin^{2}\frac{\pi}{N}\approx4\muone$.
+
+The decay rate of the survival probability is set by $\nu_0$, not by the reflecting gap. For $\dd=2$, $N=35$, $q=0.8$
+the reflecting gap $q\muone$ is $1.610\times10^{-3}$ per step, whereas the survival probability decays at
+$q\nu_0=7.731\times10^{-5}$, close to $1/\MF=7.092\times10^{-5}$; for corner-to-corner transport
+$\nu_0\,q\MF=1.090$ ($\dd=2$, $N=35$) and $1.009$ ($\dd=3$, $N=40$).
+% src: data/article/s2_model_checks.json (two_spectra); data/msc_modes/fit_results.json (pole_structure: nu0_tau)
+
+\subsection{Proof of Proposition~\ref{s2_model:prop-pinv} and the zero mode}
+
+The argument of Section~\ref{s2_model:ssec-fp} uses only irreducibility: $I-\Qm$ is invertible and
+$h(\vx)=[(I-\Qm)^{-1}\one](\vx)<\infty$ for $\vx\neq\va$, $h(\va)=0$. The conditions ``$h(\va)=0$ and $(\Lm h)(\vx)=1$
+for $\vx\neq\va$'' are the linear system $(I-\Qm)\,h|_{\vx\neq\va}=\one$, whose solution is unique. Next, $\Lm$ is
+symmetric and positive semi-definite and its kernel is spanned by $\one$, because the eigenvalue $1$ of an
+irreducible stochastic matrix is simple. Hence $\Lm\Lp=I-\frac{1}{\nn}\one\one^{\T}$. Put
+$u=\nn\,(\Lp_{\va\va}\one-\Lp\ve_{\va})$. Then $u(\va)=0$ and
+\[
+  \Lm u=-\nn\,\Lm\Lp\ve_{\va}=-\nn\Bigl(\ve_{\va}-\frac{1}{\nn}\one\Bigr)=\one-\nn\,\ve_{\va},
+\]
+so $(\Lm u)(\vx)=1$ for $\vx\neq\va$. By uniqueness $u=h$, and $u(\vx)=\nn(\Lp_{\va\va}-\Lp_{\vx\va})$ because $\Lp$ is
+symmetric. \hfill$\square$
+
+By Proposition~\ref{s2_model:prop-structure}(a), $\Lp=q^{-1}(I-\Pm_1)^{+}$, which is \eqref{s2_model:eq-qscaling}
+again. Since $1-\Pm(\vx,\vx)=\frac{q}{2\dd}\,(2\dd-\eta(\vx))$ and $2\dd-\eta(\vx)$ is the number of neighbours of
+$\vx$, \eqref{s2_model:eq-P} reads $I-\Pm=\frac{q}{2\dd}\,\mathcal L$, which gives \eqref{s2_model:eq-resistance}, with
+$2\dd\nn/q$ in the place of the total conductance. When a symmetry of the lattice exchanges $\vx$ and $\va$, as for
+opposite corners, the two directions are equal and $\MF=(\dd\,\nn/q)\,\Reff$
+(Corollary~\ref{s4_mfpt:cor-resistance}).
+
+\emph{Generating function and the zero mode.} Since $\Ftil(1)=1$ and $\Ftil$ is analytic in a disc of radius greater
+than one,
+\begin{equation}\label{s2_model:eq-gf-limit}
+  \MF=\Ftil'(1)=\lim_{z\to1^{-}}\frac{1-\Ftil(z)}{1-z};
+\end{equation}
+the reciprocal $(1-z)/(1-\Ftil(z))$ tends to $1/\MF$. The discrete propagator is
+$\Ptil(\vx,z\mid\vy)=\frac{1}{\nn(1-z)}+\mathcal R_{\vx\vy}(z)$, where $\mathcal R(z)$ collects the modes
+$\vk\neq\mathbf 0$ and $\mathcal R(1)=\Lp$; its $\vk=\mathbf 0$ pole lies at $z=1$, on the unit circle. In the renewal
+ratio this pole cancels,
+\[
+  1-\Ftil(z)=\frac{\nn(1-z)\,\bigl[\mathcal R_{\va\va}(z)-\mathcal R_{\vo\va}(z)\bigr]}{1+\nn(1-z)\,\mathcal R_{\va\va}(z)},
+\]
+and \eqref{s2_model:eq-gf-limit} returns \eqref{s2_model:eq-pinv}.
+% src: data/article/s2_model_checks.json (generating_function_limit)

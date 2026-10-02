@@ -1,0 +1,27 @@
+{
+ "N": 35,
+ "q": 0.8,
+ "indexing": "zero-based",
+ "targets": [
+  {
+   "target": [
+    34,
+    34
+   ],
+   "max_rel_err_vs_direct": 7.921170220034797e-14,
+   "T_from_corner_00": 14100.80804991771,
+   "T_max": 14100.80804991771,
+   "value_at_target": 2.4868995751603507e-12
+  },
+  {
+   "target": [
+    8,
+    22
+   ],
+   "max_rel_err_vs_direct": 3.8990535905078195e-14,
+   "T_from_corner_00": 4592.692245746719,
+   "T_max": 5418.121861967982,
+   "value_at_target": 0.0
+  }
+ ]
+}

@@ -1,0 +1,597 @@
+{
+ "q": "4/5",
+ "KLO": 10,
+ "KHI": 19,
+ "NMAX": 80,
+ "full": true,
+ "full_agrees": true,
+ "contiguous_minors_tested": 712830,
+ "general_minors_tested": 96377478,
+ "tp2_fails_for_N": [
+  3
+ ],
+ "not_logconcave": [
+  3,
+  4
+ ],
+ "not_unimodal": [],
+ "undetermined": [
+  3
+ ],
+ "last_k_with_negative_minor_at_NMAX": 9,
+ "rows": [
+  {
+   "N": 3,
+   "tp2": false,
+   "verdict": "undetermined (TP2 fails for k in [11, 13, 15, 17])",
+   "first_t_with_M12_negative": [
+    2,
+    4,
+    6
+   ],
+   "increments": "+-----------"
+  },
+  {
+   "N": 4,
+   "tp2": true,
+   "verdict": "unimodal, not log-concave",
+   "first_t_with_M12_negative": [
+    3
+   ],
+   "increments": "0+0+--------"
+  },
+  {
+   "N": 5,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "00+++++-----"
+  },
+  {
+   "N": 6,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "000++++++++-"
+  },
+  {
+   "N": 7,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000++++++++"
+  },
+  {
+   "N": 8,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "00000+++++++"
+  },
+  {
+   "N": 9,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "000000++++++"
+  },
+  {
+   "N": 10,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "0000000+++++"
+  },
+  {
+   "N": 11,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "00000000++++"
+  },
+  {
+   "N": 12,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": "000000000+++"
+  },
+  {
+   "N": 13,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 14,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 15,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 16,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 17,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 18,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 19,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 20,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 21,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 22,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 23,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 24,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 25,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 26,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 27,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 28,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 29,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 30,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 31,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 32,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 33,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 34,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 35,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 36,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 37,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 38,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 39,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 40,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 41,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 42,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 43,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 44,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 45,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 46,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 47,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 48,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 49,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 50,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 51,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 52,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 53,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 54,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 55,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 56,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 57,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 58,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 59,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 60,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 61,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 62,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 63,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 64,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 65,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 66,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 67,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 68,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 69,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 70,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 71,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 72,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 73,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 74,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 75,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 76,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 77,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 78,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 79,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null
+  },
+  {
+   "N": 80,
+   "tp2": true,
+   "verdict": "log-concave",
+   "first_t_with_M12_negative": [],
+   "increments": null,
+   "negative_contiguous_minor_counts_all_k": {
+    "1": 78,
+    "2": 154,
+    "3": 227,
+    "4": 300,
+    "5": 369,
+    "6": 148,
+    "7": 3,
+    "8": 0,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 0,
+    "16": 0,
+    "17": 0,
+    "18": 0,
+    "19": 0
+   }
+  }
+ ]
+}

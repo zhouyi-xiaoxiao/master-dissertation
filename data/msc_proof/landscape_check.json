@@ -1,0 +1,16 @@
+{
+ "N": 35,
+ "q": 0.8,
+ "target": [
+  35,
+  35
+ ],
+ "max_rel_err_vs_direct": 7.921170220034797e-14,
+ "corner_value": 14100.808049917712,
+ "target_value": 2.4868995751603507e-12,
+ "interior_target": [
+  9,
+  23
+ ],
+ "interior_max_rel_err_vs_direct": 3.8990535905078195e-14
+}

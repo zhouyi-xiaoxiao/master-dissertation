@@ -1,0 +1,730 @@
+{
+ "independent_rows": [
+  {
+   "N": 5,
+   "q": 0.8,
+   "modes": [
+    8
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.6627629157472148
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 7,
+   "q": 0.8,
+   "modes": [
+    17
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.49744561463615256
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 9,
+   "q": 0.8,
+   "modes": [
+    29
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    -0.0007143414243984125
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 11,
+   "q": 0.8,
+   "modes": [
+    45
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.16828304756558055
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 13,
+   "q": 0.8,
+   "modes": [
+    64
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.004437781606092983
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 15,
+   "q": 0.8,
+   "modes": [
+    87
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.5077498606970892
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 17,
+   "q": 0.8,
+   "modes": [
+    113
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.678219284838633
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 19,
+   "q": 0.8,
+   "modes": [
+    142
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.5158460540307317
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 21,
+   "q": 0.8,
+   "modes": [
+    174
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.020630168273271465
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 23,
+   "q": 0.8,
+   "modes": [
+    210
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.19257162756639445
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 25,
+   "q": 0.8,
+   "modes": [
+    249
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.031670431910015395
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 27,
+   "q": 0.8,
+   "modes": [
+    292
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.5379265813041343
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 29,
+   "q": 0.8,
+   "modes": [
+    338
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.711340075748808
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 35,
+   "q": 0.8,
+   "modes": [
+    495
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.2345246293858736
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 40,
+   "q": 0.8,
+   "modes": [
+    649
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.09055183797261179
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 45,
+   "q": 0.8,
+   "modes": [
+    824
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.11631245312480587
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 50,
+   "q": 0.8,
+   "modes": [
+    1020
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.31180647484313795
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 55,
+   "q": 0.8,
+   "modes": [
+    1237
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.6770339031268122
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 60,
+   "q": 0.8,
+   "modes": [
+    1474
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.2119947379765108
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 70,
+   "q": 0.8,
+   "modes": [
+    2012
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.7911166273729577
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 80,
+   "q": 0.8,
+   "modes": [
+    2632
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.04917214303304718
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 90,
+   "q": 0.8,
+   "modes": [
+    3337
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.9861612849554149
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 100,
+   "q": 0.8,
+   "modes": [
+    4124
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.6020840531400609
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 120,
+   "q": 0.8,
+   "modes": [
+    5949
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.8707304683020993
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 140,
+   "q": 0.8,
+   "modes": [
+    8107
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.8551113885141604
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 160,
+   "q": 0.8,
+   "modes": [
+    10598
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.5552268137780629
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 180,
+   "q": 0.8,
+   "modes": [
+    13423
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.971076744095626
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 200,
+   "q": 0.8,
+   "modes": [
+    16580
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.10266117946594022
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 300,
+   "q": 0.8,
+   "modes": [
+    37369
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.4966009320996818
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 400,
+   "q": 0.8,
+   "modes": [
+    66490
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.7839033110212767
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 600,
+   "q": 0.8,
+   "modes": [
+    149727
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.03859594781533815
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 800,
+   "q": 0.8,
+   "modes": [
+    266294
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.8667390897171572
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 1000,
+   "q": 0.8,
+   "modes": [
+    416188
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.2683327370323241
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 51,
+   "q": 0.3,
+   "modes": [
+    2832
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.08476433148962315
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 51,
+   "q": 0.5,
+   "modes": [
+    1699
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.24733006363976529
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 51,
+   "q": 0.9,
+   "modes": [
+    944
+   ],
+   "theorem": "6.3/7.7",
+   "covered": false,
+   "ok": true,
+   "offset": [
+    0.6890405517400495
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 51,
+   "q": 1.0,
+   "modes": [
+    832
+   ],
+   "theorem": "7.4",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.08379165145981915
+   ]
+  },
+  {
+   "N": 201,
+   "q": 0.3,
+   "modes": [
+    44660
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.9094447155221133
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 201,
+   "q": 0.5,
+   "modes": [
+    26796
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.942138294059987
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 201,
+   "q": 0.9,
+   "modes": [
+    14886
+   ],
+   "theorem": "6.3/7.7",
+   "covered": false,
+   "ok": true,
+   "offset": [
+    0.29726734641735675
+   ],
+   "cor_e3": true
+  },
+  {
+   "N": 201,
+   "q": 1.0,
+   "modes": [
+    13332
+   ],
+   "theorem": "7.4",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    1.8074832161346421
+   ]
+  }
+ ],
+ "grid": [
+  {
+   "N": 601,
+   "q": 0.9,
+   "modes": [
+    133535
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.09875114497845061
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 750,
+   "q": 0.9,
+   "modes": [
+    208024
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.06541302413097583
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 1000,
+   "q": 0.9,
+   "modes": [
+    369945
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.4597600619890727
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 601,
+   "q": 0.99,
+   "modes": [
+    121396
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.725335464681848
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 750,
+   "q": 0.99,
+   "modes": [
+    189113
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.4223008093540557
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 1000,
+   "q": 0.99,
+   "modes": [
+    336314
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.8717072074650787
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 601,
+   "q": 0.999,
+   "modes": [
+    120302
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.3853881061077118
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 750,
+   "q": 0.999,
+   "modes": [
+    187409
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.14814655578811653
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  },
+  {
+   "N": 1000,
+   "q": 0.999,
+   "modes": [
+    333284
+   ],
+   "theorem": "6.3/7.7",
+   "covered": true,
+   "ok": true,
+   "offset": [
+    0.7286393826943822
+   ],
+   "cor_e3": true,
+   "h_condition": true
+  }
+ ],
+ "notes": [],
+ "independent_summary": {
+  "covered": 39,
+  "violations": 0,
+  "uncovered": 2,
+  "uncovered_outside_window": []
+ },
+ "grid_summary": {
+  "cases": 450,
+  "violations": 0
+ },
+ "structure_q09_N601": {
+  "increasing": true,
+  "decreasing": true,
+  "left_below": true,
+  "nonunimodal_left_end": false
+ }
+}

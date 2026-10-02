@@ -1,0 +1,344 @@
+[
+ {
+  "d": 1,
+  "N": 5,
+  "start_0based": [
+   0
+  ],
+  "target_0based": [
+   4
+  ],
+  "D": 4,
+  "n_nonzero_residues": 4,
+  "sign_changes": 3,
+  "lower_bound": 3,
+  "pattern": "+-+-"
+ },
+ {
+  "d": 1,
+  "N": 8,
+  "start_0based": [
+   0
+  ],
+  "target_0based": [
+   7
+  ],
+  "D": 7,
+  "n_nonzero_residues": 7,
+  "sign_changes": 6,
+  "lower_bound": 6,
+  "pattern": "+-+-+-+"
+ },
+ {
+  "d": 1,
+  "N": 8,
+  "start_0based": [
+   3
+  ],
+  "target_0based": [
+   7
+  ],
+  "D": 4,
+  "n_nonzero_residues": 7,
+  "sign_changes": 3,
+  "lower_bound": 3,
+  "pattern": "++--++-"
+ },
+ {
+  "d": 2,
+  "N": 2,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   1,
+   1
+  ],
+  "D": 2,
+  "n_nonzero_residues": 2,
+  "sign_changes": 1,
+  "lower_bound": 1,
+  "pattern": "+-"
+ },
+ {
+  "d": 2,
+  "N": 3,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   2,
+   2
+  ],
+  "D": 4,
+  "n_nonzero_residues": 5,
+  "sign_changes": 3,
+  "lower_bound": 3,
+  "pattern": "+--+-"
+ },
+ {
+  "d": 2,
+  "N": 4,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   3,
+   3
+  ],
+  "D": 6,
+  "n_nonzero_residues": 8,
+  "sign_changes": 5,
+  "lower_bound": 5,
+  "pattern": "+-+++-+-"
+ },
+ {
+  "d": 2,
+  "N": 5,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   4,
+   4
+  ],
+  "D": 8,
+  "n_nonzero_residues": 13,
+  "sign_changes": 7,
+  "lower_bound": 7,
+  "pattern": "+-++---++--+-"
+ },
+ {
+  "d": 2,
+  "N": 6,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   5,
+   5
+  ],
+  "D": 10,
+  "n_nonzero_residues": 16,
+  "sign_changes": 9,
+  "lower_bound": 9,
+  "pattern": "+-++--++--++--+-"
+ },
+ {
+  "d": 2,
+  "N": 7,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   6,
+   6
+  ],
+  "D": 12,
+  "n_nonzero_residues": 25,
+  "sign_changes": 17,
+  "lower_bound": 11,
+  "pattern": "+-++-+-+-+--+-++---++--+-"
+ },
+ {
+  "d": 3,
+  "N": 2,
+  "start_0based": [
+   0,
+   0,
+   0
+  ],
+  "target_0based": [
+   1,
+   1,
+   1
+  ],
+  "D": 3,
+  "n_nonzero_residues": 3,
+  "sign_changes": 2,
+  "lower_bound": 2,
+  "pattern": "+-+"
+ },
+ {
+  "d": 3,
+  "N": 3,
+  "start_0based": [
+   0,
+   0,
+   0
+  ],
+  "target_0based": [
+   2,
+   2,
+   2
+  ],
+  "D": 6,
+  "n_nonzero_residues": 8,
+  "sign_changes": 5,
+  "lower_bound": 5,
+  "pattern": "+-++--+-"
+ },
+ {
+  "d": 3,
+  "N": 4,
+  "start_0based": [
+   0,
+   0,
+   0
+  ],
+  "target_0based": [
+   3,
+   3,
+   3
+  ],
+  "D": 9,
+  "n_nonzero_residues": 15,
+  "sign_changes": 12,
+  "lower_bound": 8,
+  "pattern": "+-+-+-+-++--+-+"
+ },
+ {
+  "d": 2,
+  "N": 5,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   2,
+   2
+  ],
+  "D": 4,
+  "n_nonzero_residues": 5,
+  "sign_changes": 3,
+  "lower_bound": 3,
+  "pattern": "+-++-"
+ },
+ {
+  "d": 2,
+  "N": 7,
+  "start_0based": [
+   0,
+   0
+  ],
+  "target_0based": [
+   3,
+   3
+  ],
+  "D": 6,
+  "n_nonzero_residues": 9,
+  "sign_changes": 5,
+  "lower_bound": 5,
+  "pattern": "+-++---+-"
+ },
+ {
+  "d": 2,
+  "N": 5,
+  "start_0based": [
+   2,
+   2
+  ],
+  "target_0based": [
+   4,
+   4
+  ],
+  "D": 4,
+  "n_nonzero_residues": 13,
+  "sign_changes": 5,
+  "lower_bound": 3,
+  "pattern": "+++---+-++---"
+ },
+ {
+  "d": 2,
+  "N": 7,
+  "start_0based": [
+   3,
+   3
+  ],
+  "target_0based": [
+   6,
+   6
+  ],
+  "D": 6,
+  "n_nonzero_residues": 25,
+  "sign_changes": 9,
+  "lower_bound": 5,
+  "pattern": "+++--+++-+++--+----+++---"
+ },
+ {
+  "d": 3,
+  "N": 3,
+  "start_0based": [
+   2,
+   1,
+   1
+  ],
+  "target_0based": [
+   0,
+   1,
+   1
+  ],
+  "D": 2,
+  "n_nonzero_residues": 6,
+  "sign_changes": 5,
+  "lower_bound": 1,
+  "pattern": "+-+-+-"
+ },
+ {
+  "d": 2,
+  "N": 8,
+  "start_0based": [
+   5,
+   5
+  ],
+  "target_0based": [
+   2,
+   3
+  ],
+  "D": 5,
+  "n_nonzero_residues": 32,
+  "sign_changes": 16,
+  "lower_bound": 4,
+  "pattern": "+-++++-+---++-++-++++++++--+-+-+"
+ },
+ {
+  "d": 2,
+  "N": 4,
+  "start_0based": [
+   0,
+   1
+  ],
+  "target_0based": [
+   3,
+   2
+  ],
+  "D": 4,
+  "n_nonzero_residues": 8,
+  "sign_changes": 5,
+  "lower_bound": 3,
+  "pattern": "+-++--+-"
+ },
+ {
+  "d": 2,
+  "N": 5,
+  "start_0based": [
+   1,
+   0
+  ],
+  "target_0based": [
+   1,
+   2
+  ],
+  "D": 2,
+  "n_nonzero_residues": 10,
+  "sign_changes": 3,
+  "lower_bound": 1,
+  "pattern": "++--++++--"
+ }
+]

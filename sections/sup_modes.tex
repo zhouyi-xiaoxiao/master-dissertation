@@ -1,0 +1,200 @@
+% sup_modes.tex -- Supplementary Section S6: exact modes -- proofs for one dimension, further values, figures and fits.
+% Numbers: code/article/s5_modes_tables.py -> data/article/s5_modes_tables.json;
+% figures: code/article/s5_modes_figures.py, code/article/s3s6_modes_figures.py.
+\section{Exact modes: proofs, further values and fits}\label{sup_modes:sec}
+
+\subsection{Proofs for one dimension}\label{sup_modes:ssec-1d-proofs}
+
+\begin{proof}[Proof of Proposition~\ref{s5_modes:prop-1d}]
+Let $K$ be the $(N-1)\times(N-1)$ matrix of the $q=1$ chain restricted to the sites $0,\dots,N-2$:
+$K(j,j\pm1)=\tfrac12$ whenever both indices lie in $\{0,\dots,N-2\}$, $K(0,0)=\tfrac12$ (the cancelled move at the
+reflecting end), and zero otherwise; the move from $N-2$ to the target is not part of $K$. Then $\Qm=(1-q)I+qK$,
+the vector of one-step absorption probabilities is $r=(q/2)\,\ve_{N-2}$, and $\pmf(t)=\ve_{0}^{\T}\Qm^{t-1}r$ by
+\eqref{s2_model:eq-pmf}. Let $v_m(j)=\cos\bigl(\omega_m(j+\tfrac12)\bigr)$ for every integer $j$. The addition
+formula gives $\tfrac12[v_m(j-1)+v_m(j+1)]=\cos\omega_m\,v_m(j)$ for all $j$. Since $v_m(-1)=v_m(0)$, the left-hand
+side equals $(Kv_m)(0)$ at $j=0$; since $v_m(N-1)=\cos\bigl((2m-1)\pi/2\bigr)=0$, it equals $(Kv_m)(N-2)$ at
+$j=N-2$. Hence $Kv_m=\cos\omega_m\,v_m$ on $\{0,\dots,N-2\}$ for $m=1,\dots,N-1$. The $\omega_m$ are distinct
+points of $(0,\pi)$, so these are $N-1$ distinct eigenvalues of the symmetric matrix $K$ and the $v_m$ form an
+orthogonal basis. Their norms follow from $\sum_{j=0}^{n-1}\cos\bigl((2j+1)\omega\bigr)=\sin(2n\omega)/(2\sin\omega)$
+with $n=N-1$ and $2(N-1)\omega_m=(2m-1)\pi-\omega_m$:
+\[
+  \|v_m\|^{2}=\frac{N-1}{2}+\frac{\sin\bigl(2(N-1)\omega_m\bigr)}{4\sin\omega_m}=\frac{2N-1}{4}.
+\]
+Expanding $\Qm^{t-1}$ in this basis,
+$\pmf(t)=\frac q2\sum_m\lambda_m^{t-1}\,v_m(0)\,v_m(N-2)/\|v_m\|^{2}$, with $v_m(0)=\cos(\omega_m/2)$ and
+$v_m(N-2)=\cos\bigl((2m-1)\pi/2-\omega_m\bigr)=(-1)^{m+1}\sin\omega_m$, which is \eqref{s5_modes:eq-1d-pmf}.
+For the mean, $h(j)=[N(N-1)-j(j+1)]/q$ satisfies $h(N-1)=0$ and
+$\tfrac q2[2h(j)-h(j-1)-h(j+1)]=1$ for $0\le j\le N-2$, with $h(-1):=h(0)$; these are the equations that
+characterise the mean hitting time in Proposition~\ref{s2_model:prop-pinv}, so $\MF=h(0)=N(N-1)/q$, in agreement
+with Theorem~\ref{s4_mfpt:thm-cosine}.
+\end{proof}
+
+Equation~\eqref{s5_modes:eq-1d-pmf} agrees with explicit powers of $\Qm$ to $4.2\times10^{-17}$ in absolute value
+($N=5,8,20,50$; $q=0.3,0.8,1$) and gives the same maximiser as time stepping at every size compared.
+% src: data/article/s5_modes_tables.json (prop_1d_checks, modes_1d_closed_form); data/article/closed_form_checks.json (d1_closed_form_pmf); data/msc_modes/discrete_modes.jsonl (closed_form_max_abs_diff_window)
+
+\begin{proof}[Proof of Proposition~\ref{s5_modes:prop-1d-limit}]
+\emph{Rescaling.} By Proposition~\ref{s5_modes:prop-1d} and \eqref{s2_model:eq-spectral} the unit-rate density is
+$\gd(t)=\sum_m b_m\eu^{-\nu_mt}$ with $\nu_m=1-\cos\omega_m$ and
+$b_m=\ell^{-1}(-1)^{m+1}\cos(\omega_m/2)\sin\omega_m$. Put $\Phi_N(\xi)=2\ell^{2}\,\gd(2\ell^{2}\xi)
+=\sum_{m=1}^{N-1}c_{N,m}\,\eu^{-a_{N,m}\xi}$ with $c_{N,m}=2\ell\,(-1)^{m+1}\cos(\omega_m/2)\sin\omega_m$ and
+$a_{N,m}=2\ell^{2}(1-\cos\omega_m)$. For fixed $m$, $c_{N,m}\to(-1)^{m+1}(2m-1)\pi$ and
+$a_{N,m}\to(2m-1)^{2}\pi^{2}/4$. Since $|\sin\omega|\le\omega$ and $1-\cos\omega\ge2\omega^{2}/\pi^{2}$ on
+$[0,\pi]$, we have $|c_{N,m}|\le(2m-1)\pi$ and $a_{N,m}\ge(2m-1)^{2}$ for all $N$ and $m$, so the $m$-th term is
+bounded by $(2m-1)\pi\,\eu^{-(2m-1)^{2}\xi_0}$ on $[\xi_0,\infty)$, uniformly in $N$. Each term converges
+uniformly on $[\xi_0,\infty)$, and the bounds are summable; hence $\Phi_N\to\Phi$ uniformly on $[\xi_0,\infty)$
+for every $\xi_0>0$.
+
+(a) Each $\Phi_N$ is log-concave (Proposition~\ref{s3_methods:prop-1d-unimodal}(i)), and the inequality
+$\Phi_N(\lambda\xi+(1-\lambda)\xi')\ge\Phi_N(\xi)^{\lambda}\Phi_N(\xi')^{1-\lambda}$ passes to the pointwise limit,
+so $\Phi$ is log-concave. The series \eqref{s5_modes:eq-1d-continuum} converges uniformly on compact subsets of
+$\{\operatorname{Re}\xi>0\}$, so $\Phi$ is analytic. For $\xi\ge0.05$ the moduli of the terms decrease from the
+second term on, so consecutive partial sums bracket $\Phi$:
+$\Phi(0.05)\le\pi\,(\eu^{-\pi^{2}/80}-3\,\eu^{-9\pi^{2}/80}+5\,\eu^{-25\pi^{2}/80})<0.40$,
+$\Phi(\tfrac16)\ge\pi\,(\eu^{-\pi^{2}/24}-3\,\eu^{-9\pi^{2}/24})>1.84$ and
+$\Phi(\tfrac12)\le\pi\,\eu^{-\pi^{2}/8}<0.92$.
+% src: data/article/derived_checks.json (I_continuum_density_bounds)
+For $\xi<0.05$ write $0.05=\lambda\xi+(1-\lambda)\tfrac16$ with $0<\lambda<1$; log-concavity gives
+$\Phi(0.05)\ge\Phi(\xi)^{\lambda}\Phi(\tfrac16)^{1-\lambda}\ge\Phi(\xi)^{\lambda}\Phi(0.05)^{1-\lambda}$, hence
+$\Phi(\xi)\le\Phi(0.05)<\Phi(\tfrac16)$ (if $\Phi(0.05)=0$ the first inequality gives $\Phi(\xi)=0$); in the same
+way $\Phi(\xi)\le\Phi(\tfrac12)<\Phi(\tfrac16)$ for $\xi>\tfrac12$. Hence $\Phi$ attains its
+supremum on $[0.05,0.5]$, and not at the end points. The set of maximisers of a log-concave function is an interval,
+and an analytic function that is constant on an interval is constant; $\Phi$ is not constant, so the maximiser
+$\xi^{*}$ is unique.
+
+(b) Fix $\varepsilon>0$ with $[\xi^{*}-\varepsilon,\xi^{*}+\varepsilon]\subset(0,\infty)$. By (a),
+$\Phi(\xi^{*}\pm\varepsilon)<\Phi(\xi^{*})$, so by the convergence just shown
+$\Phi_N(\xi^{*}\pm\varepsilon)<\Phi_N(\xi^{*})$ for all large $N$. $\Phi_N$ is unimodal, so all its maximisers
+then lie in $(\xi^{*}-\varepsilon,\xi^{*}+\varepsilon)$. The maximiser of $\gd$ is $\tmodec=2\ell^{2}\xi_N$ with
+$\xi_N$ a maximiser of $\Phi_N$, and $q\MF=N(N-1)$; therefore $\tmodec/(q\MF)=2\xi_N\,\ell^{2}/(N(N-1))\to2\xi^{*}$.
+At activity $q$ the mode is $\tmodec/q$ and the mean is $\MF$ (Proposition~\ref{s2_model:prop-structure}(d)), so
+the ratio is the same.
+
+(c) For $q\le\tfrac12$ all $\lambda_m=1-q\nu_m$ lie in $[0,1)$. With $t=2\ell^{2}\xi/q$,
+\[
+  \frac{2\ell^{2}}{q}\,\pmf(t)=\sum_{m=1}^{N-1}c_{N,m}\,\lambda_m^{\,t-1},\qquad
+  0\le\lambda_m^{\,t-1}\le\eu^{-q\nu_m(t-1)}\le\eu^{2q}\,\eu^{-a_{N,m}\xi},
+\]
+because $\ln(1-x)\le-x$ and $\nu_m\le2$. For fixed $m$, $(t-1)\ln\lambda_m\to-(2m-1)^{2}\pi^{2}\xi/4$ uniformly for
+$\xi$ in compact subsets of $(0,\infty)$, and the same domination as above gives
+$(2\ell^{2}/q)\,\pmf(2\ell^{2}\xi/q)\to\Phi(\xi)$ uniformly on such subsets, for $\xi$ restricted to the values at
+which $t$ is an integer. These values have spacing $q/(2\ell^{2})\to0$, so for large $N$ there are admissible
+points $\xi_-<\xi_0<\xi_+$ in $(\xi^{*}-\varepsilon,\xi^{*}+\varepsilon)$ with $\xi_\pm$ within
+$\varepsilon/2$ of $\xi^{*}\pm\varepsilon$ and $\xi_0$ so close to $\xi^{*}$ that the rescaled PMF is larger at
+$\xi_0$ than at $\xi_\pm$ (the maximum of $\Phi$ over the two closed intervals of length $\varepsilon/2$ at the
+ends is below $\Phi(\xi^{*})$). The PMF is unimodal on the integers
+(Proposition~\ref{s3_methods:prop-1d-unimodal}(ii)), so every maximiser lies between $\xi_-$ and $\xi_+$, and
+$\tmode/\MF=2\xi_N\,\ell^{2}/(N(N-1))\to2\xi^{*}$ as in (b).
+\end{proof}
+
+\begin{observation}[One dimension]\label{s5_modes:obs-1d}
+At $q=0.8$ the four modes at $N=50$, $100$, $200$ and $1000$ quoted in Section~\ref{s5_modes:ssec-1d} are certified
+global maximisers. At $N=10^{5}$ and $10^{6}$ the local maxima of \eqref{s5_modes:eq-1d-pmf} nearest the continuum
+prediction are $4\,166\,011\,658$ and $416\,604\,915\,263$ (route~B); they equal $\lceil\tau\rceil$ of
+Theorem~\ref{s6b_rigorous:thm-1d}(c), so they are the global maximisers.
+% src: data/msc_modes_verify/bigN_1d_mp.json (field "recheck"); data/msc_modes/laplace_modes.jsonl (d = 1: mode_discrete_q0.8); data/article/s5_modes_tables.json (modes_1d_large_N, tab_modes_rows); data/article/s3_methods_certificate.jsonl (d = 1)
+In continuous time $\tmodec/(q\MF)=0.3332842653$ at $N=3620$ and $0.33328426549$ at $N=10^{6}$, and
+$\tmodec=0.33328427\,(N-\tfrac12)^{2}$, to the digits shown, at $N=10^{5}$ and $10^{6}$, in agreement with
+Proposition~\ref{s5_modes:prop-1d-limit}(b).
+% src: data/msc_modes/laplace_modes.jsonl (d = 1); data/msc_modes/summary_tables.md (M1); data/article/s5_modes_tables.json (lattice_ratio_1d_continuous_time)
+\end{observation}
+
+\subsection{Two and three dimensions: further values and figures}
+
+At $q=0.8$ the exact two-dimensional modes are $\tmode=2493$, $22\,110$, $92\,116$ and $383\,013$ for $N=35$, $100$, $200$ and
+$401$, and the three-dimensional ones $6644$, $8863$ and $62\,998$ for $N=35$, $40$ and $100$; all of them were
+re-stepped once more with separately written code.
+% src: data/msc_modes/tables.md (T2, T3); data/msc_modes/discrete_modes.jsonl; data/article/s5_modes_tables.json (stepper_recheck)
+In two dimensions the ratio $\tmode/\MF$ is $0.2696$, $0.1768$, $0.1489$, $0.1350$ and $0.1236$ at $N=5$, $35$, $100$,
+$200$ and $401$, and $0.0651$ and $0.0562$ at $N=1\,048\,576$ and $16\,777\,216$. In three dimensions it is
+$4.2\times10^{-3}$ at $N=320$. In three dimensions the local exponent of the mode falls from $2.33$ ($N\approx6$) to $2.12$
+($N\approx134$) and $2.085$ ($N\approx3200$), and the two continuous-time routes agree on the position of the maximum to
+$1.1\times10^{-10}$, against $7\times10^{-13}$ in two dimensions.
+% src: data/msc_modes/tables.md (T2); data/msc_modes/summary_tables.md (M2, M3); data/article/s5_modes_tables.json (tab_modes_rows, local_exponents); data/msc_modes_verify/analysis.json (summary_d2, summary_d3: max_rel_diff_mode_vs_talbot)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.92\textwidth]{s5_modes_ratio.pdf}
+\caption{Mode-to-mean ratio $\tmode/\MF$ against lattice size, corner to opposite corner. Lines: exact
+continuous-time values (independent of $q$). Symbols: exact discrete-time PMF at $q=0.8$. Dashed: closed-form
+approximation \eqref{s6_mechanism:eq-L1}.}
+% src: code/article/s5_modes_figures.py; data/msc_modes/laplace_modes.jsonl, discrete_modes.jsonl
+\label{s5_modes:fig-ratio}
+\end{figure}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_modes_compensated.pdf}
+\caption{Compensated plots, corner to opposite corner. (a) $\dd=2$: $q\MF/N^{2}$ against $\ln N$ with the two-term
+law of Theorem~\ref{s4_mfpt:thm-expansion}. (b) $\dd=2$: $q\tmode/N^{2}$ against $\ln\ln N$. (c) $\dd=3$:
+$q\MF/N^{3}$ against $1/N$ with $\Kthree+\Kthreep/N$. (d) $\dd=3$: $q\tmode/N^{2}$ against $\ln N$. Filled symbols:
+exact continuous-time values; open squares: exact discrete-time PMF at $q=0.8$; dashed lines in (b) and (d): the
+closed-form approximation \eqref{s6_mechanism:eq-L1}; grey segments: the slopes
+$4/\pi^{2}$ and $6/\pi^{2}$ of the leading laws (Theorem~\ref{s6b_rigorous:thm-laws}).}
+% src: code/article/s3s6_modes_figures.py; data/msc_modes/laplace_modes.jsonl, discrete_modes.jsonl, fit_results.json
+\label{s5_modes:fig-compensated}
+\end{figure}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_modes_exponents.pdf}
+\caption{Local exponents $\dif\ln(\cdot)/\dif\ln N$ of (a) the mode and (b) the mean, corner to opposite corner,
+from exact continuous-time values at successive sizes (finite differences, plotted at the geometric mean of the two
+sizes). The mode laws (Proposition~\ref{s5_modes:prop-1d-limit}, Theorem~\ref{s6b_rigorous:thm-laws}) give the limit
+$2$ for the mode exponent in every dimension, approached slowly for $\dd=2,3$ because of the logarithmic factors.}
+% src: code/article/s5_modes_figures.py; data/msc_modes/fit_results.json (effective_exponents)
+\label{s5_modes:fig-exponents}
+\end{figure}
+
+\subsection{What scaling fits can and cannot show}\label{s5_modes:ssec-fits}
+
+We record what least-squares fits over moderate ranges give when applied to the exact modes. The data are exact, so
+the intervals quoted below are least-squares $95\%$ intervals computed from the residuals about each functional form:
+they measure misfit, not noise, and are conditional on the form and on the window. For the exact discrete-time modes at
+$q=0.8$, on the computed sizes in $10\le N\le200$ for $\dd=1,2$ (25 sizes each) and in $10\le N\le100$ for $\dd=3$ (14
+sizes), the smallest of them being $N=11$, a pure power law $AN^{a}$ gives $a=2.031\pm0.006$ ($\dd=1$), $2.090\pm0.006$
+($\dd=2$) and $2.169\pm0.009$ ($\dd=3$);
+% src: data/msc_modes/tables.md (discrete short-range blocks, row P); data/msc_modes/fit_results.json (fits: *_mode_discrete_short_range)
+none of these exponents is a property of the model, since each drifts with the window: for $\dd=2$ in continuous
+time (13 sizes in the first window), $2.093\pm0.011$ on $10\le N\le200$, $2.033\pm0.004$ on $10\le N\le1.7\times10^{7}$ and $2.019\pm0.001$ on
+$10^{3}\le N\le1.7\times10^{7}$.
+% src: data/msc_modes/tables.md (2D mode fit blocks, row P); data/article/s5_modes_tables.json (tab_fits: power_law_exponent_2d_continuous_by_window)
+Inside the fitting window the residuals do not single out the correct law: on the corrected Akaike criterion the
+three-parameter form $AN^{a}(\ln N)^{b}$ is preferred to $N^{2}(A\ln\ln N+B)$ in every window examined, with a
+fitted $a$ below $2$.
+% src: data/msc_modes/tables.md (dAICc columns); data/article/s5_modes_tables.json (tab_fits: dAICc_lnln_form_minus_best_by_window_2d)
+Extrapolation discriminates (Table~\ref{s5_modes:tab-fits}); the complete fits for $\dd=2,3$ are in
+Table~\ref{appC_tables:tab-fits-full}, and those for $\dd=1$ in the file \texttt{data/msc\_modes/fit\_results.json} of the repository.
+
+\begin{table}[tbp]
+\centering
+\caption{Least-squares fits of each form to $\ln\tmodec$ (exact continuous-time modes, unit rate) and their
+extrapolation error, (prediction $-$ exact)/exact, at the largest computed size. Half-widths are $95\%$
+least-squares intervals; on exact data they measure misfit, not noise. Last row of each block: closed-form
+approximation \eqref{s6_mechanism:eq-L1}, no fitted parameter.}
+% src (all rows): data/msc_modes/tables.md ("2D mode (continuous time, unit rate): fit on N = 10..200, extrapolated"; "3D mode ...: fit on N = 10..100, extrapolated"); data/msc_modes/fit_results.json (fits); closed form: data/msc_modes/laplace_modes.jsonl (pred_L1); data/article/s5_modes_tables.json (tab_fits)
+\label{s5_modes:tab-fits}
+\small
+\begin{tabular}{@{}llcr@{}}
+\toprule
+model & fitted exponents or coefficients & rms $\ln$-residual & extrapolation error\\
+\midrule
+\multicolumn{4}{@{}l}{$\dd=2$: fitted on $10\le N\le200$ (13 sizes), evaluated at $N=16\,777\,216$}\\
+$AN^{2}$ & -- & $8.3\times10^{-2}$ & $-30.8\%$\\
+$AN^{a}$ & $a=2.093\pm0.011$ & $1.5\times10^{-2}$ & $+124.9\%$\\
+$AN^{2}(\ln N)^{b}$ & $b=0.343\pm0.014$ & $5.2\times10^{-3}$ & $+15.0\%$\\
+$AN^{a}(\ln N)^{b}$ & $a=1.953\pm0.004$, $b=0.515\pm0.014$ & $5.7\times10^{-4}$ & $-19.0\%$\\
+$N^{2}(A\ln\ln N+B)$ & $A=0.555\pm0.007$, $B=0.922\pm0.009$ & $1.6\times10^{-3}$ & $+3.8\%$\\
+approximation \eqref{s6_mechanism:eq-L1} & -- & -- & $-0.45\%$\\
+\midrule
+\multicolumn{4}{@{}l}{$\dd=3$: fitted on $10\le N\le100$ (10 sizes), evaluated at $N=4096$}\\
+$AN^{3}$ & -- & $5.8\times10^{-1}$ & $+6799\%$\\
+$AN^{2}$ & -- & $1.2\times10^{-1}$ & $-41.6\%$\\
+$AN^{a}$ & $a=2.170\pm0.014$ & $1.2\times10^{-2}$ & $+31.7\%$\\
+$AN^{2}(\ln N)^{b}$ & $b=0.572\pm0.002$ & $4.9\times10^{-4}$ & $-3.8\%$\\
+$AN^{a}(\ln N)^{b}$ & $a=2.006\pm0.003$, $b=0.553\pm0.011$ & $2.6\times10^{-4}$ & $-2.7\%$\\
+$N^{2}(A\ln N+B)$ & $A=0.721\pm0.023$, $B=1.76\pm0.08$ & $4.9\times10^{-3}$ & $+5.7\%$\\
+approximation \eqref{s6_mechanism:eq-L1} & -- & -- & $+6.0\times10^{-7}$\\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,744 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{observation}[theorem]{Numerical observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\sloppy
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+\title{Computer-assisted certification of first-passage modes, unimodality,\\ the closed-form mode formula and two constants\\ for the lazy walk in a reflecting box}
+\author{Xiaoxiao Zhouyi\\[2pt]\normalsize Companion note R5}
+\date{1 October 2026}
+% Convention for the "% src:" comments: paths are relative to the root of the repository (data/msc_rigorous_certified/, code/msc_rigorous_certified/, data/msc_rigorous_certified/logs/).
+% Numbers set by macros come from numbers.tex (written by scripts/summarise.py from certs/SUMMARY.json and the files
+% named there) and numbers_ext.tex (written by scripts/c128/summarise_ext.py from certs/SUMMARY_EXT.json); each macro
+% carries its own "% src:" line in those files.  Generated tables and text fragments (tab_*.tex, text_*.tex) carry a
+% "% src:" line at the top.  Every quantitative assertion is re-checked by code/msc_rigorous_certified/audit.py and code/msc_rigorous_certified_c128/audit_ext.py.
+\input{numbers.tex}
+\input{numbers_ext.tex}
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+\medskip\noindent{\small\textit{Note.} This document is the companion note R5 of the article ``Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices'' (\texttt{paper.pdf}, Section~7; Supplementary Material, Section~S8), in the repository \texttt{https://\allowbreak github.com/\allowbreak zhouyi-xiaoxiao/\allowbreak master-dissertation}. In the repository, its scripts are in \texttt{code/msc\_rigorous\_certified/} (the C engine and its helpers in \texttt{code/msc\_rigorous\_certified\_c128/}) and its certificates in \texttt{data/msc\_rigorous\_certified/}; paths written \texttt{scripts/\dots}, \texttt{scripts/c128/\dots} and \texttt{certs/\dots} below refer to these folders; the paths in the \texttt{\%~src} comments of the \LaTeX{} source are relative to the root of the repository, and the run logs they cite are in \texttt{data/msc\_rigorous\_*/logs/}. Other run logs, the code of the internal checks and working notes mentioned below are not part of the repository; \texttt{notes/VERIFICATION.md} summarises how this note was checked.}\par\medskip
+
+
+\section{Summary and trusted base}
+
+This note replaces ``exact to round-off'' statements about the first-passage probability mass function (PMF) of the lazy walk in the box $\{0,\dots,N-1\}^d$ by statements that are proved, for finite ranges of $N$, by integer and interval computations. Every claim is labelled as one of: \emph{Theorem/Lemma/Proposition} (complete proof in this note, standard results cited by theorem number); \emph{computer-assisted Theorem} (the proof is a finite computation in integer or interval arithmetic, together with lemmas proved here that turn the finite computation into the stated claim); \emph{Conjecture}; \emph{Numerical observation}.
+
+The mathematical content consists of the lemmas of Sections~\ref{sec:setting}--\ref{sec:lemmas}, which reduce each claim about the PMF on the \emph{whole} time axis to finitely many integer inequalities (the key one is the tail lemma, Lemma~\ref{lem:tail}); of an elementary enclosure lemma for the mean first-passage time (Lemma~\ref{lem:mfpt}); and of results that need no computer at all (Theorem~\ref{thm:logconcave}, Proposition~\ref{prop:notunimodal}, Lemma~\ref{lem:support}) or only the interval evaluation of explicit expressions (Theorems~\ref{thm:tau} and \ref{thm:C2}).
+
+\textbf{Results.}
+\begin{itemize}
+\item \textbf{Theorem~\ref{thm:modes}} (computer-assisted). For $q=4/5$ and $q=1/2$, $d=1,2,3$ and every $N$ in the ranges of Table~\ref{tab:ranges} (for $q=4/5$: $2\le N\le\NmaxOneF$ in one dimension, $2\le N\le\NmaxTwoF$ in two, $2\le N\le\NmaxThreeF$ in three, and a few larger values): the exact integer mode $t^*$, uniqueness of the maximiser, strict unimodality on the whole time axis, and an explicit geometric bound for the tail. There are exactly three exceptional cases, all in one dimension and with $N\le4$, in which two consecutive values of $f$ coincide exactly.
+% src: data/msc_rigorous_certified/SUMMARY.json (key modes); data/msc_rigorous_certified/modes_d*_q*.jsonl, data/msc_rigorous_certified/packed_d*_q*.jsonl, data/msc_rigorous_certified/packedexact_d1_q*.jsonl
+\item \textbf{Theorem~\ref{thm:modesU}} (computer-assisted). The same analysis for $q=1$, where the PMF is \emph{not} unimodal in general: the certificates prove multimodality where it occurs.
+\item \textbf{Theorem~\ref{thm:cf}} (computer-assisted). Explicit bounds $\varepsilon_d$ for the relative error of the closed form $t_{\rm cf}=\mathbb E T\cdot\ln(2dX)/(X+2d-1)$ against the exact integer mode, for every $N\ge 10$ in the certified ranges: $\varepsilon_2=\EpsTwoF$ and $\varepsilon_3=\EpsThreeF$ at $q=4/5$. In one dimension the closed form is certified to be \emph{off by more than 15\%}.
+% src: data/msc_rigorous_certified/closedform_summary.json
+\item \textbf{Theorem~\ref{thm:tau}} (proved; interval enclosure). The one-dimensional continuum constant: the theta series $\varphi$ has a unique critical point $\tau^*$, a global maximum, and $2\tau^*=0.33328426549494789874852691\ldots$
+% src: data/msc_rigorous_certified/constants.json (key "kappa_1 = 2 tau_star")
+\item \textbf{Theorem~\ref{thm:C2}} (interval enclosure) and \textbf{Theorem~\ref{thm:rem}} (computer-assisted). The value of $C_2=0.15463778781891726249\ldots$ and a two-sided bound on the remainder of the two-term MFPT law in two dimensions for $2\le N\le \RemNA$ (self-contained), together with strict monotonicity of the remainder there; with the single-sum formula proved in the companion note, $r_N$ stays below $\RemHiB<C_0$ and strictly increasing for all $N\le \RemNB$ (Proposition~\ref{prop:rem}, which also certifies the comparison of the two values of $r_N$ at the junction of the two ranges).
+% src: data/msc_rigorous_certified/constants.json (key C_2), data/msc_rigorous_certified/mfpt2d_remainder.json, data/msc_rigorous_certified/remark_checks.json (key remainder_junction)
+\item \textbf{Theorem~\ref{thm:logconcave}} (proved, all $N$, no computer). In one dimension and for $q\le 1/2$ the PMF is log-concave, hence unimodal, for every $N\ge 2$. The plateau allowed by the statement does occur ($q=1/2$, $N=3,4$).
+% src: data/msc_rigorous_certified/packedexact_d1_q1-2.jsonl (maximisers at N = 3, 4)
+\item \textbf{Theorem~\ref{thm:1dlaw}} (computer-assisted). An exact rounding formula for the one-dimensional mode in the certified range.
+\item \textbf{Proposition~\ref{prop:notunimodal}} (proved, all $N\ge4$, no computer). In one dimension $f(N-1)>f(N)<f(N+1)$ whenever $q>(2N-4)/(2N-3)$, so the PMF is \emph{not} unimodal; in particular for $q=1$ and every $N\ge4$.
+\item \textbf{Theorems~\ref{thm:modesX}--\ref{thm:1dlawX}} (computer-assisted, second trusted base; Section~\ref{sec:ext}). The same statements on much larger ranges, obtained with a second engine written in C: for $q=4/5$, every $2\le N\le\XNmaxOneF$ in one dimension\XAlsoOneF, every $2\le N\le\XNmaxTwoF$ in two\XAlsoTwoF, every $2\le N\le\XNmaxThreeF$ in three\XAlsoThreeF; with $\varepsilon_2=\XEpsTwoF$ for $10\le N\le\XEpsNTwoF$ and $\varepsilon_3=\XEpsThreeF$ for $10\le N\le\XEpsNThreeF$. These ranges contain every corner-to-corner case of the computations of Sections~5--6 of the article with $q\in\{4/5,1/2,1\}$. The C engine reproduces all \TotalCerts\ verdicts of Theorems~\ref{thm:modes} and \ref{thm:modesU}. For $q=1$ it adds four non-unimodal two-dimensional boxes ($N=86,92,136,149$) to the list of Theorem~\ref{thm:modesU}.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json, data/msc_rigorous_certified/closedform_summary_c128.json; N = 86, 92, 136, 149: data/msc_rigorous_certified/c128_d2_q1-1.jsonl, data/msc_rigorous_certified/xcheck_packed_d2_q1-1.jsonl
+\end{itemize}
+
+\textbf{What is not proved here.} Nothing is claimed for $N$ outside the stated finite ranges, except Theorems~\ref{thm:tau}, \ref{thm:C2}, \ref{thm:logconcave}, Propositions~\ref{prop:termination} and \ref{prop:notunimodal} and Lemma~\ref{lem:support}. In particular the asymptotic laws (mode $\sim (4/\pi^2q)N^2\ln\ln N$ in two dimensions, etc.), unimodality for all $N$ in $d\ge2$, and the convergence of the lattice ratio mode/MFPT to $2\tau^*$ in one dimension remain outside this note (Section~\ref{sec:gaps}).
+
+\textbf{Trusted base.}
+\begin{itemize}
+\item[(T1)] Python integers (arbitrary precision; operations $+,-,\times$, floor division, shifts, bitwise and, comparisons, conversion to and from byte strings). The verifying program \texttt{scripts/verify\_packed.py} uses nothing else: no numpy, no floating point. The same holds for \texttt{scripts/verify\_exact.py} (\texttt{fractions.Fraction}, which is built on the same integers) and for the reference program \texttt{scripts/fpcore.py} (which uses numpy only as a container of Python integers).
+\item[(T2)] For the generator \texttt{scripts/fplimb.py}: numpy \texttt{int64} elementwise addition, multiplication, shifts, bitwise and, and \texttt{divmod} on non-negative operands, together with the overflow bound of Lemma~\ref{lem:limb}. \emph{No statement of Theorems~\ref{thm:modes} and \ref{thm:modesU} rests on (T2)}: every one of the \TotalCerts\ certificate lines was confirmed by \texttt{verify\_packed.py}, a program with a different data layout and a different rounding scheme (Table~\ref{tab:ranges}, Section~\ref{sec:verif}). (T2) matters only for anyone who wishes to regenerate the certificates quickly.
+\item[(T3)] Arb ball arithmetic (FLINT, through \texttt{python-flint}~0.9) for $\pi$, $\gamma$, $\Gamma(1/4)$, $\exp$, $\ln$, $\cos$, with \texttt{mpmath.iv} interval arithmetic as a second, separately developed implementation; every sign decision and every enclosure used in a theorem was required to agree between the two.
+\item[(T4)] Floating-point arithmetic is used only to \emph{guess} (the approximate solution of the MFPT linear system). No statement depends on its accuracy.
+\item[(T5)] For the extended ranges only (Section~\ref{sec:ext}, Theorems~\ref{thm:modesX}--\ref{thm:1dlawX}): C99 unsigned integer arithmetic (\texttt{uint64\_t}, \texttt{unsigned \_\_int128}) as compiled by Apple clang~21 for arm64, in the 366-line program \texttt{scripts/c128/fp128.c}; the verdicts are formed from its output with Python integers. The statements that rest on (T5) are labelled as such; Theorems~\ref{thm:modes} and \ref{thm:modesU} do not depend on it. Evidence for the correctness of the compiled program (byte-identical output of a Python-integer mirror on \XRefSmall\ small and \XRefMedium\ medium cases, identical verdicts on all \TotalCerts\ certificates of Table~\ref{tab:ranges}, \XXLimb\ and \XXPacked\ cross-checks inside the new ranges by the generator and by the Python-integer checker, every certificate computed twice with identical output, a conservation-of-probability test on every run) is described in Section~\ref{sec:ext}.
+% src: data/msc_rigorous_certified/c128_build.json (compiler, flags, source_lines = 366, source sha256); code/msc_rigorous_certified_c128/fp128.c
+\end{itemize}
+
+\section{Setting}\label{sec:setting}
+
+Fix integers $d\ge1$, $N\ge2$ and a rational $q\in(0,1]$. Let $\Omega=\{0,\dots,N-1\}^d$ (the lattice $\{1,\dots,N\}^d$ of the article, shifted by one), $x_0=(0,\dots,0)$ and $a=(N-1,\dots,N-1)$ (opposite corners). For $x\in\Omega$ let $b(x)$ be the number of the $2d$ unit vectors $e$ with $x+e\notin\Omega$. The walk $(X_t)_{t\ge0}$ has transition matrix
+\[
+P(x,x+e)=\frac{q}{2d}\ \ (x+e\in\Omega),\qquad P(x,x)=1-q+\frac{q}{2d}\,b(x),
+\]
+that is, a move off the lattice is cancelled. $P$ is symmetric. Let $X_0=x_0$, $T=\min\{t\ge1:\ X_t=a\}$, $\Omega'=\Omega\setminus\{a\}$, $Q=P|_{\Omega'\times\Omega'}$, and
+\[
+f(t)=\mathbb P(T=t),\qquad v_t(y)=\mathbb P(X_{t-1}=y,\ T>t-1)\quad(y\in\Omega',\ t\ge1),\qquad \sigma_t=\sum_{y\in\Omega',\ |y-a|_1=1}v_t(y).
+\]
+We write $u<w$ (resp.\ $u\le w$) for vectors when the inequality holds in every coordinate.
+
+\begin{lemma}[basic identities]\label{lem:basic}
+\textup{(a)} $v_1=e_{x_0}$ and $v_{t+1}=Qv_t$. \textup{(b)} $f(t)=\dfrac{q}{2d}\,\sigma_t$. \textup{(c)} $S(t):=\mathbb P(T>t)=\mathbf 1^{\!\top}Q^te_{x_0}$ and $f(t)=S(t-1)-S(t)$.
+\end{lemma}
+\begin{proof}
+(a) $T>0$ always and $X_0=x_0\neq a$, so $v_1=e_{x_0}$. By the Markov property, for $y\in\Omega'$,
+$v_{t+1}(y)=\sum_{y'\in\Omega'}\mathbb P(X_{t-1}=y',T>t-1)P(y',y)=(Q^{\!\top}v_t)(y)=(Qv_t)(y)$, since $Q$ is symmetric.
+(b) $\mathbb P(T=t)=\sum_{y\in\Omega'}v_t(y)P(y,a)$ and $P(y,a)=q/(2d)$ if $y$ is a lattice neighbour of $a$, and $0$ otherwise.
+(c) $S(t)=\sum_{y\in\Omega'}v_{t+1}(y)=\mathbf 1^{\!\top}Q^te_{x_0}$ by (a); the last identity is $\{T=t\}=\{T>t-1\}\setminus\{T>t\}$.
+\end{proof}
+
+\begin{lemma}[absorption is certain]\label{lem:rho}
+There are $n_0\ge1$ and $\delta>0$ with $\|Q^{n_0}\|_\infty\le1-\delta$. Hence the spectral radius of $Q$ is less than $1$, $\sum_{k\ge0}Q^k=(I-Q)^{-1}$ is entrywise non-negative, $\mathbb P(T<\infty)=1$ and $\mathbb E\,T=\sum_{t\ge0}S(t)<\infty$.
+\end{lemma}
+\begin{proof}
+From any $y\in\Omega'$ the coordinatewise increasing lattice path to $a$ has length at most $n_0:=d(N-1)$, avoids $a$ before its last step, and has probability at least $\delta:=(q/2d)^{n_0}$. As $Q\ge0$, $\|Q^{n_0}\|_\infty=\max_y(Q^{n_0}\mathbf 1)(y)=\max_y\mathbb P_y(X_1,\dots,X_{n_0}\in\Omega')\le1-\delta$. The remaining statements are the Neumann series and Lemma~\ref{lem:basic}(c).
+\end{proof}
+
+\textbf{Integer form.} Write $q=q_n/q_d$ in lowest terms, $g=\gcd\bigl(q_n,\,2d(q_d-q_n),\,2dq_d\bigr)$ and
+\[
+c_m=\frac{q_n}{g},\quad c_s=\frac{2d(q_d-q_n)}{g},\quad D=\frac{2dq_d}{g},\quad\text{so that}\quad \frac{q}{2d}=\frac{c_m}{D},\quad 1-q=\frac{c_s}{D},\quad 2d\,c_m+c_s=D .
+\]
+Then $M:=DQ$ has non-negative integer entries: $M(y,y')=c_m$ for neighbours $y,y'\in\Omega'$, $M(y,y)=c_s+c_mb(y)$, and every row sum of $M$ is $D-c_m\mathbf 1[\,|y-a|_1=1\,]\le D$. The nine cases used below are
+\begin{center}\small
+\begin{tabular}{l|ccc|ccc|ccc}
+ & \multicolumn{3}{c|}{$q=4/5$} & \multicolumn{3}{c|}{$q=1/2$} & \multicolumn{3}{c}{$q=1$}\\
+$d$ & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3\\ \hline
+$(c_m,c_s,D)$ & $(2,1,5)$ & $(1,1,5)$ & $(2,3,15)$ & $(1,2,4)$ & $(1,4,8)$ & $(1,6,12)$ & $(1,0,2)$ & $(1,0,4)$ & $(1,0,6)$
+\end{tabular}
+\end{center}
+In particular $D\le15$ in all cases.
+% src: fields cm, cs, D of data/msc_rigorous_certified/modes_d*_q*.jsonl and data/msc_rigorous_certified/c128_d*_q*.jsonl (function coeffs in code/msc_rigorous_certified/fpcore.py)
+
+\begin{definition}\label{def:unimodal}
+$f$ is \emph{strictly unimodal with mode $t^*$} if there is $t_0\le t^*$ such that $f(t)=0$ for $1\le t<t_0$, $f(t)<f(t+1)$ for $t_0-1\le t<t^*$ (with $f(0):=0$), and $f(t)>f(t+1)$ for all $t\ge t^*$. Then $t^*$ is the unique maximiser of $f$ and $f$ has exactly one strict local maximum (for $t<t_0-1$ the zero values $f(t-1)=f(t)=f(t+1)=0$ are local maxima only in the weak sense). $f$ is \emph{unimodal} (in the weak sense) if there is $t^*$ with $f(t)\le f(t+1)$ for $t<t^*$ and $f(t)\ge f(t+1)$ for $t\ge t^*$.
+\end{definition}
+
+\section{The lemmas behind the certificates}\label{sec:lemmas}
+
+\begin{lemma}[positivity]\label{lem:pos}
+Every row of $Q$ contains a positive entry. Consequently $w>0$ implies $Qw>0$.
+\end{lemma}
+\begin{proof}
+Let $y\in\Omega'$. If $q<1$ then $Q(y,y)\ge1-q>0$. If $q=1$: among the $2d\ge2$ directions at $y$ at most one leads to $a$; any other direction either is blocked, and then $Q(y,y)\ge q/(2d)>0$, or leads to a site $y'\in\Omega'$, and then $Q(y,y')=q/(2d)>0$.
+\end{proof}
+
+\begin{lemma}[tail lemma]\label{lem:tail}
+Suppose that for some $T\ge1$ we have $v_{T+1}<v_T$ (at every site of $\Omega'$). Then $v_{t+1}<v_t$ for all $t\ge T$, and
+\[
+f(t+1)<f(t)\qquad\text{for all } t\ge T .
+\]
+If moreover $v_{T+1}\le\gamma\,v_T$ for a number $\gamma<1$, then $f(T+s)\le\gamma^sf(T)$ for all $s\ge0$.
+\end{lemma}
+\begin{proof}
+Put $w_t=v_t-v_{t+1}$. By Lemma~\ref{lem:basic}(a), $w_{t+1}=Qw_t$. Since $w_T>0$, Lemma~\ref{lem:pos} and induction give $w_t>0$ for all $t\ge T$. By Lemma~\ref{lem:basic}(b), $f(t)-f(t+1)=\frac{q}{2d}\sum_{y\sim a}w_t(y)>0$. For the last statement, $Q\ge0$ entrywise, so $v_{T+s+1}=Q^sv_{T+1}\le\gamma Q^sv_T=\gamma v_{T+s}$, and the claim follows by induction and Lemma~\ref{lem:basic}(b).
+\end{proof}
+
+Lemma~\ref{lem:tail} is the device that controls the infinite tail: once all occupation probabilities are decreasing, the PMF decreases forever. It needs no spectral information. Note that a bound of the form $f(t)\le C\rho^t$ beyond a computed horizon would \emph{not} be enough for unimodality: it excludes a second global maximum in the tail but not a second local one. Lemma~\ref{lem:tail} gives both the monotone decrease and a geometric bound; a number $\gamma<1$ as in its last statement always exists when the hypothesis holds, because $\Omega'$ is finite, and the verifying program records a rational upper bound for the smallest such $\gamma$.
+
+\begin{proposition}[a tail time always exists]\label{prop:termination}
+For all $d\ge1$, $N\ge2$ and real $q\in(0,1]$ there is $T$ with $v_{T+1}<v_T$ on $\Omega'$. Moreover $v_{t+1}(y)/v_t(y)\to\lambda_1$ for every $y\in\Omega'$, where $\lambda_1\in(0,1)$ is the largest eigenvalue of $Q$.
+\end{proposition}
+\begin{proof}
+$Q$ is symmetric and entrywise non-negative; $Q(y,y')=q/(2d)>0$ for lattice neighbours $y,y'\in\Omega'$, and $\Omega'$ is connected by lattice steps (a path for $d=1$, a box with one corner removed for $d\ge2$); and $Q(x_0,x_0)=1-q+\frac{q}{2d}\,d=1-\frac q2>0$, because the corner $x_0$ has $d$ blocked directions. Let $\lambda_1=\max\{u^{\!\top}Qu:\ \|u\|_2=1\}$ be the largest eigenvalue; $\lambda_1\ge Q(x_0,x_0)>0$. The following is the Perron--Frobenius theorem for the primitive matrix $Q$ (Seneta, \emph{Non-negative Matrices and Markov Chains}, 2nd ed., Theorem~1.1); for symmetric $Q$ the proof takes a few lines, so we give it.
+
+(1) Let $u$ be a unit vector with $|u^{\!\top}Qu|=\lambda_1$ and let $|u|$ be its entrywise absolute value. Since $Q\ge0$, $|u|^{\!\top}Q|u|\ge|u^{\!\top}Qu|=\lambda_1$, so $|u|$ maximises the Rayleigh quotient and $Q|u|=\lambda_1|u|$. If $|u|(y)=0$ for some $y$, then $0=\lambda_1|u|(y)=\sum_{y'}Q(y,y')|u|(y')$ forces $|u|(y')=0$ for all neighbours $y'$ of $y$, hence $|u|=0$ by connectivity, which is impossible. So $u$ has no zero entry.
+
+(2) $\lambda_1$ is a simple eigenvalue: two linearly independent eigenvectors would have a non-zero linear combination vanishing at $x_0$, which after normalisation contradicts (1). By (1) the eigenvector may be taken entrywise positive; call it $\phi$, $\|\phi\|_2=1$.
+
+(3) $-\lambda_1$ is not an eigenvalue: if $Qu=-\lambda_1u$ with $\|u\|_2=1$, then $|u|^{\!\top}Q|u|=\lambda_1=-u^{\!\top}Qu$ by (1), i.e.\ $\sum_{y,y'}Q(y,y')\bigl(|u(y)||u(y')|+u(y)u(y')\bigr)=0$. Every term is non-negative and the term $y=y'=x_0$ equals $2Q(x_0,x_0)u(x_0)^2>0$ by (1): a contradiction.
+
+Since $|u^{\!\top}Qu|\le|u|^{\!\top}Q|u|\le\lambda_1$ for unit vectors, all eigenvalues lie in $[-\lambda_1,\lambda_1]$; by (2) and (3) all eigenvalues other than $\lambda_1$ have modulus less than $\lambda_1$. Also $\lambda_1<1$ by Lemma~\ref{lem:rho}. Expanding $e_{x_0}$ in an orthonormal eigenbasis of $Q$ gives $v_t=Q^{t-1}e_{x_0}=\lambda_1^{t-1}\bigl(\phi(x_0)\phi+o(1)\bigr)$ as $t\to\infty$, with $\phi(x_0)\phi>0$ entrywise. Hence $v_{t+1}(y)/v_t(y)\to\lambda_1<1$ for every $y$, and $v_{t+1}<v_t$ for all large $t$.
+\end{proof}
+
+Proposition~\ref{prop:termination} is not used in any proof below; it explains why the search for $T$ terminates and why the recorded ratio $\gamma$ is close to $1$ (the modal time is long before the asymptotic regime).
+
+\begin{lemma}[enclosure by directed rounding]\label{lem:encl}
+Let $P\ge1$ and $t_s\ge1$ be integers and $X_t:=M^{t-1}e_{x_0}$, an integer vector with $v_t=X_t/D^{t-1}$. Define integer vectors by
+\[
+L_{t_s}=\Bigl\lfloor \frac{2^PX_{t_s}}{D^{t_s-1}}\Bigr\rfloor,\quad U_{t_s}=\Bigl\lceil \frac{2^PX_{t_s}}{D^{t_s-1}}\Bigr\rceil,\qquad
+L_{t+1}=\Bigl\lfloor\frac{ML_t}{D}\Bigr\rfloor,\quad U_{t+1}=\Bigl\lceil\frac{MU_t}{D}\Bigr\rceil\quad(t\ge t_s),
+\]
+with floors and ceilings taken entrywise. Then for all $t\ge t_s$
+\[
+0\le L_t\le 2^Pv_t\le U_t\le 2^P .
+\]
+\end{lemma}
+\begin{proof}
+For $t=t_s$ this is the definition and $0\le v_t\le1$. If it holds for $t$, then, because $M\ge0$ entrywise, $ML_t/D\le 2^PQv_t=2^Pv_{t+1}\le MU_t/D$, and floor and ceiling preserve the inequalities because they are monotone and fix the bound on the appropriate side. Finally every row sum of $M$ is at most $D$, so each entry of $MU_t/D$ is at most $\max_yU_t(y)\le2^P$, an integer; hence so is its ceiling.
+\end{proof}
+
+\begin{lemma}[exactness of the limb engine]\label{lem:limb}
+Let $D\le15$, $\beta=2^{58}$, and let a non-negative integer vector $Z\le 2^P$ with $P=112$ be stored as two \texttt{int64} arrays $(Z^{(0)},Z^{(1)})$, $Z=Z^{(0)}+\beta Z^{(1)}$, $0\le Z^{(0)}<\beta$, $0\le Z^{(1)}\le2^{54}$. The procedure \texttt{step} of \texttt{fplimb.py} computes $\lfloor MZ/D\rfloor$ (and, when $D-1$ is first added to the low limb, $\lceil MZ/D\rceil$) exactly, and no intermediate \texttt{int64} value leaves $[0,2^{63})$.
+\end{lemma}
+\begin{proof}
+The stencil weights are non-negative and sum to at most $D$, so the limbwise images satisfy $0\le W^{(0)}\le D(\beta-1)$ and $0\le W^{(1)}\le D2^{54}$, and $MZ=W^{(0)}+\beta W^{(1)}$. With $W^{(1)}=Dq_1+r_1$, $0\le r_1<D$, and $c=r_1\beta+W^{(0)}(+D-1)=Dq_0+r_0$ we get $MZ(+D-1)=D(q_0+\beta q_1)+r_0$ with $0\le r_0<D$, i.e.\ $q_0+\beta q_1$ is the required floor (ceiling). The largest intermediate value is $c\le(D-1)\beta+D(\beta-1)+D-1<2D\beta\le30\cdot2^{58}<2^{63}$. The quotient digit $q_0<2\beta$ is normalised by one carry into $q_1$; by Lemma~\ref{lem:encl} the result is at most $2^P$, so $q_1\le2^{54}$ after the carry.
+\end{proof}
+
+\begin{lemma}[one vector and a scalar error bound]\label{lem:single}
+Let $P\ge1$, let $K$ be an integer with $2^K>D\,2^P$, $R=\lfloor 2^K/D\rfloor$ and $t_s\ge1$. Define integer vectors $C_t$ and integers $b_t$ by
+\[
+C_{t_s}=\Bigl\lfloor \frac{2^PX_{t_s}}{D^{t_s-1}}\Bigr\rfloor,\quad b_{t_s}=1,\qquad
+C_{t+1}=\Bigl\lfloor\frac{(MC_t)\,R}{2^K}\Bigr\rfloor,\quad b_{t+1}=b_t+2\quad(t\ge t_s).
+\]
+Then for all $t\ge t_s$, entrywise on $\Omega'$,
+\[
+0\le C_t\le 2^Pv_t\le C_t+b_t,\qquad C_t\le 2^P .
+\]
+\end{lemma}
+\begin{proof}
+For $t=t_s$ this is the definition of the floor and $0\le v_t\le 1$. Assume the claim for $t$ and put $W=MC_t$, a non-negative integer vector with entries at most $D\,2^P$ (the row sums of $M$ are at most $D$). Since $2^K/D-1<R\le 2^K/D$,
+\[
+\frac WD\ \ge\ \frac{WR}{2^K}\ \ge\ \frac WD-\frac{W}{2^K}\ \ge\ \frac WD-\frac{D\,2^P}{2^K}\ >\ \frac WD-1,
+\]
+so that $W/D-2<C_{t+1}\le W/D$. Because $Q=M/D$ is entrywise non-negative with row sums at most $1$,
+\[
+C_{t+1}\le QC_t\le Q\,(2^Pv_t)=2^Pv_{t+1}\le QC_t+b_t\,Q\mathbf 1\le \frac WD+b_t< C_{t+1}+2+b_t ,
+\]
+and $C_{t+1}\le2^Pv_{t+1}\le2^P$.
+\end{proof}
+
+Lemma~\ref{lem:single} needs half the work of Lemma~\ref{lem:encl} (one vector instead of two) and uses a multiplication by a reciprocal instead of a division; the price is that the upper bound $C_t+b_t$ grows by $2$ units of $2^{-P}$ per step at every site, whether needed or not. With $P=112$ and fewer than $10^6$ steps this is harmless.
+% src: field T_tail of data/msc_rigorous_certified/packed_d*_q*.jsonl (largest 416188, d = 1, N = 1000, q = 4/5)
+
+\begin{lemma}[packed integer arithmetic]\label{lem:packed}
+Let $w\ge1$, $n=N^d$, and number the sites by $i(y)=\sum_{k=1}^dy_kN^{k-1}\in\{0,\dots,n-1\}$, so that $i(x_0)=0$ and $i(a)=n-1$. For a vector $z$ on $\Omega$ with integer entries $0\le z(y)<2^w$ let $\langle z\rangle=\sum_{y}z(y)\,2^{w\,i(y)}$ (a single non-negative integer; the $w$ bits numbered $w\,i(y),\dots,w\,i(y)+w-1$ are the \emph{field} of $y$). Let $\&$ denote the bitwise and of non-negative integers, and for $k=1,\dots,d$ put $s_k=wN^{k-1}$,
+\[
+H_k=\bigl\langle(2^w-1)\mathbf 1[y_k\le N-2]\bigr\rangle,\qquad W_k=\bigl\langle(2^w-1)\mathbf 1[y_k\in\{0,N-1\}]\bigr\rangle,\qquad E=\sum_{y\ne a}2^{w\,i(y)} .
+\]
+\begin{itemize}
+\item[(a)] (stencil) If $z(a)=0$ and $D\max_yz(y)<2^w$, then, with $Mz$ extended by $0$ at $a$,
+\[
+\langle Mz\rangle=\Bigl(c_m\sum_{k=1}^d\Bigl[(\langle z\rangle\ \&\ H_k)\,2^{s_k}+\bigl(\lfloor\langle z\rangle/2^{s_k}\rfloor\ \&\ H_k\bigr)+(\langle z\rangle\ \&\ W_k)\Bigr]+c_s\langle z\rangle\Bigr)\ \&\ \bigl(2^{w(n-1)}-1\bigr).
+\]
+\item[(b)] (comparison at every site) Let $u,z$ be integer vectors with $u(a)=z(a)=0$ and $0\le u,z\le\beta$ entrywise, and let $c\ge0$ be an integer with $\beta+c+1<2^{w-1}$. Put $V=\langle z\rangle+2^{w-1}E-\langle u\rangle-(c+1)E$. Then
+\[
+u(y)+c<z(y)\ \text{ for all }y\in\Omega'\qquad\Longleftrightarrow\qquad V\ \&\ 2^{w-1}E=2^{w-1}E .
+\]
+\item[(c)] (division by reciprocal multiplication) If $R\ge1$ and $0\le K<w$ are integers and $z(y)R<2^w$ for all $y$, then
+\[
+\bigl\langle\lfloor zR/2^K\rfloor\bigr\rangle=\bigl\lfloor\langle z\rangle R/2^K\bigr\rfloor\ \&\ \bigl\langle(2^{w-K}-1)\mathbf 1\bigr\rangle .
+\]
+\end{itemize}
+\end{lemma}
+\begin{proof}
+Two facts are used throughout: if $0\le z_1(y)+z_2(y)<2^w$ for all $y$, then $\langle z_1\rangle+\langle z_2\rangle=\langle z_1+z_2\rangle$ (no carry leaves a field); and $\langle z\rangle\ \&\ \langle(2^w-1)\mathbf 1_S\rangle=\langle z\mathbf 1_S\rangle$ for every set $S$ of sites.
+
+(a) $\langle z\rangle\ \&\ H_k=\langle z\,\mathbf 1[y_k\le N-2]\rangle$, and multiplying by $2^{s_k}$ moves the field of $y$ to position $i(y)+N^{k-1}=i(y+e_k)$, which is a site of $\Omega$ because $y_k\le N-2$; so the first term is $\langle u_1\rangle$ with $u_1(y)=z(y-e_k)\mathbf 1[y_k\ge1]$. Next, $\sum_{i<m}z_i2^{wi}<2^{wm}$ for every $m$, so $\lfloor\langle z\rangle/2^{s_k}\rfloor=\sum_{i\ge N^{k-1}}z_i2^{w(i-N^{k-1})}$: the field at position $j$ now holds $z_{j+N^{k-1}}$. The and with $H_k$ keeps the positions $j=i(y)$ with $y_k\le N-2$, for which $j+N^{k-1}=i(y+e_k)$; the positions with $y_k=N-1$, which received the entry of the site $(\dots,0,y_{k+1}+1,\dots)$ of the next row, are cleared. So the second term is $\langle u_2\rangle$ with $u_2(y)=z(y+e_k)\mathbf 1[y_k\le N-2]$. The third term is $\langle z\,(\mathbf 1[y_k=0]+\mathbf 1[y_k=N-1])\rangle$ (two different sets, as $N\ge2$): one cancelled move in direction $\mp e_k$. Summing over $k$ gives, at each $y\in\Omega$, $\sum_{y'\sim y}z(y')+b(y)z(y)$; multiplying by $c_m$ and adding $c_sz(y)$ gives a number at most $(2dc_m+c_s)\max z=D\max z<2^w$, so no carry occurs and the big parenthesis is the packing of this vector. For $y\in\Omega'$ its entry is $(Mz)(y)$, because $z(a)=0$. The field of $a$ (the mass absorbed in this step) is the highest field and is cleared by the last and.
+
+(b) For $y\in\Omega'$ put $\alpha_y=z(y)-u(y)-c-1$; then $-2^{w-1}<-\beta-c-1\le\alpha_y\le\beta<2^{w-1}$, so $V=\sum_{y\in\Omega'}(2^{w-1}+\alpha_y)2^{w\,i(y)}$ with every coefficient in $[0,2^w)$: the field of $y$ in $V$ is exactly $2^{w-1}+\alpha_y$, and its top bit is set if and only if $\alpha_y\ge0$, i.e.\ $u(y)+c<z(y)$.
+
+(c) $\langle z\rangle R=\langle zR\rangle$ by hypothesis. Writing $z(y)R=2^K\lfloor z(y)R/2^K\rfloor+\rho_y$ with $0\le\rho_y<2^K$,
+$\lfloor\langle zR\rangle/2^K\rfloor=\sum_y\lfloor z(y)R/2^K\rfloor2^{w\,i(y)}+\sum_{i(y)\ge1}\rho_y2^{w\,i(y)-K}$. The first sum occupies the low $w-K$ bits of each field (as $\lfloor z(y)R/2^K\rfloor<2^{w-K}$), the second the top $K$ bits of the field below; the and removes the second.
+\end{proof}
+
+\textbf{Certificate data.} Two programs compute, by different routes, the following data for given $(d,N,q)$ and $P=112$.
+\begin{itemize}
+\item The exact integers $s_t=\sum_{y\sim a}X_t(y)$ for $1\le t\le t_s$, so that $\sigma_t=s_t/D^{t-1}$. Here $t_s$ is the first $t$ with $\lfloor 2^Ps_t/D^{t-1}\rfloor\ge2^G$ for a guard parameter $G$ (any $t_s$ gives valid enclosures; the choice only ensures that the rounded phase starts with $G$ significant bits).
+\item For every $t$ an integer enclosure $F^-_t\le2^P\sigma_t\le F^+_t$: for $t<t_s$ the floor and the ceiling of $2^Ps_t/D^{t-1}$; for $t\ge t_s$ the sums over the $d$ neighbours of $a$ of the entrywise bounds of Lemma~\ref{lem:encl} (generator: $F^-_t=\sum_{y\sim a}L_t(y)$, $F^+_t=\sum_{y\sim a}U_t(y)$, $G=48$) or of Lemma~\ref{lem:single} (checker: $F^-_t=\sum_{y\sim a}C_t(y)$, $F^+_t=F^-_t+d\,b_t$, $G=44$, $K=120$).
+\item A certified relation $\mathrm{rel}_t\in\{<,>,=,?\}$ between $f(t)$ and $f(t+1)$: for $t<t_s$ by the exact comparison of $Ds_t$ with $s_{t+1}$; for $t\ge t_s$, ``$<$'' if $F^+_t<F^-_{t+1}$, ``$>$'' if $F^-_t>F^+_{t+1}$, and ``?'' otherwise.
+\item The \emph{tail time} $T$: the first $t$ at which $v_{t+1}<v_t$ is certified at every site of $\Omega'$, i.e.\ $U_{t+1}<L_t$ (generator), $C_{t+1}+b_{t+1}<C_t$ (checker), or the exact condition $X_{t+1}<DX_t$ if this happens before $t_s$.
+\item (Checker only.) A rational $\gamma<1$ with $v_{T+1}\le\gamma v_T$: the maximum over $y\in\Omega'$ of $(C_{T+1}(y)+b_{T+1})/C_T(y)$, resp.\ of $X_{T+1}(y)/(DX_T(y))$.
+\end{itemize}
+
+\begin{proposition}[what a certificate proves]\label{prop:sound}
+Suppose that the tail time $T$ exists, that $F^-_t\le2^P\sigma_t\le F^+_t$ for $1\le t\le T+1$, and that each $\mathrm{rel}_t$, $1\le t<T$, is either ``?'' or a true relation between $f(t)$ and $f(t+1)$. Let $t^*\in\{1,\dots,T\}$ maximise $F^-_t$.
+\begin{itemize}
+\item[(i)] $f(t+1)<f(t)$ for all $t\ge T$, and $f(T+s)\le\gamma^sf(T)$ for all $s\ge0$ if $v_{T+1}\le\gamma v_T$.
+\item[(ii)] If $F^-_{t^*}>F^+_t$ for all $t\in\{1,\dots,T\}\setminus\{t^*\}$, then $f(t^*)>f(t)$ for every $t\ne t^*$: the mode is unique and equals $t^*$.
+\item[(iii)] Let $t_0$ be the first $t$ with $\sigma_t>0$. If, in addition to (ii), $\mathrm{rel}_t$ is ``$<$'' for $\max(t_0-1,1)\le t<t^*$ and ``$>$'' for $t^*\le t<T$, then $f$ is strictly unimodal with mode $t^*$ in the sense of Definition~\ref{def:unimodal}. (The two programs of this section, which have an exact phase, find $t_0$ exactly: $t_0\le t_s$, and for $t\le t_s$ the bound $F^+_t$ is the ceiling of the exact value, so $F^+_t>0\iff\sigma_t>0$. For the C engine of Section~\ref{sec:ext}, which has no exact phase, the same conclusion $F^+_t>0\iff\sigma_t>0$ is part of Proposition~\ref{prop:soundC}.)
+\item[(iv)] Call $t\in\{1,\dots,T\}$ a \emph{certified peak} if ($t=1$ or $\mathrm{rel}_{t-1}$ is ``$<$'') and ($t=T$ or $\mathrm{rel}_t$ is ``$>$''). If there are $k\ge2$ certified peaks, then $f$ has at least $k$ strict local maxima; in particular it is not unimodal.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(i) is Lemma~\ref{lem:tail}.
+(ii) For $t\le T$ the hypothesis gives $2^P\sigma_{t^*}\ge F^-_{t^*}>F^+_t\ge2^P\sigma_t$, and $f=\frac q{2d}\sigma$. For $t>T$, (i) gives $f(t)<f(T)\le f(t^*)$.
+(iii) $f$ vanishes before $t_0$ by definition, and $t_0\le t^*$ because $f(t^*)=\max f>0$ by (ii). The relations give $f(t)<f(t+1)$ for $t_0-1\le t<t^*$ (for $t_0=1$ the first of these is $f(0)=0<f(1)$) and $f(t)>f(t+1)$ for $t^*\le t<T$; (i) gives the rest of Definition~\ref{def:unimodal}.
+(iv) Each certified peak satisfies $f(t-1)<f(t)>f(t+1)$ (with $f(0)=0$; for $t=1$ note that $f(1)>f(2)\ge0$, and for $t=T$ use (i)).
+\end{proof}
+
+The hypotheses of Proposition~\ref{prop:sound} hold for the data of both programs: the enclosures by Lemma~\ref{lem:encl}, resp.\ Lemma~\ref{lem:single}; the relations because $\sigma_t<\sigma_{t+1}\iff Ds_t<s_{t+1}$ in the exact phase and by the enclosures afterwards; the tail time because $2^Pv_{T+1}\le U_{T+1}<L_T\le2^Pv_T$, resp.\ $2^Pv_{T+1}\le C_{T+1}+b_{T+1}<C_T\le2^Pv_T$ (in the exact phase $X_{T+1}<DX_T$ is literally $v_{T+1}<v_T$).
+
+\textbf{The programs.}
+\begin{itemize}
+\item \emph{Generator} \texttt{fplimb.py}: the recurrences of Lemma~\ref{lem:encl} in the limb arithmetic of Lemma~\ref{lem:limb} (its exact phase is the Python-integer code of \texttt{fpcore.py}). It writes one JSON line per $(d,N,q)$ with $t_s$, $t_0$, $t^*$, $T$, the verdicts of (ii)--(iv), the enclosures $F^\pm_t$ for $t=t^*-1,t^*,t^*+1$, the smallest margin $\min_y(L_T-U_{T+1})(y)$ and the sha256 digest of the two integer vectors $L_T$, $U_{T+1}$. These lines are the certificates \texttt{certs/modes\_*.jsonl}.
+\item \emph{Checker} \texttt{verify\_packed.py} (about 250 lines including comments, standard library only): the recurrence of Lemma~\ref{lem:single} with the whole vector packed into one Python integer as in Lemma~\ref{lem:packed}, with $w=240$ in the rounded phase ($2^w>2^{P+K}\ge z(y)R$, as required by (c)) and a field width that grows with $t$ in the exact phase. The tail condition is tested with Lemma~\ref{lem:packed}(b) and, when the test succeeds, re-checked site by site after unpacking. It re-derives all verdicts from scratch, writes them to \texttt{certs/packed\_*.jsonl} and compares them with the generator's line: $t_0$, $t^*$, $T$, the verdicts of (ii) and (iii) and the number of certified peaks must be identical, and the enclosures of $2^P\sigma_t$ at $t^*-1,t^*,t^*+1$ (same scale $2^P$) must intersect. With the option \texttt{-{}-exact} it never leaves the exact phase: then $F^-_t=F^+_t=2^P\sigma_t$ are exact rationals, no relation is ``?'', and all verdicts, including ties, are exact (\texttt{certs/packedexact\_*.jsonl}).
+\item \emph{Reference} \texttt{fpcore.py}: the recurrences of Lemma~\ref{lem:encl} with Python integers; where it was run, its output is identical to the generator's, digest included (\texttt{certs/refcheck\_*.jsonl}).
+\item \texttt{verify\_exact.py} (about 100 lines): builds the chain site by site from the rules of Section~\ref{sec:setting} and iterates it with exact rationals; feasible for small $N$ only (\texttt{certs/exactcheck\_*.jsonl}).
+\end{itemize}
+
+\section{Certified modes and unimodality}\label{sec:modes}
+
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_ranges.tex}
+\caption{Ranges of $N$ covered by the mode certificates, and the parts re-derived by each of the separately written programs (all written within this project and run on the same machine). ``Verified with Python integers'': \texttt{verify\_packed.py} reproduced $t_0$, $t^*$, $T$ and all verdicts, and its enclosures intersect the generator's. ``Exact arithmetic'': \texttt{verify\_packed.py -{}-exact} or \texttt{verify\_exact.py}; no rounding occurs, ties are decided. ``Bit-identical'': \texttt{fpcore.py} reproduced the generator's JSON line including the digest of $(L_T,U_{T+1})$.}\label{tab:ranges}
+\end{table}
+
+For $d\in\{1,2,3\}$ and $q\in\{4/5,1/2,1\}$ let $\mathcal N(d,q)$ be the set of $N$ in the third column of Table~\ref{tab:ranges}:
+\[
+\begin{array}{c|ccc}
+ & d=1 & d=2 & d=3\\ \hline
+q=4/5 & 2\le N\le\NmaxOneF\ \text{and}\ N\in\{\ExtraOneF\} & 2\le N\le\NmaxTwoF\ \text{and}\ N\in\{\ExtraTwoF\} & 2\le N\le\NmaxThreeF\\
+q=1/2 & 2\le N\le\NmaxOneH & 2\le N\le\NmaxTwoH & 2\le N\le\NmaxThreeH\\
+q=1 & 2\le N\le\NmaxOneU & 2\le N\le\NmaxTwoU & 2\le N\le\NmaxThreeU
+\end{array}
+\]
+
+\begin{theorem}[modes and unimodality for $q=4/5$ and $q=1/2$; computer-assisted]\label{thm:modes}
+Let $d\in\{1,2,3\}$, $q\in\{4/5,\,1/2\}$ and $N\in\mathcal N(d,q)$. Call $(d,q,N)$ \emph{exceptional} if it is one of $(1,\tfrac45,4)$, $(1,\tfrac12,3)$, $(1,\tfrac12,4)$.
+\begin{itemize}
+\item[(a)] $f(t)=0$ for $t<d(N-1)$ and $f(d(N-1))>0$.
+\item[(b)] If $(d,q,N)$ is not exceptional, $f$ is strictly unimodal in the sense of Definition~\ref{def:unimodal}: it has exactly one strict local maximum, at the integer $t^*=t^*(d,N,q)$ given in the field \texttt{mode} of line $N$ of \texttt{certs/modes\_d$d$\_q4-5.jsonl} (resp.\ \texttt{\dots\_q1-2.jsonl}), with $f(t)<f(t+1)$ for $d(N-1)-1\le t<t^*$ and $f(t)>f(t+1)$ for all $t\ge t^*$. Tables~\ref{tab:m1}--\ref{tab:m3} list a selection of the modes, Appendix~\ref{sec:allmodes} lists all of them for $d=2,3$, and Theorem~\ref{thm:1dlaw} gives a formula for $d=1$.
+\item[(c)] If $(d,q,N)$ is not exceptional, every occupation probability is already decreasing at the modal time: $v_{t^*+1}<v_{t^*}$ on $\Omega'$ (the tail time of Proposition~\ref{prop:sound} is $T=t^*$). Moreover $f(t^*+s)\le\gamma^sf(t^*)$ for all $s\ge0$, where $\gamma=\gamma(d,N,q)<1$ satisfies $1-\gamma\ge$ the number in the field \texttt{one\_minus\_gamma\_lower} of \texttt{certs/packed\_*.jsonl}.
+% src: field one_minus_gamma_lower of data/msc_rigorous_certified/packed_d*_q*.jsonl; minima in data/msc_rigorous_certified/SUMMARY.json (key modes)
+\item[(d)] The exceptional cases are unimodal in the weak sense, with an exact tie:
+$(1,\tfrac45,4)$: $0=f(2)<f(3)=f(4)<f(5)>f(6)>\cdots$, unique mode $t^*=5$, $T=5$;
+$(1,\tfrac12,3)$: $0=f(1)<f(2)<f(3)=f(4)>f(5)>\cdots$, maximum attained exactly at $t\in\{3,4\}$, $T=4$;
+$(1,\tfrac12,4)$: $f$ strictly increasing on $2\le t\le 7$, $f(7)=f(8)$, strictly decreasing from $8$ on, maximum attained exactly at $t\in\{7,8\}$, $T=8$.
+% src: data/msc_rigorous_certified/packedexact_d1_q4-5.jsonl (N = 4), data/msc_rigorous_certified/packedexact_d1_q1-2.jsonl (N = 3, 4), data/msc_rigorous_certified/exactcheck_d1_q4-5.jsonl, data/msc_rigorous_certified/exactcheck_d1_q1-2.jsonl
+\end{itemize}
+\end{theorem}
+\begin{proof}
+For each $(d,q,N)$ the certificate line was produced by \texttt{fplimb.certify}. By Lemma~\ref{lem:limb} the integers it manipulates are those of Lemma~\ref{lem:encl}, and the recorded verdicts are the hypotheses of Proposition~\ref{prop:sound}(i)--(iii); $t_0=d(N-1)$ and $T=t^*$ are read off the certificates (the value of $t_0$ is also given, for all $d$, $N$, $q$, by Lemma~\ref{lem:support}). For every $N$ (fifth column of Table~\ref{tab:ranges}) the same verdicts were obtained by the separately written program \texttt{verify\_packed.py}, which rests on Lemmas~\ref{lem:single} and \ref{lem:packed} and on Python integers only, and which also supplies $\gamma$ in (c); so the theorem does not depend on Lemma~\ref{lem:limb} or on numpy. The exceptional cases, in which the rounded computations necessarily return ``?'' for one relation, are settled in exact arithmetic by \texttt{verify\_packed.py -{}-exact} and, with separately written code, by \texttt{verify\_exact.py} (sixth column); the three displayed chains can also be checked by hand from $f(t)=\frac q2(Q^{t-1})_{N-2,0}$. The script \texttt{scripts/audit.py} re-checks every assertion of the theorem against the certificate files.
+\end{proof}
+
+\begin{theorem}[modes and multimodality for $q=1$; computer-assisted]\label{thm:modesU}
+Let $q=1$, $d\in\{1,2,3\}$ and $N\in\mathcal N(d,1)$. Then $f(t)=0$ exactly for $t<d(N-1)$, the smallest maximiser of $f$ is the integer in the field \texttt{mode} of \texttt{certs/modes\_d$d$\_q1-1.jsonl}, and:
+% src: text_q1.tex (generated; its sources are named in its first lines)
+\input{text_q1.tex}
+\end{theorem}
+\begin{proof}
+As for Theorem~\ref{thm:modes}, now using also Proposition~\ref{prop:sound}(iv). The statements about ties are exact computations (\texttt{verify\_packed.py -{}-exact} and \texttt{verify\_exact.py}).
+\end{proof}
+
+\begin{table}[!htbp]\centering\small
+\input{tab_modes_d1.tex}
+\caption{$d=1$: selected certified modes. Columns 3--6 refer to $q=4/5$; here $\tau_N=N(N-1)$ exactly, and $t^*/\mathbb E T$, $t_{\rm cf}$ and the relative error are rounded values of certified enclosures (Section~\ref{sec:cf}).}\label{tab:m1}
+\end{table}
+\begin{table}[!htbp]\centering\small
+\input{tab_modes_d2.tex}
+\caption{$d=2$: selected certified modes (same conventions; $\tau_N$ rounded).}\label{tab:m2}
+\end{table}
+\begin{table}[!htbp]\centering\small
+\input{tab_modes_d3.tex}
+\caption{$d=3$: selected certified modes (same conventions).}\label{tab:m3}
+\end{table}
+
+\begin{remark}[margins]
+The certified separation is far from marginal. In every certificate with a unique maximiser the gap between the lower bound for $2^P\sigma_{t^*}$ and the upper bounds at $t^*\pm1$ exceeds the width of the generator's enclosure by a factor of at least \MinMargin. With $P=112$ the generator's enclosure width $U_t-L_t$ at the mode does not exceed $\MaxWidth$ units of $2^{-112}$ and the checker's error bound $b_T$ does not exceed $\MaxB$ units in any run, while $2^P\sigma_{t^*}$ is of order $10^{\FminExp}$--$10^{\FmaxExp}$.
+% src: data/msc_rigorous_certified/SUMMARY.json (key modes: min_gap_over_enclosure_width, max_enclosure_width_at_mode, max_error_bound_b, min/max_F_at_mode)
+\end{remark}
+
+\begin{remark}[the geometric ratio]
+The ratios $\gamma$ of part (c) are close to $1$: the smallest recorded value of $1-\gamma$ over the certified $N$ is $\GamOneF$, $\GamTwoF$, $\GamThreeF$ for $d=1,2,3$ at $q=4/5$ (and $\GamOneH$, $\GamTwoH$, $\GamThreeH$ at $q=1/2$). This is not a defect of the method: $T=t^*$, and at the modal time the neighbours of the target have only just begun to lose probability ($f(t^*+1)/f(t^*)$ is itself within about $t^{*-2}$ of $1$), so the best constant in $v_{T+1}\le\gamma v_T$ is barely below $1$. The bound suffices for what it is used for (the tail is decreasing and summable with an explicit rate); by Proposition~\ref{prop:termination} the true decay rate of $f$ is $\lambda_1$, and a sharper $\gamma$ could be certified by applying Lemma~\ref{lem:tail} at a later time.
+% src: data/msc_rigorous_certified/SUMMARY.json (key modes: min_one_minus_gamma); field one_minus_gamma_lower of data/msc_rigorous_certified/packed_d*_q*.jsonl
+\end{remark}
+
+\begin{remark}[agreement with the floating-point study]
+The certified integers coincide with the values obtained in double precision in the computations of Sections~5--6 of the article (\texttt{data/msc\_modes/discrete\_modes.jsonl}) for all \FloatStudyAgree\ corner-to-corner cases at $q\in\{4/5,1/2,1\}$ that fall in the certified sets (\FloatStudyDisagree\ disagreements); for example $d=1$: $N=100,200,600,1000$ give $4124$, $16580$, $149727$, $416188$; $d=2$: $N=35,100,160,200$ give $2493$, $22110$, $58239$, $92116$; $d=3$: $N=35,40,60$ give $6644$, $8863$, $21175$ (all at $q=4/5$). The remark of Sections~5--6 of the article that no exact tie occurred in their runs is consistent with part (d): the ties occur only for $N\le4$ in one dimension (and for $q=1$), which were not among its cases.
+% src: field mode of data/msc_rigorous_certified/modes_d1_q4-5.jsonl, data/msc_rigorous_certified/modes_d2_q4-5.jsonl, data/msc_rigorous_certified/modes_d3_q4-5.jsonl; data/msc_rigorous_certified/SUMMARY.json (key comparison_with_float_study_modes); computations of Sections~5--6 of the article: data/msc_modes/discrete_modes.jsonl
+\end{remark}
+
+\begin{remark}[the exceptional cases]\label{rem:exc}
+$(1,\tfrac45,4)$ is the boundary case of a general phenomenon: for $d=1$ the first two non-zero values are $f(N-1)=(q/2)^{N-1}$ and $f(N)=(q/2)^{N-1}\bigl[(1-\tfrac q2)+(N-2)(1-q)\bigr]$ (one resting step inserted at one of the $N-1$ sites, the reflecting end having resting probability $1-\frac q2$), so that $f(N)\ge f(N-1)$ if and only if $q\le(2N-4)/(2N-3)$, with equality for $N=4$ exactly at $q=4/5$. The two ties at $q=1/2$ are plateaus at the top, which Theorem~\ref{thm:logconcave} allows.
+% src: data/msc_rigorous_certified/packedexact_d1_q4-5.jsonl, data/msc_rigorous_certified/packedexact_d1_q1-2.jsonl
+\end{remark}
+
+\begin{corollary}[the mode scales like $1/q$ up to one time step; computer-assisted]\label{cor:qscaling}
+Let $t^*(q)$ denote the smallest maximiser of $f$ for the activity $q$, and $\Delta_N:=\tfrac45\,t^*(\tfrac45)-\tfrac12\,t^*(\tfrac12)$. Then
+$\QsLoOne\le\Delta_N\le\QsHiOne$ for $d=1$, $2\le N\le\QsNOne$; $\ \QsLoTwo\le\Delta_N\le\QsHiTwo$ for $d=2$, $2\le N\le\QsNTwo$; $\ \QsLoThree\le\Delta_N\le\QsHiThree$ for $d=3$, $2\le N\le\QsNThree$; and all six bounds are attained.
+% src: data/msc_rigorous_certified/SUMMARY.json (key q_scaling)
+\end{corollary}
+\begin{proof}
+Exact arithmetic on the integers of Theorem~\ref{thm:modes} (\texttt{scripts/summarise.py}, re-checked by \texttt{scripts/audit.py}).
+\end{proof}
+So in the certified ranges $q\,t^*(q)$ is the same for $q=4/5$ and $q=1/2$ up to about one unit, although the modes themselves reach $59791$ ($d=1$, $N=300$, $q=1/2$): the discrete mode is, to this accuracy, a function of $qt$ only. This fails at $q=1$ in one dimension, where the parity oscillation moves the raw argmax ($\frac45t^*(\frac45)-t^*(1)$ reaches $66$ for $N\le200$, at $N=199$).
+% src: data/msc_rigorous_certified/SUMMARY.json (key q_scaling); data/msc_rigorous_certified/remark_checks.json (key qscaling_text: largest mode, largest (4/5) t*(4/5) - t*(1))
+
+\section{The mean first-passage time and the closed form}\label{sec:cf}
+
+\begin{lemma}[rational enclosure of the MFPT]\label{lem:mfpt}
+Let $m(x)=\mathbb E_x[T_a]$ for $x\in\Omega'$, where $T_a$ is the hitting time of $a$. Then $\tau:=q\,m$ does not depend on $q$ and is the unique solution of
+\[
+K\tau=2d\,\mathbf 1,\qquad K:=2d\,I-(A+B)\ \text{ on }\Omega',
+\]
+where $A$ is the adjacency matrix of the box restricted to $\Omega'$ and $B=\mathrm{diag}(b)$. Moreover $K^{-1}\ge0$ entrywise. Consequently, for \emph{any} real vector $z$ on $\Omega'$ such that $R:=Kz>0$ entrywise,
+\[
+\frac{2d}{\max_yR(y)}\,z\ \le\ \tau\ \le\ \frac{2d}{\min_yR(y)}\,z\qquad\text{entrywise.}
+\]
+\end{lemma}
+\begin{proof}
+Let $Q_1$ be the matrix $Q$ for $q=1$, so that $Q=(1-q)I+qQ_1$ and $2d(I-Q_1)=K$. By Lemma~\ref{lem:rho} (applied with $q=1$), $(I-Q_1)^{-1}=\sum_kQ_1^k$ is entrywise non-negative, and so is $K^{-1}=(2d)^{-1}(I-Q_1)^{-1}$. By Lemma~\ref{lem:rho} for the given $q$ (its proof applies to every starting site), $m=\sum_{t\ge0}Q^t\mathbf 1=(I-Q)^{-1}\mathbf 1$, because $\mathbb E_xT_a=\sum_{t\ge0}\mathbb P_x(T_a>t)$; that is, $q(I-Q_1)m=\mathbf 1$, i.e.\ $K\tau=2d\mathbf 1$. Finally $K\bigl(\tfrac{2d}{\min R}z-\tau\bigr)=2d\bigl(\tfrac{R}{\min R}-\mathbf 1\bigr)\ge0$, and applying $K^{-1}\ge0$ gives the upper bound; the lower bound is symmetric.
+\end{proof}
+
+\textbf{Use.} \texttt{scripts/mfpt\_enclosure.py} obtains a guess $z$ in floating point (cosine-transform solve of the reflecting problem plus three refinement steps; untrusted), rounds it to an integer vector at scale $2^{96}$, computes $R=Kz$ exactly in Python integers, and outputs the rational interval $[\,2dz(x_0)/\max R,\ 2dz(x_0)/\min R\,]\ni\tau_N:=\tau(x_0)=q\,\mathbb E_{x_0}T$. The relative width is below $10^{-28}$ in every case (and zero in the cases where the rounded guess is exact). Checks: for $d=1$ the enclosures contain $N(N-1)$ (the exact value, since $m(j)=[N(N-1)-j(j+1)]/q$ solves the system); for $d=2$ they contain the exact rationals $8,\ 27,\ 416/7,\ 1175/11,\ 9368/55$ ($N=2,\dots,6$), and they overlap the Arb evaluation of the single-sum formula of the companion note for all $N\le60$, every twentieth $N$ up to $300$ and the five isolated values $N=350,401,450,500,600$.
+% src: data/msc_rigorous_certified/mfpt_d1.jsonl, data/msc_rigorous_certified/mfpt_d2.jsonl, data/msc_rigorous_certified/mfpt_d3.jsonl (relative widths re-checked in code/msc_rigorous_certified/audit.py); data/msc_rigorous_certified/lemma_checks.json (exact values); data/msc_rigorous_certified/mfpt2d_remainder.json (key single_sum_agrees_with_linear_system_on_overlap; code/msc_rigorous_certified/mfpt2d_remainder.py)
+
+\begin{definition}\label{def:cf}
+For $d,N,q$ as above put $\mu_1=\frac qd\bigl(1-\cos\frac\pi N\bigr)$, $X_N=\mu_1\,\mathbb E_{x_0}T=\frac{\tau_N}{d}\bigl(1-\cos\frac\pi N\bigr)$ (independent of $q$) and
+\[
+t_{\rm cf}=t_{\rm cf}(d,N,q)=\frac{\tau_N}{q}\cdot\frac{\ln(2dX_N)}{X_N+2d-1}.
+\]
+\end{definition}
+
+\begin{theorem}[accuracy of the closed form; computer-assisted]\label{thm:cf}
+Let $t^*$ be the certified mode of Theorem~\ref{thm:modes} and $t_{\rm cf}$ as in Definition~\ref{def:cf}.
+\begin{itemize}
+\item[(a)] $d=2$: for $q=4/5$ and all $10\le N\le\EpsNTwoF$, $\ |t^*-t_{\rm cf}|\le\EpsTwoF\;t^*$; for $q=1/2$ and all $10\le N\le\EpsNTwoH$, $\ |t^*-t_{\rm cf}|\le\EpsTwoH\;t^*$.
+\item[(b)] $d=3$: for $q=4/5$ and all $10\le N\le\EpsNThreeF$, $\ |t^*-t_{\rm cf}|\le\EpsThreeF\;t^*$; for $q=1/2$ and all $10\le N\le\EpsNThreeH$, $\ |t^*-t_{\rm cf}|\le\EpsThreeH\;t^*$.
+\item[(c)] $d=1$: for $q=4/5$ and all $10\le N\le\EpsNOneF$, $\ \EpsLoOneF\;t^*\le t_{\rm cf}-t^*\le\EpsOneF\;t^*$; for $q=1/2$ and all $10\le N\le\EpsNOneH$, $\ \EpsLoOneH\;t^*\le t_{\rm cf}-t^*\le\EpsOneH\;t^*$. The closed form therefore overestimates the one-dimensional mode by more than $15\%$ throughout the range; it is \emph{not} an approximation of the mode in one dimension.
+\end{itemize}
+Sharper bounds on sub-ranges, the bounds for the isolated larger values of $N$, and the corresponding numbers for $q=1$ are given in Table~\ref{tab:cf}; the enclosure of the relative error for every single $N$ is in \texttt{certs/closedform\_d$d$\_q$q$.jsonl}.
+% src: data/msc_rigorous_certified/closedform_summary.json; data/msc_rigorous_certified/closedform_d*_q*.jsonl; re-checked with mpmath.iv in code/msc_rigorous_certified/audit.py
+\end{theorem}
+\begin{proof}
+For each $N$, \texttt{scripts/closed\_form.py} evaluates $t_{\rm cf}$ in Arb ball arithmetic at 256 bits from the rational enclosure of $\tau_N$ (Lemma~\ref{lem:mfpt}) and forms $(t_{\rm cf}-t^*)/t^*$ with the integer $t^*$ of Theorem~\ref{thm:modes}; the bounds stated are the extremes over $N$ of the resulting enclosures, rounded outwards. The same quantities were evaluated with \texttt{mpmath.iv}; the two enclosures overlap for every $N$. The values of $N$ with a tie at the maximum ($N\le4$) are below the range of the statement.
+\end{proof}
+
+\begin{table}[!htbp]\centering\small
+\input{tab_cf.tex}
+\caption{Certified bounds for the relative error of the closed form on sub-ranges. The last column is an interval containing $(t_{\rm cf}-t^*)/t^*$ for every $N$ of the range. For $q=1$ the mode is the raw (parity-affected) argmax.}\label{tab:cf}
+\end{table}
+
+\begin{remark}\label{rem:cfshape}
+In two dimensions (both values of $q$) the relative error $(t_{\rm cf}-t^*)/t^*$ is positive for $N\le13$ and negative for every $N\ge14$ of the certified ranges; its modulus has a flat maximum of about $0.97\%$ near $N=137$ ($q=4/5$) and decreases slowly beyond, though not monotonically (Table~\ref{tab:cf}). In three dimensions it is positive for every $3\le N\le\NmaxThreeF$ at $q=4/5$ (negative only at $N=2$) and for every $N\ne3$ of the range at $q=1/2$; at $q=4/5$ it falls from $0.00275$ at $N=10$ to $0.000144$ at $N=\NmaxThreeF$, but not monotonically. The integer rounding of the mode contributes up to $1/t^*$ to these relative errors; in three dimensions this is comparable with the error itself at the upper end of the range, and it is the reason why the error is not monotone there. For $2\le N\le9$ the closed form is poorer (up to $32\%$ at $N=2$ in two dimensions, $q=4/5$); these cases are recorded in \texttt{certs/closedform\_summary.json}. The constants $\varepsilon_d$ are statements about the stated finite ranges only; that they persist for all $N\ge10$ is Conjecture~\ref{conj:cf}.
+% src: data/msc_rigorous_certified/remark_checks.json (key closed_form_shape: signs, non-monotone N, values at N = 2 and at the largest N); data/msc_rigorous_certified/closedform_d2_q4-5.jsonl, data/msc_rigorous_certified/closedform_d3_q4-5.jsonl, data/msc_rigorous_certified/closedform_d3_q1-2.jsonl
+\end{remark}
+
+\section{Two constants}
+
+\subsection{The one-dimensional constant}
+
+For $\tau>0$ let
+\[
+\varphi(\tau)=\sum_{m\ge1}(-1)^{m+1}(2m-1)\,e^{-(2m-1)^2\pi^2\tau/4}.
+\]
+($\pi\varphi(Dt/L^2)\,D/L^2$ is the first-passage density at the absorbing end of an interval of length $L$ for Brownian motion with diffusivity $D$ started at the reflecting end; its mean is $L^2/2D$, so the continuum ratio mode/mean equals $2\tau^*$ with $\tau^*$ the maximiser of $\varphi$.)
+
+\begin{theorem}[the constant $\kappa_1=2\tau^*$]\label{thm:tau}
+$\varphi$ has exactly one critical point $\tau^*$ in $(0,\infty)$; $\varphi$ is strictly increasing on $(0,\tau^*]$ and strictly decreasing on $[\tau^*,\infty)$; and
+\[
+0.16664213274747394937426345812<\tau^*<0.16664213274747394937426345843,
+\]
+\[
+\kappa_1:=2\tau^*\in\bigl(0.33328426549494789874852691624,\ 0.33328426549494789874852691686\bigr).
+\]
+% src: data/msc_rigorous_certified/constants.json (keys tau_star, "kappa_1 = 2 tau_star"); decimal bounds re-checked in code/msc_rigorous_certified/audit.py
+\end{theorem}
+\begin{proof}
+\emph{Step 1 (dual series).} For all $\tau>0$,
+\[
+\varphi(\tau)=(\pi\tau)^{-3/2}\sum_{n\ge0}(-1)^n(2n+1)\,e^{-(2n+1)^2/(4\tau)}. \tag{5.1}
+\]
+Indeed, by Jacobi's identity $\prod_{k\ge1}(1-x^k)^3=\sum_{n\ge0}(-1)^n(2n+1)x^{n(n+1)/2}$ (Hardy and Wright, \emph{An Introduction to the Theory of Numbers}, Theorem~357), the Dedekind function $\eta(z)=e^{\pi iz/12}\prod_{k\ge1}(1-e^{2\pi ikz})$ satisfies $\eta(z)^3=\sum_{n\ge0}(-1)^n(2n+1)e^{\pi iz(2n+1)^2/4}$, so $\varphi(\tau)=\eta(i\pi\tau)^3$; and $\eta(-1/z)=(-iz)^{1/2}\eta(z)$ (Apostol, \emph{Modular Functions and Dirichlet Series in Number Theory}, 2nd ed., Theorem~3.1) with $z=i/(\pi\tau)$ gives $\eta(i\pi\tau)^3=(\pi\tau)^{-3/2}\eta\bigl(i/(\pi\tau)\bigr)^3$, which is (5.1). (As a safeguard against a mis-transcribed normalisation, both sides of (5.1) were evaluated in ball arithmetic at six values of $\tau$ between $1/20$ and $2$; the enclosures overlap to $30$ digits.)
+% src: data/msc_rigorous_certified/constants.json (key theta_sanity)
+
+\emph{Step 2 (large $\tau$).} Differentiating termwise, $-\frac4{\pi^2}\varphi'(\tau)=\sum_{m\ge1}(-1)^{m+1}a_m$ with $a_m=(2m-1)^3e^{-(2m-1)^2\pi^2\tau/4}>0$ and
+$a_{m+1}/a_m=\bigl(\tfrac{2m+1}{2m-1}\bigr)^3e^{-2m\pi^2\tau}\le27e^{-2\pi^2\tau}$. For $\tau>\tau_1:=\ln27/(2\pi^2)$ the $a_m$ decrease strictly to $0$, so the alternating sum exceeds $a_1-a_2>0$. Hence $\varphi'<0$ on $(\tau_1,\infty)$, and $\tau_1<0.16697<1/4$.
+% src: data/msc_rigorous_certified/constants.json (key checks: ln 27/(2 pi^2) upper bound 0.166969...)
+
+\emph{Step 3 (small $\tau$).} Differentiating (5.1) termwise, for $\tau>0$,
+\[
+\pi^{3/2}\tau^{7/2}e^{1/(4\tau)}\varphi'(\tau)=B(\tau):=\frac14-\frac{3\tau}2-E(\tau),\qquad E(\tau)=\sum_{n\ge1}(-1)^{n+1}b_n(\tau),
+\]
+\[
+b_n(\tau)=(2n+1)\Bigl(\frac{(2n+1)^2}{4}-\frac{3\tau}{2}\Bigr)e^{-n(n+1)/\tau}.
+\]
+Let $0<\tau\le1/4$. Then $b_n>0$ and
+$\dfrac{b_{n+1}}{b_n}=\dfrac{2n+3}{2n+1}\cdot\dfrac{(2n+3)^2-6\tau}{(2n+1)^2-6\tau}\,e^{-2(n+1)/\tau}\le\dfrac53\cdot\dfrac{47}{15}\,e^{-16}<1$,
+so the $b_n$ decrease to $0$ and
+\[
+b_1-b_2\le E\le b_1-b_2+b_3 . \tag{5.2}
+\]
+Moreover $|b_n'(\tau)|\le(2n+1)e^{-n(n+1)/\tau}\bigl[\tfrac32+\tfrac{(2n+1)^2}{4}\tfrac{n(n+1)}{\tau^2}\bigr]\le\tfrac{441}{2}\,n^5e^{-4n(n+1)}$, because $u\mapsto u^2e^{-n(n+1)u}$ is decreasing for $u=1/\tau\ge4$ and $(2n+1)\bigl[\tfrac32+4(2n+1)^2n(n+1)\bigr]\le3n\cdot\tfrac{147}{2}n^4$. Hence $\sum_n|b_n'|\le\frac{441}2\bigl(e^{-8}+\frac{32e^{-24}}{1-e^{-11}}\bigr)<0.074$, the series for $E$ may be differentiated termwise, and
+% src: data/msc_rigorous_certified/constants.json (key checks: value of that bound 0.0739698...)
+\[
+B'(\tau)=-\tfrac32-E'(\tau)<-\tfrac32+0.074<0\qquad(0<\tau\le\tfrac14).
+\]
+So $B$ is strictly decreasing on $(0,1/4]$, with $B(0+)=1/4>0$ and $B(1/4)\le\frac14-\frac38<0$ (as $E\ge0$). It has exactly one zero $\tau^*\in(0,1/4)$, and $\varphi'$ has the sign of $B$ there.
+
+\emph{Step 4.} By Steps 2 and 3, $\varphi'>0$ on $(0,\tau^*)$, $\varphi'<0$ on $(\tau^*,1/4]$ and on $(\tau_1,\infty)\supset[1/4,\infty)$.
+
+\emph{Step 5 (enclosure).} \texttt{scripts/constants.py} bisects on rational points, using (5.2): at the two rationals $\tau_-<\tau_+$ recorded in \texttt{certs/constants.json}, $\frac14-\frac32\tau_--(b_1-b_2+b_3)(\tau_-)>0$ and $\frac14-\frac32\tau_+-(b_1-b_2)(\tau_+)<0$ in Arb ball arithmetic at 512 bits, and again in \texttt{mpmath.iv}. Hence $\tau_-<\tau^*<\tau_+$; the decimal bounds in the statement are these rationals rounded outwards.
+% src: data/msc_rigorous_certified/constants.json (keys tau_star.lo, tau_star.hi, bisection_steps; checks B(tau_lo) > 0, B(tau_hi) < 0)
+\end{proof}
+
+\begin{remark}
+The single-image approximation is the zero $1/6$ of $\frac14-\frac32\tau$, i.e.\ the ratio $1/3$; the correction $E(\tau^*)\approx b_1(1/6)=6e^{-12}$ moves the ratio down by $4.9\times10^{-5}$. The value quoted in Section~5 of the article, $0.3332842655$, is correct to all printed digits.
+% src: data/msc_rigorous_certified/constants.json; data/msc_rigorous_certified/packed_checks.json (two_tau_star); value of the computations of Sections~5--6 of the article: data/msc_modes/fit_results.json
+\end{remark}
+
+\subsection{The two-dimensional constant}
+
+\begin{theorem}[value of $C_2$]\label{thm:C2}
+Let $\varpi=\Gamma(1/4)^2/(2\sqrt{2\pi})$ (the lemniscate constant) and
+\[
+C_2:=\frac8\pi\Bigl[\gamma+\ln\frac{4\sqrt2}{\varpi}-\frac12-\frac\pi4\Bigr]
+=\frac8\pi\Bigl[\gamma+4\ln2+\tfrac12\ln\pi-2\ln\Gamma(\tfrac14)\Bigr]-2-\frac4\pi .
+\]
+% src: data/msc_rigorous_certified/constants.json (key C_2: arb, mpmath_iv); re-checked in code/msc_rigorous_certified/audit.py
+Then $\bigl|C_2-0.15463778781891726249073383080028304919172661983273\bigr|<10^{-50}$.
+\end{theorem}
+\begin{proof}
+The two expressions are equal because $\ln(4\sqrt2/\varpi)=\ln\bigl(16\sqrt\pi/\Gamma(1/4)^2\bigr)$. The enclosure is the Arb evaluation at 512 bits (radius $<3\times10^{-71}$) in \texttt{scripts/constants.py}; the \texttt{mpmath.iv} evaluation of the first expression gives an interval of width $<10^{-150}$ which overlaps it.
+% src: data/msc_rigorous_certified/constants.json (key C_2: Arb radius 2.83e-71; width of the mpmath.iv interval 3.3e-153)
+\end{proof}
+
+Theorem~\ref{thm:C2} certifies the \emph{number}. That $C_2$ is the coefficient of $N^2$ in the expansion of $q\,\mathbb E T$ in two dimensions is Theorem~4.5 of the article; that note states that its remainder estimate is only sketched. The following finite-range statement does not depend on any asymptotic argument.
+
+\begin{theorem}[two-term MFPT law in two dimensions on a finite range; computer-assisted]\label{thm:rem}
+Let $d=2$, $\tau_N=q\,\mathbb E_{x_0}T$ and $r_N:=\tau_N-\frac8\pi N^2\ln N-C_2N^2$. For every $2\le N\le\RemNA$,
+\[
+\RemLo<r_N<\RemHiA,
+\]
+and $r_N$ is strictly increasing in $N$ on this range ($r_2=0.32110964\ldots$, $r_{10}=0.52165509\ldots$, $r_{100}=0.53203394\ldots$, $r_{200}=0.53211414\ldots$, $r_{300}=0.53212899\ldots$).
+% src: data/msc_rigorous_certified/mfpt2d_remainder.json (keys self_contained, sample); re-evaluated with mpmath.iv in code/msc_rigorous_certified/audit.py
+\end{theorem}
+\begin{proof}
+\texttt{scripts/mfpt2d\_remainder.py}: Arb evaluation of $r_N$ from the rational enclosures of $\tau_N$ of Lemma~\ref{lem:mfpt}; monotonicity is the certified inequality $\sup r_N<\inf r_{N+1}$ for consecutive $N$. (The enclosures of Lemma~\ref{lem:mfpt} were also computed for five isolated larger values; they give, unconditionally, $r_{350}=0.53213215\ldots$, $r_{401}=0.53213423\ldots$, $r_{450}=0.53213560\ldots$, $r_{500}=0.53213660\ldots$, $r_{600}=0.53213791\ldots$, all below $C_0$ of Proposition~\ref{prop:rem}.)
+% src: data/msc_rigorous_certified/mfpt2d_remainder.json (key self_contained_isolated)
+\end{proof}
+
+\begin{proposition}[extension, conditional on the single-sum formula]\label{prop:rem}
+Assume the single-sum formula $\tau_N=4N\sum_{k=1}^{N-1}c_k^2\,\frac{\sqrt{1+s_k^2}}{s_k}\,g_k$ with $s_k=\sin\frac{\pi k}{2N}$, $c_k=\cos\frac{\pi k}{2N}$, $g_k=\coth(N\,\mathrm{arsinh}\,s_k)$ for odd $k$ and $\tanh(N\,\mathrm{arsinh}\,s_k)$ for even $k$ (Theorem~2(b) of the companion note, where it is proved). Then $r_N<\RemHiB<C_0:=\varpi^4/(9\pi^2)=0.53214088\ldots$ for $\RemNA<N\le\RemNB$, and $r_N<r_{N+1}$ for $\RemNA\le N<\RemNB$; together with Theorem~\ref{thm:rem}, $r_N$ is strictly increasing on the whole range $2\le N\le\RemNB$.
+\end{proposition}
+% src: data/msc_rigorous_certified/mfpt2d_remainder.json (keys via_single_sum, C0_reference); junction: data/msc_rigorous_certified/remark_checks.json (key remainder_junction)
+\begin{proof}
+Arb evaluation of the single sum, same script; monotonicity for $\RemNA<N<\RemNB$ is the certified inequality $\sup r_N<\inf r_{N+1}$, as in Theorem~\ref{thm:rem}. At the junction of the two ranges, the upper bound $0.532129078393$ of $r_{\RemNA}$ (from the linear-system enclosure, Theorem~\ref{thm:rem}) is below the lower bound $0.532129156439$ of the next value of $r_N$ (from the single sum); both decimals are rounded outwards (\texttt{scripts/check\_remarks.py}, and again with \texttt{mpmath.iv} for $r_{\RemNA}$ in \texttt{scripts/audit.py}). As a consistency check, the single sum was also evaluated for all $N\le60$, every twentieth $N\le\RemNA$ and $N=350,401,450,500,600$; it overlaps the linear-system enclosure in every case.
+\end{proof}
+
+\section{A theorem for all $N$: log-concavity in one dimension for $q\le1/2$}
+
+\begin{theorem}\label{thm:logconcave}
+Let $d=1$, $N\ge2$ and $0<q\le1/2$ (real). Then $f(t)>0$ exactly for $t\ge N-1$, and
+\[
+f(t)^2\ \ge\ f(t-1)\,f(t+1)\qquad\text{for all }t\ge1 .
+\]
+Consequently there is $t^*\ge N-1$ with $f(t)<f(t+1)$ for $N-2\le t<t^*$ and $f(t)\ge f(t+1)$ for $t\ge t^*$: the PMF is unimodal (possibly with a plateau of equal values at the top).
+\end{theorem}
+\begin{proof}
+Here $\Omega'=\{0,\dots,N-2\}$, $n:=N-1$ sites, $Q$ is symmetric tridiagonal with off-diagonal entries $q/2$, and $f(t)=\frac q2(Q^{t-1})_{n-1,0}$.
+
+\emph{Step 1 (generating function).} By Lemma~\ref{lem:rho} the spectral radius of $Q$ is less than $1$, so for $|z|\le1$ the matrix $I-zQ$ is invertible and $F(z):=\sum_{t\ge1}f(t)z^t=\frac{qz}2\bigl[(I-zQ)^{-1}\bigr]_{n-1,0}$. By Cramer's rule this entry is $(-1)^{n-1}\det(\text{minor})/\det(I-zQ)$, where the minor is obtained from $I-zQ$ by deleting row $0$ and column $n-1$; that minor is upper triangular with diagonal entries $-zq/2$. Hence
+\[
+F(z)=\frac{(qz/2)^n}{\det(I-zQ)}=\frac{(qz/2)^n}{\prod_{j=1}^n(1-\theta_jz)},
+\]
+with $\theta_1,\dots,\theta_n$ the (real) eigenvalues of $Q$. Since $F(1)=\mathbb P(T<\infty)=1$ (Lemma~\ref{lem:rho}), $(q/2)^n=\prod_j(1-\theta_j)$, and
+\[
+F(z)=\prod_{j=1}^n\frac{(1-\theta_j)z}{1-\theta_jz}. \tag{6.1}
+\]
+
+\emph{Step 2 (eigenvalues).} $Q=(1-q)I+qQ_1$ with $Q_1$ symmetric and $\|Q_1\|_\infty\le1$, so $\theta_j\ge1-2q\ge0$; also $\theta_j<1$ by Lemma~\ref{lem:rho}, hence $\theta_j\in[0,1)$. As $Q\ne0$ is symmetric, at least one $\theta_j$ is positive; let it be $\theta_1$.
+
+\emph{Step 3 (convolution).} For $\theta\in[0,1)$ the factor $(1-\theta)z/(1-\theta z)$ is the generating function of $g_\theta(k)=(1-\theta)\theta^{k-1}$, $k\ge1$ (for $\theta=0$: of $\delta_1$). By (6.1), $f=g_{\theta_1}*g_{\theta_2}*\dots*g_{\theta_n}$.
+
+\emph{Step 4 (one convolution preserves log-concavity).} Claim: let $g:\mathbb Z\to[0,\infty)$ with $g(t)>0\iff t\ge m$ and $g(t)^2\ge g(t-1)g(t+1)$ for all $t$, let $\theta\in[0,1)$ and $h=g*g_\theta$. Then $h(t)>0\iff t\ge m+1$ and $h(t)^2\ge h(t-1)h(t+1)$ for all $t$.
+If $\theta=0$, $h(t)=g(t-1)$. Let $\theta>0$. The support statement is clear. From the definition, $h(t+1)=\theta h(t)+(1-\theta)g(t)$, so for $t\ge m+1$
+\[
+\frac{h(t+1)}{h(t)}=\theta+(1-\theta)\frac{g(t)}{h(t)},\qquad \frac{h(t)}{g(t)}=\sum_{k=1}^{t-m}(1-\theta)\theta^{k-1}\prod_{i=1}^k\frac1{\rho(t-i)},\quad \rho(u):=\frac{g(u+1)}{g(u)} .
+\]
+By hypothesis $\rho$ is non-increasing on $u\ge m$. When $t$ is replaced by $t+1$, every factor $1/\rho(t-i)$ is replaced by $1/\rho(t+1-i)\ge1/\rho(t-i)$ and one more non-negative term is added, so $h(t)/g(t)$ is non-decreasing in $t\ge m+1$. Therefore $h(t+1)/h(t)$ is non-increasing on $t\ge m+1$, which is $h(t)^2\ge h(t-1)h(t+1)$ for $t\ge m+2$; for $t\le m+1$ the right-hand side vanishes.
+
+\emph{Step 5.} $g_{\theta_1}$ satisfies the hypotheses of the claim with $m=1$ (its ratio is constant). Applying the claim $n-1$ times gives the theorem, with support $\{t\ge n\}$. The unimodality statement follows because $f(t+1)/f(t)$ is non-increasing on $t\ge N-1$ and cannot stay above $1$ (as $\sum f=1$).
+\end{proof}
+
+\begin{remark}\label{rem:lc}
+The hypothesis $q\le1/2$ cannot be replaced by $q<1$. For $N=3$ this can be seen exactly. Here $\Omega'=\{0,1\}$ and $Q$ has the rows $(1-\frac q2,\frac q2)$ and $(\frac q2,1-q)$; its eigenvalues $x\ne y$ are distinct because the off-diagonal entry is not zero, and by the Cayley--Hamilton theorem $Q^k=\alpha_kQ+\beta_kI$ with $\alpha_k=(x^k-y^k)/(x-y)$. Hence $f(t)=\frac q2(Q^{t-1})_{1,0}=\frac{q^2}4\,\alpha_{t-1}$, and the identity $(x^k-y^k)^2-(x^{k-1}-y^{k-1})(x^{k+1}-y^{k+1})=(xy)^{k-1}(x-y)^2$ gives
+\[
+f(t)^2-f(t-1)f(t+1)=\frac{q^4}{16}\,(\det Q)^{t-2}\quad(t\ge2),\qquad \det Q=1-\frac{3q}2+\frac{q^2}4 .
+\]
+So for $d=1$, $N=3$ the PMF is log-concave if and only if $\det Q\ge0$, i.e.\ $q\le3-\sqrt5=0.7639\ldots$; for $3-\sqrt5<q\le1$ log-concavity fails at every odd $t\ge3$ and at no other $t$ (at $q=4/5$, $\det Q=-1/25$). For $N=4$ and $q=4/5$ it fails at $t=4$, and exact rational arithmetic finds no other failure for $t\le400$. Unimodality nevertheless holds for $q=4/5$ in the whole certified range (Theorem~\ref{thm:modes}).
+% src: data/msc_rigorous_certified/logconcavity_check.json; data/msc_rigorous_certified/remark_checks.json (keys remark_lc_N3: identity checked exactly for t <= 80 and nine values of q, remark_lc_N4_q4-5: horizon 400); re-checked in code/msc_rigorous_certified/audit.py
+Formula (6.1) is the discrete-time form of the classical Karlin--McGregor/Keilson representation of birth-and-death passage times; it is proved above in two lines for the present chain, so no citation is needed.
+\end{remark}
+
+\begin{theorem}[the one-dimensional mode on a finite range; computer-assisted]\label{thm:1dlaw}
+Let $d=1$, $\kappa_1=2\tau^*$ as in Theorem~\ref{thm:tau}, and $y_N(q)=\kappa_1(N-\frac12)^2/q$.
+\begin{itemize}
+\item[(a)] For $q=4/5$ and every $10\le N\le\NmaxOneF$: $\ \DeltaLoF<t^*-y_N<\DeltaHiF$.
+\item[(b)] For $q=1/2$ and every $10\le N\le\NmaxOneH$: $\ \DeltaLoH<t^*-y_N<\DeltaHiH$.
+\item[(c)] In both cases $\bigl|t^*/\mathbb E\,T-\kappa_1\bigr|\le c/(N(N-1))$ with $c=\RatioConstF$ for $q=4/5$ and $c=\RatioConstH$ for $q=1/2$ (recall $\mathbb E\,T=N(N-1)/q$).
+\end{itemize}
+In (a) and (b) the interval has length less than $1$, so $t^*$ is the unique integer in it: in the certified range the mode is given exactly by $t^*=\lfloor y_N\DeltaHiSF\rfloor$ for $q=4/5$ and by $t^*=\lfloor y_N\DeltaHiSH\rfloor$ for $q=1/2$.
+% src: data/msc_rigorous_certified/SUMMARY.json (key law_1d), from data/msc_rigorous_certified/closedform_d1_q4-5.jsonl, data/msc_rigorous_certified/closedform_d1_q1-2.jsonl and data/msc_rigorous_certified/constants.json; re-checked in code/msc_rigorous_certified/audit.py
+\end{theorem}
+\begin{proof}
+\texttt{scripts/closed\_form.py} forms $t^*-\kappa_1(N-\frac12)^2/q$ in exact rational arithmetic from the certified integer $t^*$ and the rational enclosure of $\kappa_1$ of Theorem~\ref{thm:tau}; \texttt{scripts/summarise.py} takes the extremes over $N$, and \texttt{scripts/audit.py} re-checks (a)--(c) and the floor formula for every $N$.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:1dlaw} is a finite-range statement. That $t^*/\mathbb E\,T\to\kappa_1$ as $N\to\infty$ is not proved here (Section~\ref{sec:gaps}); the theorem shows that in the certified range the lattice ratio differs from the continuum constant by less than $N^{-2}$. The two isolated values $N=800,1000$ at $q=4/5$ also satisfy (a) (\texttt{certs/SUMMARY.json}, key \texttt{law\_1d}).
+% src: data/msc_rigorous_certified/SUMMARY.json (key law_1d, field extra_N)
+\end{remark}
+
+\begin{proposition}[one dimension, $q$ close to $1$: not unimodal, for all $N\ge4$]\label{prop:notunimodal}
+Let $d=1$, $N\ge4$ and $q_N:=\dfrac{2N-4}{2N-3}$. For every real $q$ with $q_N\le q\le1$,
+\[
+f(N+1)>f(N),\qquad\text{and}\qquad f(N-1)>f(N)\iff q>q_N .
+\]
+Consequently, for $q_N<q\le1$ the PMF satisfies $f(N-1)>f(N)<f(N+1)$ and is not unimodal, even in the weak sense of Definition~\ref{def:unimodal}. In particular, for $q=1$ the one-dimensional PMF is not unimodal for \emph{every} $N\ge4$.
+\end{proposition}
+\begin{proof}
+A step moves the walker by at most one site, so a path from $0$ that reaches the target $N-1$ for the first time at step $N-1+k$ consists of $N-1$ forward moves and $k$ further steps. Put $n=N-2$, $u=1-q$, $m=(q/2)^{N-1}$, and let $r_0=1-\frac q2=\frac{1+u}2$ be the probability of staying at the reflecting end $0$ (rest or cancelled move) and $r=1-q=u$ the probability of resting at one of the $n$ sites $1,\dots,N-2$.
+
+$k=0$: only the direct path, $f(N-1)=m$. $k=1$: the direct path with one stay inserted at one of the $N-1$ non-target sites (a backward move would cost two extra steps), so $f(N)=m\,(r_0+nr)$. Hence $f(N-1)>f(N)$ iff $r_0+nr<1$ iff $n(1-q)<\frac q2$ iff $q>q_N$. $k=2$: either two stays (at the same or at different sites), with total weight $m\bigl(r_0^2+n\,r_0r+\tfrac{n(n+1)}2r^2\bigr)$, or one backward move from a site $j\in\{1,\dots,N-2\}$ to $j-1$ followed by one more forward move, with total weight $m\,n\,(q/2)^2$ (at the site $0$ a backward move is cancelled and has been counted as a stay). Therefore $f(N+1)-f(N)=m\,G(u)$ with
+\[
+G(u)=\frac{(1+u)^2}4+\frac{n\,u(1+u)}2+\frac{n(n+1)}2u^2+\frac{n(1-u)^2}4-\frac{1+u}2-nu
+=\frac{n-1}4-n\,u+\frac{2n^2+5n+1}4\,u^2 .
+\]
+The condition $q_N\le q\le1$ is $0\le u\le\frac1{2n+1}$. The quadratic $G$ is decreasing on $[0,u_0]$, $u_0=\frac{2n}{2n^2+5n+1}$, and $u_0\ge\frac1{2n+1}$ because $2n(2n+1)-(2n^2+5n+1)=2n^2-3n-1\ge1$ for $n\ge2$. So on the interval
+\[
+G(u)\ \ge\ G\Bigl(\frac1{2n+1}\Bigr)=\frac{(n-1)(2n+1)^2-4n(2n+1)+2n^2+5n+1}{4(2n+1)^2}=\frac{n\,(2n^2-3n-1)}{2\,(2n+1)^2}>0 .
+\]
+Finally, if $f(N-1)>f(N)<f(N+1)$ then no $t^*$ as in Definition~\ref{def:unimodal} exists: $f(N-1)>f(N)$ forces $t^*\le N-1$, and $f(N)<f(N+1)$ forces $t^*\ge N+1$.
+\end{proof}
+
+\begin{remark}
+At $q=q_N$ the proposition gives $f(N-1)=f(N)<f(N+1)$; for $N=4$ this is the exceptional case $(1,\frac45,4)$ of Theorem~\ref{thm:modes}. Proposition~\ref{prop:notunimodal} shows that the restriction on $q$ in Conjecture~\ref{conj:unimodal} cannot be removed: in one dimension unimodality fails for every $q>(2N-4)/(2N-3)$, a threshold which equals $4/5$ for $N=4$ and increases to $1$. Since $q_N\ge4/5$ for all $N\ge4$, the value $q=4/5$ of the article is the largest activity for which one-dimensional unimodality for all $N$ is not excluded by this mechanism. For $q=1$ the proposition is consistent with the certificates of Theorems~\ref{thm:modesU} and \ref{thm:modesUX} (at least two strict local maxima for all $4\le N\le400$).
+% src: field certified_local_maxima_upto_T of data/msc_rigorous_certified/modes_d1_q1-1.jsonl and data/msc_rigorous_certified/c128_d1_q1-1.jsonl
+\end{remark}
+
+\input{sec_ext.tex}
+\input{sec_ext2.tex}
+
+\section{Conjectures, observations and remaining gaps}\label{sec:gaps}
+
+\begin{conjecture}[unimodality for all $N$]\label{conj:unimodal}
+For $d\in\{1,2,3\}$, $q\in\{4/5,\,1/2\}$ and every $N\ge2$ the corner-to-corner first-passage PMF is unimodal, and strictly unimodal except in the three cases of Theorem~\ref{thm:modes}(d).
+\end{conjecture}
+Status: proved in the weak sense for $d=1$, $q\le1/2$ and all $N$ (Theorem~\ref{thm:logconcave}); a theorem for the finite ranges of Theorems~\ref{thm:modes} and \ref{thm:modesX}; \emph{false} for $q=1$ (Theorem~\ref{thm:modesU}), so some restriction on $q$ is necessary. No proof is known to us for $d\ge2$, nor for $d=1$ with $1/2<q<1$.
+
+\begin{conjecture}[the target's neighbours peak last]\label{conj:last}
+For $d\in\{1,2,3\}$, $q\in\{4/5,\,1/2\}$ and every $N\ge2$, with $t^*$ the largest maximiser of $f$: $v_{t^*+1}<v_{t^*}$ on $\Omega'$. In words: by the time the flux into the target peaks, the occupation probability of \emph{every} non-target site is already decreasing.
+\end{conjecture}
+Status: a theorem in the certified ranges (Theorem~\ref{thm:modes}(c),(d), Theorem~\ref{thm:modesX}(b)): it holds in all \XLastCerts\ certificates of the C engine with $q\in\{4/5,1/2\}$ (\XLastNonExc\ non-exceptional ones, where the maximiser is unique and $T=t^*$, and the three exceptional triples, where $T$ is the largest of the exactly known maximisers). With $t^*$ the \emph{smallest} maximiser, $T=t^*$ holds in \XLastSmall\ of them; the two exceptions are the plateaus $(1,\frac12,3)$ and $(1,\frac12,4)$. By Lemma~\ref{lem:tail}, Conjecture~\ref{conj:last} together with monotone increase of $f$ before $t^*$ would give Conjecture~\ref{conj:unimodal}. For $q=1$ the statement fails for some $N$ (for example $d=2$, $N=4$: $t^*=16$, $T=17$).
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key conjecture_last; also data/msc_rigorous_certified/remark_checks.json, key conjecture_last); d = 2, N = 4, q = 1: data/msc_rigorous_certified/modes_d2_q1-1.jsonl, data/msc_rigorous_certified/packedexact_d2_q1-1.jsonl
+
+\begin{conjecture}[accuracy of the closed form for all $N$]\label{conj:cf}
+For $q\in\{4/5,1/2\}$ and every $N\ge10$: $|t^*-t_{\rm cf}|\le0.0100\,t^*$ for $d=2$ and $|t^*-t_{\rm cf}|\le0.0030\,t^*$ for $d=3$.
+% src: conjectured constants; the largest certified values (0.00971 and 0.00275) are in data/msc_rigorous_certified/closedform_summary_c128.json
+\end{conjecture}
+Status: a theorem, with the sharper constants of Theorems~\ref{thm:cf} and \ref{thm:cfX}, in the certified ranges ($N\le\XEpsNTwoF$ and four larger values in two dimensions, $N\le\XEpsNThreeF$ in three, for $q=4/5$). The evidence beyond them is the continuous-time computations of Sections~5--6 of the article. No proof is known to us; see G1 below.
+
+\begin{observation}[log-concavity in $d=2,3$]\label{obs:lc}
+For $d=2$, $N\le7$ and $d=3$, $N\le4$, with $q=1/2$ and $q=4/5$, exact rational arithmetic gives $f(t)^2\ge f(t-1)f(t+1)$ for all $t$ up to four times the tail time (\texttt{certs/logconcavity\_check.json}). This is an observation on a finite horizon, not a theorem.
+\end{observation}
+
+\textbf{Refuted statements.}
+\begin{itemize}
+\item ``The PMF is unimodal for every $q\in(0,1]$'': false at $q=1$ (Theorem~\ref{thm:modesU}), in one dimension for every $N\ge4$ (Proposition~\ref{prop:notunimodal}); in one dimension the parity oscillation produces up to $164054$ certified strict local maxima ($N=400$), and for $q=1$, $d=1$, $N\in\{5,6,8,9\}$ even the maximum is attained twice; in two dimensions the PMF has two strict local maxima for sixteen values of $N\le160$, the four largest being $N=86,92,136,149$ (Theorem~\ref{thm:modesUX}).
+\item ``No exact ties occur'': false; $f(3)=f(4)$ for $(d,q,N)=(1,\frac45,4)$ and the maximum is attained twice for $(1,\frac12,3)$ and $(1,\frac12,4)$ (Theorem~\ref{thm:modes}(d)); for $q=1$, $f(3)=f(4)$ ($d=1$, $N=3$), $f(8)=f(9)$ ($d=1$, $N=4$) and $f(2)=f(3)$ ($d=2$, $N=2$) (Theorems~\ref{thm:modesU}, \ref{thm:modesUX}).
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (key modes.d1_q1-1.max_local_maxima, key q1); data/msc_rigorous_certified/packedexact_d1_q4-5.jsonl, data/msc_rigorous_certified/packedexact_d1_q1-2.jsonl, data/msc_rigorous_certified/packedexact_d1_q1-1.jsonl, data/msc_rigorous_certified/packedexact_d2_q1-1.jsonl
+\item ``The closed form $t_{\rm cf}$ approximates the mode in every dimension'': false for $d=1$ (Theorem~\ref{thm:cf}(c)).
+\item ``The PMF is log-concave for every $q<1$ in one dimension'': false for $q=4/5$, $N=3,4$; for $N=3$ it is false exactly when $q>3-\sqrt5$ (Remark~\ref{rem:lc}).
+\end{itemize}
+
+\textbf{Remaining gaps} (what would be needed, in decreasing order of importance).
+\begin{itemize}
+\item[G1.] \emph{All $N$.} Theorems~\ref{thm:modes}, \ref{thm:modesU}, \ref{thm:cf}, \ref{thm:rem}, \ref{thm:1dlaw} and \ref{thm:modesX}--\ref{thm:1dlawX} are statements about finite sets of $N$; the certificates say nothing beyond them. A proof for all $N$ of $|t^*-t_{\rm cf}|\le\varepsilon_dt^*$ needs a rigorous version of the two-pole perturbation argument of Section~6 of the article (uniform control of the remainder of the renewal ratio on $[-\mu_2,0]$ and of the poles $j\ge2$); this is not done here.
+\item[G2.] \emph{Asymptotic laws.} The statements $t^*/\mathbb E\,T\to\kappa_1$ ($d=1$), $t^*\sim(4/\pi^2q)N^2\ln\ln N$ ($d=2$) and $t^*\sim(6/\pi^2q)N^2(\ln N+3.753)$ ($d=3$) are not touched by the computations. Theorem~\ref{thm:tau} proves only that the continuum constant is well defined and gives its value.
+\item[G3.] \emph{Identification of $C_2$.} That $C_2$ is the limit of $(\tau_N-\frac8\pi N^2\ln N)/N^2$ rests on Theorem~4 of the companion note, whose remainder estimate is sketched there. Theorem~\ref{thm:rem} gives $|(\tau_N-\frac8\pi N^2\ln N)/N^2-C_2|<\RemHiA/N^2$ for $2\le N\le\RemNA$ unconditionally.
+\item[G4.] \emph{Three-dimensional MFPT constants} $C_3\approx4.32046$, $C_3'\approx-3.887$ (proved in note R2, Theorem~10.1, and stated as Theorem~4.8 of the article) are not certified in this note; rigorous enclosures of $\tau_N$ for $d=3$, $2\le N\le120$ and $N=130,140,150,160$, are in \texttt{certs/mfpt\_d3.jsonl}. (An enclosure of $C_3$ is derived in the companion note R2.)
+% src: data/msc_modes/fit_results.json (C_3, C_3'); data/msc_rigorous_certified/mfpt_d3.jsonl
+\item[G5.] \emph{Scope.} Only the corner-to-corner geometry, only $q\in\{4/5,1/2,1\}$, only discrete time.
+\item[G6.] \emph{Ranges.} With Python integers alone (T1) the largest three-dimensional box certified is $N=\NmaxThreeF$ ($216000$ sites, $21175$ steps), the limit being computer time: its verification with Python integers took $1794$~s of wall-clock time on the loaded machine, and the cost grows roughly like $N^5$.
+% src: data/msc_rigorous_certified/modes_d3_q4-5.jsonl (N = 60: T_tail = 21175), data/msc_rigorous_certified/packed_d3_q4-5.jsonl (N = 60: seconds = 1793.95, wall-clock)
+With the C engine (T5) the ranges are those of Table~\ref{tab:rangesX}; they contain all corner-to-corner cases of the discrete-time study of Sections~5--6 of the article. Larger $N$ are a matter of computer time only (the cost per value of $N$ grows like $N^{3}$, $N^{4}$, $N^{5}$ in dimensions $1,2,3$, up to logarithms), the engine being restartable from checkpoints.
+\item[G7.] \emph{Trusted base.} Theorems~\ref{thm:modes} and \ref{thm:modesU} rest on the correctness of CPython's integer arithmetic and of the 253-line program \texttt{verify\_packed.py} (all \TotalCerts\ certificates), supported by four further programs with which it never disagreed. Theorems~\ref{thm:modesX}--\ref{thm:1dlawX} rest in addition on the C compiler and on the 366-line program \texttt{fp128.c} (T5); of the \XTotalNew\ certificates outside Table~\ref{tab:ranges}, \XXLimb\ were re-derived by the generator and \XXPacked\ with Python integers only, so for the remaining ones the C program is the only witness (each of them was computed twice with identical output and passes the conservation test (V5) of Section~\ref{sec:ext}). Theorems~\ref{thm:cf}, \ref{thm:tau}, \ref{thm:C2}, \ref{thm:rem} rest on the correctness of Arb, cross-checked with \texttt{mpmath.iv} (and re-evaluated with \texttt{mpmath.iv} alone by \texttt{audit.py}). No program was formally verified in a proof assistant.
+% src: code/msc_rigorous_certified/verify_packed.py (253 lines); data/msc_rigorous_certified/c128_build.json (source_lines 366); data/msc_rigorous_certified/SUMMARY_EXT.json (xcheck counts)
+\end{itemize}
+
+\section{Verification matrix, files and reproduction}\label{sec:verif}
+
+\begin{table}[!htbp]\centering\small
+\input{tab_verif.tex}
+\caption{Number of mode certificates and of re-derivations by separately written programs, with wall-clock times in seconds (on a heavily loaded machine; for these single-threaded programs they are upper bounds for the CPU times). ``\texttt{verify\_packed}'': identical verdicts obtained with Python integers only. ``exact'': re-derived without any rounding. ``\texttt{fpcore}'': identical JSON line including the sha256 digest of $(L_T,U_{T+1})$.}\label{tab:verif}
+\end{table}
+
+\textbf{Separately written programs.} All programs were written within this project and run on the same machine; none of the checks below is a verification by a third party. The \TotalCerts\ certificates were produced by the generator \texttt{fplimb.py}. Of these, \TotalPacked\ were re-derived by \texttt{verify\_packed.py} (different data layout, different rounding scheme, different switch time, Python integers only) with identical $t_0$, $t^*$, $T$ and verdicts and with intersecting enclosures; \TotalExact\ were re-derived in exact arithmetic; \TotalRef\ were reproduced bit for bit by \texttt{fpcore.py}. The number of disagreements between any two programs is \TotalMismatch. The certified modes also agree with the \FloatStudyAgree\ values of the computations of Sections~5--6 of the article that fall in the certified sets.
+
+\textbf{The C engine (Section~\ref{sec:ext}).} \XTotalCerts\ certificates \texttt{certs/c128\_*.jsonl}, of which \XRegressN\ repeat the cases of Table~\ref{tab:ranges} (\XRegressBad\ disagreements with the generator's certificates) and \XTotalNew\ are new. Of the new ones, \XXLimb\ were re-derived by \texttt{fplimb.py} and \XXPacked\ by \texttt{verify\_packed.py} (\XXBad\ disagreements; Table~\ref{tab:rangesX}). The complete output of the C program is byte-identical with that of the Python-integer mirror \texttt{c128\_ref.py} in \XRefSmall\ small and \XRefMedium\ medium cases, and runs that were interrupted repeatedly (time budget $0.5$~s per invocation: $9$ interruptions for $d=1$, $N=1500$; $4$ for $d=3$, $N=50$; $2$ for $d=2$, $N=120$, in the recorded run; all at $q=4/5$) and continued from their checkpoints produced output files byte-identical with those of the uninterrupted runs (sha256 equal to the field \texttt{digest} of the certificates; \texttt{scripts/c128/checkpoint\_test.py}).
+% src: data/msc_rigorous_certified/c128_checkpoint_test.json, data/msc_rigorous_certified/c128_refcheck.json, data/msc_rigorous_certified/c128_refcheck_medium.json
+Every certificate was computed twice (\XRecheckN\ second runs, identical sha256 digests, \XRecheckBad\ failures; additional wall-clock time \XRecheckCpu~s), and all satisfy the conservation test (V5). Total wall-clock time of all C runs including post-processing: \XCpu~s (on a heavily loaded machine; for these single-threaded programs this is an upper bound for the CPU time); the longest single certificate took \XMaxSeconds~s in \XMaxCalls\ invocation(s) of at most 15 minutes each; the longest cross-check took \XMaxXSeconds~s.
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json (keys modes.*.seconds, max_seconds, max_calls, max_xcheck_seconds; field seconds = wall-clock time)
+
+\textbf{Sanity checks of the lemmas} (\texttt{scripts/check\_lemmas.py}, output \texttt{certs/lemma\_checks.json}; none of these is part of a proof). Lemmas~\ref{lem:basic}, \ref{lem:rho}, \ref{lem:pos}, \ref{lem:tail} (including the geometric bound) were checked in exact rational arithmetic on eleven small cases over a horizon of four tail times; Lemma~\ref{lem:encl} was checked against exact rationals with $P=8,20,40$; Lemma~\ref{lem:limb} on 360 random vectors with extreme limb values for all nine $(d,q)$; Lemmas~\ref{lem:single} and \ref{lem:packed} on random vectors against a direct site-by-site implementation and against exact rationals, and Proposition~\ref{prop:termination} numerically (\texttt{scripts/check\_packed.py}, output \texttt{certs/packed\_checks.json}); Lemma~\ref{lem:mfpt} against exact rational solves ($q\,\mathbb E T=8,\ 27,\ 416/7,\ 1175/11,\ 9368/55$ for $d=2$, $N=2,\dots,6$; $20$ and $1161/14$ for $d=3$, $N=2,3$); formula (6.1) and $(q/2)^n=\prod(1-\theta_j)$ numerically; the series identity (5.1) to $30$ digits, and the Step-3 identity, the bound on $|b_n'|$ and the single sign change of $\varphi'$ of Theorem~\ref{thm:tau} on a grid (\texttt{check\_packed.py}); Theorem~\ref{thm:logconcave} by \texttt{scripts/check\_logconcave.py}. The lemmas of Section~\ref{sec:ext} are checked by \texttt{scripts/c128/check\_ext\_lemmas.py} (output \texttt{certs/ext\_lemma\_checks.json}): Lemma~\ref{lem:support} in exact rational arithmetic on 18 small chains; Lemma~\ref{lem:sym} by comparing the reduced and the full C program in 8 cases (identical $F^\pm_t$, relations, $T$; symmetric final vectors); the division identities of Lemma~\ref{lem:cint} on $6\times10^4$ random and extreme arguments; the routine \texttt{fsum} of Lemma~\ref{lem:float}(a) on $6\times10^4$ random inputs against exact rationals (direction of rounding, zero pattern, exponent window; largest relative width $3.1\times10^{-18}$); Proposition~\ref{prop:soundC} end to end against exact rational arithmetic in 42 small cases (enclosures, early relations, tail time, $t_0$, $\gamma$; in all of them the certified tail time is the first exact one); and the closed forms of $f(N-1)$, $f(N)$, $f(N+1)$ and of $\min G$ in Proposition~\ref{prop:notunimodal} against exact iteration of the chain (54 cases) and for all $n<400$. Further statements are checked by \texttt{scripts/check\_remarks.py} (output \texttt{certs/remark\_checks.json}): the identity of Remark~\ref{rem:lc} for $N=3$ in exact arithmetic ($t\le80$, nine values of $q$ on both sides of $3-\sqrt5$) and the failures of log-concavity for $N=4$, $q=4/5$, $t\le400$; the continuum value in Remark~\ref{rem:cfX}; the counts in the status of Conjecture~\ref{conj:last}; the junction in Proposition~\ref{prop:rem}; the signs and values quoted in Remarks~\ref{rem:cfshape} and \ref{rem:cfX}; and the speed ratios quoted in Section~\ref{sec:ext}. The checkpoint test of the C engine is \texttt{scripts/c128/checkpoint\_test.py} (output \texttt{certs/c128\_checkpoint\_test.json}).
+% src: data/msc_rigorous_certified/lemma_checks.json, data/msc_rigorous_certified/packed_checks.json, data/msc_rigorous_certified/logconcavity_check.json, data/msc_rigorous_certified/ext_lemma_checks.json, data/msc_rigorous_certified/remark_checks.json, data/msc_rigorous_certified/c128_checkpoint_test.json
+
+\textbf{Files} (in the repository: \texttt{scripts/} is \texttt{code/msc\_rigorous\_certified/}, \texttt{scripts/c128/} is \texttt{code/msc\_rigorous\_certified\_c128/}, \texttt{certs/} is \texttt{data/msc\_rigorous\_certified/}; shell drivers and logs are not released).
+\begin{itemize}
+\item \texttt{scripts/verify\_packed.py}: the verifying program for the mode certificates (Python integers only). \texttt{scripts/verify\_exact.py}: exact rational check for small $N$. \texttt{scripts/fplimb.py}: generator. \texttt{scripts/fpcore.py}: reference implementation of the generator's recurrences. \texttt{scripts/run\_modes.py}, \texttt{driver.sh}, \texttt{queue.sh}, \texttt{run\_packed.sh}, \texttt{run\_packed\_range.sh}, \texttt{run\_packed\_exact.sh}: restartable runners.
+\item \texttt{scripts/mfpt\_enclosure.py}, \texttt{closed\_form.py}, \texttt{constants.py}, \texttt{mfpt2d\_remainder.py}: Lemma~\ref{lem:mfpt}, Theorems~\ref{thm:cf}, \ref{thm:tau}, \ref{thm:C2}, \ref{thm:rem}, \ref{thm:1dlaw}.
+\item \texttt{scripts/audit.py}: re-checks every numerical assertion of Theorems~\ref{thm:modes}, \ref{thm:modesU}, \ref{thm:cf}, \ref{thm:rem} and \ref{thm:1dlaw} against the certificate files (output \texttt{certs/AUDIT.json}) and writes the sha256 digests of all certificate files to \texttt{certs/MANIFEST.sha256}.
+\item \texttt{scripts/check\_lemmas.py}, \texttt{check\_packed.py}, \texttt{check\_logconcave.py}, \texttt{check\_remarks.py}: sanity checks (the last one writes \texttt{certs/remark\_checks.json}). \texttt{scripts/summarise.py}, \texttt{tex2md.py}: bookkeeping.
+\item \texttt{scripts/c128/fp128.c}: the C engine (Section~\ref{sec:ext}). \texttt{c128\_post.py}: certificate from its binary output (Python integers). \texttt{c128\_run.py}, \texttt{regress\_tierA.sh}, \texttt{extend.sh}, \texttt{extend2.sh}, \texttt{extend3.sh}, \texttt{extend4.sh}: restartable runners. \texttt{c128\_ref.py}: Python-integer mirror; \texttt{c128\_validate\_ref.py}, \texttt{c128\_validate\_ref2.py}: byte-for-byte comparisons. \texttt{xcheck.py}, \texttt{xcheck\_all.sh}: cross-checks by \texttt{fplimb.py} / \texttt{verify\_packed.py}. \texttt{check\_ext\_lemmas.py}: sanity checks of the lemmas of Section~\ref{sec:ext}. \texttt{c128\_recheck.py}: second run of every certificate, digest comparison and conservation test (output \texttt{certs/c128\_recheck\_*.jsonl}). \texttt{checkpoint\_test.py}: repeatedly interrupted runs (output \texttt{certs/c128\_checkpoint\_test.json}). \texttt{summarise\_ext.py}, \texttt{audit\_ext.py}: bookkeeping and audit of Theorems~\ref{thm:modesX}--\ref{thm:1dlawX} (output \texttt{certs/SUMMARY\_EXT.json}, \texttt{certs/AUDIT\_EXT.json}).
+\item \texttt{certs/c128\_d$d$\_q$q$.jsonl}: certificates of the C engine. \texttt{certs/xcheck\_limb\_*.jsonl}, \texttt{xcheck\_packed\_*.jsonl}: cross-checks. \texttt{certs/c128\_refcheck.json}, \texttt{c128\_refcheck\_medium.json}, \texttt{c128\_checkpoint\_test.json}: byte-identity tests. \texttt{certs/c128\_build.json}: compiler, flags and digests of the build. \texttt{certs/closedform\_c128\_*.jsonl}, \texttt{closedform\_summary\_c128.json}: Theorem~\ref{thm:cfX}.
+\item \texttt{certs/modes\_d$d$\_q$q$.jsonl}: mode certificates (one JSON line per $N$; integers as decimal strings). \texttt{certs/packed\_*.jsonl}, \texttt{packedexact\_*.jsonl}, \texttt{refcheck\_*.jsonl}, \texttt{exactcheck\_*.jsonl}: re-derivations. \texttt{certs/mfpt\_d$d$.jsonl}: rational enclosures of $\tau_N$. \texttt{certs/closedform\_*.jsonl}, \texttt{closedform\_summary.json}: Theorem~\ref{thm:cf}. \texttt{certs/constants.json}, \texttt{mfpt2d\_remainder.json}, \texttt{lemma\_checks.json}, \texttt{packed\_checks.json}, \texttt{logconcavity\_check.json}, \texttt{SUMMARY.json}, \texttt{AUDIT.json}.
+\end{itemize}
+
+\textbf{Reproduction} (\texttt{PY} = \texttt{env/venv/bin/python}; every step is deterministic).
+\begin{itemize}
+\item \texttt{scripts/driver.sh d qn qd 2 Nmax limb} produces \texttt{certs/modes\_*.jsonl}; \texttt{PY scripts/verify\_packed.py certs/modes\_d2\_q4-5.jsonl} verifies a certificate file with Python integers (add \texttt{-{}-exact} and an upper limit for $N$ for the exact mode); \texttt{scripts/driver.sh d qn qd 2 Nmax ref} re-derives certificates with \texttt{fpcore.py}; \texttt{PY scripts/verify\_exact.py certs/modes\_d2\_q4-5.jsonl 13} runs the exact rational check.
+\item \texttt{PY scripts/mfpt\_enclosure.py d 2 Nmax}; \texttt{PY scripts/constants.py}; \texttt{PY scripts/closed\_form.py}; \texttt{PY scripts/mfpt2d\_remainder.py 1500}; \texttt{PY scripts/check\_lemmas.py}; \texttt{PY scripts/check\_packed.py}; \texttt{PY scripts/check\_logconcave.py}; \texttt{PY scripts/check\_remarks.py}; \texttt{PY scripts/summarise.py}; \texttt{PY scripts/audit.py}; \texttt{PY scripts/tex2md.py}.
+\item C engine: \texttt{cc -O2 -o work/fp128 scripts/c128/fp128.c}; the checking build adds the options \texttt{-O1 -g -DCHECK}, \texttt{-fsanitize=undefined,address} and \texttt{-fno-sanitize-recover=all} (output \texttt{work/fp128\_check}); \texttt{PY scripts/c128/c128\_validate\_ref.py}; \texttt{PY scripts/c128/c128\_validate\_ref2.py}; \texttt{PY scripts/c128/check\_ext\_lemmas.py}; \texttt{scripts/c128/regress\_tierA.sh}; \texttt{scripts/c128/extend.sh} (then \texttt{extend2.sh}, \texttt{extend3.sh}, \texttt{extend4.sh}); \texttt{scripts/c128/xcheck\_all.sh limb|packed|batch2}; \texttt{PY scripts/c128/c128\_recheck.py}; \texttt{PY scripts/c128/checkpoint\_test.py}; \texttt{PY scripts/closed\_form.py c128}; \texttt{PY scripts/c128/summarise\_ext.py}; \texttt{PY scripts/c128/audit\_ext.py}; \texttt{scripts/finalise\_all.sh} rebuilds every derived file of both tiers and runs both audits. A single certificate: \texttt{work/fp128 d N qn qd 1 out.bin 900} (exit code 75 = checkpoint written, run again), then \texttt{PY scripts/c128/c128\_post.py out.bin}.
+\end{itemize}
+A single certificate takes from milliseconds to $499$~s of wall-clock time (generator; longest: $d=3$, $N=58$), and its verification with Python integers up to $1794$~s ($d=3$, $N=60$). The machine was heavily loaded during the runs, so these times and those of Table~\ref{tab:verif} are upper bounds for the CPU times. The largest state vectors have $216000$ sites (Python programs, $d=3$, $N=60$) and $695520$ stored sites (C engine, $d=3$, $N=160$); peak memory use was not recorded.
+% src: field seconds (wall-clock) of data/msc_rigorous_certified/modes_d3_q4-5.jsonl (N = 58: 498.52) and data/msc_rigorous_certified/packed_d3_q4-5.jsonl (N = 60: 1793.95); data/msc_rigorous_certified/SUMMARY_EXT.json (max_stored_sites)
+
+\appendix
+\section{All certified modes in two and three dimensions}\label{sec:allmodes}
+
+For completeness, Tables~\ref{tab:all2F}--\ref{tab:all3H} list every certified mode $t^*(d,N,q)$ of Theorem~\ref{thm:modes} for $d=2,3$ (read down the columns). In one dimension the modes for $10\le N\le\NmaxOneF$ ($q=4/5$) and $10\le N\le\NmaxOneH$ ($q=1/2$) are given by the floor formula of Theorem~\ref{thm:1dlaw}; for $N=2,\dots,9$ they are (for $q=1/2$, $N=3,4$: the smaller of the two maximisers)
+\input{text_small_1d.tex}
+
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_all_d2_q4-5.tex}
+\caption{$d=2$, $q=4/5$: all certified modes.}\label{tab:all2F}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_all_d2_q1-2.tex}
+\caption{$d=2$, $q=1/2$: all certified modes.}\label{tab:all2H}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_all_d3_q4-5.tex}
+\caption{$d=3$, $q=4/5$: all certified modes.}\label{tab:all3F}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_all_d3_q1-2.tex}
+\caption{$d=3$, $q=1/2$: all certified modes.}\label{tab:all3H}
+\end{table}
+
+Tables~\ref{tab:allX2F}--\ref{tab:allX3H} list the additional modes of Theorem~\ref{thm:modesX} for $d=2,3$ (C engine; the values of $N$ not contained in the tables above).
+
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_ext_all_d2_q4-5.tex}
+\caption{$d=2$, $q=4/5$: the additional certified modes (Theorem~\ref{thm:modesX}).}\label{tab:allX2F}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_ext_all_d2_q1-2.tex}
+\caption{$d=2$, $q=1/2$: the additional certified modes (Theorem~\ref{thm:modesX}).}\label{tab:allX2H}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_ext_all_d3_q4-5.tex}
+\caption{$d=3$, $q=4/5$: the additional certified modes (Theorem~\ref{thm:modesX}).}\label{tab:allX3F}
+\end{table}
+\begin{table}[!htbp]\centering\footnotesize
+\input{tab_ext_all_d3_q1-2.tex}
+\caption{$d=3$, $q=1/2$: the additional certified modes (Theorem~\ref{thm:modesX}).}\label{tab:allX3H}
+\end{table}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{HW} G.~H. Hardy and E.~M. Wright, \emph{An Introduction to the Theory of Numbers}, 5th ed., Oxford University Press, 1979, Theorem~357 (Jacobi's identity for $\prod(1-x^k)^3$).
+\bibitem{Ap} T.~M. Apostol, \emph{Modular Functions and Dirichlet Series in Number Theory}, 2nd ed., Springer, 1990, Theorem~3.1 (Dedekind's functional equation $\eta(-1/\tau)=(-i\tau)^{1/2}\eta(\tau)$).
+\bibitem{Se} E.~Seneta, \emph{Non-negative Matrices and Markov Chains}, 2nd ed., Springer, 1981, Theorem~1.1 (Perron--Frobenius theorem for primitive matrices).
+\bibitem{Arb} F.~Johansson, Arb: efficient arbitrary-precision midpoint-radius interval arithmetic, \emph{IEEE Trans.\ Comput.}\ 66 (2017) 1281--1292.
+\bibitem{companion} The proofs of the mean first-passage time formulas of the article: the single-sum formula for the corner-to-corner MFPT on the reflecting square (Theorem~4.2 of the article, proof in its Supplementary Section~S3) and its large-$N$ expansion (Theorem~4.5 of the article, proof in its Supplementary Section~S4).
+\end{thebibliography}
+\end{document}

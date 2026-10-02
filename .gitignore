@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.DS_Store
+# LaTeX build products (the shipped PDFs are paper.pdf and supplement.pdf)
+*.aux
+!xref/*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+!data/**/*.log
+*.out
+*.toc
+main.pdf
+# regenerated research figures and compiled programs
+out/figures/*/*.pdf
+out/figures/*/*.png
+code/msc_modes_verify/stepper
+/s3_methods_certificate_chain
+out/work/msc_rigorous_certified/fp128

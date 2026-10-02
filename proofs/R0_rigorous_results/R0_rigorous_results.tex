@@ -1,0 +1,1324 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{longtable,booktabs,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=green!40!black,urlcolor=blue!50!black]{hyperref}
+\setlist{itemsep=1pt,topsep=3pt}
+\makeatletter\g@addto@macro{\UrlBreaks}{\do\_\do\-}\makeatother
+\allowdisplaybreaks
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{catheorem}[theorem]{Computer-assisted theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{calemma}[theorem]{Computer-assisted lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{caproposition}[theorem]{Computer-assisted proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{cacorollary}[theorem]{Computer-assisted corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\newtheorem{refuted}[theorem]{Refuted statement}
+\newtheorem{remark}[theorem]{Remark}
+
+% markers
+\newcommand{\NEW}{\ensuremath{^{\dagger}}}       % proof written after the two internal checks of a companion note
+\newcommand{\SYN}{\ensuremath{^{\ddagger}}}      % deduction made in this document by combining two notes
+\newcommand{\src}[2]{[\textsf{#1},~#2]}           % pointer into a companion note
+\newcommand{\ONE}{\textsf{1D}}
+\newcommand{\SPE}{\textsf{SP}}
+\newcommand{\ASY}{\textsf{AS}}
+\newcommand{\UNI}{\textsf{UN}}
+\newcommand{\CER}{\textsf{CE}}
+
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lg}{\mathcal{L}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\cf}{\mathrm{cf}}
+\newcommand{\tcf}{t_{\mathrm{cf}}}
+\newcommand{\Xb}{\bar X}
+\newcommand{\qbox}{q^{\square}_N}
+\newcommand{\qseg}{q^{|}_N}
+\newcommand{\sgn}{\operatorname{sign}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+
+\title{The most probable first-passage time of the lazy walk in a reflecting box:\\ rigorous results, a dependency-ordered synthesis\\[4pt]\large Companion note R0}
+\author{Xiaoxiao Zhouyi}
+\date{1 October 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+\medskip\noindent{\small\textit{Note.} This document is the companion note R0 of the article ``Mean and most probable first-passage times of lazy random walks in reflecting hypercubic lattices'' (\texttt{paper.pdf}, Section~7; Supplementary Material, Section~S8), in the repository \texttt{https://\allowbreak github.com/\allowbreak zhouyi-xiaoxiao/\allowbreak master-dissertation}. In the repository, file paths are relative to the root of the repository; the run logs cited below are in \texttt{data/msc\_rigorous\_*/logs/} and \texttt{data/checks/}, the code of the internal checks is not part of the repository, and \texttt{notes/VERIFICATION.md} summarises how the notes were checked.}\par\medskip
+
+
+\begin{abstract}
+% src: data/msc_rigorous_1d/03_constants.json; data/msc_rigorous_certified/closedform_summary_c128.json; data/msc_rigorous_asymptotics/50_cert_constants.json; data/msc_rigorous_asymptotics/logs/81_check_text_constants.log
+For the lazy nearest-neighbour walk on $\{1,\dots,N\}^d$ with move probability $q$, reflecting (move-cancelling) walls and one absorbing target site, we collect in one dependency-ordered document the results on the first-passage law and on its mode $t^*$ that are proved in five companion notes, with unified notation and with the status of every statement stated explicitly. In one dimension the scaled mode converges, $q\,t^*/(N-\frac12)^2\to c=0.3332842654949478987\ldots$, with explicit finite-$N$ windows for every $N\ge3$ when $q\le\frac45$; there the two-pole closed form $t_{\rm cf}=\E T\,\ln(2dX)/(X+2d-1)$, $X=\mu_1\E T$, is \emph{false} as an approximation (on the certified ranges, $10\le N\le1500$ and $N=2000$ for $q=\frac45$ and $10\le N\le1000$ for $q=\frac12$, it overestimates the mode by more than $15.7\%$). In two and three dimensions, for opposite corners, the closed form is a computer-assisted theorem with an explicit error: $X\,\mu_1(t^*-t_{\rm cf})$ lies in a certified bounded window for every $N\ge N_0$ (continuous time; discrete time for $q\le\frac12$ and for $q\le0.99$; in a statement proved after the internal checks and not examined by them, for every $q<1$ when $N\ge\max(N_*,N_1(q))$), which yields the laws $t^*=\frac{4N^2}{\pi^2q}[\ln\ln N+\ln 8\pi+O(\frac{\ln\ln N}{\ln N})]$ ($d=2$) and $t^*=\frac{6N^2}{\pi^2q}[\ln N+3.7528\ldots+O(\frac{\ln N}{N})]$ ($d=3$) with explicit remainders; on finite ranges the relative error of the closed form is certified to be below $0.971\%$ ($d=2$) and $0.275\%$ ($d=3$). Unimodality of the first-passage law of the three geometries is a theorem in continuous time for all $N$ and $d$, and a computer-assisted theorem in discrete time for every $q\le\frac45$ (sharp; corner to corner in every dimension, the two centre geometries for $d\ge2$); it fails for general start--target pairs and, in discrete time, near $q=1$. The spectral structure (poles, interlacing, residues, explicit bounds, the constants $C_2$, $C_3$ of the mean first-passage time) is proved for every $N$ (the numerical values of the constants and of the explicit remainders with computer assistance). We list the certificates with their trusted bases and the commands to re-verify them, report a serial re-run of all sanity scripts, and list precisely what remains open.
+\end{abstract}
+
+\tableofcontents
+
+\section{How this document is organised}\label{sec:intro}
+
+\paragraph{Purpose.} The article studies the most probable first-passage time (the \emph{mode}) of a lazy random walk in a box to a single target site, and proposes the closed form
+\[
+t^*\approx t_{\rm cf}:=\E T\cdot\frac{\ln(2dX)}{X+2d-1},\qquad X:=\mu_1\,\E T,\qquad \mu_1:=\frac qd\Bigl(1-\cos\frac\pi N\Bigr),
+\]
+which in the article is obtained by a formal two-pole argument. The results below replace the formal argument by theorems where this has been possible, and state precisely where it has not.
+
+\paragraph{The companion notes.} The proofs are contained in five companion notes, the companion notes R1--R5 in the folder \texttt{proofs/} of the repository. They are cited as follows (statement numbers are those of the PDF of each note).
+\begin{itemize}
+\item[\ONE] \emph{The most probable first-passage time of the lazy walk on a segment: a rigorous one-dimensional theory} (\texttt{proofs/\allowbreak R1\_one\_dimension/}).
+\item[\SPE] \emph{Rigorous spectral structure of first-passage times to a point target on the reflecting hypercubic lattice} (\texttt{proofs/\allowbreak R2\_spectral\_structure/}).
+\item[\ASY] \emph{The mode of the corner-to-corner first-passage time in two and three dimensions: rigorous asymptotics} (\texttt{proofs/\allowbreak R3\_mode\_two\_three\_dimensions/}).
+\item[\UNI] \emph{Unimodality of point-target first-passage laws on the reflecting box: theorems, counter-examples, certified computations, and what remains open} (\texttt{proofs/\allowbreak R4\_unimodality/}).
+\item[\CER] \emph{Computer-assisted certification of first-passage modes, unimodality, the closed-form mode formula and two constants for the lazy walk in a reflecting box} (\texttt{proofs/\allowbreak R5\_certified\_computations/}).
+\end{itemize}
+A reference such as \src{\ONE}{Thm 6.3} means Theorem~6.3 of the note \ONE. File paths in this document are relative to the root of the repository. This document is self-contained as far as statements, definitions and the logical order are concerned. Short proofs are reproduced in full, among them most of the proofs that were written after the internal checks (marker \NEW\ below); long proofs and computer-assisted proofs are given as outlines with an exact pointer to the complete proof in the companion note.
+
+\paragraph{Status of statements.} Every numbered statement other than a definition or a remark carries one of the following labels, and no other. (A remark either comments or asserts something that is proved in place; the status of each asserting remark is given in the table of Section~\ref{sec:summary}.)
+\begin{itemize}
+\item \textbf{Theorem / Lemma / Proposition / Corollary}: a complete proof is given here or in the cited note, with standard results cited by author, title and theorem number. A \emph{Proposition} may also be a statement proved under an explicitly stated hypothesis that is not itself proved; this is then said in the statement.
+\item \textbf{Computer-assisted theorem} (and lemma, proposition, corollary): the proof reduces the statement, by lemmas proved by hand, to finitely many inequalities that are verified by a program in exact integer or rational arithmetic or in rigorous ball/interval arithmetic. The trusted base and the certificate files are named (Section~\ref{sec:certs}).
+\item \textbf{Conjecture}: not proved; the evidence is stated.
+\item \textbf{Numerical observation}: a reproducible computation, exact or in floating point as stated, with no claim beyond the computed range.
+\item \textbf{Refuted statement}: a natural conjecture, suggested by the one-dimensional case, by a floating-point study or by an intermediate step of a proof, that is false; the counter-example or disproof is given.
+\end{itemize}
+Two markers qualify the status.
+\begin{itemize}
+\item[\NEW] The proof, or the part of it named in the statement, was written after the two internal checks of the companion note (see below). It has been read line by line within the project, and it is reproduced here when it is short. It was read once more in the final reading of this document (Section~\ref{sec:reviews}), within the same project, but it has not been examined by a reader outside the project. The status label is the one the proof supports; it should be regarded as provisional until that examination.
+\item[\SYN] The statement is a deduction made in this document by combining results of two different notes (each of which was checked); the short argument that combines them is given here; it has been checked by the author of this document and once more in the final reading (Section~\ref{sec:reviews}), within the same project, not by a reader outside the project.
+\end{itemize}
+
+\paragraph{Internal checks.} Each companion note was examined by two internal checks carried out within the same project and run on the same machine: a line-by-line reading of every proof (with re-derivation of the displayed identities, a check of every citation and a re-run of the certificate scripts on a private copy), and a numerical search for counter-examples with separately written code that tests every statement with its explicit constants. These checks are not external peer review, and the re-computations in them are not an external replication. Their outcome is summarised in Section~\ref{sec:reviews} and in \texttt{notes/VERIFICATION.md}, Section~3. No statement is given a stronger status here than the one supported by these checks.
+
+\paragraph{Decimals.} A decimal expansion followed by dots ($0.3332\ldots$) is truncated: every digit shown is a digit of the exact value. Decimals that appear in inequalities are exact rational numbers. Every quantitative statement of the \LaTeX{} source of this document is preceded by a comment \texttt{\% src:} naming the certificate, data or log file behind it (paths relative to the root of the repository; the cited run logs are in \texttt{data/msc\_rigorous\_*/logs/} and \texttt{data/checks/}).
+
+\paragraph{Dependency order.} Section~\ref{sec:setting} fixes the notation. Section~\ref{sec:general} contains the results that hold for every finite symmetric chain and every start--target pair; they use nothing else. Section~\ref{sec:1d} (one dimension) uses Section~\ref{sec:general} only, except part (c) of Computer-assisted theorem~\ref{thm:1d-thresholds}, which for odd $N\ge25$ uses Computer-assisted theorem~\ref{thm:1d-freelc} of Section~\ref{sec:unimodal} (that theorem does not use Section~\ref{sec:1d}, so there is no circularity). Section~\ref{sec:unimodal} (unimodality in every dimension) uses Sections~\ref{sec:general} and~\ref{sec:1d}. Section~\ref{sec:spectral} (spectral quantities of the box) uses Section~\ref{sec:general}. Section~\ref{sec:mode} (the mode in $d=2,3$ and the closed form) uses Sections~\ref{sec:general} and~\ref{sec:unimodal}, and its finite-range results (Computer-assisted theorem~\ref{thm:cf-finite} and Computer-assisted corollary~\ref{cor:conj48}) use in addition the elementary rational enclosure of the mean first-passage time, Lemma~\ref{lem:mfpt-encl} of Section~\ref{sec:spectral}; it does \emph{not} use the estimates of Section~\ref{sec:spectral}, whose relation to it is explained in Remark~\ref{rem:consistency}. Sections~\ref{sec:certs}--\ref{sec:open} contain the certificates, the re-run of the sanity checks, the outcome of the internal checks and the open problems. Section~\ref{sec:summary} is a table of all statements.
+
+\section{Setting and notation}\label{sec:setting}
+
+\begin{definition}[the walk]\label{def:walk}
+Let $d\ge1$, $N\ge2$, $\Lambda=\{1,\dots,N\}^d$, $n=N^d$. For $x\in\Lambda$ let $b(x)$ be the number of the $2d$ unit vectors $\pm e_i$ with $x\pm e_i\notin\Lambda$. The walk with activity $q=1$ has the symmetric stochastic matrix $P_1(x,x\pm e_i)=\frac1{2d}$ if $x\pm e_i\in\Lambda$, $P_1(x,x)=\frac{b(x)}{2d}$; put $\Lg:=I-P_1$. For $q\in(0,1]$ the \emph{lazy walk} has transition matrix $P_q:=I-q\Lg$: each of the $2d$ directions is attempted with probability $\frac q{2d}$, the walk rests with probability $1-q$, and an attempted move that would leave $\Lambda$ is cancelled. The \emph{continuous-time walk} with rate $q$ has generator $-q\Lg$ (each allowed move at rate $\frac q{2d}$). Fix a target $a\in\Lambda$ and a start $x_0\ne a$; put $\Lambda'=\Lambda\setminus\{a\}$, let $\Lg_a$ be the principal submatrix of $\Lg$ on $\Lambda'$ (the killed generator) and $Q_q:=I-q\Lg_a$. Let $T$ be the first time $t\ge1$ (resp.\ $t>0$) at which the walk started at $x_0$ is at $a$, and
+\[
+f_q(t):=\P(T=t)=q\,e_{x_0}^{\mathsf T}Q_q^{\,t-1}r\quad(t\ge1),\qquad g_q(t):=q\,e_{x_0}^{\mathsf T}\ee^{-qt\Lg_a}r\quad(t\ge0),\qquad r:=\Lg_a\mathbf 1 ,
+\]
+the first-passage probability mass function (PMF) and the continuous-time density; $r(x)=P_1(x,a)$. $D:=|x_0-a|_1$ is the graph distance. A \emph{mode} is a maximiser of $f_q$ over $t\ge1$ (of $g_q$ over $t\ge0$); $t^*$ denotes any mode.
+\end{definition}
+
+\begin{definition}[shape]\label{def:shape}
+A nonnegative sequence $(a(t))_{t\ge1}$ is \emph{unimodal} if there is $m$ with $a(1)\le\dots\le a(m)\ge a(m+1)\ge\cdots$; \emph{strictly unimodal} if it is zero up to some $t_0-1$, strictly increasing on $[t_0-1,m]$ and strictly decreasing from $m$ on (then $m$ is the unique maximiser); \emph{log-concave} if its support is a set of consecutive integers and $a(t)^2\ge a(t-1)a(t+1)$ for all $t$. A $C^1$ function $g\ge0$ on $[0,\infty)$ is unimodal if there is $m\ge0$ with $g'\ge0$ on $(0,m)$ and $g'\le0$ on $(m,\infty)$.
+\end{definition}
+
+\paragraph{Geometries.} \emph{Corner to corner} (CC): $x_0=(1,\dots,1)$, $a=(N,\dots,N)$, $D=d(N-1)$. For odd $N$ and $c=\frac{N+1}2$: \emph{corner to centre} (C2M): $x_0=(1,\dots,1)$, $a=(c,\dots,c)$; \emph{centre to corner} (M2C): $x_0=(c,\dots,c)$, $a=(N,\dots,N)$. These are the three geometries of the article. In $d=1$ the CC pair is the walk on the \emph{segment} $\{1,\dots,N\}$ from the reflecting end $1$ to the absorbing end $N$; for a general start $x_0$ on the segment we write $d_0:=N-x_0$ and $\xi_N:=(x_0-\frac12)/(N-\frac12)$.
+
+\paragraph{Spectrum of the box.} The eigenvalues of $\Lg$ are $\lambda_k=\frac1d\sum_{i=1}^d(1-\cos\frac{\pi k_i}N)$, $k\in\{0,\dots,N-1\}^d$, with the orthonormal eigenvectors $\phi_k(x)=\prod_i\gamma_{k_i}\cos(\frac{\pi k_i}N(x_i-\frac12))$, $\gamma_0=N^{-1/2}$, $\gamma_j=(2/N)^{1/2}$ \src{\SPE}{Lemma 1.1}, \src{\UNI}{Lemma 1.1}, \src{\ASY}{Lemma 1.1}. We write
+\[
+\Lambda_1:=\tfrac1d\bigl(1-\cos\tfrac\pi N\bigr)=\tfrac2d\sin^2\tfrac{\pi}{2N},\qquad \mu_1:=q\Lambda_1,\qquad W:=2d\cos^2\tfrac{\pi}{2N}.
+\]
+$\Lambda_1$ is the smallest non-zero eigenvalue of $\Lg$ (the relaxation rate of the slowest mode), and $W$ is its weight at a corner, $W=n\sum_i\phi_{e_i}(a)^2$.
+
+\paragraph{Mean times and the closed form.} For $x\in\Lambda$ let $m(x)$ be the mean hitting time of $a$ from $x$ for the continuous-time walk with rate $1$; for activity $q$ the mean first-passage time is $\E_xT=m(x)/q$ in continuous \emph{and} in discrete time \src{\SPE}{Lemma 6.1}. Let $\tau:=\frac1n\sum_{x\in\Lambda}m(x)$ be the mean hitting time from the uniform (stationary) start, and
+\[
+X:=\mu_1\,\E_{x_0}T=\Lambda_1\,m(x_0),\qquad \Xb:=\Lambda_1\tau,\qquad t_{\rm cf}:=\E_{x_0}T\cdot\frac{\ln(2dX)}{X+2d-1},\qquad \tau_{\rm cf}:=\mu_1t_{\rm cf}=\frac{X\ln(2dX)}{X+2d-1}.
+\]
+$X$ and $\Xb$ do not depend on $q$; $\tau^*:=\mu_1t^*$ is the \emph{scaled mode}. For the segment ($d=1$, CC) we use $L:=N-\frac12$ and $\E T=N(N-1)/q=(L^2-\frac14)/q$.
+
+\paragraph{Two thresholds.} All eigenvalues of $P_q$ are $\ge0$ iff $q\le\qbox:=1/(1+\cos\frac\pi N)$. For the segment with one absorbing end all eigenvalues of $Q_q$ are $\ge0$ iff $q\le\qseg:=1/(2\cos^2\frac{\pi}{2N-1})$. Both are $>\frac12$ and decrease to $\frac12$; $\qseg>\qbox$ \src{\ONE}{(5)}, \src{\UNI}{Thm 4.12}.
+
+\paragraph{Dictionary.} The notes use partly different symbols; the translation is:
+\begin{center}\small
+\begin{tabular}{lll}
+\toprule
+this document & notes & remark\\
+\midrule
+$\Lg$, $\Lg_a$ & $L$, $L_a$ (\SPE); $L$, $A$ (\UNI) & \ASY\ uses $\frac qd\sum_iA_i$\\
+$\Lambda_1$ & $\Lambda_1$ (\SPE); $\beta_1$ (\UNI) & \\
+$\mu_1=q\Lambda_1$ & $\mu$ (\ASY); $\mu_1$ (\CER, article) & \\
+$\Xb=\Lambda_1\tau$ & $\Xb$ (\SPE); $X_s=\mu\,\E_\pi T$ (\ASY) & \\
+$X=\Lambda_1m(x_0)$ & $X$ (\ASY, \SPE\ Thm 11.3); $X_N$ (\CER) & \\
+$m(x_0)$ & $m$ (\SPE); $\tau_N=q\,\E T$ (\CER) & \\
+$\tau^*=\mu_1t^*$ & $\tau^*$ (\ASY) & scaled time\\
+$c=0.33328\ldots$ & $c$ (\ONE); $\kappa_1=2\tau^*$ (\CER) & one-dimensional constant\\
+$\qseg$ & $q_N$ (\ONE) & segment\\
+$\qbox$ & $q_N$ (\UNI) & box\\
+residues $r_j$, poles $\sigma_j$ & $r_j,\sigma_j$ (\SPE); $C_j=r_j\sigma_j$, $\alpha_j$ (\UNI); $\rho_j\hat\varphi(-\nu_j)$, $\nu_j$ (\ASY) & unit rate\\
+$\Lambda=\{1,\dots,N\}^d$ & $\Omega=\{0,\dots,N-1\}^d$ (\CER) & coordinates shifted by one\\
+\bottomrule
+\end{tabular}
+\end{center}
+In Sections~\ref{sec:general} and~\ref{sec:spectral} we write $\varkappa:=K_2/\tau^2$ for the quantity called $\kappa$ in \src{\SPE}{(6.3)}; the letter $\kappa$ is reserved for the one-dimensional constant of Theorem~\ref{thm:1d-cont}.
+
+\section{Summary table of all statements}\label{sec:summary}
+
+Status: \textbf{T} theorem (lemma, proposition, corollary with complete proof), \textbf{CA} computer-assisted theorem, \textbf{P} proposition under an unproved hypothesis, \textbf{C} conjecture, \textbf{O} numerical observation, \textbf{F} refuted (false); markers \NEW, \SYN\ as in Section~\ref{sec:intro}. ``Here'' is the statement in this document, ``source'' the complete proof.
+
+{\small
+\begin{longtable}{p{0.50\textwidth}p{0.08\textwidth}p{0.10\textwidth}p{0.22\textwidth}}
+\toprule
+statement & status & here & source\\
+\midrule
+\endhead
+\multicolumn{4}{l}{\emph{Every finite symmetric chain, every pair}}\\
+poles = zeros of the secular function, interlacing, spectral representation & T & \ref{thm:spec-rep}, \ref{thm:interlacing} & \SPE\ 2.2, 3.1, 4.1, 4.2\\
+residues: sum $1$, $r_0>0$, $\ge D-1$ sign changes, stationary and quasi-stationary starts & T & \ref{thm:residues} & \SPE\ 5.1, 5.4, 5.5; \UNI\ 3.2\\
+single start at distance $\ge2$ is not a mixture of exponentials/geometrics & T & \ref{thm:notmixture} & \UNI\ 4.1(d)\\
+sign rule for symmetric pairs; CC: $r_0>0>r_1$ & T & \ref{thm:signrule} & \SPE\ 5.6, 5.7\\
+monotone signs across a pure-parity eigenvalue & T\NEW & \ref{prop:pureparity} & \SPE\ 5.9\\
+CC residues alternate iff $d=1$ or $N=2$ & T\NEW & \ref{thm:alternation} & \SPE\ 5.10\\
+sign pattern as the sign of one polynomial & T\NEW & \ref{rem:signpoly} & \SPE\ 5.11\\
+certified sign patterns, 20 pairs $(d,N)$ & CA & \ref{prop:signpatterns} & \SPE\ 14.1\\
+``CC residues alternate in $d\ge2$'' & F & \ref{ref:alternation} & \SPE\ 5.10, 14.1\\
+laziness monotonicity; unimodal set $=(0,q^*]$ & T & \ref{thm:laziness} & \UNI\ 2.5, 2.6; \ONE\ 3.8\\
+tail (cone) lemma & T & \ref{lem:tail} & \CER\ 5; \UNI\ 6.1\\
+last-exit decomposition; log-concave criterion & T & \ref{lem:lastexit}, \ref{thm:criterion} & \UNI\ 4.7, 4.8, 4.11\\
+$\tau\le1/\sigma_0\le\tau+1/\Lambda_1$ and refinements; bounds on $\sigma_1,r_0,r_1$ & T & \ref{thm:sigma0} & \SPE\ 6.2--6.8\\
+tail of the neglected poles & T & \ref{thm:polestail} & \SPE\ 12.1, 12.2\\
+\midrule
+\multicolumn{4}{l}{\emph{One dimension}}\\
+exact law, product formula, moments & T & \ref{thm:1d-exact} & \ONE\ 2.2, 2.3, 2.5\\
+continuous-time unimodality, every start (non-degenerate mode) & T & \ref{thm:1d-cont-unimodal} & \ONE\ 3.3; \UNI\ 4.3\\
+discrete unimodality for $q\le\qseg$, every start (strict; case $q=\qseg$) & T (\NEW) & \ref{thm:1d-disc-unimodal} & \ONE\ 3.5; \UNI\ 4.3\\
+log-concavity for $q\le\frac23$; continuous time every $q$ & T & \ref{thm:1d-logconcave} & \ONE\ 3.6 (\CER\ 28 for $q\le\frac12$)\\
+$N=3$: log-concave iff $q\le3-\sqrt5$ & T\NEW & \ref{prop:N3lc} & \CER\ Rem 29(a)\\
+not unimodal for $q>\frac{2N-4}{2N-3}$; $N=4$ iff $q\le\frac45$ & T & \ref{prop:1d-fail} & \ONE\ 3.9; \UNI\ 4.4; \CER\ 32\\
+$q=1$: parity classes unimodal & T & \ref{thm:1d-parity} & \ONE\ 3.10\\
+eventual $TP_2$ at $q=\frac45,\frac{17}{20},\frac9{10}$; unimodal for $q\le\frac45$, all $N$ & CA & \ref{thm:1d-tp2} & \ONE\ 3.12--3.16\\
+eventual $TP_2$ for every $q<1$ & C & \ref{conj:eventualtp2} & \ONE\ Rem 3.17\\
+exact thresholds end-to-end ($N\le300$) and centre-to-corner ($N\le301$) & CA\NEW & \ref{thm:1d-thresholds} & \UNI\ 7.3, 7.4\\
+``$q^*(N)=\frac{2N-4}{2N-3}$ for all $N\ge20$'' & F & \ref{ref:thr20} & \UNI\ 7.4\\
+starts $x_0\ge2$: dip for $q>q_{\rm fail}(N-x_0)$ & T\NEW & \ref{prop:startfail} & \ONE\ 8.8; \UNI\ 7.3\\
+$q_{\rm fail}$ not sharp; exact scan at $q=\frac45$, $N\le12$ & CA\NEW & \ref{prop:qfailnotsharp} & \ONE\ Obs 8.9; \UNI\ Rem after 7.3\\
+exact scan $N\le13$, six values of $q$ (no failure found in 225 cases) & O & \ref{obs:startscan} & \ONE\ Obs 8.9\\
+limit density, unique non-degenerate maximiser $c$ & T & \ref{thm:1d-limitdensity} & \ONE\ 4.2, 4.3, 8.3\\
+70-digit enclosure of $c$; $\kappa,\rho$ & CA & \ref{thm:1d-constant} & \ONE\ 4.6; \CER\ 23\\
+continuous-time mode, $|u_N-c+\kappa L^{-2}|<1.78L^{-4}$, $\kappa_2$ & CA (\NEW\ for $\kappa_2$) & \ref{thm:1d-cont} & \ONE\ 5.7, 5.8\\
+discrete-time mode window for $q\le\frac45$ ($N\ge3$), $\frac{17}{20}$ ($N\ge7$), $\frac9{10}$ ($N\ge10$) & CA & \ref{thm:1d-disc} & \ONE\ 6.1--6.4\\
+$q=1$: parity of the mode, rate $N^{-1}$ & CA & \ref{thm:1d-q1} & \ONE\ 7.4\\
+global maximisers for $q<1$, $N\ge601$; limit theorem for every $q$ & CA & \ref{thm:1d-global} & \ONE\ 7.7, 7.8\\
+``closed form valid in $d=1$'' & F (CA) & \ref{ref:cf1d} & \ONE\ Rem 7.9; \CER\ 21, 43\\
+general start: limit density, limit theorem & T & \ref{thm:1d-generalstart} & \ONE\ 8.3, 8.5\\
+general start: explicit law for $\xi_N\le\frac12$; values of $c(\xi)$ & CA & \ref{thm:1d-startlaw} & \ONE\ 8.6, 8.12, 8.14\\
+exact modes, $q=\frac45$ ($N\le1500$, $2000$), $\frac12$ ($N\le1000$), $q=1$ ($N\le400$) & CA & \ref{thm:1d-certified} & \CER\ 12, 13, 30, 39, 40, 45; \ONE\ 3.18\\
+\midrule
+\multicolumn{4}{l}{\emph{Unimodality in every dimension}}\\
+CC, C2M, M2C: continuous time, all $N,d$; discrete for $q\le\qbox$ & T & \ref{thm:three-geometries} & \UNI\ 4.12 (also \ASY\ 1.11, 7.4)\\
+location of the continuous-time mode & T & \ref{cor:modelocation} & \UNI\ 4.13\\
+1D free increment log-concave ($q\le\frac45$, all $N\ge9$; iff $q\le q_1(N)$, $N\le501$) & CA & \ref{thm:1d-freelc} & \UNI\ 9.6--9.11\\
+the value: unimodal for $q\le\frac45$, all $N$, all $d$ (CC), $d\ge2$ (centre) & CA & \ref{thm:four-fifths} & \UNI\ 9.12, 9.13\\
+finite ranges beyond $\frac45$; $d=2$, $q=1$ exceptions & CA & \ref{thm:finite-cc} & \UNI\ 7.1\\
+$q=1$, extended ranges ($d=2$: 16 non-unimodal $N\le200$) & CA & \ref{thm:q1-cc} & \CER\ 13, 40\\
+``always unimodal'' & F & \ref{ref:unimodalall} & \UNI\ 8; \CER\ 9\\
+explicit tail and rise windows, CC, every $q$ & T & \ref{thm:tailrise} & \UNI\ 5.6, 5.10\\
+explicit bimodal pairs ($d=3$, $N=3$; $d=2$, $N=8$) & CA & \ref{thm:generalpairs} & \UNI\ 8.1\\
+exhaustive classification of small boxes & CA & \ref{thm:pairclass} & \UNI\ 8.2\\
+M2C unimodal but not log-concave & T & \ref{prop:m2c-notlc} & \UNI\ 8.4\\
+log-concavity/front property; $\le3$ sign changes; peak-last & C & \ref{conj:shape} & \UNI\ 10.1, 10.3; \CER\ 47\\
+exact modes $d=2,3$, $q\in\{\frac45,\frac12\}$; $q$-scaling & CA & \ref{thm:cc-certified} & \CER\ 12, 18, 39, 42\\
+\midrule
+\multicolumn{4}{l}{\emph{Spectral quantities, CC}}\\
+arrival profile; $\frac{d(N^2-1)}3\le m-\tau\le\frac{1+\ln W}{\Lambda_1}$ & T & \ref{lem:arrival} & \SPE\ 7.2\\
+second-moment functional; size of $\Xb$ & T & \ref{lem:K2} & \SPE\ 7.4, 7.7\\
+rational enclosure of the MFPT & T & \ref{lem:mfpt-encl} & \CER\ 19\\
+Epstein-type sums $Z_d,Z_d'$ & CA & \ref{lem:epstein} & \SPE\ 7.6\\
+monotone coupling & T & \ref{lem:coupling} & \SPE\ 7.8; \UNI\ 5.1\\
+$r_0>1$, $\sigma_0m>1$ & T & \ref{thm:r0} & \SPE\ 7.9\\
+explicit bounds in $\Xb$, every $d\ge2$ & T & \ref{thm:cc-any-d} & \SPE\ 7.10, 7.11\\
+single and double sums for $\tau$, $m$ & T & \ref{prop:singlesum} & \SPE\ 8.1--8.5\\
+$d=2$: $m_2=\frac8\pi N^2\ln N+C_2N^2+O(1)$, $|R_m|\le11.3$ & CA & \ref{thm:d2} & \SPE\ 9.1\\
+$d=2$: constant terms, $C_2^{(0)}=0.5321408\ldots$ & T\NEW\ (values CA) & \ref{thm:d2-constant} & \SPE\ 9.6, 9.8\\
+closed form of $C_2$ & CA & \ref{thm:C2} & \CER\ 25\\
+$C_2$ is the $N^2$ coefficient (two closed forms agree) & T\SYN\ (explicit remainder CA) & \ref{rem:C2id} & \SPE\ 9.1, 9.2; \CER\ 25\\
+$0.3211<r_N<0.53213$, increasing ($N\le301$); up to $N=1500$ & CA (\SYN, \NEW) & \ref{thm:d2-finite} & \CER\ 26, 27; \SPE\ 8.3\\
+$d=3$: $C_3$, second order, remainders, constant terms & CA (limits T) & \ref{thm:d3} & \SPE\ 10.1\\
+$\Xb$, $\Lambda_1(m-\tau)$ explicit in $N$ & CA & \ref{cor:Xbar} & \SPE\ 11.1, 11.2\\
+truncated-constant forms & F (CA)\NEW & \ref{ref:truncated} & \SPE\ 11.5\\
+first-order pole structure & T & \ref{thm:poles} & \SPE\ 11.3\\
+\midrule
+\multicolumn{4}{l}{\emph{The mode in $d=2,3$ and the closed form}}\\
+decomposition $\mu T=U+\mu T_\pi$; pole expansion & T & \ref{prop:decomposition} & \ASY\ 1.2--1.7\\
+continuous-time unimodality, $g'/\varphi$ nonincreasing & T (\NEW\ extension) & \ref{thm:as-unimodal} & \ASY\ 1.10, 1.11\\
+exact identity and window theorem & T & \ref{thm:window} & \ASY\ 2.1--2.3\\
+pole data in terms of $X_s$ & T & \ref{lem:poledata} & \ASY\ 3.1--3.5\\
+lattice sums, bounds on $X_s$, $X$, $\E U$ & CA & \ref{prop:Xs} & \ASY\ 4.5--4.7\\
+closed form, continuous time: $|X(\tau^*-\tau_{\rm cf})|$ bounded, all $N\ge N_0$ & CA & \ref{thm:cf-cont} & \ASY\ 5.1\\
+asymptotic laws with explicit remainders, $N\ge20$ & CA & \ref{thm:laws} & \ASY\ 6.1--6.4\\
+discrete time, $q\le\frac12$ (unimodality input by hand) & CA\SYN & \ref{thm:cf-disc-half} & \ASY\ 7.7--7.9; \UNI\ 4.12\\
+localisation without unimodality & T & \ref{thm:localisation} & \ASY\ 7.10--7.13\\
+discrete time, $q\le q_{\max}\in\{0.8,0.9,0.95,0.99\}$ & CA & \ref{thm:cf-disc-qmax} & \ASY\ 7.14, 7.15\\
+constants uniform in $q$ & T\NEW & \ref{lem:uniformq} & \ASY\ 7.16\\
+discrete time, every $q<1$, $N\ge\max(N_*,N_1(q))$ & CA\NEW & \ref{thm:cf-disc-allq} & \ASY\ 7.17, 7.18\\
+closed form within $0.970\%$ ($d=2$, $q=\frac45$; $0.971\%$ for $q=\frac12$), $0.275\%$ ($d=3$) on finite ranges & CA & \ref{thm:cf-finite} & \CER\ 21, 43\\
+closed form within $0.3\%$ for all $N\ge10$ ($d=3$); $1\%$ for large $N$ ($d=2$) & CA\SYN & \ref{cor:conj48} & this document\\
+$q=1$ laws; $1\%$ for all $N\ge10$ in $d=2$ & C & \ref{conj:modes} & \ASY\ 7.19; \CER\ 48\\
+limits $K_2^\infty\approx3.74$, $K_3^\infty\approx-0.22$ & O & \ref{obs:Kinf} & \ASY\ 5.3\\
+\midrule
+\multicolumn{4}{l}{\emph{Open problems}}\\
+unimodality thresholds for $\frac45<q<1$ & C & \ref{conj:thresholds} & \UNI\ 10.2, 10.4\\
+further numerical observations: thresholds by bisection (\ONE\ 3.20, \UNI\ 4.5), $d=2$ remainders monotone (\SPE\ 9.7), $d=3$ remainders (\SPE\ 10.12), residue statistics (\SPE\ 14.2), log-concavity in $d=2,3$ (\CER\ 49), front property (\UNI\ 6.2) & O & --- & as listed\\
+\bottomrule
+\end{longtable}
+}
+
+\section{Results for every finite symmetric chain and every start--target pair}\label{sec:general}
+
+Throughout this section $\Omega$ is a finite set with $n\ge2$ elements and $\Lg$ a real symmetric matrix with $\Lg_{xy}\le0$ for $x\ne y$, $\Lg\mathbf 1=0$, and connected graph $\{x\sim y\iff \Lg_{xy}<0\}$. The box generator of Definition~\ref{def:walk} is such a matrix. Activity $q$ enters only through the scalings $q\sigma$ (continuous time) and $1-q\sigma$ (discrete time); the discrete walk is $P_q=I-q\Lg$, stochastic when $q\max_x\Lg_{xx}\le1$. The distinct eigenvalues of $\Lg$ are $0=\lambda^{(0)}<\dots<\lambda^{(M)}$ with spectral projectors $E_i$. An eigenvalue is \emph{visible from $a$} if $w_i:=\|E_ie_a\|^2>0$; the visible ones are listed as $0=\Lambda_0<\Lambda_1<\dots<\Lambda_p$. The secular and cross functions are
+\[
+G(s)=\langle e_a,(\Lg-s)^{-1}e_a\rangle=\sum_{i=0}^p\frac{w_i}{\Lambda_i-s},\qquad G_x(s)=\langle e_x,(\Lg-s)^{-1}e_a\rangle .
+\]
+
+\subsection{Spectral representation, interlacing, residues}
+
+\begin{theorem}[structure and first-passage representation; \src{\SPE}{Thms 2.2, 3.1}]\label{thm:spec-rep}
+(i) $G$ has exactly $p$ zeros $\sigma_0<\dots<\sigma_{p-1}$; they are real, simple and strictly interlace the visible eigenvalues, $0=\Lambda_0<\sigma_0<\Lambda_1<\sigma_1<\dots<\sigma_{p-1}<\Lambda_p$.
+(ii) The $\sigma_j$ are the eigenvalues of $\Lg_a$ on the cyclic subspace of $e_a$ intersected with $e_a^\perp$; all other eigenvalues of $\Lg_a$ are eigenvalues of $\Lg$ with eigenfunctions vanishing at $a$, and $\det(\Lg_a-s)=G(s)\det(\Lg-s)$.
+(iii) With the residues $r_j(x):=-G_x(\sigma_j)/(\sigma_jG'(\sigma_j))$,
+\[
+\P_x(T>t)=\sum_{j=0}^{p-1}r_j(x)\ee^{-q\sigma_jt},\qquad f(t)=\sum_jr_j(x)(1-\nu_j)\nu_j^{\,t-1}\ \ (\nu_j:=1-q\sigma_j,\ 0^0:=1),
+\]
+in continuous and in discrete time respectively, and $\sum_jr_j\sigma_j/(\sigma_j-s)=G_x(s)/G(s)$ (the renewal ratio of the article). The pole $\sigma_j$ is absent from the law started at $x$ iff $G_x(\sigma_j)=0$.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+On each interval $(\Lambda_j,\Lambda_{j+1})$ the function $G$ increases strictly from $-\infty$ to $+\infty$, and $G\prod_l(\Lambda_l-s)$ is a polynomial of degree $p$; this gives (i). The vectors $\psi_j=\sum_{i}(\Lambda_i-\sigma_j)^{-1}E_{\Lambda_i}e_a$ satisfy $(\Lg-\sigma_j)\psi_j=e_a$, $\psi_j(a)=G(\sigma_j)=0$, hence $\Lg_a\psi_j=\sigma_j\psi_j$, and they form an orthogonal basis of the invariant subspace that contains $\mathbf 1_{\Omega'}$; expanding $\mathbf 1_{\Omega'}$ in this basis gives (iii). Complete proof: \src{\SPE}{Sections 2--3}.
+\end{proof}
+
+\begin{theorem}[interlacing; \src{\SPE}{Thm 4.1, Cor 4.2}]\label{thm:interlacing}
+The eigenvalues $\mu_1\le\dots\le\mu_{n-1}$ of $\Lg_a$ interlace those of $\Lg$ (Cauchy; R.~A. Horn, C.~R. Johnson, \emph{Matrix Analysis}, 2nd ed., Thm~4.3.17). For the box and a corner target every eigenvalue of $\Lg$ is visible, the number of poles is the number of distinct values of $\lambda_k$ minus one, all eigenfunctions $\psi_j$ are symmetric under coordinate permutations, and for $d\ge2$
+\[
+\Lambda_1=\tfrac1d(1-\cos\tfrac\pi N)\ \text{(multiplicity $d$)},\qquad \Lambda_2=2\Lambda_1,\qquad 0<\sigma_0<\Lambda_1<\sigma_1<2\Lambda_1<\sigma_j\ (j\ge2).
+\]
+\end{theorem}
+
+\begin{theorem}[residues; \src{\SPE}{Thm 5.1, Props 5.4, 5.5}, \src{\UNI}{Lemma 3.1, Thm 3.2}]\label{thm:residues}
+Let $x\ne a$ and $r_j=r_j(x)$.
+(a) $\sum_jr_j=1$, and $\E_xT=q^{-1}\sum_jr_j/\sigma_j$.
+(b) If the graph of $\Lg_a$ is connected, $\sigma_0$ is the smallest eigenvalue of $\Lg_a$, it is simple, its eigenvector has a strict sign, and $r_0(y)>0$ for every $y\in\Omega'$.
+(c) With $D=\mathrm{dist}(x,a)$: $\sum_jr_j\sigma_j^{\,i}=0$ for $1\le i\le D-1$ and $(-1)^{D-1}\sum_jr_j\sigma_j^{\,D}>0$. Consequently the residue sequence has at least $D-1$ sign changes. For the segment from the reflecting end, $p=D=N-1$ and $\sgn r_j=(-1)^j$.
+(d) From the uniform start the law is a mixture of exponentials (geometrics) with positive weights $\varrho_j=1/(n\sigma_j^2G'(\sigma_j))$, $\sum_j\varrho_j=1-\frac1n$; for every start $\sum_j|r_j(x)|\le\sqrt{n-1}$.
+(e) From the quasi-stationary distribution $\nu\propto\psi_0$ the hitting time is exactly exponential (geometric): $\sum_x\nu(x)r_j(x)=\delta_{j0}$ and $\sum_x\nu(x)m(x)=1/\sigma_0$.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+(a) is (iii) of Theorem~\ref{thm:spec-rep} at $t=0$ and integration. (b) is the Perron--Frobenius theorem for $cI-\Lg_a$ (Horn--Johnson, Thm~8.4.4; the case $|\Omega'|=1$ is trivial and treated separately in the proof). (c) $\sum_jr_j\sigma_j^{\,i}=(\Lg_a^{\,i}\mathbf 1_{\Omega'})(x)$ is a sum over paths of length $i-1$ from $x$ to a neighbour of $a$, which vanishes for $i<D$ and has the sign $(-1)^{D-1}$ for $i=D$; a polynomial of degree $\le D-1$ vanishing at $0$ and separating the sign blocks then gives the sign changes. (d), (e): orthogonality of the $\psi_j$ and Cauchy--Schwarz. Complete proofs: \src{\SPE}{Section 5}; (c) also \src{\UNI}{Thm 3.2}.
+\end{proof}
+
+
+
+\subsection{Reflection-symmetric pairs: the signs of the residues}
+
+\begin{theorem}[sign rule; \src{\SPE}{Thm 5.6, Cor 5.7}]\label{thm:signrule}
+Let $R$ be an involutive permutation of $\Omega$ commuting with $\Lg$ with $Ra=x_0\ne a$, $v_\pm=\frac12(e_a\pm e_{x_0})$ and $G^\pm(s)=\langle v_\pm,(\Lg-s)^{-1}v_\pm\rangle$. Then $G=G^++G^-$ and
+\[
+r_j(x_0)=\frac{2G^-(\sigma_j)}{\sigma_jG'(\sigma_j)}=-\frac{2G^+(\sigma_j)}{\sigma_jG'(\sigma_j)} .
+\]
+If moreover the first visible eigenvalue $\Lambda_1$ is purely odd ($E_{\Lambda_1}v_+=0$) and $\Lg$ has at least two eigenvalues (with multiplicity) in $(0,\Lambda_1]$, then $r_1(x_0)<0$. In particular, for the box with $d\ge2$, every $N\ge2$ and the CC pair: $r_0>0>r_1$.
+\end{theorem}
+
+The natural guess that, as for the segment (Theorem~\ref{thm:residues}(c)), the residues of the CC pair alternate in sign in every dimension is false (Refuted statement~\ref{ref:alternation}). The following three statements of \SPE\ were proved after its internal checks; their proofs are reproduced in full.
+
+\begin{proposition}[monotone signs across an eigenvalue of pure parity; \src{\SPE}{Prop 5.9}]\NEW\label{prop:pureparity}
+In the situation of Theorem~\ref{thm:signrule} call a visible eigenvalue $\Lambda_i$ purely even if $E_{\Lambda_i}v_-=0$ and purely odd if $E_{\Lambda_i}v_+=0$. Let $1\le i\le p-1$ and $r_j=r_j(x_0)$. (a) If $\Lambda_i$ is purely even, then $G^-(\sigma_{i-1})<G^-(\sigma_i)$; hence $(r_{i-1},r_i)$ does not have the signs $(+,-)$. (b) If $\Lambda_i$ is purely odd, then $G^+(\sigma_{i-1})<G^+(\sigma_i)$; hence $(r_{i-1},r_i)$ does not have the signs $(-,+)$. Over a run of consecutive purely even (purely odd) eigenvalues the signs of the adjacent residues are non-decreasing (non-increasing).
+\end{proposition}
+\begin{proof}
+$R$ commutes with every spectral projector and $Rv_\pm=\pm v_\pm$, so $\langle E_iv_+,E_iv_-\rangle=0$ and $\|E_ie_a\|^2=\|E_iv_+\|^2+\|E_iv_-\|^2$; every pole of $G^\pm$ is therefore a visible eigenvalue. (a) If $E_{\Lambda_i}v_-=0$, the only visible eigenvalue in $I=(\Lambda_{i-1},\Lambda_{i+1})$ is not a pole of $G^-$, so $G^-$ is real-analytic on $I$ with derivative $\sum_l\|E_lv_-\|^2(\lambda^{(l)}-s)^{-2}>0$ (some weight is positive since $\sum_l\|E_lv_-\|^2=\|v_-\|^2=\frac12$). By Theorem~\ref{thm:spec-rep}(i), $\sigma_{i-1}<\Lambda_i<\sigma_i$ both lie in $I$, so $G^-(\sigma_{i-1})<G^-(\sigma_i)$; and $\sgn r_j=\sgn G^-(\sigma_j)$ because $\sigma_jG'(\sigma_j)>0$. If $r_{i-1}>0$ then $r_i>0$. (b) is the same argument for $G^+$ with $\sgn r_j=-\sgn G^+(\sigma_j)$ ($0=\Lambda_0\notin I$). The last sentence follows by applying (a) or (b) to consecutive indices.
+\end{proof}
+
+\begin{theorem}[the CC residues alternate iff $d=1$ or $N=2$; \src{\SPE}{Thm 5.10}]\NEW\label{thm:alternation}
+For the box with $a=(N,\dots,N)$, $x_0=(1,\dots,1)$, $D=d(N-1)$:
+(a) if $d=1$ or $N=2$, then $p=D$ and $\sgn r_j=(-1)^j$ for all $j$;
+(b) if $d\ge2$ and $N\ge3$, put $i=p-3$ ($N\ne4$), $i=p-4$ ($N=4$). Then $i\ge1$, and $\Lambda_i,\Lambda_{i+1}$ are both purely even or both purely odd; the triple $(\sgn r_{i-1},\sgn r_i,\sgn r_{i+1})$ is monotone, so the residues do not alternate;
+(c) moreover $(r_2,r_3)$ is not $(+,-)$ for $d=2$, $N\ge3$; $(r_4,r_5)$ is not $(+,-)$ for $d\ge4$, $N\ge4$; $(r_6,r_7)$ is not $(+,-)$ for $d=3$, $N\ge7$.
+The proof uses no computation.
+\end{theorem}
+\begin{proof}
+Let $u=\frac\pi{2N}$, $x=\sin^2u$, $\varsigma_j=\sin^2(ju)/\sin^2u$ ($0\le j\le N-1$), strictly increasing in $j$, with $\varsigma_1=1$, $\varsigma_2=4(1-x)=:t$, $\varsigma_3=(3-4x)^2$. Then $\lambda_k=\Lambda_1V(k)$, $V(k)=\sum_i\varsigma_{k_i}$, and since every eigenvalue is visible from the corner, $\Lambda_0<\dots<\Lambda_p$ is the list of distinct values of $V$ times $\Lambda_1$. With $R:x_i\mapsto N+1-x_i$, $\phi_k\circ R=(-1)^{|k|}\phi_k$; if all $k$ with $\lambda_k=\Lambda_i$ have $|k|$ of one parity, $\Lambda_i$ is purely even (even parity) or purely odd (odd parity).
+
+(a) $d=1$ is Theorem~\ref{thm:residues}(c). For $N=2$, $V(k)=|k|\in\{0,\dots,d\}$, so $p=d=D$; at least $D-1=p-1$ sign changes force alternation, and $r_0>0$.
+
+(b) Count from the top. Put $\Delta_m=\varsigma_{N-1}-\varsigma_{N-1-m}$ ($0\le m\le N-1$). Since $\sin^2A-\sin^2B=\sin(A+B)\sin(A-B)$ and $(2N-2m-1)u=\pi-(2m+1)u$,
+$\Delta_m-\Delta_{m-1}=\sin((2m+1)u)/\sin u>0$, so $\Delta_m$ is strictly increasing. For $m_l:=N-1-k_l$ and $\Delta(m)=\sum_l\Delta_{m_l}$ we have $V(k)=d\varsigma_{N-1}-\Delta(m)$ and $|k|=D-|m|$; hence $\Lambda_{p-j}=\Lambda_1(d\varsigma_{N-1}-\Delta^{(j)})$ for the distinct values $0=\Delta^{(0)}<\Delta^{(1)}<\dots$ of $\Delta$, and $\Lambda_{p-j}$ is pure if all $m$ with $\Delta(m)=\Delta^{(j)}$ have $|m|$ of one parity. Let $\alpha=\Delta_1=\sin3u/\sin u=3-4x$ and $\beta=\Delta_2-\Delta_1=\sin5u/\sin u=5-20x+16x^2$. For $N\ge3$, $0<x\le\frac14$, so $2\alpha-\beta=1+12x-16x^2>0$, and $\beta-\alpha=2(1-8x+8x^2)$ is positive for $N\ge5$ and zero for $N=4$.
+\emph{$N\ge5$}: $0<\alpha<\beta<2\alpha$. If $\Delta(m)\le\alpha+\beta=\Delta_2$, all entries of $m$ are $\le2$; an entry $2$ forces $m=\{2\}$; otherwise $\Delta(m)=n_1\alpha$ with $n_1\le2$. So the four smallest values are $0<\alpha<2\alpha<\alpha+\beta$, attained only by $\emptyset,\{1\},\{1,1\},\{2\}$; $\Lambda_{p-2}$ and $\Lambda_{p-3}$ are pure with $|m|=2$.
+\emph{$N=3$}: $\Delta_1=2$, $\Delta_2=3$, $\Delta(m)=2n_1+3n_2$, four smallest values $0<2<3<4$ from $\emptyset,\{1\},\{2\},\{1,1\}$; $\Lambda_{p-2},\Lambda_{p-3}$ pure with $|m|=2$.
+\emph{$N=4$}: $x=\sin^2\frac\pi8$, $\alpha=\beta=1+\sqrt2$, $\Delta_3-\Delta_2=\sin\frac{7\pi}8/\sin\frac\pi8=1$, so $\Delta(m)=c\alpha+n_3$ with $c=n_1+2n_2+2n_3$ and $|m|=c+n_3$. As $\alpha$ is irrational, $\Delta(m)$ determines $(c,n_3)$, hence $|m|$: every eigenvalue is pure. The values below $3\alpha$ are $0<\alpha<2\alpha<2\alpha+1$ ($2n_3\le c\le2$, $\alpha>1$), and $3\alpha$ is attained ($\{1,2\}$, $d\ge2$). So $\Lambda_{p-3}$ ($(c,n_3)=(2,1)$) and $\Lambda_{p-4}$ ($(3,0)$) are pure with $|m|=3$.
+\emph{Conclusion}: $\Lambda_0$ corresponds to $m=(N-1,\dots,N-1)$ with $\Delta(m)=d\Delta_{N-1}\ge2\Delta_2$, larger than all values found; hence $p\ge4$ ($N\ne4$), $p\ge5$ ($N=4$), so $i\ge1$ and $i+1\le p-2$. $\Lambda_i,\Lambda_{i+1}$ are pure of the same parity (that of $D-2$, resp.\ $D-3$), and Proposition~\ref{prop:pureparity} with two consecutive pure eigenvalues makes the triple monotone, whereas alternation needs $(+,-,+)$ or $(-,+,-)$.
+
+(c) $d=2$, $N\ge3$: $t\ge3$, values of $V$ with all components $\le2$ are $0,1,2,t,t+1,2t$, so $\Lambda_3=t\Lambda_1$, spanned by $\phi_{(2,0)},\phi_{(0,2)}$ ($|k|=2$): purely even, and $p-1\ge3$. By Proposition~\ref{prop:pureparity}(a), $r_2\ge0\Rightarrow r_3>0$. $d\ge4$, $N\ge4$: $3<t<4$, $\varsigma_3>5.8$; the six smallest values are $0<1<2<3<t<4$ and $\Lambda_5=4\Lambda_1$ is spanned by the $\phi_k$, $k$ a permutation of $(1,1,1,1,0,\dots)$: purely even. $d=3$, $N\ge7$: $3.8<t<4$, $\varsigma_3>2t$; the eight smallest values are $0<1<2<3<t<t+1<t+2<2t$, $\Lambda_7=2t\Lambda_1$ spanned by permutations of $(2,2,0)$: purely even. Apply Proposition~\ref{prop:pureparity}(a) in each case.
+\end{proof}
+
+\begin{remark}[the sign pattern as the sign of one polynomial; \src{\SPE}{Rem 5.11}]\NEW\label{rem:signpoly}
+For any chain and $x\ne a$ with $D=\mathrm{dist}(x,a)$, $\omega_i=\langle e_x,E_{\Lambda_i}e_a\rangle$, the polynomial $\mathcal N_x(s)=\sum_i\omega_i\prod_{l\ne i}(\Lambda_l-s)$ has degree exactly $p-D$ and leading coefficient $(-1)^p(\Lg^D)_{xa}$ (of sign $(-1)^{p+D}$), and $\sgn r_j(x)=(-1)^j\sgn\mathcal N_x(\sigma_j)$. Indeed $G_x(s)=-\sum_{m\ge D}(\Lg^m)_{xa}s^{-m-1}$ for large $|s|$ and $\prod_l(\Lambda_l-s)=(-1)^{p+1}s^{p+1}(1+O(s^{-1}))$; and exactly $j+1$ factors of $\prod_l(\Lambda_l-\sigma_j)$ are negative. In particular the residues alternate whenever $p=D$, and at most $p-D$ pairs $(r_j,r_{j+1})$ of non-zero residues fail to alternate (such a pair needs a zero of $\mathcal N_x$ in $(\sigma_j,\sigma_{j+1})$).
+\end{remark}
+
+\begin{caproposition}[certified sign patterns; \src{\SPE}{Prop 14.1}]\label{prop:signpatterns}
+% src: data/msc_rigorous_spectral/13_certified_residue_signs.json
+For the CC pair the signs of all residues are certified (exact grouping of the eigenvalues modulo the cyclotomic polynomial $\Phi_{2N}$, then ball arithmetic) for the $20$ pairs $(d,N)\in\{2\}\times\{2,\dots,8,10,11,12\}\cup\{3\}\times\{2,\dots,6\}\cup\{4\}\times\{2,3,4\}\cup\{5\}\times\{2,3\}$; e.g.\ $(2,3)$: \texttt{+--+-}, $(2,4)$: \texttt{+-+++-+-}, $(3,3)$: \texttt{+-++--+-}. All residues are non-zero there, the sequence alternates for $N=2$ and not for $N\ge3$, consistently with Theorem~\ref{thm:alternation}.
+\end{caproposition}
+
+\begin{refuted}[\src{\SPE}{Section 5.2, Prop 14.1}]\label{ref:alternation}
+``The residues of the corner-to-corner law alternate in sign in $d\ge2$, as they do in $d=1$.'' False for every $d\ge2$, $N\ge3$ (Theorem~\ref{thm:alternation}(b)); the smallest example is $d=2$, $N=3$, signs \texttt{+--+-} (Computer-assisted proposition~\ref{prop:signpatterns}).
+\end{refuted}
+
+Descartes' rule applied to the residues therefore cannot prove unimodality in $d\ge2$: it bounds the number of zeros of $g_q'$ by the number of sign changes of the residues, which is at least $D-1$ \src{\UNI}{Section 3}. The unimodality results below use different tools.
+
+\subsection{Laziness monotonicity}
+
+For a fixed pair let $a_q(t):=f_q(t+1)$ and $\Delta a_q(t)=a_q(t+1)-a_q(t)$; $S^-(\cdot)$ is the number of sign changes. With $p=q'/q$ and the binomial weights $b_p(t,n)=\binom tnp^n(1-p)^{t-n}$, $Q_{q'}=(1-p)I+pQ_q$ gives
+\begin{equation}\label{eq:poisson}
+\Delta a_{q'}(t)=p^2\sum_{n\le t}b_p(t,n)\Delta a_q(n),\qquad g_q'(s)=(q/q_0)^2\ee^{-\mu}\sum_{n\ge0}\frac{\mu^n}{n!}\Delta a_{q_0}(n)\quad(\mu=qs/q_0).
+\end{equation}
+
+\begin{theorem}[laziness monotonicity; \src{\UNI}{Thm 2.5, Cor 2.6}; for the segment \src{\ONE}{Lemma 3.8}]\label{thm:laziness}
+For a fixed box, target and start: $S^-(\Delta a_{q'})\le S^-(\Delta a_q)$ for $0<q'\le q\le1$, and $g_q'$ has at most $S^-(\Delta a_{q_0})$ zeros in $(0,\infty)$ for every rate $q$ and every $q_0\in(0,1]$. Consequently the set of $q\in(0,1]$ for which $f_q$ is unimodal is empty or an interval $(0,q^*]$; if it is non-empty the continuous-time density is unimodal; and the number of local maxima of $f_q$ is non-increasing as $q$ decreases.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+The binomial matrix $(b_p(t,n))$ is a limit of products of nonnegative bidiagonal matrices (Pascal matrix $=\exp(H)$ with $H$ nilpotent bidiagonal), and such matrices do not increase the number of sign changes (an interleaving argument, self-contained); the Poisson form \eqref{eq:poisson} and the Descartes--Laguerre rule for power series give the continuous-time statement. Complete proof: \src{\UNI}{Section 2}. For the segment from the reflecting end a probabilistic proof (thinning by an independent Bernoulli sequence) is \src{\ONE}{Lemma 3.8}.
+\end{proof}
+
+\begin{theorem}[a single distant start is never a mixture; \src{\UNI}{Thm 4.1(d)}]\label{thm:notmixture}
+For the box, any target $a$ and a single start at distance $D\ge2$ there is no positive Borel measure $\mu$ on $[0,1)$ with $f_q(t)=\int\lambda^{t-1}\mu(\dd\lambda)$ for all $t\ge1$, and no positive measure on $[0,\infty)$ with $g_q(t)=\int\ee^{-\sigma t}\mu(\dd\sigma)$ for $t>0$. In particular some residue is negative.
+\end{theorem}
+\begin{proof}
+$D\ge2$ gives $f_q(1)=q\,r(x_0)=0$ and $g_q(0)=0$, while $f_q(D)\ge(q/2d)^D>0$ (a shortest path) and $g_q(t)>0$ for $t>0$ (by \eqref{eq:poisson} above $g_q$ is a Poisson mixture of the values $f_{q_0}(n+1)\ge0$, one of which is positive). A nonnegative mixture $\int\lambda^{t-1}\mu(\dd\lambda)$ equals $\mu([0,1))$ at $t=1$, so $\mu=0$ and $f_q\equiv0$, a contradiction; in continuous time $\mu([0,\infty))=\lim_{t\downarrow0}g_q(t)=0$ by monotone convergence. By Theorem~\ref{thm:residues}(c) the residues have at least $D-1\ge1$ sign changes, so some residue is negative.
+\end{proof}
+
+\subsection{The tail lemma (cone certificate)}
+
+\begin{lemma}[tail lemma; \src{\CER}{Lemma 5}, \src{\UNI}{Lemma 6.1}]\label{lem:tail}
+Let $v_t=Q_q^{\,t-1}e_{x_0}$ (occupation probabilities of the surviving walker, a symmetric $Q_q$). If $v_{T+1}<v_T$ at every site of $\Lambda'$ for some $T\ge1$, then $v_{t+1}<v_t$ for all $t\ge T$ and $f_q(t+1)<f_q(t)$ for all $t\ge T$. If moreover $v_{T+1}\le\gamma v_T$ with $\gamma<1$, then $f_q(T+s)\le\gamma^sf_q(T)$. (With $\le$ in place of $<$ the conclusions hold with $\le$.)
+\end{lemma}
+\begin{proof}
+$w_t:=v_t-v_{t+1}$ satisfies $w_{t+1}=Q_qw_t$; every row of $Q_q$ has a positive entry, so $w_T>0$ propagates to $w_t>0$ for $t\ge T$, and $f_q(t)-f_q(t+1)=\frac q{2d}\sum_{y\sim a}w_t(y)>0$. For the geometric bound, $v_{T+s+1}=Q_q^sv_{T+1}\le\gamma Q_q^sv_T=\gamma v_{T+s}$ since $Q_q\ge0$.
+\end{proof}
+
+A tail time always exists \src{\CER}{Prop 6}: $v_{t+1}(y)/v_t(y)\to\lambda_1(Q_q)<1$ for every $y$ (Perron--Frobenius for the primitive symmetric matrix $Q_q$, proved in a few lines there; also \src{\UNI}{Lemma 3.1}). Every PMF is therefore eventually strictly decreasing, and a failure of unimodality can only occur in a bounded window.
+
+\subsection{Last-exit decomposition and a criterion for unimodality}
+
+Let $X$ be the unkilled walk, $u(t)=\P_{x_0}(X_t=a)$ the free propagator, and in discrete time $\varphi(t)=u(t)-u(t-1)$ ($u(-1):=0$), $E(k)=\P_a(X_1\ne a,\dots,X_k\ne a)$, $\nu(k)=E(k)-E(k+1)$.
+
+\begin{lemma}[last-exit decomposition; \src{\UNI}{Lemma 4.7}]\label{lem:lastexit}
+For every finite Markov chain and every pair: in discrete time $f_q(t)=\sum_{k=0}^tE(k)\varphi(t-k)$ and $f_q(t+1)-f_q(t)=\varphi(t+1)-\sum_{k\le t}\nu(k)\varphi(t-k)$; in continuous time $g_q=u'+r*u'$ with $r(\tau)=q\,r^{\mathsf T}\ee^{-q\tau\Lg_a}\mathbf 1$ positive and nonincreasing.
+\end{lemma}
+
+\begin{theorem}[criterion; \src{\UNI}{Lemma 4.8, Thm 4.11}]\label{thm:criterion}
+(a) If $u'>0$ on $(0,\infty)$ and $\log u'$ is concave there, then the continuous-time density $g_q$ is unimodal for every rate, with a unique mode; more precisely $g_q'=u'\cdot B$ with $B$ nonincreasing.
+(b) If for some $q$ the sequence $\varphi$ is log-concave, then $f_q$ is unimodal.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+A log-concave function convolved with a kernel consisting of an atom at $0$ plus a nonincreasing density is unimodal: in $G=\varphi+r*\varphi$ one has $G'=\varphi\,B$ with $B=\varphi'/\varphi+r(0)-\int_0^t\nu(\tau)\varphi(t-\tau)/\varphi(t)\,\dd\tau$, and each ratio $\varphi(t-\tau)/\varphi(t)$ is nondecreasing in $t$ by log-concavity (the elementary half of Ibragimov's strong-unimodality theorem; the discrete case likewise). Complete proof: \src{\UNI}{Section 4.4}.
+\end{proof}
+
+\subsection{Explicit bounds on the principal pole and the neglected poles}
+
+With $\tau=n\sum_{i\ge1}w_i/\Lambda_i$ (the mean hitting time from the uniform start, \src{\SPE}{Lemma 6.1}), $K_2=n\sum_{i\ge1}w_i/\Lambda_i^2$ and $\varkappa=K_2/\tau^2\le1/\Xb$:
+
+\begin{theorem}[principal killed eigenvalue; \src{\SPE}{Thm 6.2}]\label{thm:sigma0}
+$\tau\le1/\sigma_0\le\tau+1/\Lambda_1$, i.e.\ $\Xb/(1+\Xb)\le\sigma_0\tau\le1$. If $\Xb>1$ and $\beta=\Xb/(\Xb-1)$, then $1-\beta\varkappa\le2/(1+\sqrt{1+4\beta\varkappa})\le\sigma_0\tau\le2/(1+\sqrt{1+4\varkappa})\le1-\varkappa+2\varkappa^2$.
+\end{theorem}
+\begin{proof}
+$\sigma_0$ is the zero of $G$ in $(0,\Lambda_1)$, i.e.\ $1=\sigma_0\,n\,g(\sigma_0)$ with $g(s)=\sum_{i\ge1}w_i/(\Lambda_i-s)$. For $0\le s<\Lambda_1$, $\tau+sK_2\le n\,g(s)\le\tau+sK_2/(1-s/\Lambda_1)$ and $n\,g(s)\le\tau/(1-s/\Lambda_1)$, from $\frac1{\Lambda}+\frac s{\Lambda^2}\le\frac1{\Lambda-s}\le\frac1\Lambda+\frac{s}{\Lambda^2(1-s/\Lambda_1)}$ for $\Lambda\ge\Lambda_1$. At $s=\sigma_0$, with $t=\sigma_0\tau$: the first inequality gives $1\ge t+\varkappa t^2$, the third $1-\sigma_0/\Lambda_1\le t$, and if $\Xb>1$ the second gives $1\le t+\beta\varkappa t^2$. The outer inequalities are elementary.
+\end{proof}
+Explicit two-sided bounds on the second pole $\sigma_1$, the gap $\sigma_1-\sigma_0$ and the residues $r_0$, $r_1$ in terms of three Green's-function functionals are \src{\SPE}{Thms 6.5, 6.7, 6.8, Cor 6.6}; they are specialised to the box in Theorem~\ref{thm:cc-any-d}.
+
+\begin{theorem}[tail of the neglected poles; \src{\SPE}{Thm 12.1, Cor 12.2}]\label{thm:polestail}
+For $1\le J\le p-1$, $t_0>0$, unit rate:
+$\bigl|\P_x(T>t)-\sum_{j<J}r_j(x)\ee^{-\sigma_jt}\bigr|\le\bigl(n\,p_{t_0}(x,x)\sum_{j\ge J}\varrho_j\bigr)^{1/2}\ee^{-\sigma_J(t-t_0/2)}$ for $t\ge t_0/2$, and the analogous bounds for the density and in discrete time hold. For the CC pair, $d\ge2$, $\Xb>1$, $c_*=1+\pi^{3/2}/2$, $Z\ge\Lambda_1^2K_2$, and the continuous-time density $f$ at unit rate: $|f(t)-r_0\sigma_0\ee^{-\sigma_0t}-r_1\sigma_1\ee^{-\sigma_1t}|\le2\ee\,c_*^{d/2}\beta\sqrt Z\,\Xb^{-1}\Lambda_1\ee^{-2\Lambda_1t}$ for $t\ge1/\Lambda_1$. This bound is absolute; it is a relative error $O(\Xb^{-2})$ only where $\ee^{-\Lambda_1t}\asymp1/\Xb$, that is near the mode, whereas at $t=1/\Lambda_1$ it is of the same order as the two slowest terms.
+\end{theorem}
+
+\section{One dimension}\label{sec:1d}
+
+In this section $d=1$: the walk lives on the segment $\{1,\dots,N\}$, site $1$ is reflecting and the target is $a=N$; the start is $x_0$, $d_0=N-x_0$, and $L=N-\frac12$. (A target in the interior reduces to this case: the walk from $x_0<a$ never leaves $\{1,\dots,a-1\}$ before absorption.) The killed matrix $Q=Q_q$ on $\{1,\dots,N-1\}$ has $Q_{11}=1-\frac q2$, $Q_{jj}=1-q$ ($j\ge2$), $Q_{j,j\pm1}=\frac q2$. Put
+\[
+\theta_m=\frac{(2m-1)\pi}{2N-1}=\frac{(2m-1)\pi}{2L},\qquad \lambda_m=1-q(1-\cos\theta_m)\qquad(m=1,\dots,N-1).
+\]
+
+\subsection{The exact law}
+
+\begin{theorem}[exact law; \src{\ONE}{Thms 2.2, 2.3, Cor 2.5}]\label{thm:1d-exact}
+For every start and $t\ge1$, $s\ge0$:
+\[
+f_{x_0}(t)=\frac{2q}{2N-1}\sum_{m=1}^{N-1}\sin\theta_m\sin(d_0\theta_m)\lambda_m^{\,t-1},\qquad g_{x_0}(s)=\frac{2q}{2N-1}\sum_{m=1}^{N-1}\sin\theta_m\sin(d_0\theta_m)\ee^{-q(1-\cos\theta_m)s};
+\]
+$f_{x_0}(t)=0$ for $t<d_0$ and $f_{x_0}(d_0)=(q/2)^{d_0}$. From the reflecting end, $\E z^T=\prod_{m=1}^{N-1}(1-\lambda_m)z/(1-\lambda_mz)$: in continuous time $T$ is a sum of $N-1$ independent exponential variables, and for $q\le\qseg$ in discrete time a sum of $N-1$ independent geometric variables. $\E_{x_0}T=(N(N-1)-x_0(x_0-1))/q$; from the reflecting end $\E T=(L^2-\frac14)/q$.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+$v_m(j)=\cos(\theta_m(j-\frac12))$ are eigenvectors of $Q$ ($v_m(0)=v_m(1)$ encodes the reflection, $v_m(N)=0$ the absorption), with $\|v_m\|^2=(2N-1)/4$; the generating function is Cramer's rule for the tridiagonal matrix $I-zQ$. These are the classical Karlin--McGregor/Keilson representations of birth--death passage times (J.~A. Fill, \emph{J. Theoret. Probab.} 22 (2009), Thms 1.1, 1.2); the proof in \src{\ONE}{Section 2} is self-contained.
+\end{proof}
+
+\subsection{Unimodality and log-concavity}
+
+\begin{theorem}[continuous time; \src{\ONE}{Thm 3.3}, \src{\UNI}{Thm 4.3(ii)}]\label{thm:1d-cont-unimodal}
+For every start: if $d_0=1$, $g_{x_0}$ is completely monotone; if $d_0\ge2$, $g_{x_0}>0$ on $(0,\infty)$ and $g_{x_0}'$ has exactly one zero $t_c$ in $(0,\infty)$, with $g_{x_0}''(t_c)<0$. More generally, for $d=1$ and every start and target the continuous-time density is unimodal.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:1d-exact}, $g=\frac{2q}{2N-1}\sum_mc_m\ee^{-\nu_mt}$ with $c_m=\sin\theta_m\sin(d_0\theta_m)$ and strictly increasing $\nu_m$. The sequence $(\sin(d_0\theta_m))_m$ has at most $d_0-1$ sign changes (between two sample points of opposite sign $\sin(d_0\vartheta)$ has a zero in $(0,\pi)$, and it has $d_0-1$ of them). By Laguerre's extension of Descartes' rule (an exponential sum $\sum c_i\ee^{\beta_it}$ has at most as many real zeros, with multiplicity, as its coefficient sequence has sign changes; E.~Laguerre, J.~Math. Pures Appl. (3) 9 (1883); G.~P\'olya, G.~Szeg\H{o}, \emph{Problems and Theorems in Analysis II}, Part V, Ch.~1; proved in \src{\ONE}{Lemma 3.1}) $g$ has at most $d_0-1$ real zeros; it has a zero of multiplicity exactly $d_0-1$ at $0$ (a single path of length $d_0$), so none in $(0,\infty)$. Likewise $g'$ has a zero of multiplicity $d_0-2$ at $0$ and at most one more; $g$ attains its maximum at some $t_c>0$, so this zero exists, is simple, and $g''(t_c)<0$. For $d_0=1$ all $c_m=\sin^2\theta_m>0$. The general statement (any target) is \src{\UNI}{Thm 4.3(ii)} (variation diminishing for the heat flow on a path).
+\end{proof}
+
+\begin{theorem}[discrete time, nonnegative spectrum; \src{\ONE}{Thm 3.5}, \src{\UNI}{Thm 4.3(i)}]\label{thm:1d-disc-unimodal}
+Let $q\le\qseg$ (in particular $q\le\frac12$) and $d_0\ge1$. There is $t^*\ge d_0$ with
+\[
+0=f(1)=\dots=f(d_0-1)<f(d_0)<\dots<f(t^*),\qquad f(t^*)\ge f(t^*+1)>f(t^*+2)>\cdots ;
+\]
+so $f_{x_0}$ is unimodal with at most two modes, which are then adjacent. If $q<\qseg$ and $d_0\ge2$, the real-variable increment $\Psi(t)=\Phi(t+1)-\Phi(t)$, $\Phi(t)=\sum_mc_m\lambda_m^{t-1}$, has exactly one zero $t_0$ in $(d_0-1,\infty)$, and every mode lies in $[t_0,t_0+1]$. The case $q=\qseg$ of the strict statement is marked \NEW. For every start and every target on a segment the PMF is unimodal for $q\le\frac12$ \src{\UNI}{Thm 4.3(i)}.
+\end{theorem}
+\begin{proof}
+\emph{$q<\qseg$.} All $\lambda_m>0$; $\Phi$ is an exponential sum with strictly decreasing exponents $\ln\lambda_m$ and coefficients $c_m/\lambda_m$ with at most $d_0-1$ sign changes, and so is $\Psi$ (coefficients $c_m(\lambda_m-1)/\lambda_m$). If $d_0=1$, $\Psi<0$. If $d_0\ge2$, $\Psi$ vanishes at $t=1,\dots,d_0-2$, so by Laguerre's rule it has at most one further real zero; $\Psi(d_0-1)=\Phi(d_0)>0$ and $\Psi$ is negative at large integers. Hence exactly one zero $t_0>d_0-1$, simple, with $\Psi>0$ on $[d_0-1,t_0)$, $\Psi<0$ on $(t_0,\infty)$; take $t^*=\lceil t_0\rceil$.
+
+\emph{$q=\qseg$}\NEW. Then $\lambda_{N-1}=0$ and $\lambda_1>\dots>\lambda_{N-2}>0$, so for integers $t\ge2$, $f(t)=\frac{2q}{2N-1}\Phi'(t)$ with the $(N-2)$-term sum $\Phi'(t)=\sum_{m<N-1}c_m\lambda_m^{t-1}$; put $\Psi'(t)=\Phi'(t+1)-\Phi'(t)$ (real $t$). Its coefficients are, up to the negative factors $(\lambda_m-1)/\lambda_m$, a subsequence of $(c_m)$, so $\Psi'$ has at most $d_0-1$ real zeros with multiplicity. $c_1=\sin\theta_1\sin(d_0\theta_1)>0$ because $0<d_0\theta_1<\frac\pi2$, so $\Psi'<0$ for large $t$, and $f(t+1)-f(t)=\frac{2q}{2N-1}\Psi'(t)$ for integers $t\ge2$. If $d_0=1$, all $c_m>0$, $\Psi'<0$, and $f(2)=\frac q2(1-q)<f(1)=\frac q2$ ($N\ge3$): $t^*=1$. If $d_0=2$, $\Psi'$ has at most one real zero and is negative for large $t$; with $f(2)=(\frac q2)^2>0=f(1)$ this gives the pattern. If $d_0\ge3$, $\Psi'$ vanishes at the $d_0-3$ integers $2,\dots,d_0-2$, and $\Psi'(d_0-1)=\frac{2N-1}{2q}f(d_0)>0$; since $\Psi'<0$ for large $t$, the total multiplicity of its zeros in $(d_0-1,\infty)$ is odd and at most $(d_0-1)-(d_0-3)=2$, hence $1$: one simple zero $t_0$, and $t^*=\lceil t_0\rceil$ as before. (A 60-digit check of all strict patterns at $q=\qseg$, $3\le N\le25$, every start, $t\le8N^2$, is \texttt{code/msc\_rigorous\_1d/38\_qN\_strict.py}.)
+\end{proof}
+% src: data/msc_rigorous_1d/38_qN_strict.json
+
+\begin{theorem}[log-concavity; \src{\ONE}{Thm 3.6}]\label{thm:1d-logconcave}
+From the reflecting end ($x_0=1$): if $q\le\frac23$, the PMF is log-concave with support $\{t\ge N-1\}$; in continuous time the density is log-concave for every $q$.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+With $K_t(x)=(Q^t)_{x,N-1}$ and $M_t(x,y)=K_t(x)K_{t-1}(y)-K_{t-1}(x)K_t(y)$, one has $f(t+1)^2-f(t)f(t+2)=(\frac q2)^3M_t(1,2)$, and $M_{t+1}(x,y)=\sum_{z<w}Q[x,y|z,w]M_t(z,w)$ (Cauchy--Binet for $2\times2$ minors). $Q$ is totally positive of order two iff its only possibly negative contiguous minor $(1-q)^2-\frac{q^2}4$ is $\ge0$, i.e.\ iff $q\le\frac23$; induction gives $M_t\ge0$. The continuous case follows by letting the move probability tend to $0$. Complete proof: \src{\ONE}{Section 3.4}.
+\end{proof}
+For $q\le\frac12$ a second proof, from the product formula (convolution of geometric laws preserves log-concavity), is \src{\CER}{Thm 28}; Theorem~\ref{thm:1d-logconcave} supersedes it.
+
+\begin{proposition}[$N=3$: exact criterion; \src{\CER}{Rem 29(a)}]\NEW\label{prop:N3lc}
+For $d=1$, $N=3$, $x_0=1$ and every $q\in(0,1]$, $t\ge2$:
+\[
+f(t)^2-f(t-1)f(t+1)=\frac{q^4}{16}(\det Q)^{t-2},\qquad \det Q=1-\frac{3q}2+\frac{q^2}4 .
+\]
+Hence the PMF is log-concave iff $q\le3-\sqrt5=0.7639\ldots$, and for $3-\sqrt5<q\le1$ log-concavity fails exactly at the odd $t\ge3$.
+\end{proposition}
+\begin{proof}
+$Q$ is the symmetric $2\times2$ matrix with rows $(1-\frac q2,\frac q2)$, $(\frac q2,1-q)$; its off-diagonal entry is non-zero, so its eigenvalues $x\ne y$ are distinct and, by Cayley--Hamilton, $Q^k=\alpha_kQ+\beta_kI$ with $\alpha_k=(x^k-y^k)/(x-y)$. Hence $f(t)=\frac q2(Q^{t-1})_{1,2}=\frac{q^2}4\alpha_{t-1}$, and the identity $(x^k-y^k)^2-(x^{k-1}-y^{k-1})(x^{k+1}-y^{k+1})=(xy)^{k-1}(x-y)^2$ with $k=t-1$ gives the formula, since $xy=\det Q$. $\det Q\ge0$ iff $q^2-6q+4\ge0$ iff $q\le3-\sqrt5$ (for $q\le1$); if $\det Q<0$ the right side is negative exactly when $t-2$ is odd.
+\end{proof}
+% src: data/msc_rigorous_certified/remark_checks.json (key remark_lc_N3); code/msc_rigorous_1d/02_unimodality_scan.py (q_lc(3) = 0.7639)
+This agrees with the value $q_{\rm lc}(3)=0.7639$ found numerically in \src{\ONE}{Rem 3.7}; for $N=4$ and $q=\frac45$ log-concavity fails at $t=4$ and at no other $t\le400$ (exact; \src{\CER}{Rem 29(b)}).
+
+\begin{proposition}[failure near $q=1$ from the reflecting end; \src{\ONE}{Prop 3.9}, \src{\UNI}{Prop 4.4}, \src{\CER}{Prop 32}]\label{prop:1d-fail}
+Let $x_0=1$, $N\ge4$. Then $f(N+1)>f(N)$ for every $q\in(0,1]$, and $f(N)<f(N-1)$ iff $q>\frac{2N-4}{2N-3}$. Hence for $q>\frac{2N-4}{2N-3}$ the PMF is not unimodal ($f(N-1)>f(N)<f(N+1)$); in particular it is not unimodal for $q=1$ and any $N\ge4$. For $N\in\{2,3\}$ it is unimodal for every $q$, and for $N=4$ it is unimodal iff $q\le\frac45$.
+\end{proposition}
+\begin{proof}[Proof (outline)]
+Path counting: $f(N-1)=(\frac q2)^{N-1}$, $f(N)=(\frac q2)^{N-1}[\eta_1+(N-2)\eta]$ with $\eta=1-q$, $\eta_1=1-\frac q2$, and $f(N+1)=(\frac q2)^{N-1}[\eta_1^2+(N-2)\eta_1\eta+\binom{N-1}2\eta^2+(N-2)\frac{q^2}4]$; the difference $f(N+1)-f(N)$ is a quadratic in $\eta$ that is positive on the relevant range \src{\CER}{Prop 32}, \src{\ONE}{Prop 3.9} (two separately written hand proofs). For $N=4$, $q=\frac45$, the integer vectors $R_t=(5Q)^te_1$ are $R_4=(249,192,104)$ and $R_5=(1131,898,488)\le5R_4$, so by the cone version of Lemma~\ref{lem:tail} $f$ is nonincreasing from $t=5$ on, while $f(3)=f(4)=\frac8{125}<f(5)=\frac{208}{3125}$: unimodal at $\frac45$, hence for $q\le\frac45$ by Theorem~\ref{thm:laziness} \src{\UNI}{Prop 4.4}.
+\end{proof}
+% src: data/msc_rigorous_unimodality/verify_thr1d.json (check Z3: N = 4 at q = 4/5); data/msc_rigorous_1d/39_hand_constants.json
+
+\begin{theorem}[$q=1$: each parity class is unimodal; \src{\ONE}{Thm 3.10}]\label{thm:1d-parity}
+Let $q=1$ and $d_0'=2N-1-d_0$. The two sequences $i\mapsto f(d_0+2i)$ and $i\mapsto f(d_0'+2i)$ are positive, strictly increasing up to some index, and strictly decreasing after it (with at most one equality at the top); $f(t)=0$ for $t<d_0$, and for $t<d_0'$ with $t\equiv d_0'\pmod2$.
+\end{theorem}
+
+\begin{catheorem}[eventual total positivity beyond $q=\frac23$; \src{\ONE}{Lemmas 3.12--3.14, Thms 3.15, 3.16}]\label{thm:1d-tp2}
+From the reflecting end:
+\begin{enumerate}[label=(\alph*)]
+\item for $q=\frac45$ and every $N\ge4$, $Q^k$ is $TP_2$ for all $k\ge10$; the PMF is log-concave iff $N=2$ or $N\ge5$, and unimodal for every $N$;
+\item for $q=\frac{17}{20}$ (every $N\ge5$, $k\ge18$) and $q=\frac9{10}$ (every $N\ge7$, $k\ge40$) $Q^k$ is $TP_2$; the PMF is log-concave iff $N=2$ or $N\ge12$ (resp.\ $N\ge33$) and unimodal iff $N\notin\{4,5\}$ (resp.\ $N\notin\{4,\dots,8\}$);
+\item consequently, with $q^*(N,1)$ the unimodality threshold of Theorem~\ref{thm:laziness}: $q^*(N,1)\ge\frac45$ for all $N$, $\ge\frac{17}{20}$ for $N\ge6$, $\ge\frac9{10}$ for $N\ge9$; the bound $\frac45$ is optimal for a statement valid for all $N$ (Proposition~\ref{prop:1d-fail}, $N=4$).
+\end{enumerate}
+\end{catheorem}
+% src: data/msc_rigorous_1d/31_tp2_powers_q4_5.json; data/msc_rigorous_1d/31_tp2_powers_q17_20.json; data/msc_rigorous_1d/31_tp2_powers_q9_10.json
+\begin{proof}[Proof (outline)]
+Products of $TP_2$ matrices are $TP_2$ (Cauchy--Binet); for a banded matrix with positive band it suffices to check the contiguous minors; and the minors of $Q^k$ on $N$ sites coincide with minors on a fixed finite chain once $N-1\ge4k$ (locality). So finitely many integer minors of $(10Q)^k$, $10\le k\le19$, $N\le80$ (712\,830 contiguous minors; every $k\ge20$ is a sum of integers in $[10,19]$) decide (a); similarly (b). Exact integer arithmetic, \texttt{code/msc\_rigorous\_1d/31\_tp2\_powers.py}; a second, separately written implementation (all $2\times2$ minors, no band shortcut) is \texttt{34\_tp2\_second\_impl.py}. Complete proof: \src{\ONE}{Section 3.7}.
+\end{proof}
+The statement ``unimodal for every $N$ and every $q\le\frac45$'' has a second computer-assisted proof, by a different method, through the free propagator (Computer-assisted theorem~\ref{thm:four-fifths} with $d=1$), and on the finite ranges of Computer-assisted theorem~\ref{thm:1d-certified} a third, by exact certificates.
+
+\begin{conjecture}[\src{\ONE}{Rem 3.17(b)}]\label{conj:eventualtp2}
+For every $q<1$ the powers $Q^k$ are $TP_2$ for all $k\ge k_*(q)$, uniformly in $N$ (observed $k_*=2,4,10,18,40$ for $q=\frac7{10},\frac34,\frac45,\frac{17}{20},\frac9{10}$; heuristically $k_*\approx q^2/(2(1-q)^2)$). This would give log-concavity for all $N\ge N_1(q)$.
+\end{conjecture}
+
+\begin{catheorem}[exact one-dimensional thresholds; \src{\UNI}{Prop 7.3, Thm 7.4}]\NEW\label{thm:1d-thresholds}
+Let $q^*(N)$ be the unimodality threshold (Theorem~\ref{thm:laziness}).
+\begin{enumerate}[label=(\alph*)]
+\item End to end ($x_0=1$): $q^*(2)=q^*(3)=1$; $q^*(N)=\frac{2N-4}{2N-3}$ for $N=4$, $N=20$ and every $22\le N\le300$; for $5\le N\le19$ and $N=21$, $q^*(N)<\frac{2N-4}{2N-3}$, with six-digit brackets $k_N10^{-6}\le q^*(N)<(k_N+1)10^{-6}$ (e.g.\ $q^*(21)\in[0.974226,0.974227)$, whereas $\frac{38}{39}=0.974358\ldots$).
+\item Centre to corner ($N$ odd, $x_0=\frac{N+1}2$, $M=\frac{N-1}2$): $f(M)=(\frac q2)^M$, $f(M+1)=(\frac q2)^MM(1-q)$, $f(M+2)=(\frac q2)^M[\binom{M+1}2(1-q)^2+M\frac{q^2}4]$ (hand proof). Hence (with a two-step cone certificate at $q=\frac45$ for $N=3$, also by hand) $q^*(3)=\frac45$ and, for $N\ge7$, $q^*(N)\le\frac{N-3}{N-1}$, for $N=5$, $q^*(5)\le\frac{4+\sqrt2}7$. Exactly: $q^*(5)=\frac{4+\sqrt2}7$; $q^*(N)=\frac{N-3}{N-1}$ for $N\in\{7,9,17,21\}$ and every odd $23\le N\le301$; brackets for $N\in\{11,13,15,19\}$.
+\item At $q=\frac45$ the centre-to-corner PMF in $d=1$ is unimodal iff $N\notin\{5,7,9,11\}$ (witness for $N=5$: $f(2)=\frac4{25}>f(3)=\frac8{125}<f(4)=\frac{44}{625}$).
+\end{enumerate}
+\end{catheorem}
+% src: data/msc_rigorous_unimodality/cert_thr1d_bisect.jsonl; data/msc_rigorous_unimodality/cert_thr1d_bound.jsonl; data/msc_rigorous_unimodality/cert_thr1d_boundf.jsonl; data/msc_rigorous_unimodality/cert_thr1d_m2c.json; data/msc_rigorous_unimodality/cert_thr1d_m2cbound.jsonl
+\begin{proof}[Proof (outline)]
+Upper bounds: Proposition~\ref{prop:1d-fail} and the path counting of (b). Lower bounds and brackets: exact cone certificates (Lemma~\ref{lem:tail}) at rational $q$ in integer arithmetic (two separately written engines, Python integers and python-flint integer polynomials, which agree on $4\le N\le200$ in (a) and odd $7\le N\le81$ in (b)); $q^*(5)$ is decided in the ring $\Z[\sqrt2]$. (c): $N\in\{5,7,9\}$ by the path counting of (b), $N=11$ by the bracket of (b), $N=3$ and odd $13\le N\le23$ by the lower bounds of (b), and odd $N\ge25$ by the log-concavity of the folded free increment, Computer-assisted theorem~\ref{thm:1d-freelc}(a) of Section~\ref{sec:unimodal}, with Theorem~\ref{thm:criterion}(b). Run time: 1.84~h (flint, $4\le N\le300$), 0.44~h (Python, $N\le200$), 0.57~h (centre to corner), wall-clock on a loaded machine. Complete proof: \src{\UNI}{Section 7.1}.
+\end{proof}
+Floating-point bisections \src{\ONE}{Obs 3.20}, \src{\UNI}{Obs 4.5} agree with (a) on their ranges. The heuristic explanation of the exceptional set $\{5,\dots,19,21\}$ (a parity zig-zag at the top of the PMF) is \src{\UNI}{Rem 7.5}; it is not a proof.
+
+\begin{refuted}[\src{\UNI}{Remark after Conj 10.2}]\label{ref:thr20}
+``In $d=1$, end to end, $q^*(N)=\frac{2N-4}{2N-3}$ for all $N\ge20$.'' False at $N=21$: at $q=\frac{38}{39}$, $f(142)>f(143)<f(144)$ (exact integers). The threshold for $N\ge22$ is the subject of Conjecture~\ref{conj:thresholds}(iii).
+\end{refuted}
+
+\subsection{Starts away from the reflecting wall}
+
+\begin{proposition}[failure of discrete unimodality for $x_0\ge2$; \src{\ONE}{Prop 8.8}, \src{\UNI}{Prop 7.3 and the remark after it}]\NEW\label{prop:startfail}
+Let $N\ge3$, $2\le x_0\le N-1$, $d_0=N-x_0$, $q\in(0,1]$. Then
+\[
+f(d_0)=\bigl(\tfrac q2\bigr)^{d_0},\qquad f(d_0+1)=\bigl(\tfrac q2\bigr)^{d_0}d_0(1-q),\qquad f(d_0+2)=\bigl(\tfrac q2\bigr)^{d_0}\Bigl[\tfrac{d_0(d_0+1)}2(1-q)^2+\tfrac{d_0}4q^2\Bigr].
+\]
+Consequently $f(d_0)>f(d_0+1)<f(d_0+2)$, so $f$ is not unimodal, whenever $q>q_{\rm fail}(d_0)$, where $q_{\rm fail}(1)=\frac45$, $q_{\rm fail}(2)=\frac{4+\sqrt2}7=0.77345\ldots$, $q_{\rm fail}(d_0)=1-\frac1{d_0}$ ($d_0\ge3$). Hence $\qseg\le q^*(N,x_0)\le q_{\rm fail}(N-x_0)$.
+\end{proposition}
+\begin{proof}
+A path of length $t$ from $x_0$ to its first visit of $N$ has $r$ right moves, $l$ left moves and $s$ rests with $r-l=d_0$, $r+l+s=t$. For $t=d_0$ there is one path. For $t=d_0+1$, one rest at one of the $d_0$ sites $x_0,\dots,N-1$, all $\ge2$, so the rest has probability $1-q$. For $t=d_0+2$: either two rests (a multiset of two of these $d_0$ sites, $\frac{d_0(d_0+1)}2$ choices, weight $(1-q)^2$), or one left move from one of these sites (a genuine move, since all are $\ge2$) followed at once by the right move back, $d_0$ paths of extra weight $(\frac q2)^2$. This gives the three values. $f(d_0+1)<f(d_0)$ iff $d_0(1-q)<1$, and with $r:=1-q$, $(\frac q2)^{-d_0}(f(d_0+2)-f(d_0+1))=\frac{d_0}4[(2d_0+3)r^2-6r+1]$. For $d_0=1$ the bracket is $(5r-1)(r-1)$, positive iff $r<\frac15$, and $f(2)<f(1)$ always. For $d_0=2$, $7r^2-6r+1>0$ iff $r<\frac{3-\sqrt2}7$ or $r>\frac{3+\sqrt2}7$; with $r<\frac12$ this is $q>\frac{4+\sqrt2}7$. For $d_0=3$ the bracket is $(3r-1)^2>0$ for $q\ne\frac23$. For $d_0\ge4$ its discriminant $8(3-d_0)$ is negative. A unimodal sequence cannot have $f(d_0)>f(d_0+1)<f(d_0+2)$. Finally $\qseg\le q^*$ by Theorem~\ref{thm:1d-disc-unimodal} and $q^*\le q_{\rm fail}$ because the unimodal set is $(0,q^*]$ (Theorem~\ref{thm:laziness}).
+\end{proof}
+% src: data/msc_rigorous_1d/36_start_failure.json; data/msc_rigorous_unimodality/scan_pairs1d_q4-5.json; data/msc_rigorous_unimodality/verify_thr1d.json
+The two notes contain this argument in two separately written forms (general $x_0\ge2$ in \ONE; the centre start and general pairs in \UNI); for $N=3$, $x_0=2$ unimodality holds iff $q\le\frac45$ \src{\UNI}{Prop 7.3(a)} (exact cone certificate at $q=\frac45$).
+
+\begin{caproposition}[$q_{\rm fail}$ is not the threshold; \src{\ONE}{Obs 8.9}, \src{\UNI}{remark after Prop 7.3}]\NEW\label{prop:qfailnotsharp}
+% src: data/msc_rigorous_1d/36_start_failure.json; data/msc_rigorous_unimodality/scan_pairs1d_q4-5.json
+For $d_0=5$, $q=\frac45=q_{\rm fail}(5)$ and $8\le N\le13$ (so $x_0\ge3$) the PMF is not unimodal (a dip at $t=10$, $f(9)>f(10)<f(11)$, exact rational arithmetic). At $q=\frac45$, among all $66$ starts with $N\le12$ exactly $29$ are not unimodal, all with $x_0\ge2$ and $d_0\in\{2,3,4,5\}$; the other $37$ are unimodal (exact cone certificates). In particular $N=7$, $x_0=2$ is unimodal.
+\end{caproposition}
+
+\begin{observation}[\src{\ONE}{Obs 8.9}]\label{obs:startscan}
+An exact scan over $3\le N\le13$, $2\le x_0\le N-1$, $q\in\{\frac35,\frac23,\frac34,\frac45,\frac9{10},1\}$, $t\le6N^2$ finds a certified failure of unimodality in $171$ of the $396$ cases: the $165$ cases with $q>q_{\rm fail}(d_0)$ and the six cases of Computer-assisted proposition~\ref{prop:qfailnotsharp}. In the other $225$ cases no failure was found up to $t=6N^2$ (a finite search, which proves nothing).
+\end{observation}
+% src: data/msc_rigorous_1d/36_start_failure.json
+
+\subsection{The continuum limit and the constant $c$}
+
+Let $y_k=k\pi/4$, $\sigma_k=(-1)^{(k-1)/2}$ for odd $k$, and
+\[
+G(u)=\frac\pi2\sum_{k\ \rm odd}\sigma_kk\,\ee^{-k^2\pi^2u/8}\qquad(u>0),
+\]
+the density of the first time a standard Brownian motion started at $0$ leaves $(-1,1)$, i.e.\ of the passage time of reflected Brownian motion from $0$ to $1$ (Laplace transform $1/\cosh\sqrt{2s}$). The scaled lattice density is $G_N(u)=\frac{L^2}qg(\frac{L^2u}q)$ (independent of $q$).
+
+\begin{theorem}[the limit density; \src{\ONE}{Thms 4.2, 4.3, 8.3, Rem 8.4}]\label{thm:1d-limitdensity}
+$G_N^{(j)}\to G^{(j)}$ uniformly on $[u_0,\infty)$ for every $u_0>0$ and $j\ge0$. $G>0$, $\log G$ is concave, $G'$ has exactly one zero $c$ in $(0,\infty)$, and $G''(c)<0$. (Uniqueness and non-degeneracy also follow by hand, without numerical evaluation, from Descartes' rule on the lattice, \src{\ONE}{Thm 8.3 with $\xi=0$}.)
+\end{theorem}
+
+\begin{catheorem}[the constant; \src{\ONE}{Thm 4.6}, \src{\CER}{Thm 23}]\label{thm:1d-constant}
+% src: data/msc_rigorous_1d/03_constants.json; data/msc_rigorous_certified/constants.json (key "kappa_1 = 2 tau_star")
+With the $80$-digit decimal $c_\circ$ of \texttt{data/msc\_rigorous\_1d/03\_constants.json}, $|c-c_\circ|<10^{-70}$, and
+\[
+c=0.3332842654949478987485269165434424210970365590711318852610059370862\ldots
+\]
+Moreover $G(c)=0.92506494218414348715254834\ldots$, $G''(c)=-12.514127592957827401576602\ldots$, and
+\[
+\kappa:=\frac34+\frac c6\frac{G'''(c)}{G''(c)}=0.086273779378239017181791\ldots,\qquad \rho:=-\frac c2\frac{G'''(c)}{G''(c)}=1.9911786618652829484546\ldots .
+\]
+A separately written proof of uniqueness (via the dual theta series, Jacobi's identity and the modular transformation of $\eta$) and a $29$-digit enclosure of $c=\kappa_1=2\tau^*$ are \src{\CER}{Thm 23}; the two enclosures agree.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+\texttt{code/msc\_rigorous\_1d/03\_constant\_enclosure.py}: $G'(c_\circ\mp10^{-70})\gtrless0$ in 400-bit Arb ball arithmetic, the series tails bounded by an explicit geometric bound \src{\ONE}{Lemma 4.1}; Theorem~\ref{thm:1d-limitdensity} turns the sign change into the enclosure.
+\end{proof}
+% src: data/msc_rigorous_1d/03_constants.json
+By the method of images the two leading images give the L\'evy density with maximiser $\frac13$; the next images are of relative size $3\ee^{-12}$ at $u=\frac13$, which is why $c=\frac13-4.9068\ldots\times10^{-5}$ \src{\ONE}{Rem 4.5}.
+
+\subsection{The mode}
+
+\begin{catheorem}[continuous time; \src{\ONE}{Thm 5.7, Cor 5.8}]\label{thm:1d-cont}
+% src: data/msc_rigorous_1d/12_cont_theorem.json; data/msc_rigorous_1d/13_cont_small_N.json; data/msc_rigorous_1d/37_kappa2.json; data/msc_rigorous_1d/39_hand_constants.json
+Let $t_c$ be the continuous-time mode from the reflecting end and $u_N=qt_c/L^2$. For every $N\ge3$,
+\[
+\Bigl|u_N-c+\frac\kappa{L^2}\Bigr|<\frac{1.78}{L^4}\qquad(1.54\ \text{for}\ N\ge201),\qquad c-\frac{0.3614}{L^2}<u_N<c-\frac\kappa{L^2},
+\]
+and $t_c/\E T=c+(\frac c4-\kappa)L^{-2}+\vartheta L^{-4}$ with $\frac c4-\kappa=-0.0029527130\ldots$ and $|\vartheta|\le1.86$. \NEW\ The limit $\kappa_2=\lim_NL^4(u_N-c+\kappa L^{-2})$ exists and equals $-\Gamma_0/G''(c)$ with
+\[
+\Gamma_0=\tfrac12\kappa^2G'''-\kappa\bigl(\tfrac{11}{12}G'''+\tfrac c6G''''\bigr)+\tfrac{113}{480}G'''+\tfrac{49c}{360}G''''+\tfrac{c^2}{72}G^{(5)}\quad(\text{at }c),\qquad \kappa_2=-1.5308900198375030446\ldots
+\]
+(the existence proof and the closed form were written after the internal checks; the bounds were checked in them).
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+A lattice expansion with certified remainder, $G_N^{(j)}(v)=G^{(j)}(v)+L^{-2}H_j(v)+L^{-4}R$ with $H_1=\frac34G''+\frac v6G'''$ and $R$ enclosed in ball arithmetic uniformly in $L\ge L_0$ \src{\ONE}{Prop 5.4} (by hand, with explicit constants), is inserted at $u=c-\kappa L^{-2}\pm KL^{-4}$; Taylor's formula at $c$ and the unimodality of Theorem~\ref{thm:1d-cont-unimodal} give the window for $N\ge N_0$ (script \texttt{12}), and $3\le N\le300$ are checked one by one in 160-bit ball arithmetic (script \texttt{13}). The limit $\kappa_2$: the remainder terms converge by dominated convergence (Tannery's theorem) uniformly in $|s|\le1.78$, and the limit is evaluated in closed form; its value is enclosed in 256-bit ball arithmetic (script \texttt{37}) and lies inside the certified window $[-1.5309330,-1.5308464]$ of the row $N_0=2001$. Complete proof: \src{\ONE}{Section 5}.
+\end{proof}
+
+\begin{catheorem}[discrete time; \src{\ONE}{Thms 6.1, 6.3, Prop 6.2, Cor 6.4}]\label{thm:1d-disc}
+% src: data/msc_rigorous_1d/35_disc_uniformK.json; data/msc_rigorous_1d/14_disc_N0_41_q4_5.json; data/msc_rigorous_1d/14_disc_N0_61_q9_10.json; data/msc_rigorous_1d/15_disc_small_N.jsonl; data/msc_rigorous_1d/32_disc_small_N_ext.jsonl; data/msc_rigorous_1d/39_hand_constants.json; data/msc_rigorous_1d/40_examples.json
+Let $x_0=1$ and $(N,q)$ satisfy (a) $N\ge3$, $q\le\frac45$; or (b) $N\ge7$, $q\le\frac{17}{20}$; or (c) $N\ge10$, $q\le\frac9{10}$. Then $f$ is unimodal and every mode satisfies
+\[
+\tau-E<t^*<\tau+1+E,\qquad \tau=\frac{cL^2-\kappa}q+1-\rho,\qquad E=\frac{1.78}{qL^2}
+\]
+($1.68$ in place of $1.78$ for $N\ge41$, $q\le\frac45$; $1.61$ for $N\ge61$). Consequently $|qt^*/L^2-c|<(0.0863+0.9912q)L^{-2}+1.78L^{-4}$; $c-qt^*/L^2\ge0.0774L^{-2}-1.78L^{-4}>0$ for $N\ge6$ (the exponent $2$ is optimal); $|t^*/\E T-c|\le(0.003+0.992q)L^{-2}+2.2L^{-4}$; and if $\mathrm{dist}(\tau,\Z)\ge E$, the mode is unique and $t^*=\lceil\tau\rceil$. The restrictions $N\ge7$, $N\ge10$ in (b), (c) cannot be dropped: for $N=6$, $q=0.828$ the mode is $11<\tau-E=11.0097\ldots$, and for $N=9$, $q=0.887$ it is $26<\tau-E=26.031\ldots$ (exact rational computation).
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+Unimodality: Computer-assisted theorem~\ref{thm:1d-tp2}. Window: the expansion of the increment $\frac{L^4}{q^2}(f(t+1)-f(t))=G'(v)+L^{-2}H(v)+L^{-4}R$, $v=q(t-1)/L^2$, $H=\frac34G''+\frac v6(1-3q)G'''$, certified on $2400$ (resp.\ $2700$) $q$-intervals uniformly in $L\ge L_0$, first with per-interval constants (script \texttt{14}) and then with the single constant of the statement on every interval (script \texttt{35}, $0$ failing intervals; a re-run with a uniform constant by separately written code within the same project gave the same result); $3\le N\le60$ by bisection in $q$ (scripts \texttt{15}, \texttt{32}). Complete proof: \src{\ONE}{Section 6}.
+\end{proof}
+% src: data/msc_rigorous_1d/39_hand_constants.json; data/msc_rigorous_1d/22_crosscheck_t5.json; data/checks/r0_1d_exact_formula_counts.json
+For $q=\frac45$ the exact formula reads $t^*=\lceil\frac54cL^2-1.09902\ldots\rceil$, and for $q=\frac12$, $t^*=\lceil2cL^2-1.16372\ldots\rceil$, valid for every $N\ge3$ with $\mathrm{dist}(\tau,\Z)\ge E$ \src{\ONE}{Remark after Cor 6.4}. On the finite ranges of Computer-assisted theorem~\ref{thm:1d-certified} the modes are certified case by case (rules $t^*=\lfloor cL^2/q-0.0997\rfloor$ and $\lfloor cL^2/q-0.164\rfloor$ for $N\ge10$). On these ranges ($3\le N\le1500$ and $N=2000$ for $q=\frac45$; $3\le N\le1000$ for $q=\frac12$; $E=1.78/(qL^2)$, resp.\ $1.68/(qL^2)$ for $N\ge41$) the hypothesis $\mathrm{dist}(\tau,\Z)\ge E$ holds in $1495$ of $1499$ cases for $q=\frac45$ (all except $N\in\{4,9,12,13\}$) and in $989$ of $998$ cases for $q=\frac12$ (all except $N\in\{3,4,6,7,9,10,12,13,59\}$), and in each of them the formula gives the certified mode (on the sub-ranges $3\le N\le600$, $N\in\{800,1000\}$ and $3\le N\le300$ used in \src{\ONE}{Remark after Cor 6.4}: $596$ of $600$ and $289$ of $298$ cases). For the remaining $N$ ($\tau$ within $E$ of an integer) the window of Computer-assisted theorem~\ref{thm:1d-disc} contains more than one integer and does not by itself single out the mode.
+
+\begin{catheorem}[the simple random walk $q=1$; \src{\ONE}{Thm 7.4}]\label{thm:1d-q1}
+% src: data/msc_rigorous_1d/16_q1_theorem.json; data/msc_rigorous_1d/17_q1_small_N.json
+Let $q=1$, $x_0=1$, $N\ge3$. Every global maximiser satisfies $t^*\equiv N-1\pmod2$ and $\tau_1-\frac KL<t^*<\tau_1+2+\frac KL$ with $K=10.3$ ($K=0.031$ for $N\le600$), where $\tau_1=cL^2-bL+1+s_2$, $b=0.33250858299642786\ldots$, $s_2=-2.2503062886311552\ldots$. There are at most two maximisers ($t^*$ and $t^*+2$), which happens for $N\in\{5,6,8,9\}$ and for no other $N\le600$. Hence $L(c-t^*/L^2)\to b\ne0$: for $q=1$ the scaled mode converges to $c$ at the exact rate $N^{-1}$.
+\end{catheorem}
+
+\begin{catheorem}[global maximisers for $\frac23\le q<1$ without unimodality; \src{\ONE}{Thm 7.7, Cor 7.8}]\label{thm:1d-global}
+% src: data/msc_rigorous_1d/18_global_N0_601_q1_1_tol.json; data/msc_rigorous_1d/18_global_N0_601_q999_1000.json; data/msc_rigorous_1d/18_global_N0_2001_q9999_10000.json; data/msc_rigorous_1d/35_disc_uniformK.json
+Let $N\ge601$, $q\in(0,1)$, $\chi(q)=\frac12$ for $q\le\frac45$, $\chi(q)=\min\{\frac12,-\ln(2q-1)/q\}$ for $q>\frac45$, and assume $4(\frac\pi2)^3L^8\exp(-0.15\chi(q)L^2)\le10^{-12}$ (true for all $N\ge601$ if $q\le0.999$, for $N\ge2001$ if $q\le0.9999$). Then every global maximiser satisfies $\tau-E<t^*<\tau+1+E$ with $E=1.56/(qL^2)$; there are at most two, and they are adjacent. Consequently, for every fixed $q\in(0,1]$, $qt^*/L^2\to c$ and $t^*/\E T\to c$ as $N\to\infty$ (error $O(N^{-2})$ for $q<1$, $-b/L+O(N^{-2})$ for $q=1$; also in continuous time).
+\end{catheorem}
+% src: data/msc_rigorous_1d/40_examples.json
+The hypothesis is essentially $(1-q)L^2\gtrsim27\ln L+100$ and is not an artefact: for $1-q\lesssim L^{-2}$ the mode follows the $q=1$ law (e.g.\ $N=10$, $q=0.99$: $t^*=27$, the $q=1$ mode, while $\tau=29.30\ldots$) \src{\ONE}{Rem 7.10}. The crossover regime is open (Section~\ref{sec:open}).
+
+\begin{refuted}[the closed form in $d=1$; \src{\ONE}{Rem 7.9}, \src{\CER}{Thms 21(c), 43(c)}]\label{ref:cf1d}
+% src: data/msc_rigorous_1d/39_hand_constants.json; data/msc_rigorous_certified/closedform_summary_c128.json
+``$t^*\approx t_{\rm cf}$ in every dimension.'' False for $d=1$: there $X=(1-\cos\frac\pi N)N(N-1)\to\frac{\pi^2}2$, so $t_{\rm cf}/\E T\to\ln(\pi^2)/(1+\frac{\pi^2}2)=0.385768\ldots$, whereas $t^*/\E T\to c=0.333284\ldots$ (Computer-assisted theorem~\ref{thm:1d-global}); the closed form overestimates the mode by a factor tending to $1.15747\ldots$. On finite ranges (computer-assisted, \CER): $0.1577\,t^*\le t_{\rm cf}-t^*\le0.2251\,t^*$ for $q=\frac45$, $10\le N\le1500$ and $N=2000$; $0.1579\,t^*\le t_{\rm cf}-t^*\le0.2282\,t^*$ for $q=\frac12$, $10\le N\le1000$. In $d=1$ all poles are of order $L^{-2}$ and all contribute at the mode.
+\end{refuted}
+
+\subsection{General start}
+
+For $0\le\xi<1$ let $G_\xi(u)=\frac\pi2\sum_{k\ \rm odd}\sigma_kk\cos\frac{k\pi\xi}2\ee^{-k^2\pi^2u/8}$ ($G_0=G$).
+
+\begin{theorem}[limit density and limit theorem for a general start; \src{\ONE}{Lemmas 8.1, 8.2, Thms 8.3, 8.5}]\label{thm:1d-generalstart}
+$G_\xi>0$ is real-analytic and has exactly one critical point $c(\xi)$, a non-degenerate maximum; $G_\xi''$ has exactly two sign changes; $\xi\mapsto c(\xi)$ is real-analytic on $[0,1)$, $c(0)=c$. If $(x_0-\frac12)/L\to\xi$, then $qt_c/L^2\to c(\xi)$ in continuous time (every $q$), and $qt^*/L^2\to c(\xi)$ in discrete time for $q\le\frac12$; mode$/\E T\to c(\xi)/(1-\xi^2)$.
+\end{theorem}
+The proof transfers the sign-change bounds of Laguerre's rule from the lattice densities to the limit (Lemma 8.2 of \ONE) and uses the image representation of $G_\xi$ (Poisson summation) for the behaviour at $0$; no numerical evaluation is used.
+
+\begin{catheorem}[explicit law for starts in the half next to the wall; \src{\ONE}{Prop 8.6, Thm 8.12, Cor 8.14}]\label{thm:1d-startlaw}
+% src: data/msc_rigorous_1d/19_general_start.json; data/msc_rigorous_1d/25_start_N0_101_K3p5.jsonl; data/msc_rigorous_1d/26_start_small_N_K3p5.jsonl; data/msc_rigorous_1d/28_start_constants.json
+Let $N\ge3$, $\xi_N=(x_0-\frac12)/L\le\frac12$, $c_N=c(\xi_N)$, $\rho_N=-\frac{c_N}2G_{\xi_N}'''/G_{\xi_N}''$ and $\kappa_N=\frac12-\frac{\rho_N}3$ (at $c_N$). Then $|qt_c/L^2-c_N+\kappa_N/L^2|<3.5/L^4$ in continuous time, and in discrete time with $q\le\frac12$ every mode satisfies $\tau-E<t^*<\tau+1+E$ with $\tau=(c_NL^2-\kappa_N)/q+1-\rho_N$, $E=3.5/(qL^2)$. Uniformly, $1.7206<\rho_N<2.5171$, $-0.3391<\kappa_N<-0.0735$, $|qt^*/L^2-c(\xi_N)|<0.44L^{-2}+3.5L^{-4}$ ($q\le\frac12$). Values: $c(0.5)=0.08334564332977\ldots$, $c(0.7)=0.03000000000000000002859\ldots$; for $\xi\ge\frac12$, $c(\xi)\approx(1-\xi)^2/3$ to relative error $1.5\times10^{-4}$ at the tabulated points.
+\end{catheorem}
+% src: data/msc_rigorous_1d/29_start_stress.json; data/msc_rigorous_1d/25_start_N0_101_K3p5.jsonl
+(The certified constant $3.5$ was reached by adaptive bisection; the largest value of the quantity it bounds found in tests is $3.419$, at $N=6$, $x_0=3$ \src{\ONE}{Rem 8.13}.)
+
+\subsection{Certified modes on finite ranges}
+
+\begin{catheorem}[exact modes in $d=1$; \src{\CER}{Thms 12, 13, 30, 39, 40, 45}, \src{\ONE}{Prop 3.18}]\label{thm:1d-certified}
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_certified/c128_d1_q4-5.jsonl; data/msc_rigorous_certified/c128_d1_q1-2.jsonl; data/msc_rigorous_1d/08_modes_q45.jsonl
+For $q=\frac45$ and every $2\le N\le1500$ and $N=2000$, and for $q=\frac12$ and every $2\le N\le1000$, the PMF from the reflecting end is strictly unimodal with the certified integer mode, except in three cases with an exact tie: $(q,N)=(\frac45,4)$: $f(3)=f(4)<f(5)$, mode $5$; $(\frac12,3)$: maximum at $t\in\{3,4\}$; $(\frac12,4)$: maximum at $t\in\{7,8\}$. For $10\le N\le1500$ and $N=2000$ ($q=\frac45$): $-1.0989<t^*-cL^2/q<-0.0997$, hence $t^*=\lfloor cL^2/q-0.0997\rfloor$; for $10\le N\le1000$ ($q=\frac12$): $-1.160<t^*-cL^2/q<-0.164$. For $q=1$ and $4\le N\le400$ the PMF has at least two strict local maxima (up to $164054$ at $N=400$), and the maximum is attained twice exactly for $N\in\{5,6,8,9\}$.
+\end{catheorem}
+% src: data/msc_rigorous_certified/SUMMARY.json
+The ranges $N\le600$ ($q=\frac45$), $N\le300$ ($q=\frac12$), $N\le200$ ($q=1$) rest on Python integers only (trusted base (T1) of Section~\ref{sec:certs}); the extended ranges rest in addition on a C program (trusted base (T5)). For $q=\frac45$, $N\le600$, a second proof with a different method (IEEE-754 error bars plus Arb at the flat points) is \src{\ONE}{Prop 3.18}; the two agree on all $598$ modes $3\le N\le600$ (script \texttt{code/msc\_rigorous\_1d/22\_crosscheck\_t5.py}). All of this is consistent with Computer-assisted theorem~\ref{thm:1d-disc}, which covers every $N$.
+% src: data/msc_rigorous_1d/22_crosscheck_t5.json
+
+\section{Unimodality in every dimension}\label{sec:unimodal}
+
+\subsection{The three geometries for all $N$ and $d$}
+
+\begin{theorem}[CC, C2M, M2C: all $N$, all $d$; \src{\UNI}{Thm 4.12}]\label{thm:three-geometries}
+Let $d\ge1$, $N\ge2$, and let $(x_0,a)$ be one of CC, C2M, M2C (the last two for odd $N$), or an image of these under a symmetry of the box. Then
+(i) for every rate $q>0$ the continuous-time density $g_q$ is unimodal with a unique mode;
+(ii) for every $q\in(0,\qbox]$, $\qbox=1/(1+\cos\frac\pi N)>\frac12$, the PMF $f_q$ is unimodal. For $N=2$, $q_2^\square=1$: the CC PMF of $\{1,2\}^d$ is unimodal for every $q\in(0,1]$.
+\end{theorem}
+\begin{proof}
+One-dimensional factor: for CC the coordinate walk $K_q=(1-q)I+qP^{(1)}$ on $\{1,\dots,N\}$ is a birth--death chain between its two ends; for C2M and M2C the folded chain $|X-c|$ on $\{0,\dots,\frac{N-1}2\}$ is one, and $K_q^n(c,N)=K_q^n(1,c)$ by symmetry. Its eigenvalues are among $1-q(1-\cos\frac{k\pi}N)$, all $\ge0$ when $q\le\qbox$. For a birth--death chain the end-to-end propagator is $\pi_M$ times the distribution function of a sum of independent exponential (for $q\le\qbox$ geometric) variables \src{\UNI}{Lemma 4.9} (Cramer's rule, as in Theorem~\ref{thm:1d-exact}); such distribution functions and their densities (mass functions) are log-concave \src{\UNI}{Lemma 4.10(a)}.
+(i) $\Lg=\frac1d\sum_i\Lg^{(1)}_i$ is a Kronecker sum, so $u(t)=h(t)^d$ with $h$ the one-dimensional propagator at rate $q/d$; $u'=dh^{d-1}h'$ is positive and log-concave. Apply Theorem~\ref{thm:criterion}(a).
+(ii) $P_q=\frac1d\sum_iK^{(i)}_q$ with commuting summands; the multinomial theorem gives $d^{t-1}\varphi(t)=(\delta h\star h\star\dots\star h)_{t-1}$ with the binomial convolution $(a\star b)_n=\sum_k\binom nka_kb_{n-k}$ and $\delta h(n)=h(n+1)-h(n)$. For $q\le\qbox$, $h$ and $\delta h$ are log-concave (Lemma 4.10(a)(iii) of \UNI), the binomial convolution preserves log-concavity (Davenport--P\'olya, \emph{Canad.\ J. Math.} 1 (1949); proved, with leading zeros allowed, in \src{\UNI}{Lemma 4.10(b)}), and so does multiplication by $d^{-(t-1)}$. So $\varphi$ is log-concave and Theorem~\ref{thm:criterion}(b) applies.
+\end{proof}
+In probabilistic terms $N^du(t)=\P(\max(\tau_1,\dots,\tau_d)\le t)$ with independent hypoexponential $\tau_i$: the first-passage density is the density of this maximum smoothed by the escape kernel. For CC in continuous time a second proof, from the decomposition $\mu_1T\overset d=U+\mu_1T_\pi$ of Proposition~\ref{prop:decomposition} and the log-concavity of the density of $U$, is \src{\ASY}{Thm 1.11} (Theorem~\ref{thm:as-unimodal} below); for CC in discrete time with $q\le\frac12$ a second proof, which relies on the published closure of ultra-log-concave sequences under convolution (D.~W. Walkup, \emph{J. Appl. Probab.} 13 (1976), Thm~1; T.~M. Liggett, \emph{J. Combin. Theory Ser. A} 79 (1997), Thm~2; the theorem numbers are those given by O.~Johnson, \emph{Stoch.\ Proc.\ Appl.} 117 (2007), and a proof is A.~Marsiglietti, J.~Melbourne, \emph{Discrete Comput.\ Geom.} 71 (2024), Cor.~3.4 of arXiv:2004.12005v4), is \src{\ASY}{Thm 7.4}. Theorem~\ref{thm:three-geometries} is proved by hand without that citation.
+
+\begin{corollary}[where the continuous-time mode is; \src{\UNI}{Cor 4.13}]\label{cor:modelocation}
+In the situation of Theorem~\ref{thm:criterion}(a) with $D\ge2$, let $m_u$ be the maximiser of $u'$ and, for $a'>0$, $m(a'):=\inf\{t\ge m_u:\ u'(t)-a'\int_0^t\ee^{-a'(t-s)}u'(s)\,\dd s\le0\}$. Then $m_u<t^*\le m(q\alpha_1)\le m(q/M_{\max})$, where $\alpha_1$ is the smallest eigenvalue of $\Lg_a$ and $M_{\max}=\max_x\E_xT$ at $q=1$.
+\end{corollary}
+% src: data/msc_rigorous_unimodality/table_mode_bounds.json; data/msc_rigorous_unimodality/table_mode_bounds_small.json
+(Numerically the upper bound exceeds the mode by $4.7$--$24.9\%$ for the CC pair, $d=2,3$, $8\le N\le64$, and is cruder for small $N$ and in $d=1$; these percentages are floating-point illustrations, not theorems.)
+
+\subsection{Discrete time up to the value $q=\frac45$}
+
+Let $h_q(n)=K_q^n(1,N)$ (CC) and $\tilde h_q(n)=K_q^n(1,c)$ (centre geometries), $\delta h_q(n)=h_q(n+1)-h_q(n)$, $q_1(N):=1/(1+(2(N-1))^{-1/2})$, and let $\tilde q_1(N)$ be the analogous threshold of the folded chain (the value of $q$ at which $e_2$ of its spectrum vanishes, \src{\UNI}{Thm 9.7(d)}).
+
+\begin{catheorem}[one-dimensional log-concavity of the free increment; \src{\UNI}{Prop 9.6, Thms 9.7, 9.11, Cor 9.8, Lemmas 9.9, 9.10}]\label{thm:1d-freelc}
+% src: data/msc_rigorous_unimodality/summary_lc1d.json; data/msc_rigorous_unimodality/cert_family_F1.jsonl; data/msc_rigorous_unimodality/cert_family_F2.jsonl
+(a) For every $q\in(0,\frac45]$: $\delta h_q$ is log-concave for every $N\ge9$, and $\delta\tilde h_q$ for every odd $N\ge25$; at $q=\frac45$ these ranges are exact.
+(b) For $4\le N\le501$, $\delta h_q$ is log-concave iff $q\le q_1(N)$; for odd $7\le N\le1001$, $\delta\tilde h_q$ is log-concave iff $q\le\tilde q_1(N)$.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+Up to a geometric factor $\delta h$ is $W_n=h_{n-N+2}(\lambda_1,\dots,\lambda_{N-1})$, the complete homogeneous symmetric polynomial of $\lambda_k=y+2\cos\frac{k\pi}N$, $y=2(1-q)/q$. Its log-concavity for $n\ge n_{\rm tail}(N)=1+\frac{N^2}8(10\ln N-8.43)$ follows from the two leading terms (by hand, Prop.~9.6); below $n_{\rm tail}$ it is certified in ball arithmetic and cross-checked in exact integer arithmetic for $N\le1001$ (Thm~9.7). For $N\ge992$ the spectrum splits into residue classes modulo $G=\lfloor N/16\rfloor$, each a ``twisted group'' of $15$--$17$ points of a compact two-parameter family; $h$ of the whole spectrum is the ordinary convolution of the $h$'s of the groups (Lemma 9.9, by hand), ordinary convolution preserves log-concavity (Lemma 9.2), and every member of the family is log-concave (Computer-assisted Lemma 9.10: Taylor models with Cauchy remainder bounds on $26$ parameter boxes, 19 seconds). A second implementation of Lemma 9.10, written separately within the same project (different remainder bound, own tail criterion), certifies the same $26$ boxes. ``Only if'' in (b): $\delta h(N-1)^2-\delta h(N-2)\delta h(N)$ is a positive multiple of $2(N-1)(1-q)^2-q^2$. Complete proof: \src{\UNI}{Section 9}.
+\end{proof}
+
+\begin{catheorem}[the value; \src{\UNI}{Prop 9.1, Prop 9.12, Thm 9.13}]\label{thm:four-fifths}
+Let $q\in(0,\frac45]$.
+(i) The CC PMF is unimodal for every $N\ge2$ and every $d\ge1$.
+(ii) The C2M and M2C PMFs are unimodal for every odd $N\ge3$ and every $d\ge2$.
+(iii) $\frac45$ is sharp in (i): for $d=1$, $N=4$ the PMF is not unimodal for any $q>\frac45$ (Proposition~\ref{prop:1d-fail}). The hypothesis $d\ge2$ in (ii) cannot be dropped: in $d=1$ the M2C PMF at $q=\frac45$ is unimodal iff $N\notin\{5,7,9,11\}$ (Computer-assisted theorem~\ref{thm:1d-thresholds}(c)).
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+By the binomial-convolution identity in the proof of Theorem~\ref{thm:three-geometries}(ii), log-concavity of the one-dimensional free increment implies that of $\varphi$ in every dimension (Prop.~9.1); Theorem~\ref{thm:1d-freelc}(a) and Theorem~\ref{thm:criterion}(b) give (i) for $N\ge9$ and (ii) for $N\ge25$. For the finitely many smaller $N$ blocks of two or three dimensions are log-concave (Computer-assisted Prop.~9.12, $38$ cases, ball and exact integer arithmetic) and are combined by the same identity; $N=2$ is Theorem~\ref{thm:three-geometries}(ii) ($q_2^\square=1$); the remaining cases ($d=1$, $3\le N\le8$; centre geometries with $N=3$, $d\in\{2,3\}$ and $N\in\{5,7\}$, $d=2$) are exact cone certificates (Computer-assisted theorem~\ref{thm:finite-cc}(e),(f)). Theorem~\ref{thm:laziness} passes from $q=\frac45$ to all $q\le\frac45$. Complete proof: \src{\UNI}{Section 9.5}.
+\end{proof}
+Computer-assisted theorem~\ref{thm:four-fifths}(i) settles, for $q\in\{\frac45,\frac12\}$ and in the weak sense of unimodality, the conjecture \src{\CER}{Conj 46} for every $N$ and $d$; strict unimodality for all $N$ (unique maximiser, no plateau except the three exact ties of Computer-assisted theorem~\ref{thm:1d-certified}) remains open beyond the certified ranges.
+
+\subsection{Beyond $\frac45$, and $q=1$}
+
+\begin{catheorem}[finite ranges for every $q$; \src{\UNI}{Thm 7.1}]\label{thm:finite-cc}
+% src: data/msc_rigorous_unimodality/summary_certificates.json
+(a) $d=2$, CC: for $2\le N\le64$ and every $q\in(0,\frac{499}{500}]$ the PMF is unimodal.
+(b) $d=3$, CC, $2\le N\le30$; $d=4$, $N\le8$; $d=5$, $N\le5$: unimodal for every $q\in(0,1]$.
+(c) $d=2$, CC, $q=1$: for $2\le N\le64$ the PMF is unimodal except for $N\in\{9,11,13,15,17,18,21,24,26,38,51,61\}$, where $f(t^*-1)>f(t^*)<f(t^*+1)$ (one dip of one time step next to the maximum).
+(d) $0.9986\le q^*(9)<0.9987$ for $d=2$, $N=9$.
+(e) C2M and M2C: unimodal for every $q\le\frac45$, $d=2$, odd $3\le N\le61$, and $d=3$, odd $3\le N\le27$.
+(f) $d=1$, CC: unimodal for every $q\le\frac45$, $2\le N\le60$.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+Exact integer cone certificates (Lemma~\ref{lem:tail}) at one rational $q_0$ per case, extended to $q\le q_0$ by Theorem~\ref{thm:laziness}. Size: (a) $63$ runs, up to $7035$ steps on $4096$ sites, 88 CPU-minutes; (b) $d=3$: 29 runs, 20 CPU-minutes. Cross-checks with separately written implementations (fraction-based stepper, dictionary-based certificate) in \texttt{code/msc\_rigorous\_unimodality/verify\_certificate\_code.py}.
+\end{proof}
+
+\begin{catheorem}[$q=1$, extended; \src{\CER}{Thms 13, 40}]\label{thm:q1-cc}
+% src: data/msc_rigorous_certified/c128_d2_q1-1.jsonl; data/msc_rigorous_certified/xcheck_packed_d2_q1-1.jsonl; data/msc_rigorous_certified/SUMMARY_EXT.json
+For $q=1$ and the CC pair: in $d=2$, $2\le N\le160$ and $N\in\{180,200\}$, the PMF has two strict local maxima exactly for $N\in\{9,11,13,15,17,18,21,24,26,38,51,61,86,92,136,149\}$ and is strictly unimodal otherwise, except $N=2$ ($f(2)=f(3)$); in $d=3$, $2\le N\le60$, it is strictly unimodal. The four cases $N=86,92,136,149$ were re-derived with Python integers only.
+\end{catheorem}
+The same phenomenon appears in the asymptotics note: $d=2$, $N=9$, $q=1$: $\P(T=108)=0.0020122644\ldots>\P(T=109)=0.0020121967\ldots<\P(T=110)=0.0020122182\ldots$ (exact integers, \src{\ASY}{Rem 7.19(ii)}).
+% src: data/msc_rigorous_asymptotics/logs/82_q1_parity_example.log
+
+\begin{refuted}[\src{\UNI}{Section 8}, \src{\CER}{Section 9}]\label{ref:unimodalall}
+``The point-target first-passage law is always unimodal'' and ``the PMF is unimodal for every $q\in(0,1]$''. False: in discrete time near $q=1$ (Proposition~\ref{prop:1d-fail}, Computer-assisted theorems~\ref{thm:finite-cc}(c),~\ref{thm:q1-cc}), for starts away from the wall in $d=1$ (Proposition~\ref{prop:startfail}), and for general pairs in $d\ge2$ even in continuous time (Computer-assisted theorem~\ref{thm:generalpairs}).
+\end{refuted}
+
+\subsection{Explicit windows for the CC pair, every $q$}
+
+\begin{theorem}[tail and rise; \src{\UNI}{Thms 5.6, 5.10}]\label{thm:tailrise}
+Let $d\ge2$, CC, $\alpha_1$ the smallest eigenvalue of $\Lg_a$, $\beta_1=\Lambda_1$. For every $q\in(0,1]$, $f_q(t+2)<f_q(t+1)$ for every integer $t>T_N(q):=\ln(4\sqrt{n-1}/\alpha_1^2)/\ln\frac{1-q\alpha_1}{1-q\beta_1}$, and $T_N(q)\le\bar T_N(q)=O(N^2\log N/q)$ explicitly; in continuous time $g_q'<0$ beyond the analogous time, and $g_q$ is nondecreasing on $[0,t_N]$ with $t_N\ge d(N-2)/(2q)$ ($d\ge1$, $D\ge2$).
+\end{theorem}
+Thus for every $q\le1$ a possible failure of unimodality of the CC law is confined to an explicit bounded window.
+
+\subsection{General pairs}
+
+\begin{catheorem}[explicit counter-examples; \src{\UNI}{Thm 8.1}]\label{thm:generalpairs}
+% src: data/msc_rigorous_unimodality/continuous_counterexamples.json; data/msc_rigorous_unimodality/exact_examples.json
+(a) $d=3$, $N=3$, $x_0=(3,2,2)$, $a=(1,2,2)$ (opposite face centres): $g_1(\frac{21}{10})>g_1(3)<g_1(13)$, and at $q=\frac12$, $f(2)=\frac1{144}>f(6)=\frac{6577}{995328}<f(25)$.
+(b) $d=2$, $N=8$, $x_0=(6,6)$, $a=(3,4)$: $g_1(\frac{21}2)>g_1(\frac{49}2)<g_1(\frac{59}2)$, and at $q=\frac12$, $f(19)>f(46)<f(63)$.
+In both cases neither the density (any rate) nor the PMF (any $q$) is unimodal.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+$\ee^tg_1(t)=\sum_n\frac{t^n}{n!}f_1(n+1)$ (identity \eqref{eq:poisson}) with exact rational $f_1(n+1)$; truncation with explicit tail bounds turns each comparison into a comparison of exact rationals (relative width below $10^{-66}$). Theorem~\ref{thm:laziness} gives all $q$.
+\end{proof}
+
+\begin{catheorem}[exhaustive classification of small boxes; \src{\UNI}{Thm 8.2}]\label{thm:pairclass}
+% src: data/msc_rigorous_unimodality/pairs_d2_N8.json; data/msc_rigorous_unimodality/pairs_d3_N6.json
+For $d=2$, $2\le N\le12$, and $d=3$, $2\le N\le6$, every ordered pair (target up to symmetry) is classified exactly as: unimodal at $q=\frac12$; not unimodal at $q=\frac12$ but unimodal at some $q=2^{-k}$, $k\le6$; or not unimodal in continuous time. In $d=2$ every pair is unimodal in continuous time for $N\le7$; the smallest bimodal pair is at $N=8$; there are $54$ bimodal pairs in the table, each with a coordinate in which start and target lie strictly on opposite sides of the mid-plane.
+\end{catheorem}
+
+\begin{proposition}[unimodal but not log-concave; \src{\UNI}{Prop 8.4}]\label{prop:m2c-notlc}
+For $d=2$, $N=3$, M2C ($x_0=(2,2)$, $a=(3,3)$), $q=\frac12$: $f(4)=\frac{67}{2048}$, $f(5)=\frac{481}{16384}$, $f(6)=\frac{3457}{131072}$, so $f(5)^2<f(4)f(6)$: the PMF is unimodal but not log-concave.
+\end{proposition}
+% src: data/msc_rigorous_unimodality/exact_examples.json
+
+\begin{conjecture}[\src{\UNI}{Conjs 10.1, 10.3}, \src{\CER}{Conj 47}]\label{conj:shape}
+(a) For the CC pair, $d\ge2$, in continuous time and in discrete time for $q\le\frac12$, the occupation ratios $\rho_{t+1}(x)/\rho_t(x)$ are coordinatewise nondecreasing in $x$; consequently the first-passage law is log-concave (Conjecture 10.1 of \UNI; evidence: exact arithmetic at $q=\frac12$ on windows of six modal times for $d=2$, $N\in\{2,\dots,14,16,18,20\}$, and $d=3$, $N\le8$). (b) In continuous time, for every pair, $g'$ has at most three sign changes. (c) For $d\in\{1,2,3\}$, $q\in\{\frac45,\frac12\}$ and every $N$, with $t^*$ the largest maximiser, every occupation probability is already decreasing at $t^*$: $v_{t^*+1}<v_{t^*}$ (Conjecture 47 of \CER; a theorem on the certified ranges, Computer-assisted theorem~\ref{thm:cc-certified}).
+\end{conjecture}
+
+\subsection{Certified modes in two and three dimensions}
+
+\begin{catheorem}[exact modes, $d=2,3$; \src{\CER}{Thms 12, 39, Cors 18, 42}]\label{thm:cc-certified}
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_certified/c128_d2_q4-5.jsonl; data/msc_rigorous_certified/c128_d3_q4-5.jsonl
+For the CC pair, $q=\frac45$: $d=2$, $2\le N\le301$ and $N\in\{350,401,450,500,600\}$; $d=3$, $2\le N\le120$ and $N\in\{130,140,150,160\}$; $q=\frac12$: $d=2$, $2\le N\le200$; $d=3$, $2\le N\le80$. In all these cases $f(t)=0$ for $t<d(N-1)$, the PMF is strictly unimodal with the certified integer mode (e.g.\ $d=2$, $N=600$: $t^*=872259$; $d=3$, $N=160$: $t^*=170871$, both at $q=\frac45$), and every occupation probability is already decreasing at the mode ($v_{t^*+1}<v_{t^*}$, tail time $T=t^*$). Moreover $\frac45t^*(\frac45)-\frac12t^*(\frac12)\in[-0.9,0.3]$ ($d=2$, $N\le200$) and $[-1.2,0.4]$ ($d=3$, $N\le80$): the discrete mode is a function of $qt$ up to about one time step.
+\end{catheorem}
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json
+The ranges $d=2$, $N\le160$ ($q=\frac45$), $N\le80$ ($q=\frac12$) and $d=3$, $N\le60$ ($q=\frac45$), $N\le32$ ($q=\frac12$) rest on Python integers only; the rest rests in addition on the C engine (Section~\ref{sec:certs}). These certified integers agree with all $97$ corner-to-corner values of the computations of Sections~5--6 of the article that fall in the certified sets.
+
+\section{Spectral quantities of the corner-to-corner box}\label{sec:spectral}
+
+In this section $\Lg$ is the box generator, CC geometry, $u=\frac\pi{2N}$, $m=m(x_0)$ the unit-rate corner-to-corner MFPT, $\tau$ the unit-rate mean hitting time of the corner from the uniform start, $\Xb=\Lambda_1\tau$, $X=\Lambda_1m$, and for activity $q$ all times are divided by $q$.
+
+\subsection{Every dimension}
+
+\begin{lemma}[arrival profile; \src{\SPE}{Lemma 7.2}]\label{lem:arrival}
+\[n\,p_t(x_0,a)=u_1(t/d)^d,\qquad u_1(s)=1+2\sum_{k=1}^{N-1}(-1)^k\cos^2(ku)\ee^{-(1-\cos\frac{\pi k}N)s},\]
+and $0\le1-n\,p_t(x_0,a)\le\min\{1,W\ee^{-\Lambda_1t}\}$.
+Hence
+\[
+\frac{d(N^2-1)}3\le m-\tau=\int_0^\infty\bigl(1-n\,p_t(x_0,a)\bigr)\dd t\le\frac{1+\ln W}{\Lambda_1},
+\]
+with equality on the left iff $d=1$; in particular $m-\tau\ge1/\Lambda_1$.
+\end{lemma}
+
+\begin{lemma}[second-moment functional; \src{\SPE}{Lemmas 7.4, 7.7}]\label{lem:K2}
+$W+\binom d2\cos^4u\le\Lambda_1^2K_2\le Z_d(N):=\sum_{0<|k|_\infty\le N-1}|k|^{-4}\le Z_d:=\sum_{k\in\Z^d\setminus0}|k|^{-4}$ ($d\le3$), and $\Xb\ge\frac4dN^{d-2}(1-N^{-d})^2$; for $d\ge3$, $\Xb$ is of exact order $N^{d-2}$.
+\end{lemma}
+
+\begin{lemma}[rational enclosure of the MFPT; \src{\CER}{Lemma 19}]\label{lem:mfpt-encl}
+The vector $m=(m(x))_{x\in\Lambda'}$ of unit-rate mean hitting times is the unique solution of $Km=2d\,\mathbf1$, $K=2d\,I-(A+B)$ on $\Lambda'$ ($A$ the adjacency matrix, $B=\operatorname{diag}(b)$), and $K^{-1}\ge0$ entrywise. Hence for every vector $z$ with $R:=Kz>0$ entrywise, $\frac{2d}{\max R}z\le m\le\frac{2d}{\min R}z$.
+\end{lemma}
+\begin{proof}
+$K=2d(I-Q_1)$ and $(I-Q_1)^{-1}=\sum_kQ_1^k\ge0$ because the spectral radius of $Q_1$ is $<1$ (absorption is certain); $m=\sum_tQ_1^t\mathbf1$. Then $K(\frac{2d}{\min R}z-m)=2d(\frac R{\min R}-\mathbf1)\ge0$; apply $K^{-1}\ge0$. The lower bound is symmetric.
+\end{proof}
+A floating-point guess $z$, rounded to integers, gives intervals of relative width below $10^{-28}$ \src{\CER}{Section 5}.
+% src: data/msc_rigorous_certified/mfpt_d2.jsonl; data/msc_rigorous_certified/mfpt_d3.jsonl
+
+\begin{calemma}[Epstein-type sums; \src{\SPE}{Lemma 7.6}]\label{lem:epstein}
+% src: data/msc_rigorous_spectral/14_certified_epstein.json; data/msc_rigorous_spectral/21_printed_decimals.json
+With $Z_d'=\sum_{|k|^2\ge2}(|k|^2(|k|^2-1))^{-1}$ (truncated decimals, every digit certified):
+$Z_2=6.02681203969194012\ldots$, $Z_3=16.5323159597616696\ldots$, $Z_2'=3.22591076832683889\ldots$, $Z_3'=14.7022972380072310\ldots$
+(theta splitting with Jacobi's transformation, incomplete gamma functions and explicit tail bounds, 300-bit Arb). Every printed string is asserted by the certification script.
+\end{calemma}
+
+\begin{lemma}[monotone coupling; \src{\SPE}{Lemma 7.8}, \src{\UNI}{Lemma 5.1}]\label{lem:coupling}
+For the corner target and $x\preceq y$ coordinatewise, $\P_x(T>t)\ge\P_y(T>t)$ for all $t$, in continuous and discrete time and every $q$. Hence $m(\cdot)$ and $r_0(\cdot)$ are maximal at the opposite corner.
+\end{lemma}
+\begin{proof}
+Drive two copies by the same proposed moves; the maps $x_i\mapsto\min(x_i+1,N)$ and $x_i\mapsto\max(x_i-1,1)$ are nondecreasing, so the order is preserved, and when the lower copy reaches the maximal site $a$ the upper copy is there too.
+\end{proof}
+
+\begin{theorem}[$r_0>1$ and $\sigma_0m>1$; \src{\SPE}{Thm 7.9}]\label{thm:r0}
+For every $d\ge1$, $N\ge2$, $(d,N)\ne(1,2)$: $r_0=\max_xr_0(x)>1$ and $\sigma_0m=\max_x\sigma_0m(x)>1$; quantitatively $\sigma_0m\ge(\Xb+\mu_-)/(\Xb+1)$ with $\mu_-=\frac23(N^2-1)\sin^2u\ge1$.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:residues}(e) the $\psi_0$-weighted averages of $r_0(\cdot)$ and $\sigma_0m(\cdot)$ are $1$; by Lemma~\ref{lem:coupling} both are maximal at $x_0$; equality would force them to be constant, i.e.\ every site of $\Lambda'$ to be a neighbour of $a$, which happens only for $(d,N)=(1,2)$. The quantitative bound is Theorem~\ref{thm:sigma0} with Lemma~\ref{lem:arrival}.
+\end{proof}
+
+\begin{theorem}[CC, explicit in $\Xb$; \src{\SPE}{Thm 7.10, Cor 7.11}]\label{thm:cc-any-d}
+Let $d\ge2$, $Z\ge\Lambda_1^2K_2$ (e.g.\ $Z=Z_d$ for $d\le3$), $\ell_W=1+\ln W$, $\Xb>1$, $\beta=\Xb/(\Xb-1)$. Then
+\[
+1-\frac{\beta Z}{\Xb^2}\le\sigma_0\tau\le1-\frac W{\Xb^2}+\frac{2W^2}{\Xb^4},\qquad
+\Bigl(1+\frac{\mu_-}{\Xb}\Bigr)\Bigl(1-\frac{\beta Z}{\Xb^2}\Bigr)\le\sigma_0m<1+\frac{\ell_W}{\Xb},
+\]
+always $\tau\le1/\sigma_0\le\tau+1/\Lambda_1\le m$, $\Lambda_1(1-\Xb^{-1})<\sigma_1-\sigma_0<2\Lambda_1$, $r_0>1$, $r_1<0$, and explicit two-sided bounds hold for $\sigma_1$, $\sigma_1-\sigma_0$, $r_0$ and $r_1$ (\SPE, Thm~7.10(iii)--(vi)). For $d\ge3$: $0<1-\sigma_0\tau\le\beta Z_d(N)/\Xb^2$ and $0<\sigma_0m-1<(1+\ln2d)/\Xb$, so $\sigma_0\tau=1-O(N^{-2})$ ($d=3$), $1-O(N^{-4}\ln N)$ ($d=4$), $1-O(N^{-d})$ ($d\ge5$) with explicit constants.
+\end{theorem}
+
+\begin{proposition}[exact reductions; \src{\SPE}{Lemmas 8.1, 8.2, Props 8.3, 8.5}]\label{prop:singlesum}
+For $d=2$, with $x_k=\frac{\pi k}{2N}$, $y_k=2N\arsinh(\sin x_k)$, $\Phi(x)=\cos^2x\sqrt{1+\sin^2x}/\sin x$:
+\[
+\tau_2=4N\sum_{k=1}^{N-1}\Phi(x_k)\coth y_k-\tfrac23(N^2-1),\qquad m_2=4N\sum_{k=1}^{N-1}\Phi(x_k)\Bigl[\coth y_k-\frac{(-1)^k}{\sinh y_k}\Bigr].
+\]
+For $d=3$, $\tau_3$ and $m_3-\tau_3$ are double sums of the same kind.
+\end{proposition}
+\begin{proof}[Proof (outline)]
+One of the $d$ summations in $\tau=\sum_{k\ne0}w_k/\lambda_k$ is done in closed form by the Poisson-kernel identity $\sum_{k=0}^{N-1}\varepsilon'_k\frac{1+\cos\theta_k}{\cosh\varphi-\cos\theta_k}=N[\coth\frac\varphi2\coth N\varphi-1]$ and its alternating analogue, plus cotangent sums. Complete proof: \src{\SPE}{Section 8}. The formula for $m_2$ is the single-sum identity (Theorem~4.2 of the article).
+\end{proof}
+
+\subsection{Two dimensions}
+
+Let $\gamma$ be Euler's constant and (Lemma~9.2 of \SPE, from DLMF theta and elliptic-integral identities at the lemniscatic point)
+\[
+c_\tau=\frac8\pi\Bigl(\gamma-\frac12+\frac72\ln2+\frac12\ln\pi-2\ln\Gamma(\tfrac14)\Bigr)-2=-0.727904612791689\ldots,
+\]
+\[
+c_{m\tau}=\frac{4\ln2}\pi=0.882542400610606\ldots
+\]
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/msc_rigorous_spectral/21_printed_decimals.json
+
+\begin{catheorem}[$d=2$ with explicit remainder; \src{\SPE}{Thm 9.1}]\label{thm:d2}
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/msc_rigorous_spectral/09_certified_part3.json
+For every $N\ge2$: $\tau_2=\frac8\pi N^2\ln N+c_\tau N^2+R_\tau(N)$ with $-2.14\le R_\tau(N)\le3.53$, and $m_2-\tau_2=c_{m\tau}N^2+R_{m\tau}(N)$ with $-9.06\le R_{m\tau}(N)\le7.72$. Consequently
+\[
+m_2=\frac8\pi N^2\ln N+C_2N^2+R_m(N),\qquad C_2=c_\tau+c_{m\tau}=0.154637787818917\ldots,\qquad |R_m(N)|\le11.3 .
+\]
+The proof is analytic except for the numerical constants (a bound on $|\Psi''|$ and four rapidly convergent series), which are certified in ball arithmetic.
+\end{catheorem}
+
+\begin{theorem}[$d=2$: the constant terms; \src{\SPE}{Lemma 9.6, Thm 9.8}]\NEW\label{thm:d2-constant}
+% src: data/msc_rigorous_spectral/19_certified_d2_limits.json
+As $N\to\infty$, $R_\tau(N)\to c^{(0)}_\tau=\frac23+\frac\pi{18}-\frac{2\pi}3S_5+\frac{2\pi^2}3S_6=0.8830352\ldots$ and $R_{m\tau}(N)\to c^{(0)}_{m\tau}=-\frac23-\frac{2\pi}3S_7+\frac{2\pi^2}3S_8=-0.3508943\ldots$, with $S_5=\sum_k\frac{2k}{\ee^{2\pi k}-1}$, $S_6=\sum_k\frac{k^2}{\sinh^2\pi k}$, $S_7=\sum_k\frac{(-1)^{k+1}k}{\sinh\pi k}$, $S_8=\sum_k\frac{(-1)^{k+1}k^2\cosh\pi k}{\sinh^2\pi k}$. Hence $m_2=\frac8\pi N^2\ln N+C_2N^2+C_2^{(0)}+o(1)$ with $C_2^{(0)}=0.5321408\ldots$. The limits are proved analytically (dominated convergence with the $N$-independent majorants of the proof of Theorem~\ref{thm:d2}, and a Riemann-sum limit in Lemma~9.6 of \SPE); only the decimal values are computer-assisted; no rate is claimed.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+In the decomposition $R_\tau=\frac23-\frac{8N^2}\pi\eta_N+4Ne_1(N)+4NE_c(N)$ of the proof of Theorem~\ref{thm:d2}, $\frac{8N^2}\pi\eta_N\to\frac2{3\pi}$ (harmonic-number bounds), $4Ne_1(N)\to\frac2{3\pi}+\frac\pi{18}$ (mean value theorem on each cell and a Riemann sum), and $NE_c(N)=\sum_ka_k(N)+\sum_kb_k(N)-N\cdot(\cdot)$ with summands bounded by $N$-independent summable majorants and with explicit pointwise limits, so Tannery's theorem gives $-\frac\pi6S_5+\frac{\pi^2}6S_6$; the same for $R_{m\tau}$. Complete proof: \src{\SPE}{Section 9}.
+\end{proof}
+% src: data/msc_rigorous_spectral/19_certified_d2_limits.json
+Classical Eisenstein-series evaluations at the lemniscatic point give the closed form
+$C_2^{(0)}=\Gamma(\frac14)^8/(576\pi^4)$, i.e.\ $C_2^{(0)}=0.5321408832\ldots$; this closed form is quoted, not proved, and not used; it agrees with the certified value of the series to more than $50$ digits (Remark~9.9 of \SPE). The monotonicity of $R_\tau(N)$, $R_{m\tau}(N)$ in $N$, the ranges $[0.8512,0.8831]$ and $[-0.5302,-0.3508]$ for all $N$, and the rate $N^{-2}$ are numerical observations \src{\SPE}{Obs 9.7}.
+
+The certificate note encloses the same constant and the remainder on a finite range, by a different route (rational enclosures of the MFPT from the linear system).
+
+\begin{catheorem}[value of $C_2$; \src{\CER}{Thm 25}]\label{thm:C2}
+% src: data/msc_rigorous_certified/constants.json (key C_2)
+With the lemniscate constant $\varpi=\Gamma(\frac14)^2/(2\sqrt{2\pi})$,
+\begin{align*}C_2&=\frac8\pi\Bigl[\gamma+\ln\frac{4\sqrt2}\varpi-\frac12-\frac\pi4\Bigr]\\&=\frac8\pi\Bigl[\gamma+4\ln2+\frac12\ln\pi-2\ln\Gamma(\tfrac14)\Bigr]-2-\frac4\pi,\end{align*}
+and $|C_2-c_\circ|<10^{-50}$ with
+\[c_\circ=0.15463778781891726249073383080028304919172661983273 .\]
+\end{catheorem}
+\begin{remark}[identification of $C_2$]\SYN\label{rem:C2id}
+The two closed forms of $C_2$ coincide: $c_\tau+c_{m\tau}=\frac8\pi(\gamma-\frac12+4\ln2+\frac12\ln\pi-2\ln\Gamma(\frac14))-2$, which is the second expression of Computer-assisted theorem~\ref{thm:C2}. Hence, by Computer-assisted theorem~\ref{thm:d2}, $C_2$ is the coefficient of $N^2$ in $m_2$, with an explicit $O(1)$ remainder valid for every $N$ (the identity of the two closed forms is elementary; the remainder bound $11.3$ is computer-assisted); this closes the gap \src{\CER}{G3}, where the identification rested on a sketched remainder estimate.
+\end{remark}
+
+\begin{catheorem}[two-term law on a finite range; \src{\CER}{Thm 26, Prop 27}]\label{thm:d2-finite}
+% src: data/msc_rigorous_certified/mfpt2d_remainder.json; data/msc_rigorous_certified/remark_checks.json (key remainder_junction)
+Let $r_N:=m_2-\frac8\pi N^2\ln N-C_2N^2$. For $2\le N\le301$, $0.3211<r_N<0.53213$ and $r_N$ is strictly increasing (from rational enclosures of $m_2$, Lemma~\ref{lem:mfpt-encl}). Moreover\SYN\ $r_N<0.5321405<C_0:=\varpi^4/(9\pi^2)=0.53214088\ldots$ for $301<N\le1500$, and $r_N$ is strictly increasing on the whole range $2\le N\le1500$.
+\end{catheorem}
+\begin{proof}
+The first part is \src{\CER}{Thm 26}. In \src{\CER}{Prop 27} the second part is proved under the hypothesis $m_2=4N\sum_{k=1}^{N-1}c_k^2\frac{\sqrt{1+s_k^2}}{s_k}g_k$ ($s_k=\sin\frac{\pi k}{2N}$, $c_k=\cos\frac{\pi k}{2N}$, $g_k=\coth(N\arsinh s_k)$ for odd $k$ and $\tanh(N\arsinh s_k)$ for even $k$), including the junction $r_{301}<r_{302}$ (an inequality between the upper bound $0.532129078393$ of $r_{301}$ and the lower bound $0.532129156439$ of $r_{302}$, both rounded outwards\NEW). This hypothesis is the $m_2$-formula of Proposition~\ref{prop:singlesum}: since $\coth y+\frac1{\sinh y}=\coth\frac y2$ and $\coth y-\frac1{\sinh y}=\tanh\frac y2$, and $\frac{y_k}2=N\arsinh(\sin x_k)$, the bracket $\coth y_k-(-1)^k/\sinh y_k$ is $g_k$, and $\Phi(x_k)=c_k^2\sqrt{1+s_k^2}/s_k$. So the hypothesis holds, and the statement is unconditional.
+\end{proof}
+This is consistent with Theorem~\ref{thm:d2-constant}: $r_N=R_m(N)$ increases towards its limit $C_2^{(0)}=0.5321408\ldots$ on the computed range. The certified values of $C_0$ and of the series $C_2^{(0)}$ agree to more than $50$ digits; their equality is the quoted Eisenstein-series closed form mentioned above, which is not proved here.
+
+\subsection{Three dimensions}
+
+\begin{catheorem}[$d=3$; \src{\SPE}{Thm 10.1}]\label{thm:d3}
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/msc_rigorous_spectral/09_certified_part3.json; data/msc_rigorous_spectral/16_certified_d3_remainder.json
+(a)
+\[C_3=\frac3{\pi^3}\int_{[0,\pi]^3}\frac{\prod_i(1+\cos\theta_i)}{3-\sum_i\cos\theta_i}\dd\theta=3\int_0^\infty[\ee^{-s}(I_0(s)+I_1(s))]^3\dd s=\sum_{y\in\{0,1\}^3}u(y)\]
+with $u$ the Green's function of the simple random walk on $\Z^3$, and $4.320460169373<C_3<4.320460169375$.
+(b) For every $N\ge2$:
+\[C_3N^3-8.51N^2-2.54\le\tau_3\le C_3N^3-0.53N^2+3.90,\qquad N^2-1\le m_3-\tau_3\le\tfrac32(1+\ln6)N^2.\]
+(c) For every $N\ge2$: $\tau_3=C_3N^3+c_{\tau3}N^2+R_3(N)$, $-17.4\le R_3\le19.4$, and $m_3-\tau_3=c_{m\tau3}N^2+R_3'(N)$, $-82.4\le R_3'\le80.4$, with $c_{\tau3}=-5.418839026578\ldots$, $c_{m\tau3}=1.531584884077\ldots$.
+(d) $R_3(N)\to1.7573985\ldots$ and $R_3'(N)\to-0.2989172\ldots$; hence $m_3=C_3N^3+C_3'N^2+C_3''+o(1)$ with $C_3'=c_{\tau3}+c_{m\tau3}=-3.887254142500\ldots$ and $C_3''=1.4584812\ldots$ (limits proved analytically, values computer-assisted).
+\end{catheorem}
+% src: data/msc_rigorous_spectral/16_certified_d3_remainder.json; data/msc_rigorous_spectral/logs/17.log
+This proves the values $C_3=4.32046\ldots$, $C_3'=-3.887\ldots$, which are $K_3$, $K_3'$ of Theorem~4.8 of the article (numerical estimates in its Supplementary Section~S5.3), with an explicit $O(1)$ remainder for every $N$; it closes the gap \src{\CER}{G4}. The proved windows for $R_3$, $R_3'$ are wide compared with the observed ranges $[1.61,1.76]$, $[-0.63,-0.29]$ \src{\SPE}{Rem 10.12}.
+
+\subsection{Consequences for the poles}
+
+\begin{cacorollary}[$\Xb$ and $\Lambda_1(m-\tau)$ explicitly; \src{\SPE}{Cors 11.1, 11.2}]\label{cor:Xbar}
+% src: data/msc_rigorous_spectral/09_certified_part3.json; data/msc_rigorous_spectral/16_certified_d3_remainder.json
+For every $N\ge2$, with the exact constants $\frac{\pi^2}4c_\tau=-1.7960326\ldots$, $\frac{\pi^2}6C_3=7.1068721\ldots$, $\frac{\pi^2}6c_{\tau3}=-8.9136329\ldots$, $\frac{\pi^2}6c_{m\tau3}=2.5193561\ldots$:
+\[
+d=2:\ \Bigl|\Xb-2\pi\ln N-\tfrac{\pi^2}4c_\tau\Bigr|\le\frac{8.8+5.2\ln N}{N^2},\quad|\Lambda_1(m_2-\tau_2)-\pi\ln2|\le\frac{24.2}{N^2};
+\]
+\[
+d=3:\ -\frac{5.85}N-\frac{21.3}{N^2}\le\Xb-\tfrac{\pi^2}6(C_3N+c_{\tau3})\le\frac{31.92}{N^2},\quad|\Lambda_1(m_3-\tau_3)-\tfrac{\pi^2}6c_{m\tau3}|\le\frac{137.7}{N^2}.
+\]
+All bounds of Theorem~\ref{thm:cc-any-d} then become explicit functions of $N$ (for $N\ge3$; void for $N=2$).
+\end{cacorollary}
+
+\begin{refuted}[truncated constants; \src{\SPE}{Prop 11.5}]\NEW\label{ref:truncated}
+% src: data/msc_rigorous_spectral/20_certified_rounded_constants.json
+The constants of Corollary~\ref{cor:Xbar} may not be rounded: with the truncated decimals $1.796034$ and $7.1069$ the two bounds become false: $|\Xb-(2\pi\ln N-1.796034)|\le(8.8+5.2\ln N)/N^2$ fails for every $N\ge8872$ (and already at $N=8540$, $10^4$, by direct evaluation; it holds at $N=8539$), and $7.1069N-14.0-5.85/N-4.18/N^2\le\Xb$ fails for every $N\ge182\,420$. An $O(N^{-2})$ error term cannot absorb a constant that is wrong in the sixth decimal.
+\end{refuted}
+
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/msc_rigorous_spectral/16_certified_d3_remainder.json; data/msc_rigorous_spectral/14_certified_epstein.json
+\begin{theorem}[first-order pole structure, $d=2,3$; \src{\SPE}{Thm 11.3}]\label{thm:poles}
+As $N\to\infty$: $\sigma_0\tau=1-Z_d\Xb^{-2}+o(\Xb^{-2})$; $\Lambda_1(m-\tau)\to\mu_\infty$ ($\mu_\infty=\pi\ln2=2.17758\ldots$ for $d=2$, $\frac{\pi^2}6c_{m\tau3}=2.51935\ldots$ for $d=3$), so $X=\Xb+\mu_\infty+o(1)$ and $\sigma_0m=1+\mu_\infty/\Xb+o(\Xb^{-1})$; $\sigma_1/\Lambda_1=1+\delta$ with $W/\delta=\Xb-(2d+1-Z_d')+o(1)$; $(\sigma_1-\sigma_0)/\Lambda_1=1+(2d-1)/\Xb+O(\Xb^{-2})$; $r_0=1+\mu_\infty/\Xb+o(\Xb^{-1})$, $r_1=-\frac{2d}\Xb(1+O(\Xb^{-1}))$, $r_1\sigma_1/(r_0\sigma_0)\to-2d$.
+\end{theorem}
+These are the relations ``$\nu_0=\mathrm{MFPT}^{-1}(1+O(1/X))$, $\nu_1=\mu_1(1+W/X+\dots)$, $a_1\approx-A\nu_0$'' of the formal two-pole argument, proved here; the rate $\mu_1(X+W-1)/X$ that underlies the closed form is (d) of \src{\SPE}{Thm 11.3}. They do not by themselves locate the mode \src{\SPE}{G1}; the mode theorems of Section~\ref{sec:mode} are proved by a different route.
+
+\section{The mode in two and three dimensions and the closed form}\label{sec:mode}
+
+Throughout this section the geometry is CC, $d\in\{2,3\}$, $x=\frac\pi{2N}$, $\mu=\mu_1=\frac{2q}d\sin^2x$, and times are scaled, $\tau=\mu t$; $\tau^*=\mu t^*$ and $\tau_{\rm cf}=X\ln(2dX)/(X+2d-1)$. The results are those of \ASY, except the finite-range statements of the last subsection; they use Section~\ref{sec:general} and, in discrete time with $q\le\frac12$, Theorem~\ref{thm:three-geometries}, but none of the estimates of Section~\ref{sec:spectral}. The finite-range statements (Computer-assisted theorem~\ref{thm:cf-finite}, Computer-assisted corollary~\ref{cor:conj48}) use in addition Computer-assisted theorem~\ref{thm:cc-certified} and Lemma~\ref{lem:mfpt-encl}.
+
+\subsection{Decomposition and unimodality}
+
+Let $\varepsilon_k=\sin^2(kx)/\sin^2x$, $\gamma_0=1$, $\gamma_k=2\cos^2(kx)$, and for $k\in\{0,\dots,N-1\}^d\setminus\{0\}$, $\mu_k=\sum_i\varepsilon_{k_i}$, $w_k=\prod_i\gamma_{k_i}$, $c_k=(-1)^{|k|}w_k$. Let $v(\tau)=\sum_k(-1)^k\gamma_k\ee^{-\varepsilon_k\tau}$ (one coordinate), $u=v^d$, $\varphi=u'$.
+
+\begin{proposition}[decomposition; \src{\ASY}{Lemmas 1.2--1.4, 1.7, Prop 1.5, Rem 1.6}]\label{prop:decomposition}
+$v$ is the distribution function of a sum of $N-1$ independent exponential variables with rates $\varepsilon_1,\dots,\varepsilon_{N-1}$, and $\mu T\overset d=U+\mu T_\pi$, where $U$ has distribution function $u=v^d$, $T_\pi$ is the hitting time of $a$ from the uniform start, and the two are independent. In continuous time $\mu T$ has the density
+\[
+g(\tau)=\pi_a\varphi(\tau)+\int_0^\tau\varphi(\tau-s)h_{\rm ac}(s)\,\dd s=\sum_{j=0}^{L-1}\rho_j\hat\varphi(-\nu_j)\ee^{-\nu_j\tau},\qquad \pi_a=N^{-d},
+\]
+where the poles $0<\nu_0<1<\nu_1<2<\dots$ interlace the distinct levels of $\mu_k$ and $\rho_j>0$; in discrete time $\P(T=t)=\mu\sum_j\rho_j\hat\varphi(-\nu_j)(1-\mu\nu_j)^{t-1}$. Moreover $X=X_s+\E U$ with $X_s=\sum_kw_k/\mu_k=\Xb$.
+\end{proposition}
+
+\begin{theorem}[continuous time: strict unimodality with a monotone ratio; \src{\ASY}{Lemma 1.10, Thm 1.11}]\label{thm:as-unimodal}
+For $d\ge1$, $N\ge2$, $(d,N)\ne(1,2)$: $v'$, $v$ and $\varphi$ are positive and log-concave on $(0,\infty)$, $B=g'/\varphi$ is nonincreasing, and $g'$ has exactly one zero $\tau^*\in(0,\infty)$; $g'>0$ on $(0,\tau^*)$ and $g'<0$ on $(\tau^*,\infty)$. (For $(d,N)=(1,2)$, $\mu T$ is exponential and there is no interior mode.) The extension from $d\ge2$, $N\ge3$ to $d=1$ and to $N=2$ was proved after the internal checks\NEW; unimodality on that extended range is in any case Theorem~\ref{thm:three-geometries}(i) and Theorem~\ref{thm:1d-cont-unimodal}.
+\end{theorem}
+\begin{proof}[Proof (outline)]
+Convolutions of log-concave densities on $[0,\infty)$ with exponential kernels, and their primitives, are log-concave; $g'=\pi_a\varphi'+\varphi h_{\rm ac}(0)-\int_0^\tau\varphi(\tau-s)\eta(s)\dd s$ with $\eta=-h_{\rm ac}'>0$; divide by $\varphi$ and use that $\varphi(\tau-s)/\varphi(\tau)$ is nondecreasing in $\tau$. $\varphi(0)=0$ places the maximum in the interior. Complete proof: \src{\ASY}{Section 1.6}.
+\end{proof}
+
+\subsection{An exact identity and the window theorem}
+
+For $d\in\{2,3\}$, $N\ge3$ ($N\ge4$ if $d=3$) the levels below $\varepsilon_2=4\cos^2x\ge3$ are $1$ (weight $W=dA$, $A=2\cos^2x$), $2$, and $3$ if $d=3$. Let $\theta=\nu_1-1$, $a_1=W\rho_1/\theta$, $a_0=\rho_0\nu_0\hat\varphi(-\nu_0)$, $\Lambda=a_1/a_0$, $\hat\nu=\nu_1-\nu_0$.
+
+\begin{theorem}[exact identity and window theorem; \src{\ASY}{Prop 2.1, Lemma 2.2, Thm 2.3}]\label{thm:window}
+\[
+g'(\tau)=a_1\ee^{-\nu_1\tau}\Bigl[1+\frac\theta W\kappa(\tau)\Bigr]-a_0\ee^{-\nu_0\tau}\bigl[1+E_-(\tau)\bigr]+P_{\rm rest}(\tau),
+\]
+where every correction term $\kappa,E_-,P_{\rm rest}$ has a definite sign and explicit two-sided exponential bounds; hence $\Phi_-\le g'\le\Phi_+$ with explicit functions $\Phi_\pm$, and by Theorem~\ref{thm:as-unimodal}, $\Phi_-(\tau_-)>0\Rightarrow\tau_-<\tau^*$ and $\Phi_+(\tau_+)<0\Rightarrow\tau^*<\tau_+$. Dropping all corrections, $g'$ vanishes at $t_c=\ln\Lambda/\hat\nu$; this is the rigorous form of the two-pole heuristic.
+\end{theorem}
+
+\begin{lemma}[pole data; \src{\ASY}{Lemmas 3.1--3.5}]\label{lem:poledata}
+With $y=1/X_s$: $\nu_0$, $\rho_0$, $\hat\varphi(-\nu_0)$, $\nu_1$, $\rho_1$ and the near poles are bounded above and below by explicit functions of $y$ and of the lattice constant $T_1=\sum_{\mu_k\ge\varepsilon_2}w_k/(\mu_k(\mu_k-1))$; in particular $\Lambda=WX_s(1+O(y))$ and $\hat\nu=1+(W-1)y+O(y^2)$, so $t_c=\ln(WX_s)(1-(W-1)y)+O(y)$.
+\end{lemma}
+
+\begin{caproposition}[lattice sums; \src{\ASY}{Props 4.5, 4.6, Cor 4.7}]\label{prop:Xs}
+% src: data/msc_rigorous_asymptotics/50_cert_constants.json; data/msc_rigorous_asymptotics/logs/81_check_text_constants.log
+For $N\ge10$: $2\pi\ln N-2.32\le X_s\le2\pi\ln N-1.60$ ($d=2$); $c_3N-3\pi-\frac{5.85}N\le X_s\le c_3N-8.38$ ($d=3$); $2\pi\ln N-0.24\le X\le2\pi\ln N+0.60$ ($d=2$); $c_3N-7.63\le X\le c_3N-5.85$ ($d=3$); here $c_3=\frac{\pi^2}2\int_0^\infty(\ee^{-z}(I_0+I_1)(z))^3\dd z\in[7.106860,7.106880]$, and $2.08\le\E U\le2.20$ ($d=2$), $2.39\le\E U\le2.53$ ($d=3$).
+\end{caproposition}
+
+\begin{remark}[consistency with Section~\ref{sec:spectral}]\label{rem:consistency}
+$X_s=\Xb$ and $\E U=\Lambda_1(m-\tau)$, and $c_3=\frac{\pi^2}6C_3$ with $C_3$ of Computer-assisted theorem~\ref{thm:d3}: indeed $\frac{\pi^2}6C_3=7.1068721\ldots\in[7.106860,7.106880]$. The bounds of Computer-assisted proposition~\ref{prop:Xs} are consistent with the sharper Computer-assisted corollary~\ref{cor:Xbar} ($\Xb=2\pi\ln N-1.7960326\ldots+O(N^{-2}\ln N)$ in $d=2$; $\Lambda_1(m-\tau)\to\pi\ln2=2.17758\ldots$, resp.\ $2.51935\ldots$, inside $[2.08,2.20]$, resp.\ $[2.39,2.53]$). The certificates of this section do not use Section~\ref{sec:spectral}; using its sharper bounds would narrow the constants below but would require a new certificate run, which has not been done.
+\end{remark}
+
+\subsection{The closed form in continuous time}
+
+\begin{catheorem}[accuracy of the closed form, continuous time; \src{\ASY}{Thm 5.1}]\label{thm:cf-cont}
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T51_d2, T51_d3); data/msc_rigorous_asymptotics/52_cert_theoremB_d2.jsonl; data/msc_rigorous_asymptotics/52_cert_theoremB_d3.jsonl
+For every $N\ge N_0$, $-K^-_d(N_0)<X(\tau^*-\tau_{\rm cf})<K^+_d(N_0)$, with
+\begin{center}\small
+\begin{tabular}{c|ccccccccc}
+$d=2$: $N_0$ & 12 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 & $10^6$\\
+$K^-_2$ & 7.653 & 5.669 & 4.242 & 3.023 & 2.058 & 1.320 & 0.767 & $-0.116$ & $-1.382$\\
+$K^+_2$ & 10.280 & 8.774 & 7.486 & 6.348 & 5.449 & 4.839 & 4.641 & 4.641 & 4.641\\
+\hline
+$d=3$: $N_0$ & 10 & 15 & 20 & 30 & 50 & 100 & 200 & 1000 & $10^6$\\
+$K^-_3$ & 3.120 & 1.995 & 1.564 & 1.214 & 1.160 & 1.068 & 0.995 & 0.862 & 0.828\\
+$K^+_3$ & 7.120 & 4.659 & 3.663 & 2.786 & 2.149 & 1.740 & 1.598 & 1.465 & 1.427
+\end{tabular}
+\end{center}
+(a negative $K^-$ means $\tau^*>\tau_{\rm cf}$). Equivalently $|t^*-t_{\rm cf}|\le K_d(N_0)/(X\mu)$ and $|t^*-t_{\rm cf}|/t_{\rm cf}\le K_d(N_0)(1+\frac{2d-1}X)/(X\ln(2dX))$, $K_d=\max(K^-_d,K^+_d)$: the relative error of the closed form is $O(1/(\ln N\ln\ln N))$ in $d=2$ and $O(1/(N\ln N))$ in $d=3$.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+Lemma~\ref{lem:poledata} and Computer-assisted proposition~\ref{prop:Xs} turn the sign conditions of Theorem~\ref{thm:window} at $\tau_{\rm cf}\pm c_\pm/X$ into finitely many inequalities between elementary expressions over parameter boxes. The values of $N\ge10$ are covered by $220$ ($d=2$) resp.\ $389$ ($d=3$) blocks, singletons for small $N$, geometric blocks up to $10^{60}$ ($d=2$), $10^9$ ($d=3$), and one unbounded block each; for each block the inequalities are verified in Arb ball arithmetic (\texttt{code/msc\_rigorous\_asymptotics/52\_cert\_theoremB.py} with \texttt{certlib.py}). The table entry is the maximum over all blocks that \emph{meet} $[N_0,\infty)$. Complete proof: \src{\ASY}{Section 5}.
+\end{proof}
+
+\begin{catheorem}[asymptotic laws, continuous time; \src{\ASY}{Thms 6.1--6.3, Cor 6.4}]\label{thm:laws}
+% src: data/msc_rigorous_asymptotics/logs/81_check_text_constants.log; data/msc_rigorous_asymptotics/80_tables.json
+For every $N\ge20$ and every rate $q$:
+\[
+d=2:\quad t^*=\frac{4N^2}{\pi^2q}\bigl[\ln\ln N+\ln(8\pi)+R_N\bigr](1+\rho_N),\qquad -\frac{4.6+3\ln(8\pi\ln N+2.4)}{2\pi\ln N-0.24}\le R_N<0,
+\]
+\[
+d=3:\quad t^*=\frac{6N^2}{\pi^2q}\bigl[\ln N+\ln(6c_3)+R_N\bigr](1+\rho_N),\qquad -\frac{9.2+5\ln(6c_3N)}{c_3N-7.63}\le R_N<0,
+\]
+with $0\le\rho_N\le0.83/N^2$ and $\ln(6c_3)\in[3.752820,3.752823]$. Two-sided bounds: $\frac4{\pi^2q}N^2(\ln\ln N+2.27)\le t^*\le\frac4{\pi^2q}N^2(\ln\ln N+3.2242)(1+\frac{0.83}{N^2})$ ($d=2$) and $\frac6{\pi^2q}N^2(\ln N+3.43)\le t^*\le\frac6{\pi^2q}N^2(\ln N+3.7529)(1+\frac{0.83}{N^2})$ ($d=3$). Moreover $t^*/\E T=\ln(2dX)/(X+2d-1)+\vartheta_N/X^2$ with $\vartheta_N$ bounded as in Computer-assisted theorem~\ref{thm:cf-cont}; so $t^*/\E T\to0$, like $\frac{\ln\ln N}{2\pi\ln N}$ ($d=2$) and $\frac{\ln N}{c_3N}$ ($d=3$).
+\end{catheorem}
+These are the laws ``$t^*\sim\frac4{\pi^2q}N^2\ln\ln N$'' and ``$\frac6{\pi^2q}N^2(\ln N+3.753)$'' of the computations of Sections~5--6 of the article, with proven remainders. In $d=2$ the leading correction $\ln(8\pi)/\ln\ln N$ decays extremely slowly; the two-term form is the practically relevant statement.
+
+\subsection{Discrete time}
+
+\begin{catheorem}[discrete time, $q\le\frac12$; \src{\ASY}{Prop 7.1, Lemmas 7.2, 7.3, 7.6, Thms 7.7, 7.8, Cor 7.9}]\label{thm:cf-disc-half}
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T78_d2, T78_d3); data/msc_rigorous_asymptotics/72_cert_discrete_d2.jsonl; data/msc_rigorous_asymptotics/72_cert_discrete_d3.jsonl
+Let $q\in(0,\frac12]$. For every $N\ge N_0$ every maximiser of the PMF satisfies
+\[
+t_{\rm cf}-\frac{K^-_{d,D}(N_0)}{X\mu}<t^*<t_{\rm cf}+\frac{K^+_{d,D}(N_0)}{X\mu}+2,
+\]
+uniformly in $q$, with
+\begin{center}\small
+\begin{tabular}{c|cccccccc}
+$d=2$: $N_0$ & 12 & 15 & 20 & 30 & 50 & 100 & 200 & 1000\\
+$K^-_{2,D}$ & 8.546 & 6.119 & 4.479 & 3.131 & 2.099 & 1.332 & 0.770 & $-0.116$\\
+$K^+_{2,D}$ & 10.392 & 8.859 & 7.542 & 6.377 & 5.462 & 4.842 & 4.641 & 4.641\\
+\hline
+$d=3$: $N_0$ & 10 & 15 & 20 & 30 & 50 & 100 & 200 & 1000\\
+$K^-_{3,D}$ & 5.293 & 3.442 & 2.661 & 1.962 & 1.527 & 1.318 & 1.144 & 0.898\\
+$K^+_{3,D}$ & 7.513 & 4.834 & 3.761 & 2.829 & 2.165 & 1.744 & 1.599 & 1.465
+\end{tabular}
+\end{center}
+Consequently, for $N\ge20$, the laws of Computer-assisted theorem~\ref{thm:laws} hold for the discrete walk with the lower numerators $4.72$ ($d=2$) and $10.30$ ($d=3$) and with ``$+2$'' added to the upper bounds.
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+The discrete analogue of Theorem~\ref{thm:window} (Prop.~7.1, Lemma~7.6, Thm~7.7 of \ASY, valid for $q\le\frac12$, where all $1-\mu\nu_j\in(0,1)$) gives certified signs of the increment $(Dg)(t)=(g(t+1)-g(t))/\mu$ at $t_\pm$, $\P(T=t)=\mu g(t-1)$ (script \texttt{72}, the blocks of the continuous case; the block $d=2$, $N=10$ fails and is excluded). To pass from these signs to the location of the maximisers, unimodality of $t\mapsto\P(T=t)$ is used: if $(Dg)(t)<0$ every maximiser is $\le t+1$, and if $(Dg)(t)>0$ every maximiser is $\ge t+2$ (for a unimodal sequence, a strict decrease after $t+1$ excludes later maximisers and a strict increase excludes earlier ones). In \ASY\ unimodality is taken from \src{\ASY}{Thm 7.4}, which rests on the cited closure of ultra-log-concave sequences under convolution (Section~\ref{sec:unimodal}); here\SYN\ it is taken from Theorem~\ref{thm:three-geometries}(ii), proved by hand, which applies since $q\le\frac12<\qbox$ and covers every $d$ and $N$. Hence the theorem does not depend on that citation.
+\end{proof}
+
+For $q>\frac12$ some multipliers are negative and the PMF need not be unimodal. Let $N_1(q):=\min\{N\ge4:\sin\frac\pi N\le\frac{1-q}q\}$ ($N_1(q)=4$ for $q\le\frac12$, $N_1(q)\approx\pi q/(1-q)$ as $q\to1$); the hypothesis (H) of \ASY\ is $q<1$ and $N\ge N_1(q)$.
+
+\begin{theorem}[localisation without unimodality; \src{\ASY}{Lemmas 7.10--7.12, Thm 7.13}]\label{thm:localisation}
+Assume (H). If integers $t_E\le t_B\le t_-<t_+$ satisfy four explicit inequalities (A)--(D) (an upper sign condition at $t_+$, a lower sign condition on $[t_B,t_-]$, a monotonicity condition on $[t_E,t_B]$, and a value comparison bounding $\P(T=t)$ for $t\le t_E$ by $\P(T=t_-+1)$), then every maximiser satisfies $t_-+2\le t^*\le t_++1$. The proof uses a pairing lemma for the one-dimensional factors (the generating functions $\prod_{k\ge j}(1-\beta_kz)^{-1}$ have nonnegative coefficients under (H)) and a bound for the poles with negative multiplier.
+\end{theorem}
+
+\begin{catheorem}[discrete time, $q\le q_{\max}<1$; \src{\ASY}{Thm 7.14, Cor 7.15}]\label{thm:cf-disc-qmax}
+% src: data/msc_rigorous_asymptotics/80_tables.json (keys T714_q0p8_d2 ... T714_q0p99_d3); data/msc_rigorous_asymptotics/76_cert_q0p8_d2.jsonl; data/msc_rigorous_asymptotics/76_cert_q0p8_d3.jsonl
+Let $q_{\max}\in\{0.8,0.9,0.95,0.99\}$ and $q\in(0,q_{\max}]$. For every $N\ge N_0$ every maximiser satisfies $t_{\rm cf}-K^-/(X\mu)<t^*<t_{\rm cf}+K^+/(X\mu)+2$, with, for example, $q_{\max}=0.8$: $(N_0;K^-,K^+)=(37;2.850,6.613)$, $(100;1.448,5.560)$, $(1000;-0.016,5.135)$ for $d=2$ and $(13;5.189,6.634)$, $(50;1.851,2.973)$, $(1000;1.021,2.141)$ for $d=3$; $q_{\max}=0.99$: $(312;0.550,5.135)$ ($d=2$), $(312;1.236,2.231)$ ($d=3$) (full tables in \src{\ASY}{Thm 7.14}). For $q\le0.99$ and $N\ge N_0(q)$ ($N_0=100$ for $q\le0.95$, $312$ for $0.95<q\le0.99$) the laws of Computer-assisted theorem~\ref{thm:laws} hold for the discrete walk with lower numerators $1.72$ ($d=2$) and $9.28$ ($d=3$) and ``$+2$'' in the upper bounds.
+\end{catheorem}
+For the value $q=\frac45$ this gives $|t^*-t_{\rm cf}|<\frac{6.613}{X\mu}+2$ for all $N\ge37$ ($d=2$) and $<\frac{6.634}{X\mu}+2$ for all $N\ge13$ ($d=3$).
+
+\begin{lemma}[constants uniform in $q$; \src{\ASY}{Lemma 7.16}]\NEW\label{lem:uniformq}
+Under (H) and $N\ge10$, with $D_1(x)=2\sin2x-\frac2d\sin^2x$, $D_2(x)=2\sin2x-\frac4d\sin^2x$, $D_{\varepsilon_2}(x)=\sin2x(2-\frac2d\sin2x)$: $2(1-q)-a\mu\ge qD_a(x)>0$ for $a\in\{1,2,\varepsilon_2\}$ and $q/(1-q)\le1/\sin2x$; the functions $D_a$ increase on $(0,\frac\pi{20}]$, and $N\mapsto ND_a(\frac\pi{2N})$, $N\mapsto N\sin\frac\pi N$ increase for $N\ge10$. Hence the $q$-dependent coefficients of the quantities $n_q,\omega_q,\omega_q'$ and $q\pi_a/(1-q)$ of Theorem~\ref{thm:localisation} are bounded by functions of $N$ alone (the remaining dependence on $q$, through $\mu\le\frac2d\sin^2x$ in the factors $(1-a\mu)^t$ and $1/(1-\mu)$, is handled as in Computer-assisted theorem~\ref{thm:cf-disc-qmax} with $q_{\max}$ replaced by $1$).
+\end{lemma}
+\begin{proof}
+By (H), $2(1-q)\ge2q\sin2x$, and $a\mu=q\frac{2a}d\sin^2x$, with $\frac{2\varepsilon_2}d\sin^2x=\frac2d\sin^22x$ for $a=\varepsilon_2=4\cos^2x$; so $2(1-q)-a\mu\ge qD_a(x)$, and $D_a>0$ because $4\sin x\cos x>\frac{2a}d\sin^2x$ for $a\le2$, $x\le\frac\pi{20}$, and $\sin2x<1\le\frac d2$. For $a\in\{1,2\}$, $D_a'(x)=4\cos2x-\frac{2a}d\sin2x\ge4\cos\frac\pi{10}-2\sin\frac\pi{10}>0$; $D_{\varepsilon_2}=h(\sin2x)$ with $h(s)=2s-\frac2ds^2$ increasing for $s<\frac d2$. $N\sin\frac\pi N=\pi\frac{\sin u}u|_{u=\pi/N}$ increases with $N$ and $N\sin^2\frac\pi{2N}=\frac\pi2\sin v\frac{\sin v}v|_{v=\pi/2N}$ decreases, which gives the monotonicity of $ND_a(\frac\pi{2N})$ for $a\in\{1,2\}$; and $ND_{\varepsilon_2}(\frac\pi{2N})=N\sin\frac\pi N\,(2-\frac2d\sin\frac\pi N)$ is a product of two positive increasing factors. Inserting these bounds into the definitions of the constants gives the last claim \src{\ASY}{Section 7.6}.
+\end{proof}
+
+\begin{catheorem}[discrete time, every $q<1$; \src{\ASY}{Thm 7.17, Cor 7.18}]\NEW\label{thm:cf-disc-allq}
+% src: data/msc_rigorous_asymptotics/78_cert_allq_d2.jsonl; data/msc_rigorous_asymptotics/78_cert_allq_d3.jsonl; data/msc_rigorous_asymptotics/80_tables.json (keys T717_d2, T717_d3)
+Let $N_*=59$ ($d=2$), $N_*=12$ ($d=3$). For every $q\in(0,1)$ and every $N\ge\max(N_0,N_1(q))$ with $N_0\ge N_*$, every maximiser satisfies $t_{\rm cf}-K^-_{d,u}/(X\mu)<t^*<t_{\rm cf}+K^+_{d,u}/(X\mu)+2$ with constants independent of $q$: $(59;2.082,6.061)$, $(100;1.508,5.594)$, $(1000;-0.009,5.135)$ for $d=2$; $(12;6.379,7.183)$, $(100;1.675,2.495)$, $(1000;1.036,2.142)$ for $d=3$. Consequently the laws of Computer-assisted theorem~\ref{thm:laws} hold for the discrete walk for every $q<1$ and $N\ge\max(N_*,N_1(q))$, with lower numerators $2.33$ ($d=2$) and $14.01$ ($d=3$) ($1.75$ and $9.31$ for $N\ge\max(100,N_1(q))$).
+\end{catheorem}
+\begin{proof}[Proof (outline)]
+Theorem~\ref{thm:localisation} remains true with the $q$-dependent constants replaced by the $q$-free majorants of Lemma~\ref{lem:uniformq}; the four conditions are then certified block by block in ball arithmetic with $q_{\max}$ replaced by $1$ (\texttt{code/msc\_rigorous\_asymptotics/78\_cert\_allq.py}; $171$ resp.\ $387$ blocks pass). The certificate was written and run after the internal checks and has not been re-checked by separately written code.
+\end{proof}
+
+\subsection{Certified accuracy on finite ranges, and a combination}
+
+\begin{catheorem}[accuracy of the closed form on finite ranges; \src{\CER}{Thms 21, 43, Rems 22, 44}]\label{thm:cf-finite}
+% src: data/msc_rigorous_certified/closedform_summary.json; data/msc_rigorous_certified/closedform_summary_c128.json
+With the certified integer modes of Computer-assisted theorem~\ref{thm:cc-certified} and the rational MFPT enclosures of Lemma~\ref{lem:mfpt-encl}:
+(a) $d=2$: $|t^*-t_{\rm cf}|\le0.00970\,t^*$ for $q=\frac45$, $10\le N\le301$ and $N\in\{350,401,450,500,600\}$ (worst case $N=137$); $\le0.00971\,t^*$ for $q=\frac12$, $10\le N\le200$ (worst $N=133$).
+(b) $d=3$: $|t^*-t_{\rm cf}|\le0.00275\,t^*$ for $q=\frac45$, $10\le N\le120$ and $N\in\{130,140,150,160\}$; $\le0.00157\,t^*$ for $q=\frac12$, $10\le N\le80$.
+In $d=2$ the relative error $(t_{\rm cf}-t^*)/t^*$ is positive for $N\le13$ and negative for every $N\ge14$ of the ranges, with a flat maximum of its modulus near $N=137$; in $d=3$ it is positive for every $N\ge3$ of the ranges at $q=\frac45$ and falls to $3.17888\times10^{-5}$ (rounded) at $N=160$, not monotonically. For $2\le N\le9$ the closed form is poorer (up to $32\%$ at $N=2$, $d=2$).
+\end{catheorem}
+
+\begin{cacorollary}[the closed form to within $0.3\%$ in three dimensions, for every $N\ge10$]\SYN\label{cor:conj48}
+% src: data/article/s6b_rigorous_checks.json (corollary_closed_form_all_N); data/msc_rigorous_certified/closedform_summary_c128.json; data/msc_rigorous_asymptotics/80_tables.json
+For $d=3$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$: $|t^*-t_{\rm cf}|\le0.0030\,t^*$. For $d=2$: $|t^*-t_{\rm cf}|\le0.0100\,t^*$ for $q=\frac45$ when $10\le N\le301$, $N\in\{350,401,450,500,600\}$ or $N\ge1\,761\,450$, and for $q=\frac12$ when $10\le N\le200$ or $N\ge554\,846$.
+\end{cacorollary}
+\begin{proof}
+For a window $-K^-/(X\mu)<t^*-t_{\rm cf}<K^+/(X\mu)+2$ one has $t^*>(\tau_{\rm cf}-\max(K^-,0)/X)/\mu$ and $|t^*-t_{\rm cf}|<\max(K^+/X+2\mu,K^-/X)/\mu$, so
+\[
+\frac{|t^*-t_{\rm cf}|}{t^*}<B(N):=\frac{\max(K^+/X+2\mu,\ K^-/X)}{\tau_{\rm cf}(X)-\max(K^-,0)/X}.
+\]
+Insert $X\ge X_{\rm lo}(N)$ from Computer-assisted proposition~\ref{prop:Xs} ($N\ge10$), $\mu\le\frac{2q}d(\frac\pi{2N})^2$, and use that $\tau_{\rm cf}(X)=X\ln(2dX)/(X+2d-1)$ is increasing in $X$ (its derivative is $((2d-1)\ln(2dX)+X+2d-1)/(X+2d-1)^2>0$). Then $B$ is decreasing in $N$ on every range where the constants are fixed, so it suffices to evaluate it at the left end $N_0$ of a row. In interval arithmetic (\texttt{code/article/s6b\_rigorous\_checks.py}, \texttt{mpmath.iv}): for $d=3$, $q=\frac45$, the row $(50;1.851,2.973)$ of Computer-assisted theorem~\ref{thm:cf-disc-qmax} ($q_{\max}=0.8$) gives $B(50)<0.0013$, hence the claim for $N\ge50$; for $q=\frac12$ the row $(30;1.962,2.829)$ of Computer-assisted theorem~\ref{thm:cf-disc-half} gives $B(30)<0.0023$, hence $N\ge30$. Computer-assisted theorem~\ref{thm:cf-finite}(b) covers $10\le N\le120$ ($q=\frac45$) and $10\le N\le80$ ($q=\frac12$). For $d=2$ the rows $N_0=1000$ give $B(N)<0.0100$ exactly for $N\ge1\,761\,450$ ($q=\frac45$) and $N\ge554\,846$ ($q=\frac12$), and Computer-assisted theorem~\ref{thm:cf-finite}(a) covers the stated finite ranges.
+\end{proof}
+This settles the conjecture \src{\CER}{Conj 48} in three dimensions; in two dimensions it remains open for $302\le N<1\,761\,450$ ($q=\frac45$, apart from the five isolated certified values) and $201\le N<554\,846$ ($q=\frac12$). The trusted bases are those of the two ingredients: Arb with the transcription in \texttt{certlib.py} for the windows, and Python integers, the C engine and Arb for the finite ranges.
+
+\begin{conjecture}[\src{\ASY}{Rem 7.19(ii), Section 8}; \src{\CER}{Conj 48}]\label{conj:modes}
+(a) For $q=1$ (where hypothesis (H) fails for every $N$ and the PMF is not unimodal in general) every global maximiser still satisfies the laws of Computer-assisted theorem~\ref{thm:cf-disc-allq}. (b) For $d=2$, $q\in\{\frac45,\frac12\}$ and every $N\ge10$, $|t^*-t_{\rm cf}|\le0.0100\,t^*$.
+\end{conjecture}
+
+\begin{observation}[\src{\ASY}{Rem 5.3(iii)}]\label{obs:Kinf}
+$X(\tau^*-\tau_{\rm cf})$ appears to converge, to $K_2^\infty\approx3.74$ and $K_3^\infty\approx-0.22$ (exact continuous-time modes, $d=2$ up to $N=1.7\times10^7$, $d=3$ up to $N=4096$; evaluation of the formal limit expression gives $3.7396$ and $-0.2217$). The certified asymptotic windows $(2.52,4.65)$ ($d=2$, $N\ge10^{40}$) and $(-0.83,1.43)$ ($d=3$, $N\ge10^6$) are consistent with this.
+\end{observation}
+% src: data/msc_rigorous_asymptotics/logs/60_check_asymptotics.log; data/msc_rigorous_asymptotics/80_tables.json
+
+\section{Certificates: trusted bases and how to re-verify them}\label{sec:certs}
+
+Every computer-assisted statement above is reduced, by lemmas proved by hand, to finitely many inequalities that a program verifies. This section lists, per note, what the programs compute, what one has to trust, where the certificate files are, and how to re-run them. Python is a Python~3 environment with the packages of \texttt{requirements.txt} (numpy, scipy, mpmath, sympy, python-flint~0.9.0); \texttt{reproduce.md}, Section~8, gives the commands with recorded times. All recorded times are wall-clock times on a shared, often heavily loaded machine; for the single-threaded programs they are upper bounds for the CPU time.
+
+\paragraph{Trusted bases.}
+\begin{itemize}
+\item[(T1)] Python integers and \texttt{fractions.Fraction} (exact arithmetic).
+\item[(T2)] numpy \texttt{int64} limb arithmetic with an overflow bound (only for the fast generator of \CER; no statement rests on it, since every certificate was re-derived under (T1)).
+\item[(T3)] Arb ball arithmetic through python-flint~0.9.0, together with the transcription of the formulas into the certification scripts (in particular \texttt{code/msc\_rigorous\_asymptotics/certlib.py}); in \CER\ every Arb decision is required to agree with \texttt{mpmath.iv}.
+\item[(T4)] IEEE-754 double precision with round-to-nearest, used with a proved error model only in \src{\ONE}{Prop 3.18} (with Arb at the flat points).
+\item[(T5)] C99 unsigned \texttt{uint64\_t}/\texttt{unsigned \_\_int128} arithmetic as compiled by Apple clang~21 for arm64 with \texttt{-O2}, in the 366-line program \texttt{code/msc\_rigorous\_certified\_c128/fp128.c}; its output is turned into verdicts with Python integers.
+\end{itemize}
+No program has been verified in a proof assistant. Floating-point arithmetic is otherwise used only to \emph{find} candidates (brackets, guesses), never to decide.
+
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_certified/c128_build.json; data/msc_rigorous_unimodality/summary_certificates.json; data/msc_rigorous_unimodality/summary_lc1d.json; data/msc_rigorous_1d/logs/rerun_all.log; data/checks/sanity_rerun_status.tsv
+\begin{center}\footnotesize
+\begin{longtable}{p{0.18\textwidth}p{0.30\textwidth}p{0.07\textwidth}p{0.33\textwidth}}
+\toprule
+statements & program(s) & base & output files; recorded time\\
+\midrule
+\endhead
+\multicolumn{4}{p{0.9\textwidth}}{\emph{One dimension} (scripts in \texttt{code/msc\_rigorous\_1d/}, outputs in \texttt{data/msc\_rigorous\_1d/})}\\
+Thm~\ref{thm:1d-constant} ($c$, $\kappa$, $\rho$) & \texttt{03\_constant\_enclosure.py} & T3 & \texttt{data/03\_constants.json}\\
+Thm~\ref{thm:1d-tp2} & \texttt{31\_tp2\_powers.py} (2nd impl.\ \texttt{34}) & T1 & \texttt{data/31\_tp2\_powers\_q*.json}\\
+Thm~\ref{thm:1d-cont} & \texttt{12\_cont\_theorem.py}, \texttt{13\_cont\_small\_N.py}, \texttt{37\_kappa2.py} & T3 & \texttt{data/12\_*.json}, \texttt{13\_*.json}, \texttt{37\_kappa2.json}\\
+Thm~\ref{thm:1d-disc} & \texttt{14\_disc\_theorem.py}, \texttt{35\_disc\_uniformK.py}, \texttt{15\_disc\_small\_N.py}, \texttt{32\_disc\_small\_N\_ext.py} & T3 & \texttt{data/14\_*.json}, \texttt{35\_disc\_uniformK.json}, \texttt{15\_*.jsonl}, \texttt{32\_*.jsonl}; script \texttt{14}: 4--6\,s per configuration (\texttt{logs/rerun\_all.log})\\
+Thm~\ref{thm:1d-q1} & \texttt{16\_q1\_theorem.py}, \texttt{17\_q1\_small\_N.py} & T1, T3 & \texttt{data/16\_*.json}, \texttt{17\_*.json}\\
+Thm~\ref{thm:1d-global} & \texttt{14}, \texttt{35}, \texttt{18\_global.py} & T3 & \texttt{data/18\_global\_*.json}\\
+Thm~\ref{thm:1d-startlaw} & \texttt{19}, \texttt{25\_start\_theorem.py}, \texttt{26\_start\_small\_N.py}, \texttt{28} & T3 & \texttt{data/25\_*.jsonl} ($49\,238$ boxes), \texttt{26\_*.jsonl} ($2499$ pairs)\\
+Prop.~3.18 of \ONE & \texttt{08\_unimodality\_q45.py}, \texttt{24\_no\_underflow.py} & T4, T3 & \texttt{data/08\_modes\_q45.jsonl}\\
+Prop.~\ref{prop:qfailnotsharp}, Prop.~\ref{prop:startfail} (checks) & \texttt{36\_start\_failure.py}, \texttt{40\_examples.py} & T1 & \texttt{data/36\_*.json}, \texttt{40\_examples.json}\\
+\midrule
+\multicolumn{4}{p{0.9\textwidth}}{\emph{Spectral structure} (\texttt{code/msc\_rigorous\_spectral/}; \texttt{run\_all.py} runs all scripts in one interpreter)}\\
+Lemma~\ref{lem:epstein} & \texttt{14\_certify\_epstein.py} & T3 & \texttt{data/14\_certified\_epstein.json}\\
+Thms~\ref{thm:d2}, \ref{thm:d3}(a),(b), Cor.~\ref{cor:Xbar} & \texttt{06\_certify\_constants.py}, \texttt{09\_certify\_part3.py} & T3 & \texttt{data/06\_*.json}, \texttt{data/09\_*.json}\\
+Thm~\ref{thm:d3}(c),(d) & \texttt{16\_certify\_d3\_remainder.py} & T3 & \texttt{data/16\_*.json}\\
+Thm~\ref{thm:d2-constant} (values) & \texttt{19\_certify\_d2\_limits.py} & T3 & \texttt{data/19\_*.json}\\
+Refuted~\ref{ref:truncated} & \texttt{20\_certify\_rounded\_constants.py} & T3 & \texttt{data/20\_*.json}\\
+Prop.~\ref{prop:signpatterns} & \texttt{13\_certify\_residue\_signs.py} & T1, T3 & \texttt{data/13\_*.json}\\
+finite-$N$ enclosures \src{\SPE}{Section 13} & \texttt{07\_certify\_poles.py}, \texttt{09} & T3 & \texttt{data/07\_*.json}, \texttt{data/09\_*.json}; the complete \texttt{run\_all.py} took 68\,s in the re-run of Section~\ref{sec:rerun}\\
+printed decimals & \texttt{21\_check\_printed\_decimals.py} & T3 & \texttt{data/21\_printed\_decimals.json} (77 strings)\\
+\midrule
+\multicolumn{4}{p{0.9\textwidth}}{\emph{Asymptotics} (scripts in \texttt{code/msc\_rigorous\_asymptotics/}, outputs in \texttt{data/msc\_rigorous\_asymptotics/})}\\
+Prop.~\ref{prop:Xs} & \texttt{50\_cert\_constants.py} & T3 & \texttt{data/50\_cert\_constants.json}\\
+Thm~\ref{thm:cf-cont} & \texttt{52\_cert\_theoremB.py} & T3 & \texttt{data/52\_cert\_theoremB\_d\{2,3\}.jsonl} ($220$/$389$ blocks)\\
+Thm~\ref{thm:cf-disc-half} & \texttt{72\_cert\_discrete.py} & T3 & \texttt{data/72\_cert\_discrete\_d\{2,3\}.jsonl}\\
+Thm~\ref{thm:cf-disc-qmax} & \texttt{76\_cert\_q\_large.py} & T3 & \texttt{data/76\_cert\_q*\_d*.jsonl}\\
+Thm~\ref{thm:cf-disc-allq} & \texttt{78\_cert\_allq.py} & T3 & \texttt{data/78\_cert\_allq\_d\{2,3\}.jsonl} ($171$/$387$ blocks)\\
+tables & \texttt{80\_tables.py} & --- & \texttt{data/80\_tables.json}; the serial run of 52, 72, 76, 78 and 80 finished within about three minutes\\
+\midrule
+\multicolumn{4}{p{0.9\textwidth}}{\emph{Unimodality} (scripts in \texttt{code/msc\_rigorous\_unimodality/}, outputs in \texttt{data/msc\_rigorous\_unimodality/})}\\
+Thm~\ref{thm:finite-cc} & \texttt{cert\_unimodal.py} (cross-check \texttt{verify\_certificate\_code.py}) & T1 & \texttt{data/cert\_*.jsonl}, \texttt{summary\_certificates.json}; (a) 88 CPU-min, (b) 20 CPU-min\\
+Thm~\ref{thm:1d-thresholds} & \texttt{cert\_thr1d.py} (two engines) & T1 & \texttt{data/cert\_thr1d\_*.jsonl}; 1.84\,h (flint, $N\le300$), 0.44\,h (Python, $N\le200$), 0.57\,h (centre to corner)\\
+Thm~\ref{thm:1d-freelc} & \texttt{cert\_lc1d.py}, \texttt{cert\_family.py} & T3 (T1 cross-check) & \texttt{data/cert\_lc1d\_*.jsonl}, \texttt{cert\_family\_F\{1,2\}.jsonl}; 26 CPU-min for each of Thm~9.7(a),(b) of \UNI, Lemma~9.10 19\,s\\
+Thm~\ref{thm:four-fifths} (small blocks) & \texttt{cert\_blocks.py} & T3, T1 & \texttt{data/cert\_blocks.jsonl} (38 cases)\\
+Thms~\ref{thm:generalpairs}, \ref{thm:pairclass} & \texttt{cert\_continuous.py}, \texttt{cert\_pairs.py} & T1 & \texttt{data/continuous\_counterexamples.json}, \texttt{data/pairs\_d*\_N*.json}\\
+\midrule
+\multicolumn{4}{p{0.9\textwidth}}{\emph{Certified modes} (scripts in \texttt{code/msc\_rigorous\_certified/}, certificates in \texttt{data/msc\_rigorous\_certified/}; recipe in \src{\CER}{Section 10})}\\
+Thms~\ref{thm:1d-certified}, \ref{thm:cc-certified}, \ref{thm:q1-cc} (T1 ranges) & generator \texttt{fplimb.py}, checker \texttt{verify\_packed.py} (253 lines), \texttt{verify\_exact.py}, \texttt{fpcore.py} & T1 & \texttt{certs/modes\_*}, \texttt{packed\_*}, \texttt{packedexact\_*}; 1539 certificates, all re-derived by the checker; longest verification $1794$\,s ($d=3$, $N=60$)\\
+same, extended ranges & \texttt{c128/fp128.c}, \texttt{c128\_post.py} & T5, T1 & \texttt{certs/c128\_*.jsonl}; 3824 certificates, each computed twice with identical sha256 digest; 28623\,s first pass, 30080\,s second pass; longest certificate 1501\,s\\
+Lemma~\ref{lem:mfpt-encl}, Thm~\ref{thm:cf-finite} & \texttt{mfpt\_enclosure.py}, \texttt{closed\_form.py} & T1, T3 & \texttt{certs/mfpt\_d*.jsonl}, \texttt{certs/closedform\_*.jsonl}\\
+Thms~\ref{thm:C2}, \ref{thm:d2-finite}, \ref{thm:1d-constant} (2nd proof) & \texttt{constants.py}, \texttt{mfpt2d\_remainder.py} & T3 & \texttt{certs/constants.json}, \texttt{certs/mfpt2d\_remainder.json}\\
+all of the above & \texttt{audit.py}, \texttt{c128/audit\_ext.py} & T1, T3 & \texttt{certs/AUDIT.json} (127 assertions), \texttt{certs/AUDIT\_EXT.json} (131 assertions)\\
+\midrule
+\multicolumn{4}{p{0.9\textwidth}}{\emph{This document}}\\
+Cor.~\ref{cor:conj48} & \path{code/article/s6b_rigorous_checks.py} (\texttt{mpmath.iv}) & T3 & \path{data/article/s6b_rigorous_checks.json}; a few seconds\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% src: data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_unimodality/verify_certificate_code.json; data/msc_rigorous_1d/34_tp2_second_impl.json; data/msc_rigorous_1d/22_crosscheck_t5.json
+\paragraph{Separately written re-checks.} Within the project several certificates were re-derived by separately written programs, on the same machine: in \CER\ every Python-integer certificate by a second program with a different data layout and rounding scheme (and $553$ in exact arithmetic, $622$ bit for bit by a third program), and $43$ of the $2285$ certificates outside the Python-integer ranges (for the other $2242$ the C program is the only witness, run twice); in \UNI\ the cone certificates by a dictionary-based implementation and Lemma~9.10 by a second Taylor-model implementation; in \ONE\ the $TP_2$ test by a second implementation and the modes at $q=\frac45$ against \CER; in \ASY\ the certificate files of 52, 72 and 76 block by block with \texttt{mpmath} interval arithmetic (not 78). The code of these re-checks of the internal checks is not released. None of these is an external replication.
+
+\paragraph{How to re-verify the main certificates.}
+\begin{enumerate}
+\item The constant $c$: \path{python} \path{code/msc_rigorous_1d/03_constant_enclosure.py}.
+\item The closed form in $d=2,3$: the certificate scripts \path{52_cert_theoremB.py}, \path{72_cert_discrete.py}, \path{76_cert_q_large.py}, \path{78_cert_allq.py} and \path{80_tables.py} of \path{code/msc_rigorous_asymptotics/} (commands in \texttt{reproduce.md}); then compare \path{data/msc_rigorous_asymptotics/80_tables.json} with the tables of Section~\ref{sec:mode}.
+\item Unimodality at $q\le\frac45$: \path{python} \path{code/msc_rigorous_unimodality/cert_family.py} and \path{python} \path{code/msc_rigorous_unimodality/summarize_lc1d.py} (the full \path{cert_lc1d.py} run takes about an hour of CPU).
+\item Exact modes: \path{python} \path{code/msc_rigorous_certified/verify_packed.py} \path{data/msc_rigorous_certified/modes_d2_q4-5.jsonl} (Python integers only), and \path{python} \path{code/msc_rigorous_certified/audit.py}.
+\item The spectral constants: \path{python} \path{code/msc_rigorous_spectral/run_all.py}.
+% src: data/checks/sanity_rerun_status.tsv
+\item This document: \path{python} \path{code/article/s6b_rigorous_checks.py} (Computer-assisted corollary~\ref{cor:conj48}); the sanity scripts of Section~\ref{sec:rerun} are in the \path{code/msc_rigorous_*} folders ($1255$\,s wall-clock in total).
+\end{enumerate}
+
+\section{Re-run of the sanity checks}\label{sec:rerun}
+
+As part of this synthesis every sanity script of the five notes was run again, serially, one process at a time, with one BLAS thread and at the lowest scheduling priority, with a time limit of $840$\,s per script (the driver and its per-script logs are not released; the status table and the progress log are \texttt{data/checks/sanity\_rerun\_status.tsv} and \texttt{data/checks/sanity\_rerun\_progress.log}). For \SPE\ the note's own driver \texttt{run\_all.py} was used, which runs all $21$ scripts of that note in one interpreter, including its certification scripts \texttt{06}, \texttt{07}, \texttt{09}, \texttt{13}, \texttt{14}, \texttt{16}, \texttt{19}, \texttt{20}, \texttt{21}; for \CER\ the two audit scripts re-check every numerical assertion of the theorems against the certificate files. The other certificate programs (the long runs listed in Section~\ref{sec:certs}) were not re-run here; their stored outputs were reproduced by the line-by-line checks or, where stated in Section~\ref{sec:reviews}, not.
+% src: data/checks/sanity_rerun_status.tsv; data/checks/sanity_rerun_progress.log
+
+\begin{center}\small
+\begin{longtable}{llrr}
+\toprule
+note & script & exit status & wall-clock (s)\\
+\midrule
+\endhead
+\ONE & \texttt{01\_sanity\_exact} & 0 & 3\\
+\ONE & \texttt{09\_sec3\_sec4\_sanity} & 0 & 16\\
+\ONE & \texttt{11\_expansion\_sanity} & 0 & 2\\
+\ONE & \texttt{20\_validate\_theorems} & 0 & 28\\
+\ONE & \texttt{21\_q1\_sanity} & 0 & 2\\
+\ONE & \texttt{22\_crosscheck\_t5} & 0 & 1\\
+\ONE & \texttt{23\_stress} & 0 & 39\\
+\ONE & \texttt{27\_start\_sanity} & 0 & 7\\
+\ONE & \texttt{29\_start\_stress} & 0 & 45\\
+\ONE & \texttt{30\_tp2\_pattern} & 0 & 43\\
+\ONE & \texttt{33\_tp2\_sanity} & 0 & 23\\
+\ONE & \texttt{34\_tp2\_second\_impl} & 0 & 7\\
+\ONE & \texttt{36\_start\_failure} & 0 & 138\\
+\ONE & \texttt{38\_qN\_strict} & 0 & 5\\
+\ONE & \texttt{39\_hand\_constants} & 0 & 1\\
+\ONE & \texttt{40\_examples} & 0 & 12\\
+\SPE & \texttt{run\_all} & 0 & 68\\
+\SPE & \texttt{a01\_recheck\_separate\_code} & 0 & 6\\
+\ASY & \texttt{02\_check\_structure} & 0 & 1\\
+\ASY & \texttt{12\_identity\_check} & 0 & 3\\
+\ASY & \texttt{40\_check\_thmA} & 0 & 4\\
+\ASY & \texttt{41\_windows\_exact} & 0 & 2\\
+\ASY & \texttt{51\_validate\_enclosures} & 0 & 1\\
+\ASY & \texttt{53\_check\_decomposition} & 0 & 1\\
+\ASY & \texttt{54\_bruteforce\_theorem51} & 0 & 3\\
+\ASY & \texttt{60\_check\_asymptotics} & 0 & 1\\
+\ASY & \texttt{70\_check\_discrete} & 0 & 4\\
+\ASY & \texttt{71\_check\_discrete\_unimodal} & 0 & 0\\
+\ASY & \texttt{73\_validate\_discrete} & 0 & 4\\
+\ASY & \texttt{74\_observe\_q\_large} & 0 & 1\\
+\ASY & \texttt{75\_check\_q\_large} & 0 & 5\\
+\ASY & \texttt{77\_validate\_q\_large} & 0 & 3\\
+\ASY & \texttt{79\_validate\_allq} & 0 & 183\\
+\ASY & \texttt{81\_check\_text\_constants} & 0 & 0\\
+\ASY & \texttt{82\_q1\_parity\_example} & 0 & 0\\
+\UNI & \texttt{verify\_thr1d} & 0 & 80\\
+\UNI & \texttt{verify\_lemmas} & 0 & 290\\
+\UNI & \texttt{verify\_lastexit} & 0 & 102\\
+\UNI & \texttt{verify\_lc1d} & 0 & 53\\
+\UNI & \texttt{verify\_family} & 0 & 17\\
+\UNI & \texttt{summarize\_lc1d} & 0 & 1\\
+\UNI & \texttt{recheck\_headline} & 0 & 0\\
+\UNI & \texttt{scan\_pairs1d} & 0 & 2\\
+\UNI & \texttt{table\_mode\_bounds\_small} & 0 & 2\\
+\UNI & \texttt{verify\_certificate\_code} & 0 & 3\\
+\CER & \texttt{check\_lemmas} & 0 & 1\\
+\CER & \texttt{check\_packed} & 0 & 4\\
+\CER & \texttt{check\_logconcave} & 0 & 30\\
+\CER & \texttt{check\_remarks} & 0 & 1\\
+\CER & \texttt{check\_ext\_lemmas} & 0 & 4\\
+\CER & \texttt{audit} & 0 & 1\\
+\CER & \texttt{audit\_ext} & 0 & 2\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{Result.} All $52$ runs ended with exit status $0$, and every verdict line they print reports success (\texttt{ALL OK}, \texttt{ALL PASS}, \texttt{ALL CERTIFIED CHECKS OK}, \texttt{AUDIT ALL OK}, ``127 assertions, 0 failures'', ``131 assertions, 0 failures''); total wall-clock time $1255$\,s, with a one-minute load average between $15$ and $236$ caused by other processes. The SHA-256 digests of the $339$ files in the data directories of the five notes were recorded before and after the run: $333$ files are byte-identical. Six differ: four floating-point sanity checks of \ASY\ (\texttt{02}, \texttt{40}, \texttt{54}, \texttt{75}) in the last digits of eigen-decomposition residuals, one (\texttt{79}) in its timing fields, and \texttt{data/msc\_rigorous\_1d/30\_tp2\_pattern.json}, which differs by added rows ($N=21,\dots,24$, with the same $16$ negative triples as for $12\le N\le20$); no verdict changed.
+
+\section{Internal checks}\label{sec:reviews}
+
+Each note was read line by line and attacked numerically by code written separately from the note's scripts, within the same project and on the same machine (Section~\ref{sec:intro}). The reports of these checks are not part of the repository; \texttt{notes/VERIFICATION.md}, Section~3, summarises them.
+
+% src: notes/VERIFICATION.md (Section 3)
+No statement labelled theorem or computer-assisted theorem was found false by either check; every refutation concerns a statement that is labelled as refuted here.
+
+% src: notes/VERIFICATION.md (Section 3)
+\paragraph{Final reading.} After the synthesis the whole document was read once more, within the same project, with particular attention to the logical order and to the statements marked \NEW\ and \SYN, which the two checks had not seen; for the marked statements whose proofs are only outlined here, the proofs in the companion notes were read. The numerical content of the marked statements, the main certificates (exact modes and unimodality for small $N$, the closed-form windows against the certified modes, the constant $c$ and the spectral constants), Computer-assisted corollary~\ref{cor:conj48} and three randomly chosen lemmas (Lemmas~\ref{lem:arrival}, \ref{lem:K2} and Computer-assisted lemma~\ref{lem:epstein}) were re-checked with separately written code within the same project, on the same machine (code and log not released); this is not an external replication. No statement was found false and no status had to be lowered. The verdicts of the final reading are summarised in \texttt{notes/VERIFICATION.md}, Section~3.
+
+\section{What remains open}\label{sec:open}
+
+\paragraph{1. The closed form in two dimensions, quantitatively.} The window of Computer-assisted theorems~\ref{thm:cf-cont}--\ref{thm:cf-disc-allq} is a few units wide in $X(\tau^*-\tau_{\rm cf})$, whereas the observed values converge to $K_2^\infty\approx3.74$, $K_3^\infty\approx-0.22$; proving the limits needs $o(1)$-accurate bounds for the pole data and lattice sums. As a consequence the $1\%$ accuracy of the closed form in $d=2$ is proved only on the certified finite ranges and for $N\ge1\,761\,450$ ($q=\frac45$), $N\ge554\,846$ ($q=\frac12$) (Computer-assisted corollary~\ref{cor:conj48}, Conjecture~\ref{conj:modes}(b)). The sharper lattice-sum bounds of Computer-assisted corollary~\ref{cor:Xbar} have not been fed into the certificates of Section~\ref{sec:mode}.
+
+\paragraph{2. Discrete time close to $q=1$.} In $d=2,3$ nothing is proved for $N<N_1(q)\approx\pi q/(1-q)$, where the pairing lemma fails; between $N_1(q)$ and $N_*$ only part of the range is covered ($d=2$, $\frac12<q<1$: $N_1(q)\le N\le58$ outside Computer-assisted theorem~\ref{thm:cf-disc-qmax}; $d=3$: $N\in\{10,11\}$); all $N<10$ ($d=3$) and $N<12$ ($d=2$, discrete; for $q\le\frac12$ the certificate of \ASY\ also covers $N=11$, with weaker constants that are not listed here, \src{\ASY}{Rem 7.19(i)}). For $q=1$ the PMF is not unimodal in general and the mode laws are Conjecture~\ref{conj:modes}(a). In $d=1$: the crossover regime $\frac9{10}<q<1$ with $N\le600$ or $(1-q)L^2\lesssim27\ln L+100$, where the mode interpolates between the laws of Computer-assisted theorems~\ref{thm:1d-global} and~\ref{thm:1d-q1}, is open; $N=6$, $q=0.828$ and $N=9$, $q=0.887$ are genuine exceptions to the window of Computer-assisted theorem~\ref{thm:1d-disc}. For $q=1$ the constant of Computer-assisted theorem~\ref{thm:1d-q1} is proved as $K=10.3$ for every $N$ and as $K=0.031$ for $N\le600$; that $K\approx0.03$ suffices for every $N$ is only observed.
+
+\paragraph{3. Unimodality for $\frac45<q<1$, all $N$.}
+\begin{conjecture}[thresholds; \src{\UNI}{Conjs 10.2, 10.4}, \src{\ONE}{Rem 3.17}]\label{conj:thresholds}
+(i) For $d=2$, CC, $\inf_Nq^*(N)=q^*(9)\in[0.9986,0.9987)$, and $q^*(N)=1$ for infinitely many $N$ and $<1$ for infinitely many $N$. (ii) For $d\ge3$, CC, $q^*(N)=1$ for all $N$. (iii) For $d=1$, end to end, $q^*(N)=\frac{2N-4}{2N-3}$ for all $N\ge22$. (iv) For $d=1$, centre to corner, $q^*(N)=\frac{N-3}{N-1}$ for all odd $N\ge21$. (v) The one-dimensional free increment $\delta h_q$ is log-concave iff $q\le q_1(N)$, for every $N$ (this would give CC unimodality for $q\le q_1(N)\to1$ in every dimension). (vi) $Q^k$ is eventually $TP_2$ for every $q<1$, uniformly in $N$ (Conjecture~\ref{conj:eventualtp2}).
+\end{conjecture}
+Proved so far: (iii), (iv) on the ranges of Computer-assisted theorem~\ref{thm:1d-thresholds}, the upper bounds $q^*\le\frac{2N-4}{2N-3}$, $\le\frac{N-3}{N-1}$ for all $N$, (v) for $N\le501$ and for $q\le\frac45$ (Computer-assisted theorem~\ref{thm:1d-freelc}), (ii) for $d=3$, $N\le30$, $d=4$, $N\le8$, $d=5$, $N\le5$ (Computer-assisted theorem~\ref{thm:finite-cc}) and for $d=3$, $q=1$, $N\le60$ (Computer-assisted theorem~\ref{thm:q1-cc}). Any proof must use $q<1$ quantitatively, since the statements fail at $q=1$ in $d=1,2$.
+
+\paragraph{4. Shape beyond unimodality.} Log-concavity (monotone hazard rate) and the front property of the CC law in $d\ge2$, at most two local maxima for general pairs, and strict unimodality for all $N$ are Conjecture~\ref{conj:shape}; in $d=1$ log-concavity is proved for $q\le\frac23$ and at $q=\frac45,\frac{17}{20},\frac9{10}$ (with the exact sets of Computer-assisted theorem~\ref{thm:1d-tp2}).
+
+\paragraph{5. General starts and other geometries.} In $d=1$: explicit finite-$N$ laws for starts with $\xi_N>\frac12$ (they should be formulated in terms of $d_0$), discrete time with $q>\frac12$, and the exact threshold $q^*(N,x_0)$ for $x_0\ge2$ (known: $\qseg\le q^*\le q_{\rm fail}(N-x_0)$, and $q_{\rm fail}$ is not sharp). In $d\ge2$ the mode asymptotics are proved only for CC; for C2M and M2C only unimodality and the location bounds of Corollary~\ref{cor:modelocation} are proved, and the lattice sums of Section~\ref{sec:spectral} were evaluated only for opposite corners.
+
+\paragraph{6. Spectral structure.} In $d=2$ the monotonicity of the remainders in $N$, the ranges $[0.8512,0.8831]$, $[-0.5302,-0.3508]$ for all $N$ and the rate $N^{-2}$ are only observed; in $d=3$ the proved windows $[-17.4,19.4]$, $[-82.4,80.4]$ are far from the observed $[1.61,1.76]$, $[-0.63,-0.29]$ and no rate is proved. Beyond Theorem~\ref{thm:alternation} no closed description of the residue sign pattern is known.
+
+\paragraph{7. Verification status.} Statements marked \NEW\ (Theorem~\ref{thm:1d-disc-unimodal} at $q=\qseg$; the existence and closed form of $\kappa_2$ in Computer-assisted theorem~\ref{thm:1d-cont}; Propositions~\ref{prop:N3lc}, \ref{prop:startfail}, \ref{prop:pureparity}, Computer-assisted proposition~\ref{prop:qfailnotsharp}, Theorem~\ref{thm:alternation}, Remark~\ref{rem:signpoly}, Computer-assisted theorem~\ref{thm:1d-thresholds}, Theorem~\ref{thm:d2-constant}, Refuted~\ref{ref:truncated}, the extension in Theorem~\ref{thm:as-unimodal}, Lemma~\ref{lem:uniformq}, Computer-assisted theorem~\ref{thm:cf-disc-allq}, the junction in Computer-assisted theorem~\ref{thm:d2-finite}) and \SYN\ (the identification of $C_2$, Computer-assisted theorems~\ref{thm:d2-finite} and~\ref{thm:cf-disc-half}, Computer-assisted corollary~\ref{cor:conj48}) need an examination by a reader outside the project; within the project they were read once more in the final reading (Section~\ref{sec:reviews}). The certificate \texttt{78} of Computer-assisted theorem~\ref{thm:cf-disc-allq} has not been re-checked by separately written code. For $2242$ of the $3824$ certificates of the C engine the compiled C program is the only witness (each computed twice). No program has been formally verified. Classical results are cited, not re-proved: Horn--Johnson Theorems 4.3.17, 8.3.1, 8.4.4 (numbers corroborated through secondary sources), DLMF theta and elliptic-integral identities (Lemma~9.2 of \SPE; not needed for the bounds), Feller's uniqueness theorem for Laplace transforms, Jacobi's identity and the transformation of $\eta$ (Hardy--Wright Thm~357, Apostol Thm~3.1; second proof of the constant $c$ only).
+
+\paragraph{8. Material not released.} The reports of the internal checks with their scripts, the scripts of the numerical search for counter-examples and the working notes are not part of the repository; they are not part of the proofs.
+
+\section*{References}
+\addcontentsline{toc}{section}{References}
+\begin{description}[style=nextline,leftmargin=2.2em]
+\item[\ONE] X.~Zhouyi, \emph{The most probable first-passage time of the lazy walk on a segment: a rigorous one-dimensional theory}, 1 October 2026, \path{proofs/R1_one_dimension/R1_one_dimension.pdf}.
+\item[\SPE] X.~Zhouyi, \emph{Rigorous spectral structure of first-passage times to a point target on the reflecting hypercubic lattice, $d\ge2$}, 1 October 2026, \path{proofs/R2_spectral_structure/R2_spectral_structure.pdf}.
+\item[\ASY] X.~Zhouyi, \emph{The mode of the corner-to-corner first-passage time in two and three dimensions: rigorous asymptotics}, 1 October 2026, \path{proofs/R3_mode_two_three_dimensions/R3_mode_two_three_dimensions.pdf}.
+\item[\UNI] X.~Zhouyi, \emph{Unimodality of point-target first-passage laws on the reflecting box: theorems, counter-examples, certified computations, and what remains open}, 1 October 2026, \path{proofs/R4_unimodality/R4_unimodality.pdf}.
+\item[\CER] X.~Zhouyi, \emph{Computer-assisted certification of first-passage modes, unimodality, the closed-form mode formula and two constants for the lazy walk in a reflecting box}, 1 October 2026, \path{proofs/R5_certified_computations/R5_certified_computations.pdf}.
+\end{description}
+Classical results used in the notes are cited there with author, title and theorem number; those that appear in this document are: R.~A. Horn and C.~R. Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge Univ.\ Press 2013 (Thms 4.3.17, 8.3.1, 8.4.4); E.~Laguerre, J.\ Math.\ Pures Appl.\ (3) 9 (1883) 99--146, and G.~P\'olya, G.~Szeg\H{o}, \emph{Problems and Theorems in Analysis II}, Part V, Ch.~1 (Descartes' rule for exponential sums and power series); J.~A. Fill, \emph{The passage time distribution for a birth-and-death chain: strong stationary duality gives a first stochastic proof}, J.\ Theoret.\ Probab.\ 22 (2009) 543--557 (Thms 1.1, 1.2); H.~Davenport and G.~P\'olya, \emph{On the product of two power series}, Canad.\ J.\ Math.\ 1 (1949) 1--5; I.~A. Ibragimov, \emph{On the composition of unimodal distributions}, Theory Probab.\ Appl.\ 1 (1956) 255--260; D.~W. Walkup, J.\ Appl.\ Probab.\ 13 (1976) 76--85 (Thm 1), T.~M. Liggett, J.\ Combin.\ Theory Ser.\ A 79 (1997) 315--325 (Thm 2), O.~Johnson, Stochastic Process.\ Appl.\ 117 (2007) 791--802, A.~Marsiglietti and J.~Melbourne, Discrete Comput.\ Geom.\ 71 (2024) 556--586 (Cor.\ 3.4 of arXiv:2004.12005v4) (cited only for the second proof in Section~\ref{sec:unimodal}); A.~Saumard and J.~A. Wellner, Statist.\ Surveys 8 (2014) 45--114; NIST Digital Library of Mathematical Functions, Chapters 20 and 23; G.~N. Watson, \emph{Three triple integrals}, Quart.\ J. Math.\ Oxford 10 (1939) 266--276; G.~H. Hardy and E.~M. Wright, \emph{An Introduction to the Theory of Numbers}, Thm~357; T.~M. Apostol, \emph{Modular Functions and Dirichlet Series in Number Theory}, 2nd ed., Thm~3.1; W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~II, 2nd ed., Section XIII.1, Thm~1.
+
+\end{document}

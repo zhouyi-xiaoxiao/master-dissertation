@@ -1,0 +1,204 @@
+{
+ "T1_rows_in_source": 33,
+ "T2_rows_in_source": 31,
+ "T3_rows_in_source": 17,
+ "exact_ratio_2d_min_max_N5_200": [
+  0.135,
+  0.2696
+ ],
+ "exact_ratio_3d_min_max": [
+  0.0118,
+  0.1531
+ ],
+ "q_tmode_over_N2_2d": {
+  "5": 1.1520000000000001,
+  "35": 1.6280816326530614,
+  "100": 1.7688,
+  "200": 1.8423200000000002,
+  "401": 1.9055254631501048
+ },
+ "T1_large_N_rows": [
+  {
+   "N": 10240,
+   "mode": 43679969,
+   "mfpt": 131059200,
+   "ratio_4dp": "0.3333",
+   "ratio_8dp": "0.33328426"
+  },
+  {
+   "N": 100000,
+   "mode": 4166011658,
+   "mfpt": 12499875000,
+   "ratio_4dp": "0.3333",
+   "ratio_8dp": "0.33328427"
+  },
+  {
+   "N": 1000000,
+   "mode": 416604915263,
+   "mfpt": 1249998750000,
+   "ratio_4dp": "0.3333",
+   "ratio_8dp": "0.33328427"
+  }
+ ],
+ "fit2d_n_points": 13,
+ "fit2d_holdout_N": [
+  1280,
+  10240,
+  163840,
+  16777216
+ ],
+ "fit3d_n_points": 10,
+ "fit3d_holdout_N": [
+  320,
+  1280,
+  4096
+ ],
+ "fit2d_discrete_n_points": 25,
+ "fit3d_discrete_n_points": 14,
+ "unimodal_d1_max_rel_dev_mean_from_pmf_vs_N(N-1)/q": 2.2957635792408837e-11,
+ "unimodal_d1_mean_equals_N(N-1)/q_to_4_decimals": true,
+ "unimodal_d23_cc_q0.8_rows_compared_with_T2_T3": 11,
+ "unimodal_d23_cc_q0.8_max_rel_dev_mean_vs_T2_T3_(6 s.f.)": 2.050500831907165e-06,
+ "unimodal_runs": 35,
+ "unimodal_all_one_maximum_no_minimum": true,
+ "unimodal_max_abs_one_minus_mass": 1.98596694644948e-12,
+ "unimodal_max_S_end": 9.902063112048472e-13,
+ "activity_rows": 34,
+ "activity_max_abs_(q*argmax - continuous mode)_all": 66.02000000000044,
+ "activity_max_abs_(q*argmax - continuous mode)_q<1": 2.1599999999998545,
+ "activity_two_step_differs_by_more_than_1_step": [
+  [
+   "1",
+   "51",
+   "1.0",
+   "832",
+   "848",
+   "832.0",
+   "849.87"
+  ],
+  [
+   "1",
+   "201",
+   "1.0",
+   "13332",
+   "13398",
+   "13332.0",
+   "13398.02"
+  ]
+ ],
+ "sweep_clean_ratio": 0.1768,
+ "sweep_uniform_mean_of_ratios_min_over_p>0": 0.1777,
+ "sweep_thinned_mean_of_ratios_by_p": [
+  0.1768,
+  0.1795,
+  0.1817,
+  0.185,
+  0.1873,
+  0.1901,
+  0.1941,
+  0.1982,
+  0.1999,
+  0.2065,
+  0.206,
+  0.2222,
+  0.2385,
+  0.2575
+ ],
+ "sweep_thinned_mean_of_ratios_non_monotone_steps": [
+  [
+   0.18,
+   0.2
+  ]
+ ],
+ "sweep_uniform_ratio_of_means_below_clean_at_p": [
+  0.04,
+  0.06,
+  0.1,
+  0.12
+ ],
+ "sweep_uniform_ratio_of_means_min": 0.1733,
+ "sweep_uniform_mean_of_ratios_range_p<=0.14": [
+  0.1777,
+  0.1826
+ ],
+ "sweep_thinned_per_placement_ratio_p<=0.2": {
+  "n": 4001,
+  "min": 0.08004339338433562,
+  "max": 0.3202704513313581
+ },
+ "sweep_sample_A_vs_sample_B": {
+  "comparisons": 78,
+  "max_abs_z": 2.0916579170675518,
+  "rows": 26,
+  "K_sample_B": [
+   400
+  ]
+ },
+ "sweep_acceptance_at_p=0.30_0.35": {
+  "uniform": [
+   "0.496",
+   "0.241"
+  ],
+  "corner_thinned": [
+   "0.802",
+   "0.488"
+  ]
+ },
+ "deterministic_rows": 29,
+ "deterministic_second_implementation_max_rel_diff_mfpt": 2.2497781415609097e-11,
+ "deterministic_ratio_min": [
+  "target_box_R8_g1",
+  0.0905
+ ],
+ "deterministic_ratio_max": [
+  "serpentine_k3_g3",
+  0.3385
+ ],
+ "periodic_a2_phases": 4,
+ "periodic_a2_mfpt_factor_min_max": [
+  1.2473545215907382,
+  1.5397053478590128
+ ],
+ "periodic_a2_mode_factor_min_max": [
+  1.4015242679502606,
+  1.5190533493782592
+ ],
+ "periodic_a3_phases": 9,
+ "periodic_a3_mfpt_factor_min_max": [
+  1.0831099283978622,
+  1.4687209256936864
+ ],
+ "periodic_a3_mode_factor_min_max": [
+  1.181307661452066,
+  1.3188929001203369
+ ],
+ "periodic_a4_phases": 16,
+ "periodic_a4_mfpt_factor_min_max": [
+  1.0335278938917825,
+  1.4310657749081748
+ ],
+ "periodic_a4_mode_factor_min_max": [
+  1.097874047332531,
+  1.2258323305254712
+ ],
+ "exact_ratio_2d_N4001_unit_rate": "0.09712",
+ "exact_ratio_2d_N16777216_unit_rate": "0.05622",
+ "q_tmode_over_N2_2d_N16777216": "2.39047",
+ "_generated_by": "code/article/appC_tables_build.py",
+ "_fragments": [
+  "T1",
+  "T1big",
+  "T2",
+  "T3",
+  "activity",
+  "deterministic",
+  "fit2d",
+  "fit2d_discrete",
+  "fit3d",
+  "fit3d_discrete",
+  "sweep_factors",
+  "sweep_thinned",
+  "sweep_uniform",
+  "unimodal"
+ ]
+}

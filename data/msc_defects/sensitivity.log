@@ -1,0 +1,5 @@
+N=35 clean MFPT=14100.808 mode=2493 (interp 2492.915)
+uniform-weight slopes  d ln MFPT/dp = 2.2706   d ln mode/dp = 2.1833   (pi-1 = 2.1416)
+fraction of sites whose blocking LOWERS the MFPT: 0.676 ; lowers the mode: 0.054
+max chi_mfpt = 0.3817 at (33,34); max chi_mode = 0.1053 at (33,34)
+226s

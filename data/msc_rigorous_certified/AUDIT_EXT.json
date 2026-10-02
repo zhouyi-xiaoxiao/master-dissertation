@@ -1,0 +1,912 @@
+{
+ "failures": 0,
+ "assertions": 131,
+ "q1": {
+  "d1_q1-1": {
+   "strictly_unimodal": "2",
+   "multimodal": "4--400",
+   "tie_only": "3",
+   "adjacent_equalities": {
+    "3": [
+     3
+    ],
+    "4": [
+     8
+    ]
+   }
+  },
+  "d2_q1-1": {
+   "strictly_unimodal": "3--8, 10, 12, 14, 16, 19--20, 22--23, 25, 27--37, 39--50, 52--60, 62--85, 87--91, 93--135, 137--148, 150--160, 180, 200",
+   "multimodal": "9, 11, 13, 15, 17--18, 21, 24, 26, 38, 51, 61, 86, 92, 136, 149",
+   "tie_only": "2",
+   "adjacent_equalities": {
+    "2": [
+     2
+    ]
+   }
+  },
+  "d3_q1-1": {
+   "strictly_unimodal": "2--60",
+   "multimodal": "",
+   "tie_only": "",
+   "adjacent_equalities": {}
+  }
+ },
+ "closed_form_samples": {
+  "d1_q4-5": {
+   "10": [
+    0.22403702630333996,
+    0.22403702630333996
+   ],
+   "20": [
+    0.18386271825166775,
+    0.18386271825166775
+   ],
+   "50": [
+    0.16759403119523986,
+    0.16759403119523986
+   ],
+   "100": [
+    0.16220540091816749,
+    0.16220540091816749
+   ],
+   "200": [
+    0.15983523569083433,
+    0.15983523569083433
+   ],
+   "300": [
+    0.15901985437598776,
+    0.15901985437598776
+   ],
+   "600": [
+    0.15824615360222433,
+    0.15824615360222433
+   ],
+   "1000": [
+    0.15793529993857824,
+    0.15793529993857824
+   ],
+   "1500": [
+    0.15778081672818206,
+    0.15778081672818206
+   ],
+   "2000": [
+    0.15770454441979548,
+    0.15770454441979548
+   ]
+  },
+  "d2_q4-5": {
+   "10": [
+    0.005977397747997101,
+    0.005977397747997101
+   ],
+   "20": [
+    -0.004006638378808323,
+    -0.004006638378808323
+   ],
+   "50": [
+    -0.008910260479078962,
+    -0.008910260479078962
+   ],
+   "100": [
+    -0.009606059345203682,
+    -0.009606059345203682
+   ],
+   "200": [
+    -0.009638089240983175,
+    -0.009638089240983175
+   ],
+   "300": [
+    -0.009494179810766596,
+    -0.009494179810766596
+   ],
+   "301": [
+    -0.009491243844609386,
+    -0.009491243844609386
+   ],
+   "350": [
+    -0.009419974206101462,
+    -0.009419974206101462
+   ],
+   "401": [
+    -0.009352860176399505,
+    -0.009352860176399505
+   ],
+   "450": [
+    -0.009290758298831596,
+    -0.009290758298831596
+   ],
+   "500": [
+    -0.009231123313567662,
+    -0.009231123313567662
+   ],
+   "600": [
+    -0.00912533645346132,
+    -0.00912533645346132
+   ]
+  },
+  "d3_q4-5": {
+   "10": [
+    0.0027485048364746805,
+    0.0027485048364746805
+   ],
+   "20": [
+    0.0006399836683819364,
+    0.0006399836683819364
+   ],
+   "50": [
+    0.0001944192832668936,
+    0.0001944192832668936
+   ],
+   "100": [
+    5.9228409907848315e-05,
+    5.9228409907848315e-05
+   ],
+   "120": [
+    4.264542555356423e-05,
+    4.264542555356423e-05
+   ],
+   "130": [
+    4.1268294221752104e-05,
+    4.1268294221752104e-05
+   ],
+   "140": [
+    3.682606710344653e-05,
+    3.682606710344653e-05
+   ],
+   "150": [
+    3.264567195778214e-05,
+    3.264567195778214e-05
+   ],
+   "160": [
+    3.178880372414794e-05,
+    3.178880372414794e-05
+   ]
+  },
+  "d1_q1-2": {
+   "10": [
+    0.2281863043586055,
+    0.2281863043586055
+   ],
+   "20": [
+    0.1829268583953423,
+    0.1829268583953423
+   ],
+   "50": [
+    0.1668790317885067,
+    0.1668790317885067
+   ],
+   "100": [
+    0.16209972987095567,
+    0.16209972987095567
+   ],
+   "200": [
+    0.1597915161674565,
+    0.1597915161674565
+   ],
+   "300": [
+    0.15900822366379652,
+    0.15900822366379652
+   ],
+   "600": [
+    0.15824228575512342,
+    0.15824228575512342
+   ],
+   "1000": [
+    0.1579349521585629,
+    0.1579349521585629
+   ]
+  },
+  "d2_q1-2": {
+   "10": [
+    0.006709017673632007,
+    0.006709017673632007
+   ],
+   "20": [
+    -0.004819694184213377,
+    -0.004819694184213377
+   ],
+   "50": [
+    -0.008933843816128835,
+    -0.008933843816128835
+   ],
+   "100": [
+    -0.009634054764279771,
+    -0.009634054764279771
+   ],
+   "200": [
+    -0.009640777045552834,
+    -0.009640777045552834
+   ]
+  },
+  "d3_q1-2": {
+   "10": [
+    0.0015618202153664263,
+    0.0015618202153664263
+   ],
+   "20": [
+    0.0003856914234852701,
+    0.0003856914234852701
+   ],
+   "50": [
+    9.841039446619604e-05,
+    9.841039446619604e-05
+   ],
+   "80": [
+    5.9944932540382826e-05,
+    5.9944932540382826e-05
+   ]
+  }
+ },
+ "law_1d": {
+  "d1_q4-5": {
+   "delta_lo": "-10989/10000",
+   "delta_hi": "-997/10000",
+   "ratio_const": "4/5",
+   "N_max": 1500
+  },
+  "d1_q1-2": {
+   "delta_lo": "-29/25",
+   "delta_hi": "-41/250",
+   "ratio_const": "1/2",
+   "N_max": 1000
+  }
+ },
+ "report": [
+  {
+   "assertion": "(V1) c128_refcheck.json: 286 cases, C output byte-identical with the Python mirror in every case",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "(V1) c128_refcheck_medium.json: 10 cases, C output byte-identical with the Python mirror in every case",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] a C certificate exists for every N of the stated set (1500 values, 2..1500 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 1500 lines"
+  },
+  {
+   "assertion": "[d1_q4-5] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 69335, max T = 1665588"
+  },
+  {
+   "assertion": "[d1_q4-5] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "601 of 601"
+  },
+  {
+   "assertion": "[d1_q4-5] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 650, 700, 750, 850, 900, 950, 1200, 1500; longest run 615 s"
+  },
+  {
+   "assertion": "[d1_q4-5] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 700, 900; longest run 123 s"
+  },
+  {
+   "assertion": "[d1_q4-5] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "1500 of 1500; largest relative slack 2.56e-25"
+  },
+  {
+   "assertion": "[d1_q4-5] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.28e-15"
+  },
+  {
+   "assertion": "[d1_q4-5] exceptional N=4: one undecided relation, strict unimodality not certified (exact tie, Theorem modes (d))",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] a C certificate exists for every N of the stated set (305 values, 2..301 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 305 lines"
+  },
+  {
+   "assertion": "[d2_q4-5] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 25402, max T = 872259"
+  },
+  {
+   "assertion": "[d2_q4-5] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "161 of 161"
+  },
+  {
+   "assertion": "[d2_q4-5] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 210, 220, 230, 250; longest run 605 s"
+  },
+  {
+   "assertion": "[d2_q4-5] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 170, 190; longest run 626 s"
+  },
+  {
+   "assertion": "[d2_q4-5] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "305 of 305; largest relative slack 2.42e-23"
+  },
+  {
+   "assertion": "[d2_q4-5] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 2.22e-14"
+  },
+  {
+   "assertion": "[d3_q4-5] a C certificate exists for every N of the stated set (123 values, 2..120 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 123 lines"
+  },
+  {
+   "assertion": "[d3_q4-5] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 4026, max T = 170871"
+  },
+  {
+   "assertion": "[d3_q4-5] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "59 of 59"
+  },
+  {
+   "assertion": "[d3_q4-5] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 62, 64, 66, 70, 75; longest run 938 s"
+  },
+  {
+   "assertion": "[d3_q4-5] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "123 of 123; largest relative slack 6.28e-23"
+  },
+  {
+   "assertion": "[d3_q4-5] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 2.48e-13"
+  },
+  {
+   "assertion": "[d1_q1-2] a C certificate exists for every N of the stated set (999 values, 2..1000 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 999 lines"
+  },
+  {
+   "assertion": "[d1_q1-2] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 26653, max T = 665901"
+  },
+  {
+   "assertion": "[d1_q1-2] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "299 of 299"
+  },
+  {
+   "assertion": "[d1_q1-2] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 500, 900; longest run 138 s"
+  },
+  {
+   "assertion": "[d1_q1-2] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 400, 700; longest run 64 s"
+  },
+  {
+   "assertion": "[d1_q1-2] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "999 of 999; largest relative slack 4.79e-26"
+  },
+  {
+   "assertion": "[d1_q1-2] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 9.45e-14"
+  },
+  {
+   "assertion": "[d1_q1-2] exceptional N=3: one undecided relation, strict unimodality not certified (exact tie, Theorem modes (d))",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] exceptional N=4: one undecided relation, strict unimodality not certified (exact tie, Theorem modes (d))",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] a C certificate exists for every N of the stated set (199 values, 2..200 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 199 lines"
+  },
+  {
+   "assertion": "[d2_q1-2] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 4193, max T = 147386"
+  },
+  {
+   "assertion": "[d2_q1-2] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "79 of 79"
+  },
+  {
+   "assertion": "[d2_q1-2] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 120, 190; longest run 554 s"
+  },
+  {
+   "assertion": "[d2_q1-2] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 100, 170; longest run 728 s"
+  },
+  {
+   "assertion": "[d2_q1-2] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "199 of 199; largest relative slack 4.96e-25"
+  },
+  {
+   "assertion": "[d2_q1-2] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 1.27e-13"
+  },
+  {
+   "assertion": "[d3_q1-2] a C certificate exists for every N of the stated set (79 values, 2..80 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 79 lines"
+  },
+  {
+   "assertion": "[d3_q1-2] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 1510, max T = 62659"
+  },
+  {
+   "assertion": "[d3_q1-2] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "31 of 31"
+  },
+  {
+   "assertion": "[d3_q1-2] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 40, 64; longest run 598 s"
+  },
+  {
+   "assertion": "[d3_q1-2] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 36; longest run 98 s"
+  },
+  {
+   "assertion": "[d3_q1-2] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "79 of 79; largest relative slack 2.83e-24"
+  },
+  {
+   "assertion": "[d3_q1-2] strictly unimodal with unique certified mode, no undecided relation, for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] tail time T equals the mode for every non-exceptional N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] the printed lower bound for min(1-gamma) is valid",
+   "status": "PASS",
+   "detail": "min(1-gamma) >= 4.18e-12"
+  },
+  {
+   "assertion": "[d1_q1-1] a C certificate exists for every N of the stated set (399 values, 2..400 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 399 lines"
+  },
+  {
+   "assertion": "[d1_q1-1] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 2033, max T = 328505"
+  },
+  {
+   "assertion": "[d1_q1-1] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "199 of 199"
+  },
+  {
+   "assertion": "[d1_q1-1] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 300; longest run 6 s"
+  },
+  {
+   "assertion": "[d1_q1-1] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 300; longest run 6 s"
+  },
+  {
+   "assertion": "[d1_q1-1] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "399 of 399; largest relative slack 6.31e-27"
+  },
+  {
+   "assertion": "[d2_q1-1] a C certificate exists for every N of the stated set (161 values, 2..160 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 161 lines"
+  },
+  {
+   "assertion": "[d2_q1-1] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 2106, max T = 73693"
+  },
+  {
+   "assertion": "[d2_q1-1] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "79 of 79"
+  },
+  {
+   "assertion": "[d2_q1-1] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 120, 136, 149; longest run 32 s"
+  },
+  {
+   "assertion": "[d2_q1-1] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 86, 92, 136, 149; longest run 176 s"
+  },
+  {
+   "assertion": "[d2_q1-1] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "161 of 161; largest relative slack 2.12e-25"
+  },
+  {
+   "assertion": "[d3_q1-1] a C certificate exists for every N of the stated set (59 values, 2..60 + extras) and for no other N",
+   "status": "PASS",
+   "detail": "file has 59 lines"
+  },
+  {
+   "assertion": "[d3_q1-1] every line: engine c128, P = 112, symmetry-reduced, t0 = d(N-1), t_sw < 10^5, 1 - gamma > 0, tail margin > 0",
+   "status": "PASS",
+   "detail": "max t_sw = 424, max T = 16940"
+  },
+  {
+   "assertion": "[d3_q1-1] (V2) identical t0, t*, T, verdicts, peak and undecided counts as the Tier-A certificate, intersecting enclosures, for every Tier-A N",
+   "status": "PASS",
+   "detail": "31 of 31"
+  },
+  {
+   "assertion": "[d3_q1-1] (V3) cross-check by limb: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 40; longest run 15 s"
+  },
+  {
+   "assertion": "[d3_q1-1] (V3) cross-check by packed: identical verdicts and intersecting enclosures; every run shorter than 20 minutes",
+   "status": "PASS",
+   "detail": "N = 40; longest run 102 s"
+  },
+  {
+   "assertion": "[d3_q1-1] (V4),(V5) second run of every certificate: identical sha256 digest, conservation of probability holds",
+   "status": "PASS",
+   "detail": "59 of 59; largest relative slack 2.92e-25"
+  },
+  {
+   "assertion": "totals: 3824 C certificates, 2285 of them outside the Tier-A sets, 1539 regression cases, 0 disagreements; 3824 second runs, 0 failures",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "comparison with the floating-point study: every corner-to-corner case of the floating-point study with q in {4/5, 1/2, 1} lies in the certified sets and has the same mode (97 cases)",
+   "status": "PASS",
+   "detail": "agree 97, disagree 0, not covered []"
+  },
+  {
+   "assertion": "q-scaling, d = 1: -7/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 1/2 for all 2 <= N <= 1000, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "q-scaling, d = 2: -9/10 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 3/10 for all 2 <= N <= 200, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "q-scaling, d = 3: -6/5 <= (4/5) t*(4/5) - (1/2) t*(1/2) <= 2/5 for all 2 <= N <= 80, both bounds attained",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-1] every N without a certified unique mode is settled in exact arithmetic (two maximisers, 'mode' is the smaller)",
+   "status": "PASS",
+   "detail": "N = [5, 6, 8, 9]"
+  },
+  {
+   "assertion": "[d1_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / tie settled in exact arithmetic",
+   "status": "PASS",
+   "detail": "unimodal: 2; multimodal: 4--400; tie only: 3"
+  },
+  {
+   "assertion": "[d1_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-1] every relation left undecided by the C certificates is settled exactly (Tier-A exact file); the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {3: [3], 4: [8]}"
+  },
+  {
+   "assertion": "[d2_q1-1] every N without a certified unique mode is settled in exact arithmetic (two maximisers, 'mode' is the smaller)",
+   "status": "PASS",
+   "detail": "N = [2]"
+  },
+  {
+   "assertion": "[d2_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / tie settled in exact arithmetic",
+   "status": "PASS",
+   "detail": "unimodal: 3--8, 10, 12, 14, 16, 19--20, 22--23, 25, 27--37, 39--50, 52--60, 62--85, 87--91, 93--135, 137--148, 150--160, 180, 200; multimodal: 9, 11, 13, 15, 17--18, 21, 24, 26, 38, 51, 61, 86, 92, 136, 149; tie only: 2"
+  },
+  {
+   "assertion": "[d2_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-1] every relation left undecided by the C certificates is settled exactly (Tier-A exact file); the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {2: [2]}"
+  },
+  {
+   "assertion": "[d3_q1-1] every N without a certified unique mode is settled in exact arithmetic (two maximisers, 'mode' is the smaller)",
+   "status": "PASS",
+   "detail": "N = []"
+  },
+  {
+   "assertion": "[d3_q1-1] every N is classified: strictly unimodal / >= 2 certified strict local maxima / tie settled in exact arithmetic",
+   "status": "PASS",
+   "detail": "unimodal: 2--60; multimodal: none; tie only: none"
+  },
+  {
+   "assertion": "[d3_q1-1] the generated text of the theorem lists these sets",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-1] every relation left undecided by the C certificates is settled exactly (Tier-A exact file); the text lists every equality f(t) = f(t+1) > 0 and states f(t) != f(t+1) otherwise",
+   "status": "PASS",
+   "detail": "equalities: {}"
+  },
+  {
+   "assertion": "Conjecture last: 3205 certificates with q in {4/5, 1/2}, 3202 non-exceptional; T = smallest maximiser in 3203, T = largest maximiser in 3205 (exceptional triples from the exact files)",
+   "status": "PASS",
+   "detail": "{'all': 3205, 'nonexc': 3202, 'small': 3203, 'large': 3205}"
+  },
+  {
+   "assertion": "MFPT enclosures: 0 < lower <= upper, relative width < 1e-28; for d = 1 they contain N(N-1)",
+   "status": "PASS",
+   "detail": "d=1: 1500, d=2: 305, d=3: 123 values of N"
+  },
+  {
+   "assertion": "[d1_q4-5] every N in 10..1500 has a certified unique mode and an MFPT enclosure; 1500 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] 1577/10000 t* <= t_cf - t* <= 2251/10000 t* for all 10 <= N <= 1500  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "range [0.157781, 0.225044]"
+  },
+  {
+   "assertion": "[d1_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] isolated N = 2000: the same two-sided bound holds",
+   "status": "PASS",
+   "detail": "[0.157705, 0.157705]"
+  },
+  {
+   "assertion": "[d2_q4-5] every N in 10..301 has a certified unique mode and an MFPT enclosure; 301 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] |t* - t_cf| <= 97/10000 t* for all 10 <= N <= 301  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 137: 0.009698"
+  },
+  {
+   "assertion": "[d2_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 350: |t* - t_cf| <= 97/10000 t*",
+   "status": "PASS",
+   "detail": "[-0.009420, -0.009420]"
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 401: |t* - t_cf| <= 97/10000 t*",
+   "status": "PASS",
+   "detail": "[-0.009353, -0.009353]"
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 450: |t* - t_cf| <= 97/10000 t*",
+   "status": "PASS",
+   "detail": "[-0.009291, -0.009291]"
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 500: |t* - t_cf| <= 97/10000 t*",
+   "status": "PASS",
+   "detail": "[-0.009231, -0.009231]"
+  },
+  {
+   "assertion": "[d2_q4-5] isolated N = 600: |t* - t_cf| <= 97/10000 t*",
+   "status": "PASS",
+   "detail": "[-0.009125, -0.009125]"
+  },
+  {
+   "assertion": "[d3_q4-5] every N in 10..120 has a certified unique mode and an MFPT enclosure; 120 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] |t* - t_cf| <= 11/4000 t* for all 10 <= N <= 120  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 10: 0.002749"
+  },
+  {
+   "assertion": "[d3_q4-5] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q4-5] isolated N = 130: |t* - t_cf| <= 11/4000 t*",
+   "status": "PASS",
+   "detail": "[0.000041, 0.000041]"
+  },
+  {
+   "assertion": "[d3_q4-5] isolated N = 140: |t* - t_cf| <= 11/4000 t*",
+   "status": "PASS",
+   "detail": "[0.000037, 0.000037]"
+  },
+  {
+   "assertion": "[d3_q4-5] isolated N = 150: |t* - t_cf| <= 11/4000 t*",
+   "status": "PASS",
+   "detail": "[0.000033, 0.000033]"
+  },
+  {
+   "assertion": "[d3_q4-5] isolated N = 160: |t* - t_cf| <= 11/4000 t*",
+   "status": "PASS",
+   "detail": "[0.000032, 0.000032]"
+  },
+  {
+   "assertion": "[d1_q1-2] every N in 10..1000 has a certified unique mode and an MFPT enclosure; 1000 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] 1579/10000 t* <= t_cf - t* <= 1141/5000 t* for all 10 <= N <= 1000  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "range [0.157934, 0.228186]"
+  },
+  {
+   "assertion": "[d1_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] every N in 10..200 has a certified unique mode and an MFPT enclosure; 200 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d2_q1-2] |t* - t_cf| <= 971/100000 t* for all 10 <= N <= 200  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 133: 0.009703"
+  },
+  {
+   "assertion": "[d2_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] every N in 10..80 has a certified unique mode and an MFPT enclosure; 80 is the top of the contiguous certified range",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d3_q1-2] |t* - t_cf| <= 157/100000 t* for all 10 <= N <= 80  (mpmath.iv)",
+   "status": "PASS",
+   "detail": "worst N = 10: 0.001562"
+  },
+  {
+   "assertion": "[d3_q1-2] the Arb enclosures stored by closed_form.py intersect the mpmath.iv ones for every N",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "Table of sub-range bounds (tab_ext_cf.tex): all 47 range rows hold for every N of their range, and all 10 single-N rows hold  (mpmath.iv)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] -10989/10000 < t* - kappa_1 (N-1/2)^2/q < -997/10000 for all 10 <= N <= 1500, and the interval is shorter than 1",
+   "status": "PASS",
+   "detail": "length 0.999"
+  },
+  {
+   "assertion": "[d1_q4-5] t* = floor(kappa_1 (N-1/2)^2/q + (-997/10000)) for all 10 <= N <= 1500 (both endpoints of the kappa_1 enclosure)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] |t*/E T - kappa_1| <= 4/5/(N(N-1)) for all 10 <= N <= 1500",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q4-5] the isolated N = [2000] satisfy the same two-sided bound and the floor formula",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] -29/25 < t* - kappa_1 (N-1/2)^2/q < -41/250 for all 10 <= N <= 1000, and the interval is shorter than 1",
+   "status": "PASS",
+   "detail": "length 0.996"
+  },
+  {
+   "assertion": "[d1_q1-2] t* = floor(kappa_1 (N-1/2)^2/q + (-41/250)) for all 10 <= N <= 1000 (both endpoints of the kappa_1 enclosure)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "assertion": "[d1_q1-2] |t*/E T - kappa_1| <= 1/2/(N(N-1)) for all 10 <= N <= 1000",
+   "status": "PASS",
+   "detail": ""
+  }
+ ]
+}

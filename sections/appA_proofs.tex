@@ -1,0 +1,334 @@
+% appA_proofs.tex -- Supplementary Section S3: proofs of the mean first-passage time formulas (zero-based sites).
+% Every displayed identity of this section is evaluated, in the form printed here, by
+%   code/article/appA_proofs_check.py  ->  data/article/appA_proofs_check.json   (51 checks, 0 failed)
+\section{Proofs of the mean first-passage time formulas}\label{appA_proofs:sec}
+
+This section proves Theorems~\ref{s4_mfpt:thm-cosine}, \ref{s4_mfpt:thm-single} and~\ref{s4_mfpt:thm-pair},
+Corollary~\ref{s4_mfpt:cor-resistance} and Proposition~\ref{s4_mfpt:prop-3d}. The inputs are
+Proposition~\ref{s2_model:prop-pinv} and three elementary lemmas. The symbols $G_k$, $g_k$, $H_k$, $G_{kj}$,
+$g_{kj}$, $\Gamma$, $O_N$ and $u_k$ are local to this section ($G_k$ is an inner sum, not the Green's function
+$\Glap$). Throughout, $N\ge2$, $q\in(0,1]$, sites are
+zero-based, and for $k=0,\dots,N-1$ and $m\in\mathbb Z$
+\[
+  \angk{k}=\frac{\pi k}{N},\qquad \ck{k}=\cos\frac{\pi k}{2N},\qquad \sk{k}=\sin\frac{\pi k}{2N},\qquad
+  \thk{k}{m}=\frac{\pi k(2m+1)}{2N},
+\]
+so that $1-\cos\angk{k}=2\sk{k}^{2}$ and $1+\cos\angk{k}=2\ck{k}^{2}$. For $k\ge1$, $\sigk{k}=2-\cos\angk{k}>1$ and
+$\phk{k}=\arcosh\sigk{k}>0$; since $\cosh\varphi=1+2\sinh^{2}(\varphi/2)$,
+\begin{equation}\label{appA_proofs:eq-half-angle}
+  \sinh\frac{\phk{k}}{2}=\sk{k},\qquad \coth\frac{\phk{k}}{2}=\frac{\sqrt{1+\sk{k}^{2}}}{\sk{k}} .
+\end{equation}
+
+All identities displayed below were evaluated numerically in the form printed here. The formulas, computed to
+$40$ digits, were compared with exact rational solutions of $(I-\Qm)h=\one$ for the walk built from its rules
+($\dd=1$: $N\le12$; $\dd=2$: $N\le9$, including all $1848$ ordered pairs with $N\le5$ at two values of $q$;
+$\dd=3$: $N\le4$) and with double-precision sparse solves ($\dd=2$: $N=16,35,36,100,101$; $\dd=3$: $N=5,\dots,12$):
+$51$ checks, none failed. The largest deviation is $8.5\times10^{-36}$ in the multiprecision comparisons and
+$1.4\times10^{-12}$ against the sparse solves; the double-precision matrix identities (eigenvectors,
+pseudo-inverses, resistances) hold to $3\times10^{-14}$.
+% src: data/article/appA_proofs_check.json (n_checks, n_failed, summary, checks[].max_deviation) ; code/article/appA_proofs_check.py
+
+\subsection{Spectrum of the walk and the cosine sum}
+
+\begin{lemma}[Spectrum of the reflecting walk]\label{appA_proofs:lem-spectrum}
+Let $\mathsf T$ be the $N\times N$ matrix with $\mathsf T(m,m\pm1)=\tfrac12$ for $0\le m,m\pm1\le N-1$,
+$\mathsf T(0,0)=\mathsf T(N-1,N-1)=\tfrac12$ and zero otherwise.  Then
+$\psi_k(m)=\sqrt{\alk{k}/N}\,\cos\thk{k}{m}$, $k=0,\dots,N-1$, is an orthonormal eigenbasis,
+$\mathsf T\psi_k=\cos(\pi k/N)\,\psi_k$, and
+$\Pm=(1-q)I+\frac{q}{\dd}\sum_{i=1}^{\dd}\mathsf T^{(i)}$, where $\mathsf T^{(i)}$ acts as $\mathsf T$ on the $i$-th coordinate.
+Hence the products $\prod_i\psi_{k_i}(x_i)$ diagonalise $\Pm$ with
+$1-\lambda_{\vk}=\frac{2q}{\dd}\sum_i\sk{k_i}^{2}$.
+\end{lemma}
+
+\begin{proof}
+Put $u_k(m)=\cos\thk{k}{m}$ for $m\in\mathbb Z$. The addition formula gives
+$u_k(m-1)+u_k(m+1)=2\cos(\angk{k})\,u_k(m)$ for every $m$. Because $\thk{k}{-1}=-\thk{k}{0}$ and
+$\thk{k}{N}=2\pi k-\thk{k}{N-1}$,
+\begin{equation}\label{appA_proofs:eq-bdry}
+  u_k(-1)=u_k(0),\qquad u_k(N)=u_k(N-1).
+\end{equation}
+Hence $(\mathsf T u_k)(0)=\tfrac12[u_k(0)+u_k(1)]=\tfrac12[u_k(-1)+u_k(1)]=\cos(\angk{k})\,u_k(0)$, likewise at
+$m=N-1$, and at the interior sites the eigenvalue equation is the addition formula itself. The $N$ eigenvalues
+$\cos\angk{k}$ are distinct and $\mathsf T$ is symmetric, so the $u_k$ are mutually orthogonal. For $1\le k\le N-1$,
+$\sum_{m=0}^{N-1}\cos^{2}\thk{k}{m}=\frac N2+\frac12\,\mathrm{Re}\sum_{m=0}^{N-1}\eu^{\iu\angk{k}(2m+1)}=\frac N2$,
+because the geometric sum vanishes ($\eu^{2\iu N\angk{k}}=1$, $\eu^{2\iu\angk{k}}\ne1$); for $k=0$ the sum is $N$.
+This gives the normalisation $\sqrt{\alk{k}/N}$. Finally, by the rule \eqref{s2_model:eq-P} an attempt along
+coordinate $i$ has probability $q/\dd$; it changes $x_i$ by $\pm1$ with probability $\tfrac12$ each, unless the
+walker would leave $\{0,\dots,N-1\}$, in which case nothing moves. That is $\mathsf T$ acting on the $i$-th
+coordinate, so $\Pm=(1-q)I+\frac q\dd\sum_i\mathsf T^{(i)}$. The products are therefore eigenvectors with
+$\lambda_{\vk}=1-q+\frac q\dd\sum_i\cos\angk{k_i}$, and $1-\cos\angk{k}=2\sk{k}^{2}$.
+\end{proof}
+
+As in \eqref{s2_model:eq-prop}, write $\phi_{\vk}(\vx)=\prod_i\psi_{k_i}(x_i)$. Since $\sum_i\sk{k_i}^{2}>0$ unless $\vk=\mathbf 0$, the eigenvalue
+$0$ of $\Lm=I-\Pm$ is simple, and the pseudo-inverse inverts the other eigenvalues:
+\begin{equation}\label{appA_proofs:eq-Lplus}
+  \Lp_{\vx\vy}=\frac{\dd}{2q}\sum_{\vk\ne\mathbf 0}\frac{\phi_{\vk}(\vx)\,\phi_{\vk}(\vy)}{\sum_{i}\sk{k_i}^{2}},\qquad
+  \phi_{\vk}(\vx)\,\phi_{\vk}(\vy)=\frac{1}{N^{\dd}}\prod_{i=1}^{\dd}\alk{k_i}\cos\thk{k_i}{x_i}\cos\thk{k_i}{y_i}.
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{s4_mfpt:thm-cosine}]
+$\Pm$ is symmetric, stochastic and irreducible, so Proposition~\ref{s2_model:prop-pinv} applies with $\nn=N^{\dd}$.
+Inserting \eqref{appA_proofs:eq-Lplus} into \eqref{s2_model:eq-pinv} gives \eqref{s4_mfpt:eq-cosine}; the factor
+$1/q$ is explicit, so $q\,\MF_{\vo\to\va}$ does not depend on $q$. For opposite corners use
+\begin{equation}\label{appA_proofs:eq-corner-cos}
+  \cos\thk{k}{0}=\ck{k},\qquad \cos\thk{k}{N-1}=\cos\Bigl(\pi k-\frac{\pi k}{2N}\Bigr)=(-1)^{k}\ck{k}.
+\end{equation}
+The numerator of \eqref{s4_mfpt:eq-cosine} becomes $\prod_i\ck{k_i}^{2}\,[1-(-1)^{k_1+\dots+k_{\dd}}]$, which
+vanishes when $k_1+\dots+k_{\dd}$ is even and equals $2\prod_i\ck{k_i}^{2}$ when it is odd. This is
+\eqref{s4_mfpt:eq-cosine-cc}. For $\dd=1$, \eqref{s4_mfpt:eq-cosine} is the left-hand side of
+\eqref{appA_proofs:eq-1d-sum} (because $\alk{k}=2$ and $2\sk{k}^{2}=1-\cos\angk{k}$), which equals $\hone(m,m')$ by
+Lemma~\ref{appA_proofs:lem-1d} below; that lemma uses only Proposition~\ref{s2_model:prop-pinv} and
+Lemma~\ref{appA_proofs:lem-spectrum}. In particular $q\,\TNd{1}=\hone(0,N-1)=N(N-1)$.
+\end{proof}
+
+\subsection{Two summation lemmas}
+
+\begin{lemma}[Green's function of a ring]\label{appA_proofs:lem-ring}
+Let $M\ge1$ be an integer and $\sigma=\cosh\varphi>1$ with $\varphi>0$.  For every integer $0\le m\le M$,
+\begin{equation}\label{appA_proofs:eq-ring}
+  \sum_{l=0}^{M-1}\frac{\cos(2\pi lm/M)}{\sigma-\cos(2\pi l/M)}=\frac{M\,\cosh\bigl((\tfrac M2-m)\varphi\bigr)}{\sinh\varphi\,\sinh(M\varphi/2)} ,
+\end{equation}
+and consequently, for every integer $0\le m\le 2N$,
+\begin{equation}\label{appA_proofs:eq-ring-half}
+  \sum_{j=0}^{N-1}\frac{\alk{j}\cos(\pi m j/N)}{\sigma-\cos(\pi j/N)}=\frac{2N\cosh\bigl((N-m)\varphi\bigr)}{\sinh\varphi\,\sinh N\varphi}-\frac{(-1)^{m}}{\sigma+1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $A$ be the averaging operator on functions on the ring $\mathbb Z_M$, $(Af)(m)=\tfrac12[f(m-1)+f(m+1)]$. Its
+eigenfunctions are $m\mapsto\eu^{2\pi\iu lm/M}$ with eigenvalues $\cos(2\pi l/M)\in[-1,1]$, so $\sigma-A$ is
+invertible and
+\[
+  \bigl((\sigma-A)^{-1}\delta_0\bigr)(m)=\frac1M\sum_{l=0}^{M-1}\frac{\eu^{2\pi\iu lm/M}}{\sigma-\cos(2\pi l/M)},
+\]
+where $\delta_0$ is the indicator of the site $0$. Define
+$\Gamma(m)=\cosh\bigl((\tfrac M2-m)\varphi\bigr)/\bigl(\sinh\varphi\,\sinh(M\varphi/2)\bigr)$ for $0\le m\le M$. Then
+$\Gamma(0)=\Gamma(M)$, so $\Gamma$ is a function on $\mathbb Z_M$. For $1\le m\le M-1$,
+$\cosh((\tfrac M2-m+1)\varphi)+\cosh((\tfrac M2-m-1)\varphi)=2\cosh\varphi\,\cosh((\tfrac M2-m)\varphi)$, that is,
+$((\sigma-A)\Gamma)(m)=0$. At $m=0$ the two neighbours are $1$ and $M-1$, $\Gamma(M-1)=\Gamma(1)$, and
+\[
+  \sigma\,\Gamma(0)-\Gamma(1)=\frac{\cosh\varphi\,\cosh\frac{M\varphi}{2}-\cosh\bigl(\frac{M\varphi}{2}-\varphi\bigr)}
+  {\sinh\varphi\,\sinh\frac{M\varphi}{2}}=1 .
+\]
+Hence $(\sigma-A)\Gamma=\delta_0$, so $\Gamma=(\sigma-A)^{-1}\delta_0$, and taking real parts gives
+\eqref{appA_proofs:eq-ring}. For \eqref{appA_proofs:eq-ring-half} take $M=2N$: the summand
+$F(l)=\cos(\pi ml/N)/(\sigma-\cos(\pi l/N))$ satisfies $F(2N-l)=F(l)$, so
+$\sum_{l=0}^{2N-1}F(l)=F(0)+F(N)+2\sum_{l=1}^{N-1}F(l)=\sum_{j=0}^{N-1}\alk{j}F(j)+(-1)^{m}/(\sigma+1)$.
+\end{proof}
+
+\begin{remark}
+Subtracting the term $j=0$ from \eqref{appA_proofs:eq-ring-half} and dividing by two gives
+\[
+  \sum_{j=1}^{N-1}\frac{\cos(\pi mj/N)}{\sigma-\cos(\pi j/N)}=\frac{N\cosh\bigl((N-m)\varphi\bigr)}{\sinh\varphi\,\sinh N\varphi}
+  -\frac12\Bigl[\frac{1}{\sigma-1}+\frac{(-1)^{m}}{\sigma+1}\Bigr],
+\]
+which is Eq.~(E1) of \citet{Giuggioli2020}, written there with Chebyshev polynomials
+($\cosh n\varphi$ and $\sinh n\varphi/\sinh\varphi$ are the Chebyshev polynomials of the first and second kind
+in $\sigma$). \citet{EssamWu2009} use an equivalent summation lemma, proved by
+contour integration. So Lemma~\ref{appA_proofs:lem-ring} is known; the short proof is included to keep the
+section self-contained. The range $0\le m\le2N$ is sharp: the left-hand side of \eqref{appA_proofs:eq-ring-half}
+is even and $2N$-periodic in $m$, the right-hand side is not, and at $m=-1$ or $m=2N+1$ the two sides differ by
+exactly $4N$, because $\cosh(N+1)\varphi-\cosh(N-1)\varphi=2\sinh N\varphi\,\sinh\varphi$. For other $m$, first
+reduce $m$ to $[0,2N]$.
+% src: data/article/appA_proofs_check.json (labels appA_proofs:eq-E1, "appA_proofs:eq-ring-half (range)": violations 4N at sigma = 3)
+\end{remark}
+
+\begin{lemma}[One-dimensional hitting times]\label{appA_proofs:lem-1d}
+For the chain $\mathsf T$ of Lemma~\ref{appA_proofs:lem-spectrum} the mean hitting time from $m$ to $m'$ is
+$\hone(m,m')$ of \eqref{s4_mfpt:eq-1d}, and
+\begin{equation}\label{appA_proofs:eq-1d-sum}
+  \sum_{j=1}^{N-1}\alk{j}\,\frac{\cos^{2}\thk{j}{m'}-\cos\thk{j}{m}\cos\thk{j}{m'}}{1-\cos(\pi j/N)}=\hone(m,m').
+\end{equation}
+In particular (take $m=0$, $m'=N-1$)
+\begin{equation}\label{appA_proofs:eq-cot}
+  \sum_{\substack{1\le j\le N-1\\ j\ \mathrm{odd}}}\cot^{2}\frac{\pi j}{2N}=\frac{N(N-1)}{2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix $m'$ and put $h(m)=\hone(m,m')$. For $m\le m'$ this is $h(m)=m'(m'+1)-m(m+1)$. It satisfies $h(m')=0$; for
+$1\le m\le m'-1$, $\tfrac12[h(m-1)+h(m+1)]=h(m)-1$, because $(m-1)m+(m+1)(m+2)=2m(m+1)+2$; and at $m=0$ (if
+$m'\ge1$), $(\mathsf Th)(0)=\tfrac12[h(0)+h(1)]=h(0)-1$, because $h(1)=h(0)-2$. These equations involve only sites
+$\le m'$. For $m\ge m'$ the function is the same expression after the reflection $m\mapsto N-1-m$,
+$m'\mapsto N-1-m'$, which maps the chain to itself, so the equations at the sites $m>m'$ hold as well. Thus
+$h(m')=0$ and $((I-\mathsf T)h)(m)=1$ for all $m\ne m'$, and by the uniqueness statement of
+Proposition~\ref{s2_model:prop-pinv} (the chain $\mathsf T$ is symmetric, stochastic and irreducible) $h$ is the
+mean hitting time. Identity \eqref{appA_proofs:eq-1d-sum} is \eqref{s2_model:eq-pinv} for $\mathsf T$, with
+$\nn=N$ and $(I-\mathsf T)^{+}_{mm'}=\sum_{j\ge1}\psi_j(m)\psi_j(m')/(1-\cos\angk{j})$ from
+Lemma~\ref{appA_proofs:lem-spectrum}. For \eqref{appA_proofs:eq-cot} take $m=0$, $m'=N-1$ and use
+\eqref{appA_proofs:eq-corner-cos}: the summand vanishes for even $j$ and equals $2\ck{j}^{2}/\sk{j}^{2}$ for odd
+$j$, and $\hone(0,N-1)=N(N-1)$.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{s4_mfpt:thm-single}}
+
+\emph{Step 1 (splitting off the row $k=0$).} For $\dd=2$, $\sk{k}^{2}+\sk{j}^{2}=\tfrac12(2-\cos\angk{k}-\cos\angk{j})$,
+and \eqref{s4_mfpt:eq-cosine-cc} reads
+$\tfrac12\,q\,\TN=\sum_{(k,j)\ne(0,0)}\alk{k}\alk{j}\ck{k}^{2}\ck{j}^{2}[1-(-1)^{k+j}]/(2-\cos\angk{k}-\cos\angk{j})$.
+In the row $k=0$ the denominator is $1-\cos\angk{j}$ and $\alk{0}\ck{0}^{2}=1$; in a row $k\ge1$ it is
+$\sigk{k}-\cos\angk{j}$, $\alk{k}=2$, and $j$ runs over $0,\dots,N-1$. Therefore
+\begin{equation}\label{appA_proofs:eq-split}
+  \frac{q\,\TN}{2}=\sum_{j=1}^{N-1}\frac{\alk{j}\ck{j}^{2}\,[1-(-1)^{j}]}{1-\cos\angk{j}}+\sum_{k=1}^{N-1}2\ck{k}^{2}\,G_k,
+  \qquad
+  G_k:=\sum_{j=0}^{N-1}\frac{\alk{j}\ck{j}^{2}\,[1-(-1)^{k+j}]}{\sigk{k}-\cos\angk{j}} .
+\end{equation}
+By \eqref{appA_proofs:eq-1d-sum} with $m=0$, $m'=N-1$ the first sum equals $\hone(0,N-1)=N(N-1)$.
+
+\emph{Step 2 (the inner sum).} Write $\ck{j}^{2}=\tfrac12[(1+\sigk{k})-(\sigk{k}-\cos\angk{j})]$ and
+$(-1)^{j}=\cos(N\angk{j})$. Then
+\[
+  G_k=\frac{1+\sigk{k}}{2}\sum_{j=0}^{N-1}\frac{\alk{j}\,[1-(-1)^{k}\cos(N\angk{j})]}{\sigk{k}-\cos\angk{j}}
+  -\frac12\sum_{j=0}^{N-1}\alk{j}\,[1-(-1)^{k+j}] .
+\]
+By \eqref{appA_proofs:eq-ring-half} with $m=0$ and with $m=N$,
+\begin{align*}
+  \sum_{j=0}^{N-1}\frac{\alk{j}}{\sigk{k}-\cos\angk{j}}&=\frac{2N\cosh N\phk{k}}{\sinh\phk{k}\,\sinh N\phk{k}}-\frac{1}{\sigk{k}+1},\\
+  \sum_{j=0}^{N-1}\frac{\alk{j}\cos(N\angk{j})}{\sigk{k}-\cos\angk{j}}&=\frac{2N}{\sinh\phk{k}\,\sinh N\phk{k}}-\frac{(-1)^{N}}{\sigk{k}+1},
+\end{align*}
+and $\sum_{j=0}^{N-1}\alk{j}=2N-1$, $\sum_{j=0}^{N-1}\alk{j}(-1)^{j}=-(-1)^{N}$ (from
+$\sum_{j=0}^{2N-1}(-1)^{j}=0$ and the symmetry $j\mapsto2N-j$). The terms containing $(-1)^{k+N}$ cancel, the
+constants combine to $-N$, and
+\begin{equation}\label{appA_proofs:eq-Gk}
+  G_k=\frac{N\,(1+\sigk{k})\,[\cosh N\phk{k}-(-1)^{k}]}{\sinh\phk{k}\,\sinh N\phk{k}}-N .
+\end{equation}
+
+\emph{Step 3 (form (a)).} Since $\cosh(N-1)\varphi=\cosh N\varphi\cosh\varphi-\sinh N\varphi\sinh\varphi$ and
+$\cosh\phk{k}=\sigk{k}$,
+\begin{equation}\label{appA_proofs:eq-Bk}
+  \Bk{k}=(1+\sigk{k})\,[\cosh N\phk{k}-(-1)^{k}]-\sinh\phk{k}\,\sinh N\phk{k},
+  \qquad G_k=\frac{N\,\Bk{k}}{\sinh\phk{k}\,\sinh N\phk{k}} ,
+\end{equation}
+the second relation being \eqref{appA_proofs:eq-Gk} rewritten. Inserting it and $N(N-1)$ into \eqref{appA_proofs:eq-split} gives \eqref{s4_mfpt:eq-single-a}. The rows
+$k\ge1$ were summed over all $j$, including $j=0$; no cancellation between different sectors of the double sum is
+needed.
+
+\emph{Step 4 (form (b)).} Because $(1+\cosh\varphi)/\sinh\varphi=\coth(\varphi/2)$,
+$(\cosh N\varphi-1)/\sinh N\varphi=\tanh(N\varphi/2)$ and $(\cosh N\varphi+1)/\sinh N\varphi=\coth(N\varphi/2)$,
+\eqref{appA_proofs:eq-Gk} reads
+\begin{equation}\label{appA_proofs:eq-Gk-coth}
+  G_k=N\Bigl[\coth\frac{\phk{k}}{2}\,g_k-1\Bigr],\qquad
+  g_k=\coth\frac{N\phk{k}}{2}\ (k\ \text{odd}),\qquad g_k=\tanh\frac{N\phk{k}}{2}\ (k\ \text{even}).
+\end{equation}
+Moreover
+\begin{equation}\label{appA_proofs:eq-csum}
+  \sum_{k=1}^{N-1}\ck{k}^{2}=\frac{N-1}{2}+\frac12\sum_{k=1}^{N-1}\cos\angk{k}=\frac{N-1}{2},
+\end{equation}
+since the terms $k$ and $N-k$ of the cosine sum cancel. Hence, by \eqref{appA_proofs:eq-split},
+\[
+  q\,\TN=2N(N-1)+4N\sum_{k=1}^{N-1}\ck{k}^{2}\coth\frac{\phk{k}}{2}\,g_k-4N\cdot\frac{N-1}{2}
+        =4N\sum_{k=1}^{N-1}\ck{k}^{2}\coth\frac{\phk{k}}{2}\,g_k ,
+\]
+which is \eqref{s4_mfpt:eq-single-S} by \eqref{appA_proofs:eq-half-angle}; note $N\phk{k}/2=N\arsinh\sk{k}$.
+
+\emph{Step 5 (form (c)).} The summand of \eqref{s4_mfpt:eq-cosine-cc} is symmetric in $(k,j)$, and each pair with
+$k+j$ odd has exactly one odd index. With $1/(\sk{k}^{2}+\sk{j}^{2})=2/(\sigk{k}-\cos\angk{j})$,
+\begin{equation}\label{appA_proofs:eq-odd-even}
+  q\,\TN=16\sum_{\substack{1\le k\le N-1\\ k\ \mathrm{odd}}}\ck{k}^{2}\,H_k,\qquad
+  H_k:=\sum_{\substack{0\le j\le N-1\\ j\ \mathrm{even}}}\frac{\alk{j}\ck{j}^{2}}{\sigk{k}-\cos\angk{j}} .
+\end{equation}
+For $j=2l$ we have $\angk{j}=2\pi l/N$ and $\ck{j}^{2}=\cos^{2}(\pi l/N)$. The function
+$l\mapsto\cos^{2}(\pi l/N)/(\sigk{k}-\cos(2\pi l/N))$ on $\mathbb Z_N$ is invariant under $l\mapsto N-l$ and
+vanishes at $l=N/2$ when $N$ is even; hence $H_k$ equals its sum over all $l\in\mathbb Z_N$, for both parities of
+$N$. Writing $\cos^{2}(\pi l/N)=\tfrac12[(1+\sigk{k})-(\sigk{k}-\cos(2\pi l/N))]$ and using
+\eqref{appA_proofs:eq-ring} with $M=N$, $m=0$,
+\begin{equation}\label{appA_proofs:eq-Hk}
+  H_k=\frac{1+\sigk{k}}{2}\cdot\frac{N\cosh(N\phk{k}/2)}{\sinh\phk{k}\,\sinh(N\phk{k}/2)}-\frac N2
+     =\frac N2\Bigl[\coth\frac{\phk{k}}{2}\coth\frac{N\phk{k}}{2}-1\Bigr].
+\end{equation}
+Next,
+\begin{equation}\label{appA_proofs:eq-csum-odd}
+  \sum_{\substack{1\le k\le N-1\\ k\ \mathrm{odd}}}\ck{k}^{2}=\frac N4\qquad\text{for every }N\ge2 .
+\end{equation}
+Indeed the left-hand side is half the number of odd $k<N$ plus $\tfrac12\,O_N$, where $O_N$ denotes the sum of
+$\cos\angk{k}$ over the odd $k<N$. For even $N$ the number is $N/2$ and $O_N=0$, since $k\mapsto N-k$ maps odd
+indices to odd indices and changes the sign of the cosine. For odd $N$ the number is $(N-1)/2$ and
+$O_N=\tfrac12$. To see this, note that for odd $N$ the alternating sum
+\[
+  \sum_{k=0}^{N-1}(-1)^{k}\eu^{\iu\angk{k}}=\frac{1-(-1)^{N}\eu^{\iu\pi}}{1+\eu^{\iu\pi/N}}
+\]
+vanishes, so the sum of $\cos\angk{k}$ over the even $k$ (which includes the term $k=0$, equal to $1$) equals
+$O_N$; on the other hand $k\mapsto N-k$ maps the even indices $k\ge2$ onto the odd ones and changes the sign of
+the cosine, so the same sum equals $1-O_N$. In both cases the left-hand side is $N/4$. From
+\eqref{appA_proofs:eq-odd-even}--\eqref{appA_proofs:eq-csum-odd},
+\[
+  q\,\TN=8N\sum_{k\ \mathrm{odd}}\ck{k}^{2}\Bigl[\coth\frac{\phk{k}}{2}\coth\frac{N\phk{k}}{2}-1\Bigr]=8N\,S_{\mathrm{odd}}-2N^{2}.
+\]
+Form (b) is $q\,\TN=4N\,(S_{\mathrm{odd}}+S_{\mathrm{even}})$. Comparing the two gives
+$S_{\mathrm{odd}}-S_{\mathrm{even}}=N/2$ and then $q\,\TN=2N^{2}+8N\,S_{\mathrm{even}}$, which completes
+\eqref{s4_mfpt:eq-half}. \qed
+
+\begin{remark}
+Form (a) contains $\cosh N\phk{k}$ and $\sinh N\phk{k}$, which are of size $\eu^{N\phk{k}}/2$. Since
+$\phk{N-1}\to\arcosh3=1.7627$, the exponent $N\phk{N-1}$ passes the logarithm of the largest double-precision
+number, $709.78$, between $N=402$ ($708.62$) and $N=403$ ($710.38$). Accordingly a direct double-precision
+evaluation of \eqref{s4_mfpt:eq-single-a} is finite for every $N\le402$ (at $N=402$ it agrees with form (b) to
+$5.7\times10^{-13}$) and returns no finite value at any size tested from $N=403$ on.
+% src: data/article/appA_proofs_check.json (float64_overflow)
+Forms (b) and (c) contain only $\tanh$ and $\coth$ and have no such limit.
+\end{remark}
+
+\subsection{Arbitrary start and target, resistance, and three dimensions}
+
+\begin{proof}[Proof of Theorem~\ref{s4_mfpt:thm-pair}]
+For $\dd=2$, \eqref{s4_mfpt:eq-cosine} reads
+$q\,\MF_{\vo\to\va}=\sum_{(k,j)\ne(0,0)}2\alk{k}\alk{j}\,[\mathcal C_k(a_1,a_1)\mathcal C_j(a_2,a_2)-\mathcal C_k(o_1,a_1)\mathcal C_j(o_2,a_2)]/(2-\cos\angk{k}-\cos\angk{j})$.
+In the row $k=0$, $\alk{0}=1$, $\mathcal C_0\equiv1$ and the denominator is $1-\cos\angk{j}$, so by
+\eqref{appA_proofs:eq-1d-sum} this row contributes $2\,\hone(o_2,a_2)$. In the rows $k\ge1$ the sums over $j$ have
+the form $\sum_{j=0}^{N-1}\alk{j}\cos\thk{j}{m}\cos\thk{j}{m'}/(\sigk{k}-\cos\angk{j})$. Now
+\begin{equation}\label{appA_proofs:eq-prod}
+  \cos\thk{j}{m}\cos\thk{j}{m'}=\tfrac12\bigl[\cos\bigl(|m-m'|\,\angk{j}\bigr)+\cos\bigl((m+m'+1)\,\angk{j}\bigr)\bigr],
+\end{equation}
+where $m_1=|m-m'|\in[0,N-1]$ and $m_2=m+m'+1\in[1,2N-1]$ have opposite parity. Both lie in the range of
+\eqref{appA_proofs:eq-ring-half}; applying it to the two terms, the contributions $-(-1)^{m_1}/(\sigk{k}+1)$ and
+$-(-1)^{m_2}/(\sigk{k}+1)$ cancel and
+\begin{equation}\label{appA_proofs:eq-inner-pair}
+  \sum_{j=0}^{N-1}\frac{\alk{j}\cos\thk{j}{m}\cos\thk{j}{m'}}{\sigk{k}-\cos\angk{j}}=N\,\Psi_k(m,m'),
+\end{equation}
+with $\Psi_k$ as in \eqref{s4_mfpt:eq-Psi}. Since $\alk{k}=2$ for $k\ge1$, this gives \eqref{s4_mfpt:eq-pair}.
+\end{proof}
+
+For $\vo=(0,0)$ and $\va=(N-1,N-1)$, \eqref{appA_proofs:eq-corner-cos} gives $\mathcal C_k(a_1,a_1)=\ck{k}^{2}$ and
+$\mathcal C_k(o_1,a_1)=(-1)^{k}\ck{k}^{2}$, the numerators of $\Psi_k(N-1,N-1)$ and $\Psi_k(0,N-1)$ are
+$\cosh N\phk{k}+\cosh(N-1)\phk{k}$ and $\cosh\phk{k}+1$, and \eqref{s4_mfpt:eq-pair} reduces to
+\eqref{s4_mfpt:eq-single-a}. For numerical work one writes
+$\cosh((N-m)\varphi)/\sinh N\varphi=(\eu^{-m\varphi}+\eu^{-(2N-m)\varphi})/(1-\eu^{-2N\varphi})$, valid for
+$0\le m\le2N$, which removes the overflow.
+
+\begin{proof}[Proof of Corollary~\ref{s4_mfpt:cor-resistance}]
+Let $\mathcal L=D-A$ be the Laplacian of the $N\times N$ grid graph, with $D$ its degree matrix and $A$ its
+adjacency matrix. By \eqref{s2_model:eq-P}, $\Pm(\vx,\vy)=q/4$ for neighbours and
+$1-\Pm(\vx,\vx)=\tfrac q4\deg(\vx)$, so
+\begin{equation}\label{appA_proofs:eq-laplacian}
+  I-\Pm=\frac q4\,\mathcal L,\qquad \Lp=\frac4q\,\mathcal L^{+}.
+\end{equation}
+Proposition~\ref{s2_model:prop-pinv}, applied to both directions, gives
+$\MF_{\vo\to\va}+\MF_{\va\to\vo}=\nn\,(\Lp_{\va\va}+\Lp_{\vo\vo}-2\Lp_{\vo\va})
+=\frac{4N^{2}}{q}\,(\ve_{\va}-\ve_{\vo})^{\T}\mathcal L^{+}(\ve_{\va}-\ve_{\vo})$, with $\ve_{\vx}$ the unit vector of
+site $\vx$, and the last quadratic form is the effective resistance $\Reff(\vo,\va)$ \citep{KleinRandic1993}. This is
+\eqref{s2_model:eq-resistance} for $\dd=2$, the commute-time identity of \citet{Chandra1989}; see also
+\citet{Tetali1991}. The point reflection $\vx\mapsto(N-1-x_1,N-1-x_2)$ is an automorphism of the walk that
+exchanges the two corners, so for them $\MF_{\vo\to\va}=\MF_{\va\to\vo}$ and $q\,\TN=2N^{2}\Reff_N$. The two
+expressions for $\Reff_N$ follow from \eqref{s4_mfpt:eq-half}. For example $q\,T_{4}=416/7$ gives $\Reff_4=13/7$,
+the value that Example~4 of \citet{Wu2004} gives for unit resistors.
+% src: data/article/appA_proofs_check.json (exact_corner_values_d2; check "exact: q T_4/(2*16) = 13/7")
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{s4_mfpt:prop-3d}]
+Put $\sigma_{kj}=3-\cos\angk{k}-\cos\angk{j}=1+2\sk{k}^{2}+2\sk{j}^{2}$, so that
+$\sk{k}^{2}+\sk{j}^{2}+\sk{l}^{2}=\tfrac12(\sigma_{kj}-\cos\angk{l})$ and, for $(k,j)\ne(0,0)$,
+$\sigma_{kj}=\cosh\varphi_{kj}>1$. Summing \eqref{s4_mfpt:eq-cosine-cc} for $\dd=3$ over the third index first,
+\begin{equation}\label{appA_proofs:eq-Gkj}
+  q\,\TNd{3}=3\sum_{k,j=0}^{N-1}\alk{k}\alk{j}\ck{k}^{2}\ck{j}^{2}\,G_{kj},\qquad
+  G_{kj}:=\sum_{l}\frac{\alk{l}\ck{l}^{2}\,[1-(-1)^{k+j+l}]}{\sigma_{kj}-\cos\angk{l}},
+\end{equation}
+where $l$ runs over $0,\dots,N-1$, except for $(k,j)=(0,0)$, where $l\ge1$. As in Step~1, $G_{00}=N(N-1)$ by
+\eqref{appA_proofs:eq-1d-sum}. For $(k,j)\ne(0,0)$, Steps~2 and~4 apply verbatim with $\sigk{k}$, $\phk{k}$ and
+$(-1)^{k}$ replaced by $\sigma_{kj}$, $\varphi_{kj}$ and $(-1)^{k+j}$:
+$G_{kj}=N[\coth(\varphi_{kj}/2)\,g_{kj}-1]$. Finally
+$\sum_{k=0}^{N-1}\alk{k}\ck{k}^{2}=1+2\cdot\frac{N-1}{2}=N$ by \eqref{appA_proofs:eq-csum}, so
+$\sum_{(k,j)\ne(0,0)}\alk{k}\alk{j}\ck{k}^{2}\ck{j}^{2}=N^{2}-1$ and
+\[
+  q\,\TNd{3}=3\Bigl[N(N-1)+N\!\!\sum_{(k,j)\ne(0,0)}\!\!\alk{k}\alk{j}\ck{k}^{2}\ck{j}^{2}\coth\frac{\varphi_{kj}}{2}\,g_{kj}-N(N^{2}-1)\Bigr],
+\]
+which is \eqref{s4_mfpt:eq-3d}, because $N(N-1)-N(N^{2}-1)=-N^{2}(N-1)$.
+\end{proof}

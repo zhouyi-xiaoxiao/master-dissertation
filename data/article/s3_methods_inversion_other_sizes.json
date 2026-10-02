@@ -1,0 +1,30 @@
+{
+ "generated_by": "code/article/s3_methods_inversion_other_sizes.py",
+ "q": 0.8,
+ "fixed_radius_rule_r0.9_K54_at_modal_time": [
+  {
+   "d": 2,
+   "N": 9,
+   "mode_exact": 136,
+   "f_mode_exact": 0.0016081204178222432,
+   "fixed_radius_rule_value_at_mode": 0.0016337614687942747,
+   "fixed_radius_rule_signed_rel_err_at_mode": 0.015944733172877257
+  },
+  {
+   "d": 1,
+   "N": 21,
+   "mode_exact": 174,
+   "f_mode_exact": 0.001765398051201906,
+   "fixed_radius_rule_value_at_mode": 0.002103858712634588,
+   "fixed_radius_rule_signed_rel_err_at_mode": 0.1917191769880191
+  },
+  {
+   "d": 2,
+   "N": 20,
+   "mode_exact": 765,
+   "f_mode_exact": 0.00024198457576282174,
+   "fixed_radius_rule_value_at_mode": 6.405211819362938e+19,
+   "fixed_radius_rule_signed_rel_err_at_mode": 2.6469504509415215e+23
+  }
+ ]
+}

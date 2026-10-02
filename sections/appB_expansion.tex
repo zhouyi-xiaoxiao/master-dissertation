@@ -1,0 +1,368 @@
+% sections/appB_expansion.tex -- Supplementary Section S4: proof of the large-N expansion (Theorem s4_mfpt:thm-expansion).
+% Body only; uses macros.tex.  All citation keys are in refs.bib (EssamWu2009, IzmailianHuang2010, Zagier2008, DLMF).
+% Paths in "% src:" comments are relative to the project root (see README.md).
+% Every displayed identity, bound and coefficient of this section is re-checked by
+%   code/article/appB_expansion_check.py -> data/article/appB_expansion_check.json  (38 checks, 0 failed).
+%
+% Local symbols (defined here only; names are unique to this section):
+\providecommand{\appBp}{\mathfrak{p}}   % the point -e^{-pi}
+\providecommand{\appBD}{\mathsf{D}}     % Euler operator  z d/dz
+\providecommand{\appBA}{\mathcal{A}}    % y w(y) as a function of Y = y^2
+\providecommand{\appBE}{\mathcal{E}}    % arsinh(sin y)/y - 1 as a function of Y = y^2
+\providecommand{\appBL}{\mathcal{L}}    % Lambert series
+\providecommand{\appBa}{\mathsf{a}}     % coefficients of the algebraic part
+\providecommand{\appBb}{\mathsf{b}}     % coefficients of the exponentially small part
+\section{Proof of the large-\texorpdfstring{$N$}{N} expansion}\label{appB_expansion:sec}
+
+This section proves Theorem~\ref{s4_mfpt:thm-expansion}. The route is that of \citet{EssamWu2009}, who expanded
+the corner-to-corner resistance $\Reff_N=q\TN/(2N^{2})$ for even $N$ up to the term in $N^{-4}$, with coefficients
+given by rapidly convergent series and evaluated numerically: the Euler--Maclaurin formula for the algebraic part
+of the single sum and a Taylor expansion of its exponentially small part. We add remainder bounds at every order, a finite formula for every coefficient
+(Proposition~\ref{appB_expansion:prop-form}) and the evaluation of $C_{2}$, $C_{0}$ and $C_{-2}$ in closed form
+through Eisenstein series; coefficients for a general aspect ratio are given, in terms of theta functions and
+Kronecker double series, by \citet{IzmailianHuang2010}. The symbols $w$, $r$, $c$, $U$, $v_k$, $y_k$, $\epsilon$, $\delta$, $K$, $\kappa_0$,
+$\appBp$, $\appBD$, $\appBA$, $\appBE$, $\appBL$, $\Lambda$, $J$, $I_r$, $e_{n,m}$, $G_k(Y)$, $g_{k,m}$, $\appBa_m$
+and $\appBb_m$ are local to this section; in particular $r$, $G_k$ and $g_{k,m}$ here are not the absorption
+vector, the inner sum and the factor $g_k$ of Section~\ref{s4_mfpt:sec} and Section~\ref{appA_proofs:sec}.
+
+\subsection{Splitting the single sum}
+
+Let $N\ge2$, $\epsilon=\pi/(2N)$, $y_k=k\epsilon$, and
+\begin{equation}\label{appB_expansion:eq-defs}
+\begin{gathered}
+  w(y)=\frac{\cos^{2}y\,\sqrt{1+\sin^{2}y}}{\sin y},\qquad U(v)=\frac{v}{1+v},\\
+  v_k=(-1)^{k}\eu^{-N\phk{k}}=(-1)^{k}\exp\bigl[-2N\arsinh(\sin y_k)\bigr].
+\end{gathered}
+\end{equation}
+In \eqref{s4_mfpt:eq-single-S}, $N\arsinh\sk{k}=N\phk{k}/2$, so that $g_k=(1-v_k)/(1+v_k)=1-2U(v_k)$ for both
+parities of $k$, and the single sum becomes
+\begin{equation}\label{appB_expansion:eq-split}
+  q\,\TN=4N\,\mathcal S^{\mathrm{alg}}_N-8N\,\mathcal S^{\mathrm{exp}}_N,\qquad
+  \mathcal S^{\mathrm{alg}}_N=\sum_{k=1}^{N-1}w(y_k),\qquad
+  \mathcal S^{\mathrm{exp}}_N=\sum_{k=1}^{N-1}w(y_k)\,U(v_k).
+\end{equation}
+This is exact for every $N\ge2$. % src: data/article/appB_expansion_check.json (G0)
+
+\subsection{The algebraic part}
+
+\begin{lemma}\label{appB_expansion:lem-alg}
+The function $r(y)=w(y)-1/y$ extends to an odd real-analytic function on $(-\pi,\pi)$. With
+$I_r=\int_{0}^{\pi/2}r(y)\,\dif y$ and the Bernoulli numbers $B_{2m}$, for every integer $M\ge1$, as $N\to\infty$,
+\begin{equation}\label{appB_expansion:eq-alg}
+\begin{gathered}
+  4N\,\mathcal S^{\mathrm{alg}}_N=\frac{8N^{2}}{\pi}\bigl(\ln N+\gammaE+I_r\bigr)+\sum_{m=1}^{M}\appBa_m\,N^{2-2m}
+  +\Order\bigl(N^{-2M}\bigr),\\
+  \appBa_m=-\frac{4B_{2m}}{(2m)!}\Bigl(\frac\pi2\Bigr)^{2m-1}r^{(2m-1)}(0),
+\end{gathered}
+\end{equation}
+and
+\begin{equation}\label{appB_expansion:eq-Ir}
+  I_r=\tfrac32\ln2-\ln\pi-\tfrac12 .
+\end{equation}
+\end{lemma}
+% src: data/article/appB_expansion_check.json (B1-B4: I_r to 60 digits; G1-G3: remainders of this part alone);
+% src: data/msc_proof/identity_checks.json (A7-A9)
+
+\begin{proof}
+\emph{Regularity.} For real $y$ the function $c(y)=\cos^{2}y\sqrt{1+\sin^{2}y}$ is real-analytic and even, with
+$c(0)=1$, and $1/\sin y-1/y$ is real-analytic and odd on $(-\pi,\pi)$. Hence
+$r(y)=c(y)\,(1/\sin y-1/y)+(c(y)-1)/y$ is real-analytic and odd on $(-\pi,\pi)$; in particular $r(0)=0$ and every
+derivative of $r$ is bounded on $[0,\pi/2]$. Moreover $w(\pi-y)=w(y)$, so $w(\pi/2)=0$ and the odd derivatives of
+$w$ vanish at $\pi/2$; therefore
+\begin{equation}\label{appB_expansion:eq-endpoint}
+  r(\pi/2)=-\frac2\pi,\qquad r^{(2j-1)}(\pi/2)=(2j-1)!\,\Bigl(\frac2\pi\Bigr)^{2j}\quad(j\ge1).
+\end{equation}
+
+\emph{Euler--Maclaurin.} Apply the Euler--Maclaurin formula with its integral remainder
+\citep[Eq.~2.10.1, with $m=M+1$]{DLMF} to $x\mapsto r(\epsilon x)$ on $[0,N]$:
+\begin{equation*}
+  \sum_{k=0}^{N}r(k\epsilon)=\frac{I_r}{\epsilon}+\frac{r(0)+r(\pi/2)}{2}
+  +\sum_{j=1}^{M}\frac{B_{2j}}{(2j)!}\,\epsilon^{2j-1}\bigl[r^{(2j-1)}(\pi/2)-r^{(2j-1)}(0)\bigr]+\rho_M ,
+\end{equation*}
+\begin{equation*}
+  \rho_M=\epsilon^{2M+2}\!\int_{0}^{N}\frac{B_{2M+2}-\widetilde B_{2M+2}(x)}{(2M+2)!}\,r^{(2M+2)}(\epsilon x)\,\dif x,
+\end{equation*}
+where $\widetilde B_{2M+2}$ is the periodic Bernoulli function, which is bounded. Since $N\epsilon=\pi/2$,
+\begin{equation}\label{appB_expansion:eq-rho}
+  |\rho_M|\le\frac\pi2\,\frac{\sup_x\bigl|B_{2M+2}-\widetilde B_{2M+2}(x)\bigr|}{(2M+2)!}\,
+  \max_{[0,\pi/2]}\bigl|r^{(2M+2)}\bigr|\;\epsilon^{2M+1}=\Order\bigl(N^{-2M-1}\bigr).
+\end{equation} Removing the terms $k=0$ and $k=N$ and inserting \eqref{appB_expansion:eq-endpoint},
+\begin{equation*}
+  \sum_{k=1}^{N-1}r(k\epsilon)=\frac{2N}{\pi}I_r+\frac1\pi
+  +\sum_{j=1}^{M}\Bigl[\frac{2N}{\pi}\,\frac{B_{2j}}{2j\,N^{2j}}-\frac{B_{2j}}{(2j)!}\,\epsilon^{2j-1}r^{(2j-1)}(0)\Bigr]+\rho_M .
+\end{equation*}
+\emph{The pole.} The remaining part of $\mathcal S^{\mathrm{alg}}_N$ is $\sum_{k=1}^{N-1}1/(k\epsilon)=(2N/\pi)H_{N-1}$,
+and the harmonic number is $H_{N-1}=\psi(N)+\gammaE$ with the digamma function $\psi$, whose expansion
+\citep[Eqs.~5.4.14 and 5.11.2]{DLMF} gives
+\begin{equation*}
+  H_{N-1}=\ln N+\gammaE-\frac1{2N}-\sum_{j=1}^{M}\frac{B_{2j}}{2j\,N^{2j}}+\Order\bigl(N^{-2M-2}\bigr).
+\end{equation*}
+In the sum of the two contributions the upper-endpoint terms of the Euler--Maclaurin formula cancel the Bernoulli
+terms of $H_{N-1}$ exactly, and $1/\pi$ cancels $(2N/\pi)\cdot(-1/2N)$. What remains is
+\begin{equation*}
+  \mathcal S^{\mathrm{alg}}_N=\frac{2N}{\pi}\bigl(\ln N+\gammaE+I_r\bigr)
+  -\sum_{j=1}^{M}\frac{B_{2j}}{(2j)!}\Bigl(\frac{\pi}{2N}\Bigr)^{2j-1}r^{(2j-1)}(0)+\Order\bigl(N^{-2M-1}\bigr),
+\end{equation*}
+which is \eqref{appB_expansion:eq-alg} after multiplication by $4N$.
+
+\emph{The integral.} First, $\int_{0}^{\pi/2}(1/\sin y-1/y)\,\dif y=\bigl[\ln\tan(y/2)-\ln y\bigr]_{0}^{\pi/2}=\ln(4/\pi)$.
+Second, with $t=\sin y$,
+\begin{equation*}
+  \int_{0}^{\pi/2}\frac{c(y)-1}{\sin y}\,\dif y
+  =\int_{0}^{1}\frac{\sqrt{1-t^{4}}-1}{t}\,\dif t+\int_{0}^{1}\frac{1-(1-t^{2})^{-1/2}}{t}\,\dif t
+  =-\frac14\bigl[\psi(\tfrac32)+\gammaE\bigr]+\frac12\bigl[\psi(\tfrac12)+\gammaE\bigr],
+\end{equation*}
+by the substitutions $u=t^{4}$ and $u=t^{2}$ and $\int_{0}^{1}[1-(1-u)^{a}]\,u^{-1}\dif u=\psi(a+1)+\gammaE$ for
+$a>-1$ \citep[Eq.~5.9.16]{DLMF}. Since $\psi(\tfrac12)+\gammaE=-2\ln2$ and $\psi(\tfrac32)+\gammaE=2-2\ln2$
+\citep[Eqs.~5.4.13, 5.4.15]{DLMF}, the second integral equals $-\tfrac12-\tfrac12\ln2$, and
+\eqref{appB_expansion:eq-Ir} follows.
+\end{proof}
+
+The Taylor series $r(y)=-\tfrac13y-\tfrac{47}{90}y^{3}+\tfrac{941}{1890}y^{5}-\cdots$ gives $\appBa_1=\pi/18$ and
+$\appBa_2=-47\pi^{3}/21600$. % src: data/article/appB_expansion_check.json (A1, A2)
+
+\subsection{The exponentially small part}
+
+Let $\kappa_0=2\arsinh1=\ln(3+2\sqrt2)=1.7627\ldots$ and $\appBp=-\eu^{-\pi}$.
+% src: data/article/appB_expansion_check.json (constants: kappa0, exp(-pi/2) = 0.2079)
+For complex $|y|<\arsinh1$ one has $|\sin y|\le\sinh|y|<1$, and $\sqrt{1+u^{2}}$ and $\arsinh u$ are analytic for
+$|u|<1$; hence $y\,w(y)$ and $\arsinh(\sin y)/y$ are analytic and even in that disc, and
+\begin{equation}\label{appB_expansion:eq-AE}
+  \appBA(y^{2})=y\,w(y),\qquad 1+\appBE(y^{2})=\frac{\arsinh(\sin y)}{y}
+\end{equation}
+define functions $\appBA(Y)=1-\tfrac13Y-\tfrac{47}{90}Y^{2}+\cdots$ and $\appBE(Y)=-\tfrac13Y+\tfrac16Y^{2}-\cdots$
+that are analytic for $|Y|<(\arsinh1)^{2}$. We write $\appBD$ for the Euler operator $z\,\dif/\dif z$, whatever
+the name of the variable, and, for integers $0\le n\le m$,
+\begin{equation}\label{appB_expansion:eq-enm}
+  e_{n,m}=\text{coefficient of }Y^{m}\text{ in }\ \appBA(Y)\,\frac{\bigl(-\appBE(Y)\bigr)^{n}}{n!}
+\end{equation}
+(for $n>m$ this coefficient vanishes because $\appBE(0)=0$).
+% src: data/article/appB_expansion_check.json (A1: Taylor coefficients and e_{n,m}, exact rational arithmetic)
+
+\begin{lemma}\label{appB_expansion:lem-exp}
+For every integer $M\ge0$, as $N\to\infty$,
+\begin{equation}\label{appB_expansion:eq-exp}
+\begin{gathered}
+  -8N\,\mathcal S^{\mathrm{exp}}_N=\sum_{m=0}^{M}\appBb_m\,N^{2-2m}+\Order\bigl(N^{-2M}\bigr),\\
+  \appBb_m=-\frac{16}{4^{m}}\sum_{n=0}^{m}e_{n,m}\,\pi^{2m-1+n}\sum_{k\ge1}k^{2m-1+n}\,(\appBD^{n}U)(\appBp^{k}).
+\end{gathered}
+\end{equation}
+\end{lemma}
+% src: data/article/appB_expansion_check.json (C1-C6: every inequality of the proof; G1-G3: remainders of this part alone)
+
+\begin{proof}
+\emph{(i) Elementary bounds.} On $(0,\pi/2]$, $\sin y\ge2y/\pi$, and $\arsinh$ is concave on $[0,1]$ with
+$\arsinh0=0$, so $\arsinh(\sin y)\ge(2y/\pi)\arsinh1$. Hence, for $1\le k\le N-1$,
+\begin{equation}\label{appB_expansion:eq-bounds}
+  |v_k|\le\eu^{-\kappa_0k},\qquad 0<w(y_k)\le\frac{\sqrt2}{\sin y_k}\le\frac{\sqrt2\,N}{k},\qquad
+  |U(v)|\le\frac{|v|}{1-|v|}\quad(|v|<1).
+\end{equation}
+
+\emph{(ii) Cut-off and tail.} Fix $\delta\in(0,\arsinh1)$ such that $|\appBE(Y)|\le\tfrac12$ for $|Y|\le\delta^{2}$;
+this is possible because $\appBE$ is continuous and $\appBE(0)=0$ (for instance $\delta=\tfrac12$, where
+$|\appBE|\le0.097$). % src: data/article/appB_expansion_check.json (C3: max_abs_Ecal 0.0963, max_abs_Acal 1.068)
+Let $A_\delta=\max_{|Y|\le\delta^{2}}|\appBA(Y)|$ and $K=\lfloor\sqrt2\,\delta N/\pi\rfloor$, so that
+$y_k^{2}\le\delta^{2}/2$ for $k\le K$. By \eqref{appB_expansion:eq-bounds} and
+$(1-\eu^{-\kappa_0})^{-2}<3/\sqrt2$,
+\begin{equation}\label{appB_expansion:eq-tail}
+  \sum_{k=K+1}^{N-1}w(y_k)\,|U(v_k)|\le\frac{\sqrt2\,N}{1-\eu^{-\kappa_0}}\sum_{k>K}\eu^{-\kappa_0k}
+  \le3N\,\eu^{-\kappa_0(K+1)}\le3N\,\eu^{-\sqrt2\,\kappa_0\delta N/\pi},
+\end{equation}
+which is exponentially small in $N$.
+
+\emph{(iii) Uniform Taylor remainder.} For $k\ge1$ put
+$G_k(Y)=\appBA(Y)\,U\bigl(\appBp^{k}\eu^{-\pi k\appBE(Y)}\bigr)$. By \eqref{appB_expansion:eq-AE},
+$2N\arsinh(\sin y_k)=\pi k\,[1+\appBE(y_k^{2})]$, so
+\begin{equation}\label{appB_expansion:eq-Gk}
+  v_k=\appBp^{k}\,\eu^{-\pi k\appBE(y_k^{2})},\qquad w(y_k)\,U(v_k)=\frac{G_k(y_k^{2})}{y_k}.
+\end{equation}
+For $|Y|\le\delta^{2}$ we have $\bigl|\appBp^{k}\eu^{-\pi k\appBE(Y)}\bigr|\le\eu^{-\pi k/2}\le\eu^{-\pi/2}<\tfrac14$.
+Therefore $G_k$ is analytic in $|Y|<\delta^{2}$, continuous on the closed disc, and bounded there by
+$\tfrac43A_\delta\,\eu^{-\pi k/2}$. Cauchy's inequalities give, for its Taylor coefficients $g_{k,m}$ and its
+Taylor remainder,
+\begin{equation}\label{appB_expansion:eq-cauchy}
+  |g_{k,m}|\le\frac{4A_\delta}{3}\,\frac{\eu^{-\pi k/2}}{\delta^{2m}},\qquad
+  \Bigl|G_k(Y)-\sum_{m=0}^{M}g_{k,m}Y^{m}\Bigr|\le\frac{8A_\delta}{3}\,\eu^{-\pi k/2}\Bigl(\frac{|Y|}{\delta^{2}}\Bigr)^{M+1}
+  \quad\bigl(|Y|\le\tfrac12\delta^{2}\bigr),
+\end{equation}
+uniformly in $k\ge1$.
+
+\emph{(iv) Summation.} For $k\le K$ take $Y=y_k^{2}=(k\epsilon)^{2}$ in \eqref{appB_expansion:eq-cauchy} and divide by
+$y_k$; by \eqref{appB_expansion:eq-Gk},
+\begin{equation*}
+  \sum_{k=1}^{K}\Bigl|w(y_k)U(v_k)-\sum_{m=0}^{M}g_{k,m}\,(k\epsilon)^{2m-1}\Bigr|
+  \le\frac{8A_\delta}{3\,\delta^{2M+2}}\;\epsilon^{2M+1}\sum_{k\ge1}k^{2M+1}\eu^{-\pi k/2}=\Order\bigl(N^{-2M-1}\bigr).
+\end{equation*}
+By the first bound in \eqref{appB_expansion:eq-cauchy} and $(k\epsilon)^{2m-1}\le N(\pi k)^{2m}$, the sums
+$\sum_{k>K}|g_{k,m}|(k\epsilon)^{2m-1}$, $m\le M$, are exponentially small in $N$, because $K+1>\sqrt2\,\delta N/\pi$.
+With \eqref{appB_expansion:eq-tail} this yields
+\begin{equation*}
+  \mathcal S^{\mathrm{exp}}_N=\sum_{m=0}^{M}\epsilon^{2m-1}\sum_{k\ge1}k^{2m-1}g_{k,m}+\Order\bigl(N^{-2M-1}\bigr),
+\end{equation*}
+and $-8N\epsilon^{2m-1}=-16\,\pi^{2m-1}4^{-m}N^{2-2m}$.
+
+\emph{(v) The coefficients $g_{k,m}$.} For $|t|<\pi k$ the function $t\mapsto U(\appBp^{k}\eu^{-t})$ is analytic,
+and $\dif/\dif t$ acts on it as $-\appBD$; hence $U(\appBp^{k}\eu^{-t})=\sum_{n\ge0}\frac{(-t)^{n}}{n!}(\appBD^{n}U)(\appBp^{k})$.
+Substituting $t=\pi k\,\appBE(Y)$, which vanishes at $Y=0$, and multiplying by $\appBA(Y)$ gives
+$g_{k,m}=\sum_{n=0}^{m}e_{n,m}\,(\pi k)^{n}(\appBD^{n}U)(\appBp^{k})$ with $e_{n,m}$ as in \eqref{appB_expansion:eq-enm}.
+Inserting this in (iv) gives \eqref{appB_expansion:eq-exp}; the sums over $k$ converge absolutely because
+$(\appBD^{n}U)(z)=\Order(|z|)$.
+\end{proof}
+
+\begin{proposition}[Form of the expansion]\label{appB_expansion:prop-form}
+For every integer $M\ge1$ the expansion \eqref{s4_mfpt:eq-expansion} holds, with
+\begin{equation}\label{appB_expansion:eq-general}
+  C_{2}=\frac8\pi\bigl(\gammaE+I_r\bigr)+\appBb_0,\qquad C_{2-2m}=\appBa_m+\appBb_m\quad(m\ge1),
+\end{equation}
+where $\appBa_m$, $I_r$ and $\appBb_m$ are given by \eqref{appB_expansion:eq-alg}, \eqref{appB_expansion:eq-Ir} and
+\eqref{appB_expansion:eq-exp}. In particular only even powers of $N$ occur besides $N^{2}\ln N$.
+\end{proposition}
+
+\begin{proof}
+Add \eqref{appB_expansion:eq-alg} and \eqref{appB_expansion:eq-exp} in \eqref{appB_expansion:eq-split}.
+\end{proof}
+
+\subsection{Lambert series and Eisenstein series}
+
+For $|z|<1$ let $\Lambda_{j}(z)=\sum_{k\ge1}k^{j}\,U(z^{k})$. Since $\appBD[U(z^{k})]=k\,(\appBD U)(z^{k})$ and the
+series converges locally uniformly, the inner sums in \eqref{appB_expansion:eq-exp} are
+\begin{equation}\label{appB_expansion:eq-bm}
+  \sum_{k\ge1}k^{2m-1+n}(\appBD^{n}U)(\appBp^{k})=(\appBD^{n}\Lambda_{2m-1})(\appBp).
+\end{equation}
+The identity $U(z)=z/(1-z)-2z^{2}/(1-z^{2})$ gives, for $m\ge1$,
+\begin{equation}\label{appB_expansion:eq-lambert}
+  \Lambda_{2m-1}(z)=\appBL_{2m-1}(z)-2\,\appBL_{2m-1}(z^{2}),\qquad
+  \appBL_{2m-1}(z)=\sum_{k\ge1}\frac{k^{2m-1}z^{k}}{1-z^{k}}=\frac{B_{2m}}{4m}\bigl(1-E_{2m}\bigr),
+\end{equation}
+where $E_{2m}$ is the normalised Eisenstein series of weight $2m$, regarded as a function of $z=\eu^{2\pi\iu\tau}$,
+$\operatorname{Im}\tau>0$ \citep[Proposition~5 and Eq.~(17)]{Zagier2008}; in this variable $\appBD=(2\pi\iu)^{-1}\dif/\dif\tau$,
+and $\appBD^{n}[\appBL(z^{2})]=2^{n}(\appBD^{n}\appBL)(z^{2})$. Our point is $\appBp=\eu^{2\pi\iu\tau_0}$ with
+$\tau_0=(1+\iu)/2$, and $\appBp^{2}=\eu^{-2\pi}$ corresponds to $\tau=\iu$. Hence
+\begin{equation}\label{appB_expansion:eq-two-points}
+  (\appBD^{n}\Lambda_{2m-1})(\appBp)=(\appBD^{n}\appBL_{2m-1})\big|_{\tau_0}-2^{\,n+1}(\appBD^{n}\appBL_{2m-1})\big|_{\tau=\iu}.
+\end{equation}
+We use the following classical facts, all in \citet{Zagier2008}.
+\begin{itemize}
+\item[(F1)] $E_2(-1/\tau)=\tau^{2}E_2(\tau)+6\tau/(\pi\iu)$, $E_4(-1/\tau)=\tau^{4}E_4(\tau)$,
+$E_6(-1/\tau)=\tau^{6}E_6(\tau)$, and all three have period 1 (his Proposition~6 and Section~2.1).
+\item[(F2)] $E_2(\iu)=3/\pi$ and $E_6(\iu)=0$ (put $\tau=\iu$ in (F1)), and
+$E_4(\iu)=3\,\Gamma(1/4)^{8}/(2\pi)^{6}=3\,\Xilem/\pi^{2}$ (his Section~6.3).
+\item[(F3)] Ramanujan's system $\appBD E_2=(E_2^{2}-E_4)/12$, $\appBD E_4=(E_2E_4-E_6)/3$,
+$\appBD E_6=(E_2E_6-E_4^{2})/2$ (his Proposition~15); every $E_{2m}$ with $m\ge2$ is a polynomial in $E_4$ and
+$E_6$ (his Proposition~4), with rational coefficients because all Fourier coefficients involved are rational;
+for instance $E_8=E_4^{2}$ and $E_{10}=E_4E_6$.
+\item[(F4)] The discriminant function, written here as the 24th power of the Dedekind function $\eta$,
+$\eta(\tau)^{24}=\eu^{2\pi\iu\tau}\prod_{n\ge1}(1-\eu^{2\pi\iu n\tau})^{24}=(E_4^{3}-E_6^{2})/1728$, has
+period 1 and satisfies $\eta(-1/\tau)^{24}=\tau^{12}\eta(\tau)^{24}$ (his Eqs.~(22), (23), (34) and Proposition~7).
+\end{itemize}
+Since $-1/\tau_0=-1+\iu$ and $\tau_0^{2}=\iu/2$, (F1) and (F2) give
+\begin{equation}\label{appB_expansion:eq-tau0}
+  E_2(\tau_0)=\frac6\pi,\qquad E_4(\tau_0)=-4E_4(\iu),\qquad E_6(\tau_0)=0,\qquad \eta(\tau_0)^{24}=-64\,\eta(\iu)^{24}.
+\end{equation}
+By \eqref{appB_expansion:eq-lambert}--\eqref{appB_expansion:eq-tau0} and (F3), every $\appBb_m$ with $m\ge1$ is a
+polynomial in $\pi$, $1/\pi$ and $E_4(\iu)$ with rational coefficients, obtained by finitely many differentiations.
+% src: data/article/appB_expansion_check.json (D1-D8, 60 digits); data/msc_proof/identity_checks.json (A3-A5);
+% src: data/msc_proof_verify/v3_asymptotics.json ("classical")
+
+\subsection{The constant \texorpdfstring{$C_{2}$}{C2}}
+
+For $m=0$, $e_{0,0}=1$ and $\appBb_0=(8/\pi)J$ with $J=-2\sum_{k\ge1}U(\appBp^{k})/k$. Expanding
+$U(z)=\sum_{j\ge1}(-1)^{j-1}z^{j}$ and summing over $k$ first (the double series converges absolutely),
+\begin{equation*}
+  J=2\sum_{j\ge1}(-1)^{j-1}\ln\bigl(1-\appBp^{j}\bigr)
+   =2\ln\prod_{j\ge1}\bigl(1-\appBp^{j}\bigr)-4\ln\prod_{j\ge1}\bigl(1-\appBp^{2j}\bigr),
+\end{equation*}
+where all factors are positive. By (F4) and \eqref{appB_expansion:eq-tau0},
+$\prod_{j}(1-\appBp^{j})^{24}=\eta(\tau_0)^{24}/\appBp=64\,\eu^{\pi}\eta(\iu)^{24}$ and
+$\prod_{j}(1-\appBp^{2j})^{24}=\eu^{2\pi}\eta(\iu)^{24}$, while
+$\eta(\iu)^{24}=E_4(\iu)^{3}/1728=\Xilem^{3}/(64\pi^{6})=\lemn^{12}/(64\,\pi^{12})$. Therefore
+\begin{equation}\label{appB_expansion:eq-J}
+  J=\tfrac12\ln2-\tfrac\pi4-\tfrac1{12}\ln\eta(\iu)^{24}=\ln\frac{2\pi}{\lemn}-\frac\pi4 ,
+\end{equation}
+and \eqref{appB_expansion:eq-general}, \eqref{appB_expansion:eq-Ir} give
+$C_{2}=\frac8\pi\bigl[\gammaE+\tfrac52\ln2-\ln\lemn-\tfrac12-\tfrac\pi4\bigr]$, the value stated in
+\eqref{s4_mfpt:eq-coeffs}. (Equivalently, by Jacobi's triple product \citep[Eq.~20.5.9]{DLMF},
+$J=\ln\theta_3(\eu^{-\pi})-3\ln\prod_{n\ge1}(1-\eu^{-2\pi n})$ with the classical value
+$\theta_3(\eu^{-\pi})=\pi^{1/4}/\Gamma(3/4)$.)
+% src: data/article/appB_expansion_check.json (D9-D11, F2b: series, products and theta_3 form of J to 60 digits);
+% src: data/msc_proof/identity_checks.json (A6, A10); data/msc_proof_verify/v3_asymptotics.json ("classical")
+
+\subsection{The coefficients \texorpdfstring{$C_{0}$}{C0} and \texorpdfstring{$C_{-2}$}{C-2}}
+
+\emph{Order $m=1$.} Here $e_{0,1}=-\tfrac13$ and $e_{1,1}=\tfrac13$, so
+$\appBb_1=\tfrac43\pi\,\Lambda_1(\appBp)-\tfrac43\pi^{2}(\appBD\Lambda_1)(\appBp)$. With
+$\appBL_1=(1-E_2)/24$ and $\appBD\appBL_1=-(E_2^{2}-E_4)/288$, \eqref{appB_expansion:eq-two-points} and
+\eqref{appB_expansion:eq-tau0} give
+\begin{equation}\label{appB_expansion:eq-m1}
+  \Lambda_1(\appBp)=\sum_{k\ge1}\frac{k\,\appBp^{k}}{1+\appBp^{k}}=-\frac1{24},\qquad
+  (\appBD\Lambda_1)(\appBp)=\sum_{k\ge1}\frac{k^{2}\appBp^{k}}{(1+\appBp^{k})^{2}}=-\frac{E_4(\iu)}{36}.
+\end{equation}
+Hence $\appBb_1=-\pi/18+\pi^{2}E_4(\iu)/27$, and with $\appBa_1=\pi/18$,
+\begin{equation*}
+  C_{0}=\frac{\pi^{2}E_4(\iu)}{27}=\frac{\Xilem}{9}.
+\end{equation*}
+
+\emph{Order $m=2$.} Here $e_{0,2}=-\tfrac{47}{90}$, $e_{1,2}=-\tfrac5{18}$, $e_{2,2}=\tfrac1{18}$, so
+$\appBb_2=\tfrac{47}{90}\pi^{3}\Lambda_3(\appBp)+\tfrac5{18}\pi^{4}(\appBD\Lambda_3)(\appBp)-\tfrac1{18}\pi^{5}(\appBD^{2}\Lambda_3)(\appBp)$.
+With $\appBL_3=(E_4-1)/240$, $\appBD\appBL_3=(E_2E_4-E_6)/720$ and, where $E_6=0$,
+$\appBD^{2}\appBL_3=(E_2^{2}E_4+E_4^{2})/1728$, we find
+\begin{equation}\label{appB_expansion:eq-m2}
+  \Lambda_3(\appBp)=\frac{1-6E_4(\iu)}{240},\qquad (\appBD\Lambda_3)(\appBp)=-\frac{E_4(\iu)}{20\pi},\qquad
+  (\appBD^{2}\Lambda_3)(\appBp)=-\frac{E_4(\iu)}{8\pi^{2}}+\frac{E_4(\iu)^{2}}{216}.
+\end{equation}
+With $\appBa_2=-47\pi^{3}/21600$ the terms free of $E_4(\iu)$ cancel again, and
+\begin{equation*}
+  C_{-2}=-\frac{\pi^{3}E_4(\iu)}{50}-\frac{\pi^{5}E_4(\iu)^{2}}{3888}=-\frac{\pi\,\Xilem\,(25\,\Xilem+648)}{10800}.
+\end{equation*}
+This completes the proof of Theorem~\ref{s4_mfpt:thm-expansion}: the expansion and the absence of other powers are
+Proposition~\ref{appB_expansion:prop-form}, and the three closed forms have just been derived. \qed
+% src: data/article/appB_expansion_check.json (E: the five Lambert series against direct summation, 60 digits;
+% src:   F1b, F1c: b_1 and C_{-2} in exact arithmetic); data/msc_proof/identity_checks.json (A1, A2, A11);
+% src: data/msc_proof/asymptotics_summary.json (constant_checks)
+
+\subsection{Higher coefficients and numerical confirmation}
+
+\paragraph{Computer algebra.}
+The recipe \eqref{appB_expansion:eq-general}, \eqref{appB_expansion:eq-bm}--\eqref{appB_expansion:eq-tau0} is finite
+at every order. Carried out in exact rational arithmetic by a computer-algebra script for $m=3,4,5$, it returns
+\begin{equation}\label{appB_expansion:eq-higher}
+\begin{aligned}
+  C_{-4}&=\frac{\pi^{2}\Xilem^{2}(1225\,\Xilem+12879)}{1905120},\qquad
+  C_{-6}=-\frac{\pi^{3}\Xilem^{2}(79625\,\Xilem^{2}+1215000\,\Xilem+960498)}{435456000},\\
+  C_{-8}&=\frac{\pi^{4}\Xilem^{3}(7703465\,\Xilem^{2}+92129400\,\Xilem+118943883)}{63228211200},
+\end{aligned}
+\end{equation}
+that is $2.227516\ldots$, $-14.055169\ldots$ and $124.706087\ldots$ (Table~\ref{s4_mfpt:tab-coeff}). These three
+closed forms rest on Proposition~\ref{appB_expansion:prop-form} and on the correctness of the symbolic computation;
+they were not derived by hand.
+% src: code/msc_proof/asymptotic_series.py -> data/msc_proof/asymptotic_series.json;
+% src: data/article/appB_expansion_check.json (F1: second run of the exact computation, same closed forms; F3)
+
+\paragraph{Numerical confirmation.}
+Three checks that do not use the modular evaluation support every step.
+(a) The coefficient formula \eqref{appB_expansion:eq-general}, with the Lambert series
+\eqref{appB_expansion:eq-bm} summed numerically, agrees with the closed forms of $C_{2},\dots,C_{-8}$ to better than
+$10^{-48}$ in two separately written implementations.
+% src: data/msc_proof_verify/v3_asymptotics.json (coefficient_formula_numeric_vs_closed: <= 7.2e-49);
+% src: data/article/appB_expansion_check.json (F2: 6.5e-55)
+(b) A linear solve for the coefficients of even powers of $N$ from 70-digit values of $q\TN$ at $N=2^{j}$, which uses
+no closed form, returns $C_{2},C_{0},\dots,C_{-8}$ to $3\times10^{-67}$, $2\times10^{-57}$, $2\times10^{-48}$,
+$7\times10^{-40}$, $4\times10^{-32}$ and $8\times10^{-25}$; when $N\ln N$ and odd powers are admitted, their fitted
+coefficients are below $10^{-28}$ for $N\ln N$ and $N$.
+% src: data/msc_proof_verify/v3_asymptotics.json (blind_even_power_fit "2^j (top 12)"; forbidden_terms_2^j)
+(c) For $N=16,\dots,4096$ and $M=1,\dots,4$ the remainders of \eqref{appB_expansion:eq-alg}, of
+\eqref{appB_expansion:eq-exp} and of their sum, multiplied by $N^{2M}$, converge to $|\appBa_{M+1}|$,
+$|\appBb_{M+1}|$ and $|C_{-2M}|$ respectively (relative deviation at $N=4096$ at most $2.2\times10^{-6}$), so the
+two lemmas are confirmed separately.
+% src: data/article/appB_expansion_check.json (G1; tables scaled_remainders_*)
+Truncation errors at fixed $N$ are in Table~\ref{s4_mfpt:tab-trunc}.
+
+\begin{remark}[What is not proved]\label{appB_expansion:rem-status}
+Proposition~\ref{appB_expansion:prop-form} is an asymptotic statement for each fixed $M$; the constant in
+$\Order(N^{-2M})$ depends on $M$, and nothing is proved about the convergence of the series in $N^{-2}$. The
+computed coefficients grow in modulus ($0.53$, $1.07$, $2.23$, $14.1$, $124.7$, and
+$N^{10}$ times the remainder after $C_{-8}N^{-8}$ settles at $1685.5$ in modulus for $N\ge1024$), which suggests a divergent
+asymptotic series; we do not claim this.
+% src: data/article/appB_expansion_check.json (G2: 1685.51; scaled_remainders_total, M = 5);
+% src: data/msc_proof_verify/v3_asymptotics.json (blind fit, power -10: -1685.514)
+\end{remark}

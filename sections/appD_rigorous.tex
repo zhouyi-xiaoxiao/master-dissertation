@@ -1,0 +1,327 @@
+% appD_rigorous.tex -- Supplementary Section S8: proofs for Section 7 (s6b_rigorous) and for the computer-assisted
+% results of Section 4.  Short proofs are given in full; for long and computer-assisted proofs the exact place of the
+% complete proof in the companion notes (R0-R5, folder proofs/ of the repository) is given.  Notation of the article
+% (zero-based sites).  Paths in "% src:" comments are relative to the root of the repository (see README.md).
+\section{Proofs of the results on the mode}\label{appD_rigorous:sec}
+
+This section gives the short proofs of Section~\ref{s6b_rigorous:sec} of the main text and of the computer-assisted
+results of Section~\ref{s4_mfpt:sec}, and points to the place of every other proof in the companion notes R0--R5.
+
+Throughout, $\Lm_1=I-\Pm_1$ is the unit-rate generator (with sign reversed) and, for real $s$ outside its spectrum,
+\[
+G(s)=\ve_{\va}^{\T}(\Lm_1-sI)^{-1}\ve_{\va}=\sum_{i}\frac{w_i}{\mu_{(i)}-s},\qquad
+G_{\vx}(s)=\ve_{\vx}^{\T}(\Lm_1-sI)^{-1}\ve_{\va},
+\]
+with the visible reflecting rates $\mu_{(i)}$ and weights $w_i$ of Proposition~\ref{s2_model:prop-interlacing}, so
+that $G(s)=\Phat(\va,-s\mid\va)$. Its zeros are the rates $\nu_{(i)}$, $G$ increases strictly between consecutive
+poles, and the residues of the survival function from $\vx$ are $r_j(\vx)=-G_{\vx}(\nu_j)/(\nu_jG'(\nu_j))$
+\Sref{R2}{Thm 3.1}.
+
+\subsection{Two lemmas used by the certificates}
+
+\begin{lemma}[Tail lemma]\label{appD_rigorous:lem-tail}
+Let $v_t=\Qm^{\,t-1}\ve_{\vo}$ be the occupation probabilities of the surviving walker. If $v_{T+1}<v_T$ at every
+site other than the target for some $T\ge1$, then $v_{t+1}<v_t$ and $\pmf(t+1)<\pmf(t)$ for all $t\ge T$. If moreover
+$v_{T+1}\le\gamma v_T$ with $\gamma<1$, then $\pmf(T+s)\le\gamma^{s}\pmf(T)$ for $s\ge0$.
+\textup{(Source: \Sref{R5}{Lemma 5}, \Sref{R4}{Lemma 6.1}.)}
+\end{lemma}
+
+\begin{proof}
+$w_t=v_t-v_{t+1}$ satisfies $w_{t+1}=\Qm w_t$. Every row of $\Qm$ has a positive entry and $\Qm\ge0$, so
+$w_T>0$ gives $w_t>0$ for $t\ge T$, and $\pmf(t)-\pmf(t+1)=r^{\T}w_t>0$ because $\pmf(t)=r^{\T}v_t$ by
+\eqref{s2_model:eq-pmf} and $\Qm$ is symmetric. If $v_{T+1}\le\gamma v_T$, then
+$v_{T+s+1}=\Qm^{s}v_{T+1}\le\gamma\Qm^{s}v_T=\gamma v_{T+s}$ entrywise, since $\Qm\ge0$.
+\end{proof}
+
+The exact certificates of R4 and R5 compute $v_t$ in integer arithmetic (after scaling $\Qm$ to an integer matrix)
+until such a time $T$; Proposition~\ref{s3_methods:prop-certificate} is a coarser bound of the same kind.
+
+\begin{lemma}[Rational enclosure of the mean]\label{appD_rigorous:lem-encl}
+Let $h=(I-\Qm_1)^{-1}\one$ be the vector of unit-rate mean hitting times of $\va$. For every vector $z$ with
+$R:=(I-\Qm_1)z>0$ entrywise, $z/\max R\le h\le z/\min R$ entrywise.
+\textup{(Source: \Sref{R5}{Lemma 19}.)}
+\end{lemma}
+
+\begin{proof}
+The spectral radius of $\Qm_1$ is below one (Section~\ref{s2_model:ssec-fp}), so
+$(I-\Qm_1)^{-1}=\sum_{k\ge0}\Qm_1^{k}\ge0$ entrywise. Apply it to $z/\min R-h$, whose image
+$R/\min R-\one$ is non-negative, and to $h-z/\max R$.
+\end{proof}
+
+A floating-point guess $z$ rounded to integers gives intervals of relative width below $10^{-28}$, which is how the
+means behind Theorem~\ref{s6b_rigorous:thm-cffinite} are enclosed \Sref{R5}{Section 5}.
+
+\subsection{Structure and signs (Section~\ref{s6b_rigorous:ssec-structure})}
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-signs}]
+(a) By Proposition~\ref{s2_model:prop-structure}, $\sum_jr_j\eu^{-\nu_jt}=\ve_{\vo}^{\T}\eu^{-(I-\Qm_1)t}\one$;
+differentiating $i$ times at $t=0$ gives $\sum_jr_j\nu_j^{\,i}=\ve_{\vo}^{\T}(I-\Qm_1)^{i}\one
+=\ve_{\vo}^{\T}(I-\Qm_1)^{i-1}r_1$ for $i\ge1$. The vector $r_1$ is supported on the neighbours of $\va$, which are
+at distance at least $D-1$ from $\vo$, and the entry $(\vo,\vy)$ of $(I-\Qm_1)^{i-1}$ vanishes if $i-1<|\vo-\vy|_1$;
+for $i=D$ only the term $(-\Qm_1)^{D-1}$ of the binomial expansion reaches the neighbours at distance $D-1$, and it
+does so with the sign $(-1)^{D-1}$ and a positive weight (a shortest path). Suppose the non-zero $r_j$ had $k\le D-2$
+changes of sign; choose $\theta_1<\dots<\theta_k$ separating the blocks of equal sign and put
+$P(\nu)=\nu\prod_m(\nu-\theta_m)$, of degree $k+1\le D-1$. Since all $\nu_j>0$, $r_jP(\nu_j)$ has the same sign for
+every $j$ with $r_j\ne0$, so $\sum_jr_jP(\nu_j)\ne0$; but it is a combination of $\sum_jr_j\nu_j^{\,i}$ with
+$1\le i\le D-1$, which vanish. On the chain started at the reflecting end, the $N-1$ rates of
+Proposition~\ref{s5_modes:prop-1d} all carry a non-zero residue, $D=N-1$, so the $N-2$ sign changes force
+alternation, and $r_0>0$.
+
+(b) By Proposition~\ref{s6_mechanism:prop-factorisation}, $\Fhat_{\mathrm u}(s)=1/(\nn sG(-s))$, which tends to
+$\Prob(\FPT_{\mathrm u}=0)=1/\nn$ as $s\to\infty$ and is finite at $s=0$ (the term $w_0/(-s)$, $w_0=1/\nn$, cancels the
+factor $\nn s$). Its poles are the zeros $-\nu_j$ of $G(-s)$, simple, with residues
+$1/(\nn\nu_jG'(\nu_j))>0$ because $G'>0$. Hence the law of $\FPT_{\mathrm u}$ is the atom $1/\nn$ at $0$ plus the
+density $\sum_jc_j\eu^{-\nu_jt}$ with all $c_j>0$; in discrete time the same partial fractions give geometric
+terms with ratio $1-q\nu_j\ge0$ when $q\le\frac12$.
+
+(c) If $v>0$ is the Perron eigenvector of $\Qm_1$ normalised to a probability, then
+$\Prob_v(\FPT>t)=v^{\T}\eu^{-(I-\Qm_1)t}\one=\eu^{-\nu_0t}$, and in discrete time $v^{\T}\Qm^{t}\one=(1-q\nu_0)^{t}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-notmixture}]
+Since $D\ge2$, $\pmf(1)=r(\vo)=0$ and $\gd(0)=0$, whereas $\pmf(D)\ge(q/2\dd)^{D}>0$ along a shortest path, and
+$\gd(t)>0$ for $t>0$ (by Proposition~\ref{s2_model:prop-structure}(b), $\eu^{t}\gd(t)=\sum_{n\ge0}t^{n}\pmf_1(n+1)/n!$
+with the PMF $\pmf_1$ at $q=1$, a series of non-negative terms one of which is positive). A mixture
+$\int\lambda^{t-1}m(\dif\lambda)$ with $m\ge0$ on $[0,1)$ equals $m([0,1))$ at $t=1$, so $m=0$ and $\pmf\equiv0$, a
+contradiction; in continuous time $m([0,\infty))=\lim_{t\downarrow0}\gd(t)=0$ by monotone convergence. Some residue
+is negative by Theorem~\ref{s6b_rigorous:thm-signs}(a), since $D-1\ge1$.
+\end{proof}
+
+For the proof of Theorem~\ref{s6b_rigorous:thm-alternation}, let $R$ be the reflection $x_i\mapsto N-1-x_i$ in every
+coordinate. It commutes with $\Pm_1$ and exchanges $\vo$ and $\va$. With $v_\pm=\frac12(\ve_{\va}\pm\ve_{\vo})$ and
+$G^{\pm}(s)=v_\pm^{\T}(\Lm_1-sI)^{-1}v_\pm$ one has $G=G^{+}+G^{-}$ and $G_{\vo}=G^{+}-G^{-}$, because
+$G_{\vo\vo}=G_{\va\va}$; at a zero $\nu_j$ of $G$, therefore,
+\begin{equation}\label{appD_rigorous:eq-signrule}
+r_j=\frac{2G^{-}(\nu_j)}{\nu_jG'(\nu_j)}=-\frac{2G^{+}(\nu_j)}{\nu_jG'(\nu_j)},\qquad
+\operatorname{sign}r_j=\operatorname{sign}G^{-}(\nu_j)=-\operatorname{sign}G^{+}(\nu_j)
+\end{equation}
+\Sref{R2}{Thm 5.6}. Call a visible rate $\mu_{(i)}$ purely even if its spectral projector $E_i$ satisfies
+$E_iv_-=0$, and purely odd if $E_iv_+=0$.
+
+\begin{lemma}\label{appD_rigorous:lem-parity}
+\lateproof{} Let $1\le i\le m-1$ ($m$ as in Proposition~\ref{s2_model:prop-interlacing}). If $\mu_{(i)}$ is purely even,
+the residues $(r_{i-1},r_i)$ do not have the signs $(+,-)$; if it is purely odd, they do not have the signs $(-,+)$.
+\textup{(Source: \Sref{R2}{Prop 5.9}.)}
+\end{lemma}
+
+\begin{proof}
+$R$ commutes with every $E_i$ and $Rv_\pm=\pm v_\pm$, so $E_iv_+\perp E_iv_-$ and every pole of $G^{\pm}$ is a visible
+rate. If $E_iv_-=0$, the only visible rate in $I=(\mu_{(i-1)},\mu_{(i+1)})$ is not a pole of $G^{-}$, so $G^{-}$ is
+smooth on $I$ with derivative $\sum_l\|E_lv_-\|^{2}(\lambda_l-s)^{-2}>0$ ($\lambda_l$ the eigenvalues of $\Lm_1$; some
+weight is positive since $\sum_l\|E_lv_-\|^{2}=\frac12$). By interlacing, $\nu_{i-1}<\mu_{(i)}<\nu_i$ both lie in
+$I$, so $G^{-}(\nu_{i-1})<G^{-}(\nu_i)$, and by \eqref{appD_rigorous:eq-signrule} $r_{i-1}>0$ implies $r_i>0$. The
+purely odd case is the same with $G^{+}$ ($0\notin I$).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-alternation}]
+(a) is \Sref{R2}{Cor 5.7}: the first visible rate $\muone$ is purely odd (its eigenfunctions $\phi_{\ve_i}$ change sign
+under $R$), at least two eigenvalues of $\Lm_1$ (counted with multiplicity) lie in $(0,\muone]$ for $\dd\ge2$, and
+the sign rule \eqref{appD_rigorous:eq-signrule} then gives $r_1<0$ \Sref{R2}{Thm 5.6}; $r_0>0$ by
+Proposition~\ref{s2_model:prop-interlacing}(iii).
+
+\lateproof{} Put $u=\pi/(2N)$, $x=\sin^{2}u$ and $\varsigma_j=\sk{j}^{2}/\sk{1}^{2}$, strictly increasing in $j$,
+$\varsigma_1=1$, $\varsigma_2=4(1-x)=:t$, $\varsigma_3=(3-4x)^{2}$. Then $\mu_{\vk}=\muone V(\vk)$ with
+$V(\vk)=\sum_i\varsigma_{k_i}$. For opposite corners every $\phi_{\vk}(\va)\ne0$, so every rate is visible and the
+$\mu_{(i)}$ are $\muone$ times the distinct values of $V$; $\phi_{\vk}\circ R=(-1)^{|\vk|}\phi_{\vk}$, so a value of
+$V$ attained only at $\vk$ with $|\vk|$ of one parity gives a pure rate (purely even for even $|\vk|$).
+
+(b) For $\dd=1$ this is Theorem~\ref{s6b_rigorous:thm-signs}(a). For $N=2$, $V(\vk)=|\vk|\in\{0,\dots,\dd\}$, so there
+are $m=\dd=D$ rates, and $D-1$ sign changes among $D$ non-zero residues force alternation.
+
+(c) Count from the top. Put $\Delta_l=\varsigma_{N-1}-\varsigma_{N-1-l}$. Since $\sin^{2}A-\sin^{2}B=\sin(A+B)\sin(A-B)$,
+$\Delta_l-\Delta_{l-1}=\sin((2l+1)u)/\sin u>0$. With $l_i=N-1-k_i$ and $\Delta(\boldsymbol l)=\sum_i\Delta_{l_i}$ one has
+$V(\vk)=\dd\varsigma_{N-1}-\Delta(\boldsymbol l)$ and $|\vk|=D-|\boldsymbol l|$; the $j$-th largest rate is $\muone$
+times $\dd\varsigma_{N-1}$ minus the $j$-th smallest value of $\Delta$. Let $\alpha=\Delta_1=3-4x$ and
+$\beta=\Delta_2-\Delta_1=5-20x+16x^{2}$; for $N\ge3$, $0<x\le\frac14$, $2\alpha-\beta>0$, and $\beta-\alpha=2(1-8x+8x^{2})$
+is positive for $N\ge5$ and zero for $N=4$.
+For $N\ge5$, $0<\alpha<\beta<2\alpha$; if $\Delta(\boldsymbol l)\le\alpha+\beta$, all $l_i\le2$, an entry $2$ forces
+$\boldsymbol l=(2,0,\dots)$ up to order, and otherwise $\Delta=n_1\alpha$ with $n_1\le2$. The four smallest values are
+$0<\alpha<2\alpha<\alpha+\beta$, attained only at $|\boldsymbol l|=0,1,2,2$. For $N=3$, $\Delta_1=2$, $\Delta_2=3$, and the
+four smallest values $0<2<3<4$ are attained only at $|\boldsymbol l|=0,1,2,2$. For $N=4$, $\alpha=\beta=1+\sqrt2$ and
+$\Delta_3-\Delta_2=1$, so $\Delta=c\alpha+n_3$ with $c=n_1+2n_2+2n_3$ and $|\boldsymbol l|=c+n_3$; since $\alpha$ is
+irrational, $\Delta$ determines $(c,n_3)$ and hence $|\boldsymbol l|$, every rate is pure, and the values below $3\alpha$
+are $0<\alpha<2\alpha<2\alpha+1$, with $3\alpha$ attained. In each case two consecutive rates near the top, the third
+and fourth largest ($N\ne4$), or the fourth and fifth ($N=4$), are pure of the same parity, and they are not the two
+smallest, because the smallest value of $V$ belongs to $\Delta=\dd\Delta_{N-1}\ge2\Delta_2$, larger than all values
+listed. By Lemma~\ref{appD_rigorous:lem-parity} applied to both, the three residues adjacent to them have monotone
+signs, whereas alternation requires $(+,-,+)$ or $(-,+,-)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-poles}]
+(a) Write $G(s)=-1/(\nn s)+g(s)$ with $g(s)=\sum_{i\ge1}w_i/(\mu_{(i)}-s)$ ($w_0=1/\nn$). From
+$\Fhat_{\mathrm u}(s)=1/(1+\nn s\,g(-s))$ (proof of Theorem~\ref{s6b_rigorous:thm-signs}(b)),
+$\tau_{\mathrm u}=-\Fhat_{\mathrm u}'(0)=\nn g(0)$. The zero $\nu_0\in(0,\mu_{(1)})$ of $G$ satisfies
+$1/\nu_0=\nn g(\nu_0)$, and for $0\le s<\mu_{(1)}\le\mu$,
+$\frac1\mu\le\frac1{\mu-s}\le\frac1\mu\,\frac1{1-s/\mu_{(1)}}$, hence
+$\tau_{\mathrm u}\le\nn g(s)\le\tau_{\mathrm u}/(1-s/\mu_{(1)})$. At $s=\nu_0$ the first inequality gives
+$1/\nu_0\ge\tau_{\mathrm u}$ and the second $1/\nu_0-1/\mu_{(1)}\le\tau_{\mathrm u}$.
+
+(b) \emph{Monotone coupling} \Sref{R2}{Lemma 7.8}: drive two walkers by the same attempted moves; the maps
+$x_i\mapsto\min(x_i+1,N-1)$ and $x_i\mapsto\max(x_i-1,0)$ are non-decreasing, so coordinatewise order is preserved,
+and when the lower walker reaches the maximal site $\va$ the upper one is there as well. Hence
+$\Prob_{\vx}(\FPT>t)\ge\Prob_{\vy}(\FPT>t)$ for $\vx\le\vy$, and the corner $\vo=\mathbf0$ maximises both the mean and
+$r_0(\cdot)=\lim_{t\to\infty}\eu^{\nu_0t}\Prob_{\cdot}(\FPT>t)$. By Theorem~\ref{s6b_rigorous:thm-signs}(c) the
+averages of $r_0(\cdot)$ and of $\nu_0q\MF_{\cdot\to\va}$ over the quasi-stationary distribution, which charges every
+site other than $\va$, are both $1$ (the second is \eqref{s2_model:eq-qsd}). So $r_0\ge1$ and $\nu_0q\MF\ge1$, with
+equality only if the function is constant. If the mean hitting time were constant on the sites other than $\va$, the
+equation $(\Lm_1h)(\vx)=1$ of Proposition~\ref{s2_model:prop-pinv} would fail at any site that is not a neighbour of
+$\va$; if $r_0(\cdot)$, which is proportional to the Perron eigenvector of $\Qm_1$, were constant, all row sums of
+$\Qm_1$ would be equal, which again fails if some site is not a neighbour of $\va$. Every site other than $\va$ is a
+neighbour of $\va$ only for $(\dd,N)=(1,2)$.
+
+(c) is \Sref{R2}{Thm 11.3}; it combines the explicit two-sided bounds on $\nu_0,\nu_1,r_0,r_1$ in terms of three
+Green's-function functionals \Sref{R2}{Thms 6.2--6.8, 7.10} with their asymptotics for the box in $\dd=2,3$
+\Sref{R2}{Sections 9--11}.
+\end{proof}
+
+\subsection{Unimodality (Section~\ref{s6b_rigorous:ssec-unimodal})}
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-unimodal}(i), corner to corner]
+At unit rate the coordinates move independently at rate $1/\dd$ (Lemma~\ref{appA_proofs:lem-spectrum}), so
+$u(t)=\nn\,p(\va,t\mid\vo)=h(t)^{\dd}$, where $h$ is $N$ times the one-dimensional propagator from $0$ to $N-1$ at
+rate $1/\dd$. By Cramer's rule for the corner entry of a tridiagonal inverse, as in the proof of
+Proposition~\ref{s3_methods:prop-1d-unimodal},
+$\int_0^\infty\eu^{-st}h'(t)\,\dif t=\prod_{k=1}^{N-1}\varepsilon_k/(s+\varepsilon_k)$ with the rates $\varepsilon_k$ of
+\eqref{s6_mechanism:eq-u}: $h'$ is the density of a sum of $N-1$ independent exponential variables, hence
+log-concave \citep{Ibragimov1956}, and $h$, its distribution function, is log-concave
+\citep[Theorem~1]{BagnoliBergstrom2005}. So $\varphi:=u'=\dd h^{\dd-1}h'$ is positive and log-concave on $(0,\infty)$,
+and $\varphi(0)=0$ when $D\ge2$.
+
+By Proposition~\ref{s6_mechanism:prop-factorisation} and the proof of Theorem~\ref{s6b_rigorous:thm-signs}(b),
+$\gd(t)=\varphi(t)/\nn+\int_0^{t}k(\tau)\varphi(t-\tau)\,\dif\tau$ with $k(\tau)=\sum_jc_j\eu^{-\nu_j\tau}$, $c_j>0$.
+Differentiating the convolution in the form $\int_0^tk(t-s)\varphi(s)\,\dif s$,
+\[
+\frac{\gd'(t)}{\varphi(t)}=\frac{\varphi'(t)}{\nn\,\varphi(t)}+k(0)-\int_0^{t}|k'(\tau)|\,\frac{\varphi(t-\tau)}{\varphi(t)}\,\dif\tau .
+\]
+The first term is non-increasing ($\varphi$ is log-concave); for fixed $\tau$ the ratio $\varphi(t-\tau)/\varphi(t)$ is
+non-decreasing in $t$, and $|k'|>0$, so the integral is strictly increasing. Hence $\gd'/\varphi$ is strictly
+decreasing and $\gd'$ changes sign at most once, from positive to negative; since $\gd(0)=0$ for $D\ge2$ and
+$\gd(t)\to0$, it changes sign exactly once. For $D=1$ ($N=2$, $\dd=1$) the law is exponential. Rate $q$ only
+rescales time. This is the argument of \Sref{R4}{Lemma 4.8, Thm 4.11(a)} and \Sref{R3}{Thm 1.11}, written with the
+factorisation of Section~\ref{s6_mechanism:sec}.
+\end{proof}
+
+The centre geometries use the folded chain $|X-\frac{N-1}2|$, which is again a birth-and-death chain between its two
+ends, in place of the one-dimensional factor \Sref{R4}{Thm 4.12}. Part (ii) is the discrete counterpart: for
+$q\le q_N^{\square}$ the one-dimensional propagator and its increments are log-concave sequences (sums of independent
+geometric variables), the multinomial theorem writes the $\dd$-dimensional increment as a binomial convolution of
+one-dimensional ones, binomial convolution preserves log-concavity \citep{DavenportPolya1949}, and a discrete form of
+the criterion above applies \Sref{R4}{Lemmas 4.7--4.10, Thms 4.11(b), 4.12}.
+
+\begin{proof}[Proof of Proposition~\ref{s6b_rigorous:prop-1dfail} (outline)]
+Count paths from $0$ to the first visit of $N-1$, with $\eta=1-q$ and $\eta_1=1-\frac q2$ the probabilities of resting
+in the interior and at the reflecting end: $\pmf(N-1)=(\frac q2)^{N-1}$,
+$\pmf(N)=(\frac q2)^{N-1}[\eta_1+(N-2)\eta]$ and
+$\pmf(N+1)=(\frac q2)^{N-1}[\eta_1^{2}+(N-2)\eta_1\eta+\binom{N-1}{2}\eta^{2}+(N-2)\frac{q^{2}}{4}]$. The first relation
+gives $\pmf(N)<\pmf(N-1)$ if and only if $q>\frac{2N-4}{2N-3}$; $\pmf(N+1)-\pmf(N)$ is a quadratic in $\eta$ that is
+positive on the relevant range \Sref{R1}{Prop 3.9}, \Sref{R5}{Prop 32}. For $N=4$ and $q=\frac45$ the integer vectors
+$(5\Qm)^{t}\ve_0$ satisfy $(5\Qm)^{5}\ve_0\le5\,(5\Qm)^{4}\ve_0$ entrywise, so by Lemma~\ref{appD_rigorous:lem-tail}
+(with $\le$) the PMF does not increase from $t=5$ on, while $\pmf(3)=\pmf(4)=\frac8{125}<\pmf(5)=\frac{208}{3125}$; by
+the monotonicity of unimodality in $q$ \Sref{R4}{Thm 2.5} this gives every $q\le\frac45$ \Sref{R4}{Prop 4.4}.
+\end{proof}
+% src: data/msc_rigorous_unimodality/verify_thr1d.json; data/msc_rigorous_1d/39_hand_constants.json
+
+Theorems~\ref{s6b_rigorous:thm-45}, \ref{s6b_rigorous:thm-finite} and~\ref{s6b_rigorous:thm-pairs} are proved in
+\Sref{R4}{Sections 7--9}; the exact counter-examples compare rational numbers, the continuous-time ones after
+truncating the Poisson series $\eu^{t}\gd(t)=\sum_nt^{n}\pmf_1(n+1)/n!$ with explicit tail bounds.
+
+\subsection{One dimension and the closed form (Sections~\ref{s6b_rigorous:ssec-1d} and~\ref{s6b_rigorous:ssec-cf})}
+
+Theorem~\ref{s6b_rigorous:thm-1d} is proved in \Sref{R1}{Sections 4--7}, Refuted
+statement~\ref{s6b_rigorous:ref-cf1d} in \Sref{R1}{Rem 7.9} and \Sref{R5}{Thms 21, 43},
+Theorem~\ref{s6b_rigorous:thm-certified} in \Sref{R5}{Sections 4--6, 10}, Proposition~\ref{s6b_rigorous:prop-decomposition}
+and Theorems~\ref{s6b_rigorous:thm-window}--\ref{s6b_rigorous:thm-laws} in \Sref{R3}{Sections 1--6}, cases (b) and (c)
+of Theorem~\ref{s6b_rigorous:thm-disc} in \Sref{R3}{Section 7}, and Theorem~\ref{s6b_rigorous:thm-cffinite} in
+\Sref{R5}{Section 7}. The two deductions made in R0 follow.
+
+\begin{proof}[Proof of Theorem~\ref{s6b_rigorous:thm-disc}(a)]
+\combined{} For $q\le\frac12$ all multipliers $1-q\nu_j$ lie in $(0,1)$, and the discrete analogue of
+Theorem~\ref{s6b_rigorous:thm-window} \Sref{R3}{Prop 7.1, Lemma 7.6, Thm 7.7} certifies, for every $N\ge N_0$, the sign
+of the increment $\pmf(t+1)-\pmf(t)$ at two explicit times $t_-<t_+$: positive at $t_-$, negative at $t_+$. The PMF is
+unimodal by Theorem~\ref{s6b_rigorous:thm-unimodal}(ii), since $q\le\frac12<q_N^{\square}$. For a unimodal sequence, a
+strict increase from $t_-$ to $t_-+1$ excludes maximisers $\le t_-$, and a strict decrease from $t_+$ to $t_++1$
+excludes maximisers $>t_+$; so every maximiser lies in $(t_-,t_+]$, which is the window stated
+\Sref{R3}{Thm 7.8}. R3 used a published closure theorem for ultra-log-concave sequences to obtain unimodality
+\Sref{R3}{Thm 7.4}; this proof uses Theorem~\ref{s6b_rigorous:thm-unimodal}(ii) instead.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{s6b_rigorous:cor-cf}]
+\combined{} Write $\mu=q\muone\le\frac{2q}{\dd}(\frac\pi{2N})^{2}$ and $\tau_{\mathrm{cf}}(X)=X\ln(2\dd X)/(X+2\dd-1)$. A
+window $-K^{-}/(X\mu)<\tmode-\tcf<K^{+}/(X\mu)+2$ gives $\tmode>(\tau_{\mathrm{cf}}(X)-\max(K^{-},0)/X)/\mu$ and
+$|\tmode-\tcf|<\max(K^{+}/X+2\mu,\,K^{-}/X)/\mu$, hence
+\[
+\frac{|\tmode-\tcf|}{\tmode}<B(N):=\frac{\max\bigl(K^{+}/X+2\mu,\ K^{-}/X\bigr)}{\tau_{\mathrm{cf}}(X)-\max(K^{-},0)/X}.
+\]
+$\tau_{\mathrm{cf}}$ is increasing in $X$ (its derivative is $((2\dd-1)\ln(2\dd X)+X+2\dd-1)/(X+2\dd-1)^{2}>0$). Insert the
+lower bound $X\ge X_{\mathrm{lo}}(N)$ of \Sref{R3}{Cor 4.7} ($2\pi\ln N-0.24$ for $\dd=2$, $7.106860\,N-7.63$ for
+$\dd=3$; $N\ge10$) and the upper bound on $\mu$; then $B$ is decreasing in $N$ on every range where the constants
+are fixed, and it suffices to evaluate it, in interval arithmetic, at the left end $N_0$ of a row of the window tables.
+For $\dd=3$ the row $(50;\,1.851,\,2.973)$ of Theorem~\ref{s6b_rigorous:thm-disc}(b) ($q_{\max}=0.8$) gives
+$B(50)<0.0013$, and for $q=\frac12$ the row $(30;\,1.962,\,2.829)$ of Theorem~\ref{s6b_rigorous:thm-disc}(a) gives
+$B(30)<0.0023$; Theorem~\ref{s6b_rigorous:thm-cffinite}(b) covers $10\le N\le120$ and $10\le N\le80$. For $\dd=2$ the
+rows with $N_0=1000$ give $B(N)<0.0100$ exactly from $N=1\,761\,450$ ($q=\frac45$) and $N=554\,846$ ($q=\frac12$) on,
+and Theorem~\ref{s6b_rigorous:thm-cffinite}(a) covers the finite ranges.
+\end{proof}
+% src: data/article/s6b_rigorous_checks.json (corollary_closed_form_all_N: B_upper at N0 = 50 and 30, first_N_below_target_with_row_1000)
+
+\subsection{The additions to Section~\ref{s4_mfpt:sec}}
+
+\begin{proof}[Proof of Theorem~\ref{s4_mfpt:thm-remainder}]
+\combined{} \Sref{R2}{Thm 9.1} proves, for every $N\ge2$, $q\TN=\frac8\pi N^{2}\ln N+(c_\tau+c_{m\tau})N^{2}+R_m(N)$ with
+$R_m=R_\tau+R_{m\tau}$, where the two parts satisfy $-2.14\le R_\tau(N)\le3.53$ and $-9.06\le R_{m\tau}(N)\le7.72$
+\Sref{R2}{Eqs (9.3), (9.4)}, so that $-11.2\le R_m(N)\le11.25$; here
+$c_\tau=\frac8\pi(\gammaE-\frac12+\frac72\ln2+\frac12\ln\pi-2\ln\Gamma(\frac14))-2$ and $c_{m\tau}=4\ln2/\pi$
+(the numerical constants of the proof certified in ball arithmetic). Since
+$\ln\lemn=2\ln\Gamma(\frac14)-\frac32\ln2-\frac12\ln\pi$, the sum $c_\tau+c_{m\tau}
+=\frac8\pi[\gammaE-\frac12+4\ln2+\frac12\ln\pi-2\ln\Gamma(\frac14)]-2$ equals the expression of $C_{2}$ in
+\eqref{s4_mfpt:eq-coeffs}. For the second part, \Sref{R5}{Thm 26} encloses $q\TN$ for $2\le N\le301$ by
+Lemma~\ref{appD_rigorous:lem-encl} with integer guesses (base T1), and \Sref{R5}{Prop 27} treats $301<N\le1500$ in ball
+arithmetic under the hypothesis that $q\TN$ is given by the single sum \eqref{s4_mfpt:eq-single-S}; that hypothesis is
+Theorem~\ref{s4_mfpt:thm-single}(b). The junction $r_{301}<r_{302}$ is an inequality between the outward-rounded bounds
+$0.532129078393$ and $0.532129156439$\lateproof.
+\end{proof}
+% src: data/msc_rigorous_spectral/06_certified_constants.json; data/article/s6b_rigorous_checks.json (section4_combined_bounds: d2_remainder_interval); data/msc_rigorous_certified/mfpt2d_remainder.json; data/msc_rigorous_certified/remark_checks.json (remainder_junction)
+
+Theorem~\ref{s4_mfpt:thm-3d} is \Sref{R2}{Thm 10.1}. The identity $\Kthree=\sum_{\vy\in\{0,1\}^{3}}\Ginf(\vy)$ is
+elementary: $\Kthree=3\int_0^\infty[\eu^{-s}(I_0(s)+I_1(s))]^{3}\,\dif s$, and expanding
+$\prod_i(1+\cos\theta_i)=\sum_{\vy\in\{0,1\}^{3}}\prod_i\cos(y_i\theta_i)$ in the equivalent Fourier integral gives
+the Fourier representation of the Green's function; the bounds on the remainders use the closed form of a
+one-dimensional integral by complete elliptic integrals and a trapezoidal estimate \Sref{R2}{Section 10}.
+
+\subsection{Further remarks on the statements of Section~\ref{s6b_rigorous:sec}}\label{appD_rigorous:ssec-remarks}
+
+\emph{Residues.} For a pair exchanged by a symmetry of the lattice, as for opposite corners, the sign of every residue
+is determined by one of two half-sums of the Green's function at the target \Sref{R2}{Thm 5.6}; this is the sign rule
+\eqref{appD_rigorous:eq-signrule}. For $\dd\ge2$, $\bar X>1$ and $t\ge1/\muone$, the unit-rate density differs from its two
+slowest exponential terms by at most $2\eu\,c_*^{\dd/2}\beta\sqrt{Z}\,\bar X^{-1}\muone\eu^{-2\muone t}$, with $c_*=1+\pi^{3/2}/2$,
+$\beta=\bar X/(\bar X-1)$ and a lattice constant $Z$ (for $\dd\le3$ the sum $\sum_{\vk\in\mathbb Z^{\dd}\setminus0}|\vk|^{-4}$)
+\Sref{R2}{Thm 12.1, Cor 12.2}. The bound is absolute: where $\eu^{-\muone t}$ is of order $1/\bar X$, near the mode, it is
+a relative error $\Order(\bar X^{-2})$, whereas at $t=1/\muone$ it is of the same order $\muone\bar X^{-1}$ as the two
+slowest terms \Sref{R2}{Rem 12.3}.
+
+\emph{Unimodality.} The extension of the statement on $\gd'$ in Theorem~\ref{s6b_rigorous:thm-unimodal}(i) to $\dd=1$ and to
+$N=2$ carries the mark \lateproof; for those cases unimodality also follows from
+Proposition~\ref{s3_methods:prop-1d-unimodal} and from part (ii). A second proof of the one-dimensional case of
+Theorem~\ref{s6b_rigorous:thm-45}, by total positivity of $\Qm^{k}$ for $k\ge10$, is \Sref{R1}{Thm 3.15}. The evidence for
+Conjecture~\ref{s6b_rigorous:conj-unimodal}(a) is exact arithmetic at $q=\frac12$ near the mode for $\dd=2$, $N\le20$, and
+$\dd=3$, $N\le8$; for (b) it is Theorem~\ref{s6b_rigorous:thm-finite}(b).
+
+\emph{Certified modes.} In Theorem~\ref{s6b_rigorous:thm-certified}, for $\dd=2,3$ every occupation probability of the
+surviving walker is already decreasing at the mode. The ranges $\dd=1$, $N\le600$ ($q=\frac45$) and $N\le300$ ($q=\frac12$),
+$\dd=2$, $N\le160$ and $N\le80$, and $\dd=3$, $N\le60$ and $N\le32$ rest on Python integers alone and were re-derived by a
+second, separately written program; the others rest in addition on the C program, each certificate computed twice with
+identical checksums.
+% src: data/msc_rigorous_certified/SUMMARY.json; data/msc_rigorous_certified/SUMMARY_EXT.json; data/msc_rigorous_certified/AUDIT_EXT.json
+
+\emph{One dimension.} All poles are of order $\ell^{-2}$ and all contribute at the mode; there is no small parameter, which
+is why the closed form fails there (Refuted statement~\ref{s6b_rigorous:ref-cf1d}). For $q=0.8$,
+$\tmode=\lceil c\ell^{2}/q-1.09902\ldots\rceil$ whenever $\operatorname{dist}(\tau_\ell,\mathbb Z)\ge E$
+(Theorem~\ref{s6b_rigorous:thm-1d}(c)); in particular the modes $4\,166\,011\,658$ and $416\,604\,915\,263$ at $N=10^{5}$ and
+$10^{6}$ are the global maximisers.
+% src: data/article/s6b_rigorous_checks.json (one_dimension_q4-5_window: offset_kappa_over_q_minus_1_plus_rho, rows N = 100000, 1000000)
+
+\emph{The closed form.} $\tcf$ differs from \eqref{s6_mechanism:eq-L1} by a relative amount $\Order(N^{-2})$; the scaled
+discrete mode is $q\muone\tmode$, the scaled continuous mode $\muone\tmodec$, and $q\muone\tcf=X\ln(2\dd X)/(X+2\dd-1)$.
+Theorem~\ref{s6b_rigorous:thm-cfcont} also gives $|\tmodec-q\tcf|\le K_{\dd}/(X\muone)$. Without the corrections of
+Theorem~\ref{s6b_rigorous:thm-window}, $\gd'$ vanishes at an explicit time given by the two slowest poles and their
+weights.

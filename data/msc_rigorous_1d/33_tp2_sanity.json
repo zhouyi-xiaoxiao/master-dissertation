@@ -1,0 +1,20 @@
+{
+ "lemma312_identities": true,
+ "locality_sets_equal_and_tp2": true,
+ "q45_logconcave_bruteforce_N5_40": true,
+ "bruteforce_not_unimodal_N_le_40": {
+  "17/20": [
+   4,
+   5
+  ],
+  "9/10": [
+   4,
+   5,
+   6,
+   7,
+   8
+  ]
+ },
+ "verdicts_consistent": true,
+ "ALL_OK": true
+}

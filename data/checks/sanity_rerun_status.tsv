@@ -1,0 +1,52 @@
+msc_rigorous_1d	01_sanity_exact	0	3	MFPT (N(N-1)-x0(x0-1))/q and variance = sum lam/(1-lam)^2 : True
+msc_rigorous_1d	09_sec3_sec4_sanity	0	16	elementary bounds: max violation (must be <= ~1e-9): 0.0
+msc_rigorous_1d	11_expansion_sanity	0	2	{'mode': 'disc', 'q': '0.8', 'j': 1, 'N0': 101, 'N': 606, 'v': 0.35499962155332243, 'R_true': 105.46838793721616, 'encl': '[+/- 2.53e+2]', 'inside': True}
+msc_rigorous_1d	20_validate_theorems	0	28	(c) q=0.9 N=601: increasing on [t_a, t_-+1]: True; decreasing on [t_+, T]: True; left tail below max: True; non-unimodal at the left end f(N-1) > f(N) < f(N+1): False
+msc_rigorous_1d	21_q1_sanity	0	2	(5) N=300 far: predicted zero 29994.0180, actual 29994.0181, L*(diff) = 0.0470
+msc_rigorous_1d	22_crosscheck_t5	0	1	ALL OK: True
+msc_rigorous_1d	23_stress	0	39	ALL OK: True
+msc_rigorous_1d	27_start_sanity	0	7	(5) sign changes of G_xi', G_xi'', G_xi''' = 1, 2, 3 and G_xi''(c) < 0: True ;  c''(0) ~ -1.9999 (exact: -2)
+msc_rigorous_1d	29_start_stress	0	45	ALL OK: True
+msc_rigorous_1d	30_tp2_pattern	0	43	q = 7/10 : same set of (n-x, n-y, t) for all N >= 12: True ; set: [(1, 0, 2)]
+msc_rigorous_1d	33_tp2_sanity	0	23	ALL OK: True
+msc_rigorous_1d	34_tp2_second_impl	0	7	ALL OK: True
+msc_rigorous_1d	36_start_failure	0	138	ALL OK: True
+msc_rigorous_1d	38_qN_strict	0	5	ALL OK: True
+msc_rigorous_1d	39_hand_constants	0	1	ALL OK: True
+msc_rigorous_1d	40_examples	0	12	ALL OK: True
+msc_rigorous_spectral	run_all	0	68	
+msc_rigorous_spectral	a01_recheck_separate_code	0	6	AUDIT ALL OK: True
+msc_rigorous_asymptotics	02_check_structure	0	1	{"d": 3, "N": 11, "sum_b": 0.9992486851990954, "one_minus_pia": 0.9992486851990984, "decomp_relerr_max": 4.300600892656592e-09, "bound_violations": 0, "q_min_rel": 4.815772889631808e-05, "hhat_at_minu
+msc_rigorous_asymptotics	12_identity_check	0	3	{"d": 3, "N": 9, "n_poles_ge2": 114, "sum_rho_check": 2.6645352591003757e-15, "identity_max_relerr": 3.5363308535080728e-09, "violations": [["early", 0.02], ["value", 0.02, -73.23451993410411], ["g e^
+msc_rigorous_asymptotics	40_check_thmA	0	4	{"d": 3, "N": 12, "Xs": 75.9535833268061, "pole_err": 1.1324274851176597e-14, "betahat_err": 2.5890747878953846e-16, "Rtot_err": 3.944761184371259e-15, "identity_max_relerr": 3.402815569238983e-09, "n
+msc_rigorous_asymptotics	41_windows_exact	0	2	{"d": 3, "N": 160, "Xs": 1128.14977, "X": 1130.66903, "theta": 0.00528, "tau_cf": 8.78348, "t_c": 8.76714, "tau_minus": 8.7828, "tau_plus": 8.78452, "Xs(tau_minus-tau_cf)": -0.76675, "Xs(tau_plus-tau_
+msc_rigorous_asymptotics	51_validate_enclosures	0	1	{"d": 3, "N": 160, "Nlo": 159.9705, "Nhi": 160.0722, "Xs": 1128.1498, "Xs_lo": 1127.6367, "Xs_hi": 1128.3597, "e": [14.369, 14.6432, 14.834], "theta": [0.0053, 0.0053, 0.0053], "EU": [2.4312, 2.5193, 
+msc_rigorous_asymptotics	53_check_decomposition	0	1	{"d": 3, "N": 120, "c": 0.5, "lhs": -18.96149721973033, "rhs": -18.96149721973059, "err": 2.5934809855243657e-13, "id_a": 1.0231815394945443e-12, "id_d": 0.0, "bad": []}
+msc_rigorous_asymptotics	54_bruteforce_theorem51	0	3	ALL OK
+msc_rigorous_asymptotics	60_check_asymptotics	0	1	ALL OK
+msc_rigorous_asymptotics	70_check_discrete	0	4	{"d": 3, "N": 9, "q": 0.5, "mu": 0.010051229869015268, "Xs": 54.52679435802169, "max_mu_lam": 0.9698461049992301, "a_err": 9.063747386450712e-16, "mode_stepper": 533, "identity_max_relerr": 1.33888965
+msc_rigorous_asymptotics	71_check_discrete_unimodal	0	0	{"d": 2, "N": 8, "q": "1/2", "tmax": 500, "phi_negative": 0, "phi_logconcave_violations": 0, "phi_internal_zero": false, "f_sign_changes": 1, "ties_after_start": 0, "mode": 168}
+msc_rigorous_asymptotics	73_validate_discrete	0	4	ALL INSIDE
+msc_rigorous_asymptotics	74_observe_q_large	0	1	inside for all: True  n = 50
+msc_rigorous_asymptotics	75_check_q_large	0	5	{"d": 2, "N": 36, "q": 0.9, "mu": 0.0017123858587145106, "N1_condition": true, "Xs": 20.708415003175773, "n_negative_beta": 16, "n_neg_poles": 239, "R_neg_mu": 1.4338082143508047e-05, "pia_q_over_2": 
+msc_rigorous_asymptotics	77_validate_q_large	0	3	ALL OK
+msc_rigorous_asymptotics	79_validate_allq	0	183	ALL INSIDE, ALL TAILS CERTIFIED
+msc_rigorous_asymptotics	81_check_text_constants	0	0	ALL PASS
+msc_rigorous_asymptotics	82_q1_parity_example	0	0	    P(T=173) = 0.00123823468
+msc_rigorous_unimodality	verify_thr1d	0	80	ALL PASS
+msc_rigorous_unimodality	verify_lemmas	0	290	ALL PASS
+msc_rigorous_unimodality	verify_lastexit	0	102	ALL PASS
+msc_rigorous_unimodality	verify_lc1d	0	53	ALL PASS
+msc_rigorous_unimodality	verify_family	0	17	ALL PASS
+msc_rigorous_unimodality	summarize_lc1d	0	1	ALL OK
+msc_rigorous_unimodality	recheck_headline	0	0	ALL CHECKS PASS
+msc_rigorous_unimodality	scan_pairs1d	0	2	OK
+msc_rigorous_unimodality	table_mode_bounds_small	0	2	M2C d=3 N=9: m_u=22.620 mode=58.695 m_1=91.197 m(1/M)=91.702  m_1/mode=1.5537 ok=True
+msc_rigorous_unimodality	verify_certificate_code	0	3	ALL PASS
+msc_rigorous_certified	check_lemmas	0	1	}
+msc_rigorous_certified	check_packed	0	4	}
+msc_rigorous_certified	check_logconcave	0	30	{'d': 3, 'N': 4, 'q': '4/5', 't0': 9, 'horizon': 201, 'tail_time': 49, 'logconcave_on_horizon': True, 'first_violations': [], 'n_violations': 0}
+msc_rigorous_certified	check_remarks	0	1	}
+msc_rigorous_certified	check_ext_lemmas	0	4	ALL OK
+msc_rigorous_certified	audit	0	1	127 assertions, 0 failures
+msc_rigorous_certified	audit_ext	0	2	131 assertions, 0 failures

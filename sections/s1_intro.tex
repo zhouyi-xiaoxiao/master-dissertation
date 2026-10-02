@@ -1,0 +1,141 @@
+% sections/s1_intro.tex -- Introduction.
+% Body only; uses macros.tex; all citation keys are in refs.bib.
+% The introduction states results in words and points to the section that establishes each of them; the numbers
+% are given there.  The few numbers kept here carry a % src comment.
+% Paths in "% src:" comments are relative to the root of the repository (see README.md).
+\section{Introduction}\label{s1_intro:sec}
+
+The time a confined random walker needs to reach a target, the first-passage time, is the basic quantity of
+search and reaction problems \citep{Redner2001,BenichouVoituriez2014}. Its distribution is usually summarised by
+its mean, but in bounded domains the mean need not be representative: the most probable value can lie far below
+it \citep{Mattos2012,GodecMetzler2016,Grebenkov2018}. We study this gap in the simplest lattice setting. A lazy
+walker attempts, at each step and with probability $q$, a move to one of the $2\dd$ nearest neighbours on the
+hypercubic lattice $\Om=\{0,\dots,N-1\}^{\dd}$; a move that would leave the lattice is cancelled, and one site is
+absorbing. We compare the mean first-passage time (MFPT) $\MF$ with the mode $\tmode$, the most probable
+first-passage time, mainly from one corner to the opposite corner, and ask how both depend on the size $N$, on
+the dimension $\dd=1,2,3$ and, on the square lattice, on a fraction $p$ of blocked sites (inert defects).
+
+\paragraph{What is known.}
+The generating-function formalism of \citet{MontrollWeiss1965} expresses the first-passage law through the
+propagator of the walk without target; with it \citet{Montroll1969} found that the mean time to a single trap on
+a periodic lattice of $\nn$ sites grows as $\nn\ln\nn$ in two dimensions and as $\nn$ in three, and the survival
+probability of a walk on a finite lattice with a single trap was studied by \citet{WeissHavlinBunde1985}.
+\citet{Giuggioli2020} gave the exact propagator of the lazy walk in reflecting hypercubes of any dimension and,
+from it, the MFPT as a nested finite sum; for the rectangle, with the same boundary rule, the cosine double sum was
+given for this walk by \citet{CondaminBenichou2006} (in resistance form already by \citet{Wu2004}), and pseudo-Green-function methods give MFPTs in general confined domains
+\citep{Condamin2005,Condamin2007PRE,Condamin2007Nature}. By the commute-time identity
+\citep{Chandra1989,Tetali1991} mean hitting times of a symmetric walk are determined by effective resistances, and
+the resistance between two nodes of a rectangular grid of resistors with free boundaries is known as a double sum
+\citep{Wu2004} and as a single sum for two arbitrary nodes and any grid size \citep{TanTan2020}; the
+corner-to-corner resistance has a large-size expansion \citep{EssamWu2009} whose coefficients are known for every
+aspect ratio \citep{IzmailianHuang2010}.
+
+The distribution in confinement is also known in outline. Rescaled by the mean it is close to exponential when
+exploration is non-compact \citep{Benichou2010}, and for large volumes the rescaled laws fall into universality classes
+\citep{Meyer2011}; direct trajectories set a short time scale and
+trajectories that explore the whole domain a much longer one \citep{GodecMetzler2016}; and for reversible Markov
+chains the exponential approximation of hitting times from a stationary start has explicit error bounds
+\citep{AldousBrown1992,AldousFill}, and relaxation and first-passage time scales interlace
+\citep{HartichGodec2018,HartichGodec2019}. For diffusion to a small target the slow decay rate follows from the
+perturbation of eigenvalues by a small removed region \citep{WardKeller1993}, the mean time to a small target on a
+reflecting boundary has an extensive asymptotic theory \citep{HolcmanSchuss2014}, and uniform
+approximations of the first-passage density combine that long-time behaviour with a short-time correction
+\citep{IsaacsonNewby2013}; the same authors observe that the most probable time, unlike the mean, depends strongly
+on the starting position, and compute it numerically. \citet{GodecMetzler2016} and \citet{Grebenkov2018} give the
+most probable time of direct trajectories, and \citet{Grebenkov2018} relate the median to the mean.
+\citet{SarvaharmanGiuggioli2023} gave an analytic framework for lattice walks with inert heterogeneities and showed, for
+a single barrier on a chain, that its position decides whether the mean or only the mode and the tail respond; the
+reduction of conductivity and diffusivity on site-diluted
+lattices is a classical subject \citep{Kirkpatrick1973,WatsonLeath1974,Nieuwenhuizen1986,Ernst1987,HavlinBenAvraham1987}.
+
+\paragraph{Contributions.}
+Each item states its status --- proved (by hand or with computer assistance), computed exactly at the sizes stated
+(with no claim beyond them), or derived by formal asymptotics --- and what was already known.
+
+\begingroup
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\begin{enumerate}
+\item \emph{Means (proved; known in substance).} A cosine sum for the MFPT between any two sites in any dimension
+(Theorem~\ref{s4_mfpt:thm-cosine}); in two dimensions single sums for opposite corners, in three equivalent forms,
+and for an arbitrary pair (Theorems~\ref{s4_mfpt:thm-single} and~\ref{s4_mfpt:thm-pair}), valid for every $N\ge2$;
+the large-$N$ expansion with closed-form coefficients (Theorem~\ref{s4_mfpt:thm-expansion}) and, with computer
+assistance, an explicit remainder for every $N$ (Theorem~\ref{s4_mfpt:thm-remainder}); in three dimensions a double
+sum and, with computer assistance, $q\MF=4.32046\ldots\,N^{3}-3.887\ldots\,N^{2}+\Order(1)$, the leading constant
+being a sum of lattice Green's function values (Theorem~\ref{s4_mfpt:thm-3d}).
+% src: data/msc_rigorous_spectral/06_certified_constants.json (C_3, c_tau_3D); data/msc_rigorous_spectral/16_certified_d3_remainder.json
+Through the commute-time identity the two-dimensional formulas are resistor-grid results in print
+(Section~\ref{s4_mfpt:ssec-lit}); we add a self-contained proof in the random-walk setting and expressions of three
+expansion coefficients through the lemniscate constant, and record an overflow-free form of the single sum, an
+elementary rearrangement that is the one to use in floating point.
+
+\item \emph{Distributions and modes (exact computation).} First-passage distributions are computed by time
+stepping, by a closed form in one dimension and by Laplace inversion, and checked by a separately written pole expansion;
+a Cauchy--Schwarz bound, together with exact certificates for corner-to-corner transport at $q\in\{\frac12,\frac45,1\}$
+and an a-priori bound on round-off otherwise, certifies that every discrete-time mode obtained by time stepping on the
+lattice without defects is the global maximiser (Section~\ref{s3_methods:sec}); on lattices with defects the same
+certificate is evaluated in double precision (Section~\ref{s7_defects:sec}). In one dimension $\tmode/\MF$ tends to a constant; in two dimensions $q\tmode/N^{2}$
+increases at every computed size while $\tmode/\MF$ falls; in three dimensions $\tmode$ follows $N^{2}\ln N$ whereas
+$\MF$ grows as $N^{3}$ (Section~\ref{s5_modes:sec}). That the mode lies below the mean in confinement is known; the
+exact lattice values and their dependence on $N$ and $\dd$ are computed here.
+
+\item \emph{A closed-form approximation of the mode (formal derivation).} Two-pole asymptotics of the first-passage
+transform give a parameter-free formula for the mode in terms of $X=\muone q\MF$, where $\muone$ is the slowest
+relaxation rate of the reflecting lattice (Formal result~\ref{s6_mechanism:res-L1}); its accuracy is measured
+against the exact modes, and it fails in one dimension and for some placements of start and target. Its
+ingredients are the lattice counterparts of known continuum results \citep{WardKeller1993,IsaacsonNewby2013}. We
+have not found the explicit formula in the literature, have not established its absence, and claim no priority.
+
+\item \emph{What is proved about the mode (theorems, several computer-assisted; some proofs provisional,
+Section~\ref{s6b_rigorous:ssec-status}).} Section~\ref{s6b_rigorous:sec} proves, for corner-to-corner transport (end to
+end for $\dd=1$) and, where stated, for the other point-target placements: that the law is unimodal for the three
+point-target placements studied in continuous time in every dimension and, in discrete time, for $q\le\frac45$ from
+corner to corner in every dimension (for the centre placements when $\dd\ge2$), a threshold attained on the chain with
+$N=4$, while unimodality fails near $q=1$ on the chain, at $q=1$ for some sizes in two dimensions, and for other
+placements; that the residues of the poles do not alternate in sign for $\dd\ge2$ (provisional, \lateproof); that in
+one dimension $\lim\tmode/\MF$ exists for every
+$q$ and is enclosed to within $10^{-70}$, with windows of width about one step for every $N\ge3$ when $q\le\frac45$;
+and that in two and three dimensions the closed form has a scaled error $X\muone\,|\tmodec-q\tcf|$ bounded for every
+$N\ge12$ ($\dd=2$) and $N\ge10$ ($\dd=3$), where $\tcf$ is the closed form \eqref{s6_mechanism:eq-L1-simple}, and
+the leading laws $\tmode\sim(4/\pi^{2}q)N^{2}\ln\ln N$ and $(6/\pi^{2}q)N^{2}\ln N$ hold with explicit remainders ---
+in continuous time and, in discrete time, for $q\le0.99$ once $N$ exceeds an explicit size and, provisionally
+(\lateproof), for every $q<1$ once $N$ exceeds an explicit size of order $\pi q/(1-q)$ as $q\to1$ (the case $q=1$ is
+open) --- and that the closed form is within $1\%$ ($\dd=2$) and $0.3\%$ ($\dd=3$) of the certified exact mode on
+finite ranges with $N\ge10$ for $q\in\{\frac45,\frac12\}$, in three dimensions for every $N\ge10$.
+Computer-assisted proofs reduce a statement, by lemmas proved by hand, to finitely many inequalities checked in exact
+or ball arithmetic; their trusted bases and certificates are named. Some ingredients are classical: the interlacing of
+the two spectra \citep{HartichGodec2018,HartichGodec2019}, the mixture and exponential laws from the uniform and the
+quasi-stationary start \citep{AldousFill}, and unimodality on the chain in continuous time \citep{Keilson1971}. We have not
+found the other statements in the literature, but our search was targeted, not exhaustive; the tools (interlacing,
+log-concavity under convolution, cone certificates) are classical.
+% src: data/msc_rigorous_1d/03_constants.json; data/msc_rigorous_certified/closedform_summary_c128.json; data/article/s6b_rigorous_checks.json (corollary_closed_form_all_N)
+
+\item \emph{Shape of the distribution (exact computation).} For $\dd\ge2$ the law is close to an exponential
+preceded by a short dead time, whose end the mode marks; the mode is then not a typical time, and in three
+dimensions the maximum is very flat (Section~\ref{s6_mechanism:ssec-shape}). This two-scale structure is known
+\citep{Benichou2010,Meyer2011,GodecMetzler2016,AldousBrown1992}; we add the exact lattice computation.
+
+\item \emph{Inert defects (exact computation for each configuration; dilute law formal).} Each configuration of
+blocked sites on the square lattice is solved exactly, so the only uncertainty is the sampling of placements.
+At $N=35$ and blocked fractions $p\le0.2$, uniformly random defects multiply the mean and the mode by nearly the same
+factor $\Dzero/\Deff(p)$ (within $2.8\%$ and $1.82\%$, ensemble-mean estimates with $95\%$ intervals up to $\pm1.8\%$
+and $\pm0.72\%$), so that $\tmode/\MF$ changes by a few per cent at low density but rises by $4.7\%$ to $8.9\%$ at
+$p=0.2$, and where the defects sit decides the direction of any change of $\tmode/\MF$ (Section~\ref{s7_defects:sec}); a
+single barrier on a chain already shows that placement decides which of the two times responds
+\citep{SarvaharmanGiuggioli2023}.
+% src: data/article/s7_defects_density_pooled.json (statements.uniform_max_abs_mfpt_fac_over_theta_pct_p_le_0.20_pooled, uniform_max_abs_mode_fac_over_theta_pct_p_le_0.20_pooled, uniform_ratio_excess_pct_by_p, uniform_rom_excess_pct_by_p); data/article/s7_defects_density_pooled.csv (mfpt_fac_ci_P, mode_fac_ci_P, theta_L192)
+The dilute law
+$\Deff/\Dzero=1-(\pi-1)p+\Order(p^{2})$ is in the literature \citep{WatsonLeath1974,Nieuwenhuizen1986,Ernst1987};
+we prove the single-defect response behind it (Proposition~\ref{s7_defects_density:prop-dilute}). That the dilation
+becomes exact as $N\to\infty$ is stated only as Conjecture~\ref{s7_defects_density:conj-homog}.
+\end{enumerate}
+\endgroup
+
+\paragraph{Outline.}
+Section~\ref{s2_model:sec} defines the model and its exact structure; Section~\ref{s3_methods:sec} describes the
+computations and the certificate of the global mode; Section~\ref{s4_mfpt:sec} gives the exact means.
+Sections~\ref{s5_modes:sec} and~\ref{s6_mechanism:sec} report the exact modes and explain them through the poles of
+the first-passage transform, and Section~\ref{s6b_rigorous:sec} states what is proved about them.
+Section~\ref{s7_defects:sec} treats inert defects, and Section~\ref{s9_discussion:sec} separates what is established
+from what is not. The Supplementary Material (Sections~S1--S10) contains the proofs that are omitted here,
+the extended tables, the validation of the numerical methods and the description of the certificates; the companion
+notes R0--R5 in the repository \citep{ZhouyiRepo} contain the complete proofs of the computer-assisted theorems.

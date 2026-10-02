@@ -1,0 +1,611 @@
+{
+ "script": "code/article/appA_proofs_check.py",
+ "summary": {
+  "max_deviation_multiprecision_checks": 8.451681578837792e-36,
+  "n_multiprecision_checks": 33,
+  "max_rel_deviation_vs_float64_sparse_solves": 1.3703482792948307e-12,
+  "n_float64_sparse_solve_checks": 3,
+  "total_cases": 14463
+ },
+ "mp_dps": 40,
+ "n_checks": 51,
+ "n_failed": 0,
+ "runtime_s": 5.9,
+ "checks": [
+  {
+   "label": "appA_proofs:lem-spectrum",
+   "statement": "T psi_k = cos(pi k/N) psi_k (float64, absolute)",
+   "cases": 131,
+   "max_deviation": 4.628242233906121e-15,
+   "tolerance": 1e-13,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:lem-spectrum",
+   "statement": "psi_k orthonormal",
+   "cases": 11,
+   "max_deviation": 5.277281490663056e-15,
+   "tolerance": 1e-13,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:lem-spectrum",
+   "statement": "u_k(-1)=u_k(0), u_k(N)=u_k(N-1)",
+   "cases": 131,
+   "max_deviation": 2.3203661214665772e-14,
+   "tolerance": 1e-13,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-corner-cos",
+   "statement": "cos theta_k(0)=c_k, cos theta_k(N-1)=(-1)^k c_k",
+   "cases": 131,
+   "max_deviation": 1.582067810090848e-14,
+   "tolerance": 1e-13,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:lem-spectrum",
+   "statement": "P = (1-q) I + (q/d) sum_i T^(i), P built from the rules, d = 1,2,3",
+   "cases": 33,
+   "max_deviation": 0.0,
+   "tolerance": 1e-14,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:lem-spectrum",
+   "statement": "(I-P) Psi_k = (2q/d) sum_i s_{k_i}^2 Psi_k, d = 1,2,3",
+   "cases": 33,
+   "max_deviation": 1.6653345369377348e-15,
+   "tolerance": 1e-13,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-Lplus",
+   "statement": "spectral form of L^+ against numpy pinv (relative)",
+   "cases": 33,
+   "max_deviation": 5.082601006733962e-15,
+   "tolerance": 1e-10,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-cosine / eq-1d",
+   "statement": "d=1: cosine sum = h_1(m,m') = q T (exact), all ordered pairs, N=2..7, q=1 and 4/5",
+   "cases": 224,
+   "max_deviation": 1.9515042933573132e-40,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-cosine",
+   "statement": "d=2: cosine double sum = q T (exact): all pairs N=2..4 (q=1, 3/7), random pairs N=5..8",
+   "cases": 720,
+   "max_deviation": 9.002694638154437e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-cosine",
+   "statement": "d=3: cosine triple sum = q T (exact), N=2 all pairs, N=3 four targets, q=4/5",
+   "cases": 160,
+   "max_deviation": 5.247742637599498e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-cosine-cc",
+   "statement": "corner-to-corner odd-sector sum = q T_N^(d) (exact): d=1 N=2..12, d=2 N=2..9, d=3 N=2..4",
+   "cases": 22,
+   "max_deviation": 5.45058555750671e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-ring",
+   "statement": "ring Green's function, M=1..12,25,40, 0<=m<=M, sigma=1.001,1.5,3,10 (relative, 100 digits)",
+   "cases": 628,
+   "max_deviation": 4.1119622924126124e-76,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-ring-half",
+   "statement": "half-range form, N=2..9,16,35, 0<=m<=2N, four values of sigma",
+   "cases": 800,
+   "max_deviation": 5.998005842818801e-39,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-E1",
+   "statement": "form with j>=1 only (Eq. (E1) of Giuggioli 2020), same cases",
+   "cases": 800,
+   "max_deviation": 1.0997300664919448e-38,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-ring-half (range)",
+   "statement": "identity is VIOLATED at m=2N+1 and m=-1 (sigma=3): smallest violation must exceed 1e-3",
+   "cases": 20,
+   "max_deviation": 0.0,
+   "tolerance": 0.5,
+   "passed": true,
+   "violations_sigma_3": {
+    "2": {
+     "m=2N+1": 8.0,
+     "m=-1": 8.0
+    },
+    "3": {
+     "m=2N+1": 12.0,
+     "m=-1": 12.0
+    },
+    "4": {
+     "m=2N+1": 16.0,
+     "m=-1": 16.0
+    },
+    "5": {
+     "m=2N+1": 20.0,
+     "m=-1": 20.0
+    },
+    "6": {
+     "m=2N+1": 24.0,
+     "m=-1": 24.0
+    },
+    "7": {
+     "m=2N+1": 28.0,
+     "m=-1": 28.0
+    },
+    "8": {
+     "m=2N+1": 32.0,
+     "m=-1": 32.0
+    },
+    "9": {
+     "m=2N+1": 36.0,
+     "m=-1": 36.0
+    },
+    "16": {
+     "m=2N+1": 64.0,
+     "m=-1": 64.0
+    },
+    "35": {
+     "m=2N+1": 140.0,
+     "m=-1": 140.0
+    }
+   }
+  },
+  {
+   "label": "appA_proofs:lem-1d",
+   "statement": "h_1(m,m') = exact hitting time of the chain T, all pairs, N=2..12 (absolute)",
+   "cases": 649,
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-1d-sum",
+   "statement": "spectral sum = h_1(m,m'), all pairs, N=2..12 (absolute)",
+   "cases": 649,
+   "max_deviation": 1.0285575569695016e-38,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-cot",
+   "statement": "sum over odd j of cot^2(pi j/2N) = N(N-1)/2, N=2..60 (absolute)",
+   "cases": 59,
+   "max_deviation": 2.350988701644575e-38,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-split",
+   "statement": "q T_N/2 = N(N-1) + sum_k 2 c_k^2 G_k (G_k summed directly), N=2..12,35,36,59,60",
+   "cases": 15,
+   "max_deviation": 2.8711770575527314e-40,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-alpha-sums",
+   "statement": "sum alpha_j = 2N-1, sum alpha_j (-1)^j = -(-1)^N (exact integers)",
+   "cases": 15,
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-Gk",
+   "statement": "closed form of G_k against the direct sum over j, all k",
+   "cases": 252,
+   "max_deviation": 1.4951902407273332e-39,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-Bk",
+   "statement": "B_k = (1+sigma_k)[cosh N phi_k - (-1)^k] - sinh phi_k sinh N phi_k and G_k = N B_k/(sinh sinh)",
+   "cases": 252,
+   "max_deviation": 2.9147461309808637e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-Gk-coth",
+   "statement": "G_k = N[coth(phi_k/2) g_k - 1]; sinh(phi_k/2)=s_k; coth(phi_k/2)=sqrt(1+s_k^2)/s_k; cosh phi_k = sigma_k",
+   "cases": 252,
+   "max_deviation": 1.8367099231598242e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-csum",
+   "statement": "sum_{k=1}^{N-1} c_k^2 = (N-1)/2, N=2..60 (absolute)",
+   "cases": 59,
+   "max_deviation": 2.2958874039497803e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-csum-odd",
+   "statement": "sum over odd k of c_k^2 = N/4, N=2..60, both parities (absolute)",
+   "cases": 59,
+   "max_deviation": 9.183549615799121e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-csum-odd",
+   "statement": "sum over odd k of cos(pi k/N) = 0 (N even), 1/2 (N odd), N=2..60",
+   "cases": 59,
+   "max_deviation": 8.035605913824231e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-single-a",
+   "statement": "form (a) = exact rational q T_N, N=2..9",
+   "cases": 8,
+   "max_deviation": 1.3755784956431025e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-single-S",
+   "statement": "form (b) = exact rational q T_N, N=2..9",
+   "cases": 8,
+   "max_deviation": 1.7253466400305777e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-half",
+   "statement": "8N S_odd - 2N^2 = exact rational q T_N, N=2..9",
+   "cases": 8,
+   "max_deviation": 4.126735486929307e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-half",
+   "statement": "2N^2 + 8N S_even = exact rational q T_N, N=2..9",
+   "cases": 8,
+   "max_deviation": 1.3755784956431025e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-single-a/S/half",
+   "statement": "forms (a), (b), (c) = cosine double sum (40 digits), N=2..12,35,36,59,60",
+   "cases": 15,
+   "max_deviation": 1.9750287673888966e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-half",
+   "statement": "S_odd - S_even = N/2 (absolute), same N",
+   "cases": 15,
+   "max_deviation": 1.1020259538958945e-39,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-Hk",
+   "statement": "H_k: sum over even j = sum over Z_N = (N/2)[coth(phi_k/2) coth(N phi_k/2) - 1], odd k",
+   "cases": 130,
+   "max_deviation": 1.535061980480062e-39,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-odd-even",
+   "statement": "q T_N = 16 sum over odd k of c_k^2 H_k, same N",
+   "cases": 15,
+   "max_deviation": 9.851655206660496e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:thm-single",
+   "statement": "forms (a), (b), (c) against float64 sparse solves, N=16,35,36,100,101, q=0.8",
+   "cases": 5,
+   "max_deviation": 1.3703482792948307e-12,
+   "tolerance": 1e-09,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-prod",
+   "statement": "cos theta_j(m) cos theta_j(m') = [cos(|m-m'| vartheta_j) + cos((m+m'+1) vartheta_j)]/2",
+   "cases": 1266,
+   "max_deviation": 4.07520014201086e-40,
+   "tolerance": 1e-35,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-inner-pair",
+   "statement": "sum_j alpha_j cos cos/(sigma_k - cos vartheta_j) = N Psi_k(m,m'), all m,m',k, N=2..5,8,9",
+   "cases": 1266,
+   "max_deviation": 8.451681578837792e-36,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-pair",
+   "statement": "pair formula = exact rational q T: all 1848 ordered pairs N=2..5 (q=1, 3/7); every start for 12 random targets N=6..9",
+   "cases": 2526,
+   "max_deviation": 7.159890348734225e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-pair",
+   "statement": "pair formula against float64 sparse solves, N=35,36, three targets, random starts, q=0.8",
+   "cases": 72,
+   "max_deviation": 7.793765632868599e-14,
+   "tolerance": 1e-09,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-pair-corner",
+   "statement": "pair formula at opposite corners reduces to form (a)",
+   "cases": 15,
+   "max_deviation": 5.001816973868302e-41,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-stable",
+   "statement": "cosh((N-m) phi)/sinh(N phi) = (e^{-m phi} + e^{-(2N-m) phi})/(1 - e^{-2N phi}), 0<=m<=2N",
+   "cases": 2552,
+   "max_deviation": 7.590204353564542e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-laplacian",
+   "statement": "I - P = (q/4)(D - A), P built from the rules, N=2..12, q=0.8, 0.37",
+   "cases": 22,
+   "max_deviation": 5.551115123125783e-17,
+   "tolerance": 1e-14,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-resistance",
+   "statement": "q (T_{o->a}+T_{a->o}) = 4 N^2 R(o,a), R from the Laplacian pseudo-inverse, random pairs",
+   "cases": 39,
+   "max_deviation": 5.773159728050814e-15,
+   "tolerance": 1e-10,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-resistance",
+   "statement": "q T_N = 2 N^2 R_N; R_N = 1 + (4/N) S_even = (4/N) S_odd - 1, N=2..12",
+   "cases": 11,
+   "max_deviation": 5.773159728050814e-15,
+   "tolerance": 1e-10,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-resistance",
+   "statement": "exact: q T_4/(2*16) = 13/7 (Wu 2004, Example 4: corner-to-corner resistance of the 4x4 grid)",
+   "cases": 1,
+   "max_deviation": 0.0,
+   "tolerance": 0.0,
+   "passed": true,
+   "R_4": "13/7"
+  },
+  {
+   "label": "appA_proofs:eq-Gkj",
+   "statement": "d=3 inner sum G_kj: direct sum = closed form = N[coth(phi_kj/2) g_kj - 1]; G_00 = N(N-1); N=2..8",
+   "cases": 196,
+   "max_deviation": 2.660938590538656e-40,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:eq-alpha-c",
+   "statement": "sum_{k=0}^{N-1} alpha_k c_k^2 = N, N=2..8 (absolute)",
+   "cases": 7,
+   "max_deviation": 0.0,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-3d",
+   "statement": "double sum = triple sum = exact rational q T_N^(3), N=2,3,4",
+   "cases": 3,
+   "max_deviation": 5.45058555750671e-41,
+   "tolerance": 1e-30,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-3d",
+   "statement": "double sum against float64 sparse solves, N=5..12 (both parities), q=0.8",
+   "cases": 8,
+   "max_deviation": 5.420108806220014e-13,
+   "tolerance": 1e-09,
+   "passed": true
+  },
+  {
+   "label": "appA_proofs:lem-1d",
+   "statement": "finite sum F_m = Eq. (E2) of Giuggioli 2020, for 0<=m<=2N, N=2,3,5,8,13 (absolute)",
+   "cases": 67,
+   "max_deviation": 5.510129769479473e-39,
+   "tolerance": 1e-28,
+   "passed": true
+  },
+  {
+   "label": "s4_mfpt:eq-single-a (float64)",
+   "statement": "form (a) is finite and equal to form (b) for N=2..402; it is not finite for N=403..450, 500, 1000, 5000; form (b) stays finite",
+   "cases": 3,
+   "max_deviation": 0.0,
+   "tolerance": 0.5,
+   "passed": true
+  }
+ ],
+ "exact_corner_values_d2": [
+  {
+   "N": 2,
+   "qT_N_exact": "8",
+   "qT_N_float": 8.0
+  },
+  {
+   "N": 3,
+   "qT_N_exact": "27",
+   "qT_N_float": 27.0
+  },
+  {
+   "N": 4,
+   "qT_N_exact": "416/7",
+   "qT_N_float": 59.42857142857143
+  },
+  {
+   "N": 5,
+   "qT_N_exact": "1175/11",
+   "qT_N_float": 106.81818181818181
+  },
+  {
+   "N": 6,
+   "qT_N_exact": "9368/55",
+   "qT_N_float": 170.3272727272727
+  },
+  {
+   "N": 7,
+   "qT_N_exact": "312865/1247",
+   "qT_N_float": 250.89414595028066
+  },
+  {
+   "N": 8,
+   "qT_N_exact": "125807488/360161",
+   "qT_N_float": 349.309025685735
+  },
+  {
+   "N": 9,
+   "qT_N_exact": "35727723/76627",
+   "qT_N_float": 466.2550145510068
+  }
+ ],
+ "exact_corner_values_d3": [
+  {
+   "N": 2,
+   "qT_exact": "20",
+   "qT_float": 20.0
+  },
+  {
+   "N": 3,
+   "qT_exact": "1161/14",
+   "qT_float": 82.92857142857143
+  },
+  {
+   "N": 4,
+   "qT_exact": "25664/119",
+   "qT_float": 215.6638655462185
+  }
+ ],
+ "float_solves_d2": [
+  {
+   "N": 16,
+   "qT_solve": 1847.5621062298449,
+   "max_rel_dev_forms": 4.6629367034256575e-15
+  },
+  {
+   "N": 35,
+   "qT_solve": 11280.646439933285,
+   "max_rel_dev_forms": 7.904787935331115e-14
+  },
+  {
+   "N": 36,
+   "qT_solve": 12027.403322314056,
+   "max_rel_dev_forms": 4.6851411639181606e-14
+  },
+  {
+   "N": 100,
+   "qT_solve": 118816.60573298301,
+   "max_rel_dev_forms": 1.1425305146417486e-12
+  },
+  {
+   "N": 101,
+   "qT_solve": 121463.2849111768,
+   "max_rel_dev_forms": 1.3703482792948307e-12
+  }
+ ],
+ "float_solves_d3": [
+  {
+   "N": 5,
+   "qT_solve": 444.2662316150661,
+   "qT_double_sum": 444.26623161508667
+  },
+  {
+   "N": 6,
+   "qT_solve": 794.6894674996566,
+   "qT_double_sum": 794.6894674997134
+  },
+  {
+   "N": 7,
+   "qT_solve": 1292.8662567162928,
+   "qT_double_sum": 1292.8662567164724
+  },
+  {
+   "N": 8,
+   "qT_solve": 1964.7233827265275,
+   "qT_double_sum": 1964.7233827268756
+  },
+  {
+   "N": 9,
+   "qT_solve": 2836.185500535306,
+   "qT_double_sum": 2836.185500536065
+  },
+  {
+   "N": 10,
+   "qT_solve": 3933.1763600716276,
+   "qT_double_sum": 3933.17636007283
+  },
+  {
+   "N": 11,
+   "qT_solve": 5281.619280069081,
+   "qT_double_sum": 5281.619280071293
+  },
+  {
+   "N": 12,
+   "qT_solve": 6907.437355605807,
+   "qT_double_sum": 6907.437355609551
+  }
+ ],
+ "float64_overflow": {
+  "form_a_float64_finite_and_equal_to_form_b_for_all_N_2..402": true,
+  "form_a_float64_not_finite_for_N_403..450_500_1000_5000": true,
+  "largest_double": 1.7976931348623157e+308,
+  "ln_largest_double": 709.782712893384,
+  "arcosh_3": 1.762747174039086,
+  "N_phi_{N-1}_at_N402": 708.6200238712752,
+  "N_phi_{N-1}_at_N403": 710.382781814788,
+  "form_a_float64_N402": 2492657.8170739184,
+  "form_a_float64_N403_is_finite": false,
+  "form_b_float64_N402": 2492657.8170724977,
+  "rel_dev_a_vs_b_N402": 5.699885008425554e-13,
+  "form_b_float64_N403": 2506102.0279975394,
+  "form_b_float64_N5000": 546087304.3006256,
+  "rel_dev_b_float_vs_40_digits_N403": 2.220446049250313e-16
+ }
+}

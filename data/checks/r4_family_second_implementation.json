@@ -1,0 +1,12 @@
+{
+ "provenance": "summary of the record of a second implementation of the Taylor-model certificate of Lemma 9.10 of note R4 (code/msc_rigorous_unimodality/cert_family.py), written separately within the same project and run on the same machine; its code and full record are not part of this repository",
+ "n_boxes": 26,
+ "n_boxes_family_F1": 20,
+ "n_boxes_family_F2": 6,
+ "n_boxes_certified": 26,
+ "all_boxes_certified": true,
+ "taylor_total_degree": 12,
+ "lagrange_remainder_order": 13,
+ "tail_sub_boxes": "12 x 5",
+ "ball_precision_bits": 256
+}

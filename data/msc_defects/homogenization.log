@@ -1,0 +1,26 @@
+{'L': 8, 'one_minus_sigma_times_L2': 3.064377682403432}
+{'L': 16, 'one_minus_sigma_times_L2': 3.1223184918378024}
+{'L': 32, 'one_minus_sigma_times_L2': 3.13677378297416}
+{'L': 64, 'one_minus_sigma_times_L2': 3.1403878867563435}
+{'L': 128, 'one_minus_sigma_times_L2': 3.141291458374326}
+{'L': 256, 'one_minus_sigma_times_L2': 3.141517354553798}
+{'p': 0.0, 'L': 192, 'samples': 1, 'sigma': 1.0, 'sigma_sem': 0.0, 'P_inf': 1.0, 'P_inf_sem': 0.0, 'D_ratio': 1.0, 'time_factor': 1.0, 'dilute_sigma': 1.0, 'dilute_time_factor': 1.0} [0s]
+{'p': 0.005, 'L': 192, 'samples': 12, 'sigma': 0.98434, 'sigma_sem': 3e-05, 'P_inf': 0.99501, 'P_inf_sem': 0.0, 'D_ratio': 0.98927, 'time_factor': 1.01084, 'dilute_sigma': 0.98429, 'dilute_time_factor': 1.01082} [5s]
+{'p': 0.01, 'L': 192, 'samples': 12, 'sigma': 0.96871, 'sigma_sem': 4e-05, 'P_inf': 0.98999, 'P_inf_sem': 0.0, 'D_ratio': 0.97851, 'time_factor': 1.02196, 'dilute_sigma': 0.96858, 'dilute_time_factor': 1.02188} [11s]
+{'p': 0.02, 'L': 192, 'samples': 12, 'sigma': 0.93781, 'sigma_sem': 9e-05, 'P_inf': 0.98001, 'P_inf_sem': 0.0, 'D_ratio': 0.95694, 'time_factor': 1.045, 'dilute_sigma': 0.93717, 'dilute_time_factor': 1.04475} [17s]
+{'p': 0.04, 'L': 192, 'samples': 12, 'sigma': 0.87607, 'sigma_sem': 0.00014, 'P_inf': 0.95999, 'P_inf_sem': 0.0, 'D_ratio': 0.91259, 'time_factor': 1.09578, 'dilute_sigma': 0.87434, 'dilute_time_factor': 1.09369} [24s]
+{'p': 0.06, 'L': 192, 'samples': 12, 'sigma': 0.81596, 'sigma_sem': 0.00019, 'P_inf': 0.93999, 'P_inf_sem': 1e-05, 'D_ratio': 0.86805, 'time_factor': 1.15201, 'dilute_sigma': 0.8115, 'dilute_time_factor': 1.14744} [32s]
+{'p': 0.08, 'L': 192, 'samples': 12, 'sigma': 0.75683, 'sigma_sem': 0.0003, 'P_inf': 0.91996, 'P_inf_sem': 1e-05, 'D_ratio': 0.82268, 'time_factor': 1.21554, 'dilute_sigma': 0.74867, 'dilute_time_factor': 1.20675} [40s]
+{'p': 0.1, 'L': 192, 'samples': 12, 'sigma': 0.69808, 'sigma_sem': 0.00044, 'P_inf': 0.89991, 'P_inf_sem': 1e-05, 'D_ratio': 0.77572, 'time_factor': 1.28913, 'dilute_sigma': 0.68584, 'dilute_time_factor': 1.27252} [47s]
+{'p': 0.12, 'L': 192, 'samples': 12, 'sigma': 0.64115, 'sigma_sem': 0.00054, 'P_inf': 0.87977, 'P_inf_sem': 2e-05, 'D_ratio': 0.72878, 'time_factor': 1.37216, 'dilute_sigma': 0.62301, 'dilute_time_factor': 1.34588} [54s]
+{'p': 0.14, 'L': 192, 'samples': 12, 'sigma': 0.58524, 'sigma_sem': 0.00058, 'P_inf': 0.85964, 'P_inf_sem': 3e-05, 'D_ratio': 0.6808, 'time_factor': 1.46885, 'dilute_sigma': 0.56018, 'dilute_time_factor': 1.42821} [61s]
+{'p': 0.16, 'L': 192, 'samples': 12, 'sigma': 0.5302, 'sigma_sem': 0.00076, 'P_inf': 0.83932, 'P_inf_sem': 6e-05, 'D_ratio': 0.6317, 'time_factor': 1.58303, 'dilute_sigma': 0.49735, 'dilute_time_factor': 1.52127} [68s]
+{'p': 0.18, 'L': 192, 'samples': 12, 'sigma': 0.47642, 'sigma_sem': 0.00068, 'P_inf': 0.81898, 'P_inf_sem': 6e-05, 'D_ratio': 0.58173, 'time_factor': 1.71901, 'dilute_sigma': 0.43451, 'dilute_time_factor': 1.6273} [74s]
+{'p': 0.2, 'L': 192, 'samples': 12, 'sigma': 0.42533, 'sigma_sem': 0.00076, 'P_inf': 0.79832, 'P_inf_sem': 7e-05, 'D_ratio': 0.53278, 'time_factor': 1.87694, 'dilute_sigma': 0.37168, 'dilute_time_factor': 1.74923} [80s]
+{'p': 0.225, 'L': 192, 'samples': 12, 'sigma': 0.36094, 'sigma_sem': 0.00059, 'P_inf': 0.77221, 'P_inf_sem': 8e-05, 'D_ratio': 0.46741, 'time_factor': 2.13944, 'dilute_sigma': 0.29314, 'dilute_time_factor': 1.92997} [85s]
+{'p': 0.25, 'L': 192, 'samples': 12, 'sigma': 0.29941, 'sigma_sem': 0.0011, 'P_inf': 0.7453, 'P_inf_sem': 0.00017, 'D_ratio': 0.40173, 'time_factor': 2.48925, 'dilute_sigma': 0.2146, 'dilute_time_factor': 2.15238} [88s]
+{'p': 0.275, 'L': 192, 'samples': 12, 'sigma': 0.24258, 'sigma_sem': 0.00111, 'P_inf': 0.71803, 'P_inf_sem': 0.00024, 'D_ratio': 0.33784, 'time_factor': 2.95997, 'dilute_sigma': 0.13606, 'dilute_time_factor': 2.43272} [91s]
+{'p': 0.3, 'L': 192, 'samples': 12, 'sigma': 0.18396, 'sigma_sem': 0.00124, 'P_inf': 0.68777, 'P_inf_sem': 0.0004, 'D_ratio': 0.26747, 'time_factor': 3.73874, 'dilute_sigma': 0.05752, 'dilute_time_factor': 2.79703} [94s]
+{'p': 0.325, 'L': 192, 'samples': 12, 'sigma': 0.13317, 'sigma_sem': 0.00113, 'P_inf': 0.6563, 'P_inf_sem': 0.00037, 'D_ratio': 0.20291, 'time_factor': 4.92828, 'dilute_sigma': -0.02102, 'dilute_time_factor': 3.28966} [97s]
+{'p': 0.35, 'L': 192, 'samples': 12, 'sigma': 0.08152, 'sigma_sem': 0.00119, 'P_inf': 0.61663, 'P_inf_sem': 0.00082, 'D_ratio': 0.1322, 'time_factor': 7.56439, 'dilute_sigma': -0.09956, 'dilute_time_factor': 3.99293} [99s]
+{'p': 0.38, 'L': 192, 'samples': 12, 'sigma': 0.03317, 'sigma_sem': 0.00165, 'P_inf': 0.55548, 'P_inf_sem': 0.00144, 'D_ratio': 0.05971, 'time_factor': 16.74801, 'dilute_sigma': -0.19381, 'dilute_time_factor': 5.37072} [101s]

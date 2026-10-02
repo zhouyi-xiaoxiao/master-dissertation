@@ -1,0 +1,316 @@
+{
+ "provenance": "computed by code/article/checks_fits_recompare.py from data/msc_modes/fit_results.json and data/msc_modes_verify/analysis.json (fits of the main implementation and of its check)",
+ "n_windows": 7,
+ "n_models_compared": 34,
+ "max_abs_dAICc_difference": 2.7857143174992984,
+ "params_max_rel_diff": 1.0108739618898395e-07,
+ "ranking_by_AICc_identical_in_every_window": true,
+ "rows": [
+  {
+   "window_second_implementation": "discrete_d1_short_range",
+   "window_main_implementation": "1d_mode_discrete_short_range",
+   "model": "A N^2",
+   "dAICc_second_implementation": 124.5560205547504,
+   "dAICc_main_implementation": 124.33015945932766,
+   "dAICc_difference": 0.22586109542274357,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d1_short_range",
+   "window_main_implementation": "1d_mode_discrete_short_range",
+   "model": "A N^a",
+   "dAICc_second_implementation": 83.44644035756704,
+   "dAICc_main_implementation": 83.44644035757062,
+   "dAICc_difference": -3.581135388230905e-12,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d1_short_range",
+   "window_main_implementation": "1d_mode_discrete_short_range",
+   "model": "A (N-delta)^2",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 1.1701976257845958e-08
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "A N^2",
+   "dAICc_second_implementation": 243.31924631030495,
+   "dAICc_main_implementation": 242.83364495513842,
+   "dAICc_difference": 0.4856013551665228,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "A N^a",
+   "dAICc_second_implementation": 155.07035359802128,
+   "dAICc_main_implementation": 154.81061333828106,
+   "dAICc_difference": 0.2597402597402265,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "A N^2 (ln N)^b",
+   "dAICc_second_implementation": 103.05108400041962,
+   "dAICc_main_implementation": 102.7913437406794,
+   "dAICc_difference": 0.2597402597402265,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "A N^a (ln N)^b",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "N^2 (A lnln N + B)",
+   "dAICc_second_implementation": 51.362708513478594,
+   "dAICc_main_implementation": 51.102968253732,
+   "dAICc_difference": 0.259740259746593,
+   "params_max_rel_diff": 3.662880852268109e-09
+  },
+  {
+   "window_second_implementation": "discrete_d2_short_range",
+   "window_main_implementation": "2d_mode_discrete_short_range",
+   "model": "N^2 (A ln N + B)",
+   "dAICc_second_implementation": 143.03416934171986,
+   "dAICc_main_implementation": 142.7744290819767,
+   "dAICc_difference": 0.25974025974315396,
+   "params_max_rel_diff": 4.323861422597154e-08
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "A N^3",
+   "dAICc_second_implementation": 206.81486618810786,
+   "dAICc_main_implementation": 206.2633510365927,
+   "dAICc_difference": 0.5515151515151615,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "A N^2",
+   "dAICc_second_implementation": 162.31578689983533,
+   "dAICc_main_implementation": 161.76427174832017,
+   "dAICc_difference": 0.5515151515151615,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "A N^a",
+   "dAICc_second_implementation": 96.162559454979,
+   "dAICc_main_implementation": 96.162559454979,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "A N^2 (ln N)^b",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "A N^a (ln N)^b",
+   "dAICc_second_implementation": 1.9622877342492586,
+   "dAICc_main_implementation": 2.697641269602798,
+   "dAICc_difference": -0.7353535353535392,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "discrete_d3_short_range",
+   "window_main_implementation": "3d_mode_discrete_short_range",
+   "model": "N^2 (A ln N + B)",
+   "dAICc_second_implementation": 72.08637386215145,
+   "dAICc_main_implementation": 72.08637386215102,
+   "dAICc_difference": 4.263256414560601e-13,
+   "params_max_rel_diff": 6.49104931639733e-09
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "A N^2",
+   "dAICc_second_implementation": 123.22879869424474,
+   "dAICc_main_implementation": 121.7318289959319,
+   "dAICc_difference": 1.4969696983128387,
+   "params_max_rel_diff": 1.5085533915573595e-13
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "A N^a",
+   "dAICc_second_implementation": 82.04018879587764,
+   "dAICc_main_implementation": 81.17352212785248,
+   "dAICc_difference": 0.8666666680251609,
+   "params_max_rel_diff": 6.559325678134072e-12
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "A N^2 (ln N)^b",
+   "dAICc_second_implementation": 53.86380951628419,
+   "dAICc_main_implementation": 52.99714284823958,
+   "dAICc_difference": 0.8666666680446156,
+   "params_max_rel_diff": 2.574400862049905e-11
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "A N^a (ln N)^b",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 4.1771112966597384e-10
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "N^2 (A lnln N + B)",
+   "dAICc_second_implementation": 23.196259543452754,
+   "dAICc_main_implementation": 22.329592875488117,
+   "dAICc_difference": 0.8666666679646369,
+   "params_max_rel_diff": 2.414487404868493e-09
+  },
+  {
+   "window_second_implementation": "cont_d2_mode_fit_10-200",
+   "window_main_implementation": "2d_mode_fit_10_200_extrapolated",
+   "model": "N^2 (A ln N + B)",
+   "dAICc_second_implementation": 75.55158933877013,
+   "dAICc_main_implementation": 74.68492267076384,
+   "dAICc_difference": 0.8666666680062889,
+   "params_max_rel_diff": 8.765993880050942e-09
+  },
+  {
+   "window_second_implementation": "cont_d2_mfpt_fit_10-200",
+   "window_main_implementation": "2d_mfpt_fit_10_200_extrapolated",
+   "model": "A N^2",
+   "dAICc_second_implementation": 196.48136418270573,
+   "dAICc_main_implementation": 195.85106115274442,
+   "dAICc_difference": 0.6303030299613113,
+   "params_max_rel_diff": 3.893389208922999e-16
+  },
+  {
+   "window_second_implementation": "cont_d2_mfpt_fit_10-200",
+   "window_main_implementation": "2d_mfpt_fit_10_200_extrapolated",
+   "model": "A N^a",
+   "dAICc_second_implementation": 144.19487911116596,
+   "dAICc_main_implementation": 144.1948791115077,
+   "dAICc_difference": -3.417426341911778e-10,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "cont_d2_mfpt_fit_10-200",
+   "window_main_implementation": "2d_mfpt_fit_10_200_extrapolated",
+   "model": "A N^2 (ln N)^b",
+   "dAICc_second_implementation": 45.545494303590345,
+   "dAICc_main_implementation": 45.545494303934476,
+   "dAICc_difference": -3.441300577833317e-10,
+   "params_max_rel_diff": 2.0493224600686016e-15
+  },
+  {
+   "window_second_implementation": "cont_d2_mfpt_fit_10-200",
+   "window_main_implementation": "2d_mfpt_fit_10_200_extrapolated",
+   "model": "N^2 (A ln N + B)",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 1.0108739618898395e-07
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "A N^3",
+   "dAICc_second_implementation": 146.50337412411892,
+   "dAICc_main_implementation": 143.71765980661962,
+   "dAICc_difference": 2.7857143174992984,
+   "params_max_rel_diff": 2.8481321480105966e-13
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "A N^2",
+   "dAICc_second_implementation": 114.94746226328866,
+   "dAICc_main_implementation": 112.16174794581423,
+   "dAICc_difference": 2.7857143174744294,
+   "params_max_rel_diff": 4.0953703907817276e-13
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "A N^a",
+   "dAICc_second_implementation": 71.94716083180718,
+   "dAICc_main_implementation": 70.23287508631915,
+   "dAICc_difference": 1.7142857454880271,
+   "params_max_rel_diff": 1.2572610112740513e-13
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "A N^2 (ln N)^b",
+   "dAICc_second_implementation": 8.225042883292673,
+   "dAICc_main_implementation": 6.510757135188669,
+   "dAICc_difference": 1.714285748104004,
+   "params_max_rel_diff": 1.0907429811586932e-12
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "A N^a (ln N)^b",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 2.822183841029673e-11
+  },
+  {
+   "window_second_implementation": "cont_d3_mode_fit_10-100",
+   "window_main_implementation": "3d_mode_fit_10_100_extrapolated",
+   "model": "N^2 (A ln N + B)",
+   "dAICc_second_implementation": 54.08701922508199,
+   "dAICc_main_implementation": 52.37273348054289,
+   "dAICc_difference": 1.7142857445390973,
+   "params_max_rel_diff": 1.140577705990368e-09
+  },
+  {
+   "window_second_implementation": "cont_d3_mfpt_fit_10-100",
+   "window_main_implementation": "3d_mfpt_fit_10_100_extrapolated",
+   "model": "A N^3",
+   "dAICc_second_implementation": 126.46709343915731,
+   "dAICc_main_implementation": 125.39566486800699,
+   "dAICc_difference": 1.0714285711503209,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "cont_d3_mfpt_fit_10-100",
+   "window_main_implementation": "3d_mfpt_fit_10_100_extrapolated",
+   "model": "A N^a",
+   "dAICc_second_implementation": 107.0674489869895,
+   "dAICc_main_implementation": 107.06744898726777,
+   "dAICc_difference": -2.7826274617837043e-10,
+   "params_max_rel_diff": 0.0
+  },
+  {
+   "window_second_implementation": "cont_d3_mfpt_fit_10-100",
+   "window_main_implementation": "3d_mfpt_fit_10_100_extrapolated",
+   "model": "N^3 (A + B/N)",
+   "dAICc_second_implementation": 0.0,
+   "dAICc_main_implementation": 0.0,
+   "dAICc_difference": 0.0,
+   "params_max_rel_diff": 3.0726781093325973e-10
+  }
+ ]
+}

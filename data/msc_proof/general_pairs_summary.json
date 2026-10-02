@@ -1,0 +1,8 @@
+{
+ "exhaustive_cases": 1848,
+ "exhaustive_worst_rel": 6.312662909216516e-41,
+ "random_cases": 72,
+ "random_worst_rel": 7.970402067093339e-40,
+ "dps": 40,
+ "seed": 20261001
+}
